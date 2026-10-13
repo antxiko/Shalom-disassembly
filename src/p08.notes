@@ -1,0 +1,68 @@
+# Notas del banco 08
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xA000 0xA00B opciones_9FF9_cola  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E) (sigue del banco 7); lo leen p00:5401 (11 bytes)
+F 0xA000 16
+D 0xA00B 0xA01D opciones_A00B  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (18 bytes)
+F 0xA00B 16
+D 0xA01D 0xA02F opciones_A01D  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (18 bytes)
+F 0xA01D 16
+D 0xA02F 0xA041 opciones_A02F  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (18 bytes)
+F 0xA02F 16
+D 0xA041 0xA04B opciones_A041  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0xA041 16
+D 0xA04B 0xA04E subopciones_A04B  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0xA04B 16
+D 0xA04E 0xA05A opciones_A04E  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0xA04E 16
+D 0xA05A 0xA05E subopciones_A05A  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0xA05A 16
+D 0xA05E 0xA061 subopciones_A05E  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0xA05E 16
+D 0xA061 0xA063 subopciones_A061  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (2 bytes)
+F 0xA061 16
+D 0xA063 0xA303 resto_A063  lo apuntan con el banco puesto p07:8378 (0xA063); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p07:8378 (672 bytes)
+F 0xA063 16
+D 0xA5C5 0xA5CB saltos_A5C5  tabla de 3 palabras del despachador (call 0x408D en 0xA5C2); lo leen L_40AB (6 bytes)
+F 0xA5C5 2
+D 0xA668 0xA66E saltos_A668  tabla de 3 palabras del despachador (call 0x408D en 0xA665); lo leen L_40AB (6 bytes)
+F 0xA668 2
+D 0xA6A1 0xA6A7 saltos_A6A1  tabla de 3 palabras del despachador (call 0x408D en 0xA69E); lo leen L_40AB (6 bytes)
+F 0xA6A1 2
+D 0xA6D8 0xA6DE saltos_A6D8  tabla de 3 palabras del despachador (call 0x408D en 0xA6D5); lo leen L_40AB (6 bytes)
+F 0xA6D8 2
+D 0xA72E 0xA73A saltos_A72E  tabla de 6 palabras del despachador (call 0x408D en 0xA72B); lo leen L_40AB (12 bytes)
+F 0xA72E 2
+D 0xA8CF 0xA8DB saltos_A8CF  tabla de 6 palabras del despachador (call 0x408D en 0xA8CC); lo leen L_40AB (12 bytes)
+F 0xA8CF 2
+D 0xAB0F 0xAB17 saltos_AB0F  tabla de 4 palabras del despachador (call 0x408D en 0xAB0C); lo leen L_40AB (8 bytes)
+F 0xAB0F 2
+D 0xABE4 0xABEE resto_ABE4  lo apuntan con el banco puesto p08:AB98 (0xABE4); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p08:AB98 (10 bytes)
+F 0xABE4 16
+D 0xAE5C 0xAE68 saltos_AE5C  tabla de 6 palabras del despachador (call 0x408D en 0xAE59); lo leen L_40AB (12 bytes)
+F 0xAE5C 2
+D 0xAF74 0xAF7E saltos_AF74  tabla de 5 palabras del despachador (call 0x408D en 0xAF71); lo leen L_40AB (10 bytes)
+F 0xAF74 2
+D 0xB0E2 0xB0F0 saltos_B0E2  tabla de 7 palabras del despachador (call 0x408D en 0xB0DF); lo leen L_40AB (14 bytes)
+F 0xB0E2 2
+D 0xB36E 0xB378 saltos_B36E  tabla de 5 palabras del despachador (call 0x408D en 0xB36B); lo leen L_40AB (10 bytes)
+F 0xB36E 2
+D 0xB3C4 0xB3CA dibujo_B3C4  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p08:B3BE (6 bytes)
+F 0xB3C4 4
+D 0xB49D 0xB4AB saltos_B49D  tabla de 7 palabras del despachador (call 0x408D en 0xB49A); lo leen L_40AB (14 bytes)
+F 0xB49D 2
+D 0xB4B1 0xB4BD saltos_B4B1  tabla de 6 palabras del despachador (call 0x408D en 0xB4AE); lo leen L_40AB (12 bytes)
+F 0xB4B1 2
+D 0xB55D 0xB565 resto_B55D  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (8 bytes)
+F 0xB55D 16
+D 0xB71A 0xB720 saltos_B71A  tabla de 3 palabras del despachador (call 0x408D en 0xB717); lo leen L_40AB (6 bytes)
+F 0xB71A 2
+D 0xB7A4 0xB7AA saltos_B7A4  tabla de 3 palabras del despachador (call 0x408D en 0xB7A1); lo leen L_40AB (6 bytes)
+F 0xB7A4 2
+D 0xBC3A 0xBC44 saltos_BC3A  tabla de 5 palabras del despachador (call 0x408D en 0xBC37); lo leen L_40AB (10 bytes)
+F 0xBC3A 2
+D 0xBDCE 0xBDD4 saltos_BDCE  tabla de 3 palabras del despachador (call 0x408D en 0xBDCB); lo leen L_40AB (6 bytes)
+F 0xBDCE 2
+D 0xBFFD 0xC000 resto_BFFD  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (3 bytes)
+F 0xBFFD 16
+# --- fin de los bloques de bloques.py ---

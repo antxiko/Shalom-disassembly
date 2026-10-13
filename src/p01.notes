@@ -1,0 +1,90 @@
+# Notas del banco 01
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x6021 0x6026 resto_6021  lo apuntan con el banco puesto p01:600E (0x6021), p01:6034 (0x6021); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:600E, p01:6034 (5 bytes)
+F 0x6021 16
+D 0x606B 0x6073 resto_606B  lo apuntan con el banco puesto p01:600B (0x606B), p01:6031 (0x606F), p01:74EC (0x6070); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:600B, p01:6031, p01:74EC (8 bytes)
+F 0x606B 16
+D 0x6146 0x6148 resto_6146  lo apuntan con el banco puesto p01:611F (0x6146); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:611F (2 bytes)
+F 0x6146 16
+D 0x6154 0x615E saltos_6154  tabla de 5 palabras del despachador (call 0x408D en 0x6151); lo leen L_40AB (10 bytes)
+F 0x6154 2
+D 0x6233 0x623D resto_6233  lo apuntan con el banco puesto p01:6215 (0x6233); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:6215 (10 bytes)
+F 0x6233 16
+D 0x63D5 0x648A resto_63D5  lo apuntan con el banco puesto p01:63AC (0x63D5), p01:7769 (0x6414), p01:633B (0x6415); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:63AC, p01:7769, p01:633B (181 bytes)
+F 0x63D5 16
+D 0x64DF 0x64F1 saltos_64DF  tabla de 9 palabras del despachador (call 0x408D en 0x64DC); lo leen L_40AB (18 bytes)
+F 0x64DF 2
+D 0x6634 0x6677 resto_6634  lo apuntan con el banco puesto p01:64D3 (0x6634); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:64D3 (67 bytes)
+F 0x6634 16
+D 0x67E3 0x67E9 resto_67E3  lo apuntan con el banco puesto p01:673A (0x67E3); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:673A (6 bytes)
+F 0x67E3 16
+D 0x67EF 0x6801 saltos_67EF  tabla de 9 palabras del despachador (call 0x408D en 0x67EC); lo leen L_40AB (18 bytes)
+F 0x67EF 2
+D 0x6AB2 0x6ACE resto_6AB2  lo apuntan con el banco puesto p01:6A4C (0x6AB2), p01:6804 (0x6ABB), p01:69AE (0x6ABF), p01:680F (0x6AC4), p01:69B9 (0x6AC4); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:6A4C, p01:6804, p01:69AE, p01:680F, p01:69B9 (28 bytes)
+F 0x6AB2 16
+D 0x6AD4 0x6AE0 saltos_6AD4  tabla de 6 palabras del despachador (call 0x408D en 0x6AD1); lo leen L_40AB (12 bytes)
+F 0x6AD4 2
+D 0x6B4D 0x6B51 resto_6B4D  lo apuntan con el banco puesto p01:6B34 (0x6B4D); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:6B34 (4 bytes)
+F 0x6B4D 16
+D 0x6B57 0x6B65 saltos_6B57  tabla de 7 palabras del despachador (call 0x408D en 0x6B54); lo leen L_40AB (14 bytes)
+F 0x6B57 2
+D 0x6C2D 0x6C3B saltos_6C2D  tabla de 7 palabras del despachador (call 0x408D en 0x6C2A); lo leen L_40AB (14 bytes)
+F 0x6C2D 2
+D 0x6CBD 0x6CCB saltos_6CBD  tabla de 7 palabras del despachador (call 0x408D en 0x6CBA); lo leen L_40AB (14 bytes)
+F 0x6CBD 2
+D 0x6D4D 0x6D59 saltos_6D4D  tabla de 6 palabras del despachador (call 0x408D en 0x6D4A); lo leen L_40AB (12 bytes)
+F 0x6D4D 2
+D 0x6E2E 0x6E36 resto_6E2E  lo apuntan con el banco puesto p01:6E22 (0x6E2E); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:6E22 (8 bytes)
+F 0x6E2E 16
+D 0x6E7E 0x6E89 vram_6E7E  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6B01 (11 bytes)
+F 0x6E7E 16
+D 0x6E89 0x6E90 resto_6E89  lo apuntan con el banco puesto p01:6AF7 (0x6E89); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:6AF7 (7 bytes)
+F 0x6E89 16
+D 0x6E90 0x6E97 vram_6E90  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6B0F (7 bytes)
+F 0x6E90 16
+D 0x6E97 0x6F09 vram_6E97  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6AEB (114 bytes)
+F 0x6E97 16
+D 0x6F09 0x6F2E resto_6F09  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (37 bytes)
+F 0x6F09 16
+D 0x6F2E 0x6F6F vram_6F2E  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6B70 (65 bytes)
+F 0x6F2E 16
+D 0x6F6F 0x6FB1 vram_6F6F  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6C41 (66 bytes)
+F 0x6F6F 16
+D 0x6FB1 0x6FCE vram_6FB1  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6CE6 (29 bytes)
+F 0x6FB1 16
+D 0x6FCE 0x6FED vram_6FCE  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6D87 (31 bytes)
+F 0x6FCE 16
+D 0x6FED 0x701C vram_6FED  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6D32 (47 bytes)
+F 0x6FED 16
+D 0x701C 0x7031 vram_701C  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6CD1 (21 bytes)
+F 0x701C 16
+D 0x7031 0x7054 vram_7031  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6DBF, p01:6D9D (35 bytes)
+F 0x7031 16
+D 0x7054 0x7083 vram_7054  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p01:6DB9, p01:6DA3 (47 bytes)
+F 0x7054 16
+D 0x70B0 0x70B8 resto_70B0  lo apuntan con el banco puesto p01:709F (0x70B0); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:709F (8 bytes)
+F 0x70B0 16
+D 0x718E 0x71B6 saltos_718E  tabla de 20 palabras del despachador (call 0x408D en 0x718B); lo leen L_40AB (40 bytes)
+F 0x718E 2
+D 0x7279 0x7289 resto_7279  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (16 bytes)
+F 0x7279 16
+D 0x73CC 0x73D4 saltos_73CC  tabla de 4 palabras del despachador (call 0x408D en 0x73C9); lo leen L_40AB (8 bytes)
+F 0x73CC 2
+D 0x74BE 0x74C6 resto_74BE  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (8 bytes)
+F 0x74BE 16
+D 0x758A 0x758E resto_758A  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (4 bytes)
+F 0x758A 16
+D 0x7671 0x7679 resto_7671  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (8 bytes)
+F 0x7671 16
+D 0x77E1 0x77FB saltos_77E1  tabla de 13 palabras del despachador (call 0x408D en 0x77DE); lo leen L_40AB (26 bytes)
+F 0x77E1 2
+D 0x79E8 0x79F8 resto_79E8  lo apuntan con el banco puesto p01:79D5 (0x79E8); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:79D5 (16 bytes)
+F 0x79E8 16
+D 0x7C13 0x7C35 resto_7C13  lo apuntan con el banco puesto p01:7C06 (0x7C13); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:7C06 (34 bytes)
+F 0x7C13 16
+D 0x7D36 0x7D4A resto_7D36  lo apuntan con el banco puesto p01:7D29 (0x7D36); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:7D29 (20 bytes)
+F 0x7D36 16
+D 0x7FFE 0x8000 partida_7FFE  los dos primeros bytes de `ld a,(0xE3F3)` (3A F3 E3), que sigue en el banco 2: el trazador de un solo banco no puede verla entera (tools/bancos.py); lo leen p01:7FFE (2 bytes)
+F 0x7FFE 2
+# --- fin de los bloques de bloques.py ---

@@ -1,0 +1,22 @@
+# Notas del banco 05
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x81C0 graficos_7FFC_cola  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba (sigue del banco 4); se solapan 2 bloques: (graficos_7FFA_cola 8000-81C0); lo leen p00:4D75, p04:6E35 (448 bytes)
+F 0x8000 16
+D 0x81C0 0x833E graficos_81C0  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p04:6E3B (382 bytes)
+F 0x81C0 16
+D 0x833E 0x8AA9 graficos_833E  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p04:6E41 (1899 bytes)
+F 0x833E 16
+D 0x8AA9 0x9506 graficos_8AA9  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: de la animacion de 0x7C95; se solapan 7 bloques: (graficos_8CA9 8CA9-9506) (graficos_8EA9 8EA9-9506) (graficos_90A9 90A9-9506) (graficos_92A9 92A9-92AC) (filas_animadas 94A9-94BD) (graficos_94BD 94BD-9506); lo leen p04:6604, p04:6EE4 (2653 bytes)
+F 0x8AA9 16
+D 0x9506 0x96BD fichas_9506  fichas sueltas entre dos graficos; p04:6EF7 copia de aqui los cuatro trozos de 0x94A9 (0x957D, 0x95AD, 0x95BD, 0x95E5); el resto no lo apunta nadie con el banco puesto; lo leen p04:6EE4 (439 bytes)
+F 0x9506 16
+D 0x96BD 0x97B7 graficos_96BD  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: de la animacion de 0x7C8D; lo leen p04:6604 (250 bytes)
+F 0x96BD 16
+D 0x97B7 0x98BD resto_97B7  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (262 bytes)
+F 0x97B7 16
+D 0x98BD 0x9C08 graficos_98BD  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: de la animacion de 0x7C91; lo leen p04:6604 (843 bytes)
+F 0x98BD 16
+D 0x9C08 0xA000 resto_9C08  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (1016 bytes)
+F 0x9C08 16
+# --- fin de los bloques de bloques.py ---

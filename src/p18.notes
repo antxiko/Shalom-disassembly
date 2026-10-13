@@ -1,0 +1,174 @@
+# Notas del banco 18
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x6000 0x6012 sprites_6000  9 palabras: graficos de sprites que p00:43E9 pone en la VRAM 0x1800 (o 0x1860) segun 0xE3C3; el tamano, hasta el primero; lo leen p00:43E9 (18 bytes)
+F 0x6000 2
+D 0x6012 0x604F graficos_6012  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 0 de 0x6000; lo leen p00:43E9 (61 bytes)
+F 0x6012 16
+D 0x604F 0x608C graficos_604F  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 1 de 0x6000; lo leen p00:43E9 (61 bytes)
+F 0x604F 16
+D 0x608C 0x60C9 graficos_608C  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 2 de 0x6000; lo leen p00:43E9 (61 bytes)
+F 0x608C 16
+D 0x60C9 0x6109 graficos_60C9  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 3 de 0x6000; lo leen p00:43E9 (64 bytes)
+F 0x60C9 16
+D 0x6109 0x6148 graficos_6109  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 4 de 0x6000; lo leen p00:43E9 (63 bytes)
+F 0x6109 16
+D 0x6148 0x6187 graficos_6148  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 5 de 0x6000; lo leen p00:43E9 (63 bytes)
+F 0x6148 16
+D 0x6187 0x61C7 graficos_6187  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 6 de 0x6000; lo leen p00:43E9 (64 bytes)
+F 0x6187 16
+D 0x61C7 0x6206 graficos_61C7  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 7 de 0x6000; lo leen p00:43E9 (63 bytes)
+F 0x61C7 16
+D 0x6206 0x6290 graficos_6206  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 8 de 0x6000; se solapan 2 bloques: (sprites_627C 627C-6290); lo leen p00:43E9, p00:43DB (138 bytes)
+F 0x6206 16
+D 0x6290 0x6455 graficos_6290  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 2 de 0x627C; lo leen p00:43DB (453 bytes)
+F 0x6290 16
+D 0x6455 0x65DC graficos_6455  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 1 de 0x627C; lo leen p00:43DB (391 bytes)
+F 0x6455 16
+D 0x65DC 0x65EC sprites_65DC  8 palabras: graficos de sprites que p00:4AF9 pone en la VRAM 0x1800 (o 0x1860) segun 0xE3C3 o (0xEB74 & 7) x 2 - 2; el tamano, hasta el primero; lo leen p00:4AF9 (16 bytes)
+F 0x65DC 2
+D 0x65EC 0x662E graficos_65EC  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 0 de 0x65DC; lo leen p00:4AF9, p00:4AA0 (66 bytes)
+F 0x65EC 16
+D 0x662E 0x6670 graficos_662E  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 1 de 0x65DC; lo leen p00:4AF9, p00:4AA0 (66 bytes)
+F 0x662E 16
+D 0x6670 0x66B1 graficos_6670  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 2 de 0x65DC; lo leen p00:4AF9 (65 bytes)
+F 0x6670 16
+D 0x66B1 0x66F1 graficos_66B1  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 3 de 0x65DC; lo leen p00:4AF9 (64 bytes)
+F 0x66B1 16
+D 0x66F1 0x6731 graficos_66F1  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 4 de 0x65DC; lo leen p00:4AF9 (64 bytes)
+F 0x66F1 16
+D 0x6731 0x6771 graficos_6731  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 5 de 0x65DC; lo leen p00:4AF9 (64 bytes)
+F 0x6731 16
+D 0x6771 0x67B1 graficos_6771  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 6 de 0x65DC; lo leen p00:4AF9 (64 bytes)
+F 0x6771 16
+D 0x67B1 0x67F1 graficos_67B1  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprites, entrada 7 de 0x65DC; lo leen p00:4AF9 (64 bytes)
+F 0x67B1 16
+D 0x67F1 0x6A28 sprites_de_cada_sala  un byte por sala (0x67F1 + 0xEB40): la lista de 0x6A28 (0-20); lo leen p00:4AA0 (567 bytes)
+F 0x67F1 16
+D 0x6A28 0x6A52 listas_de_sprites  21 palabras: 21 listas de registros de 4 bytes (p00:4AB1); lo leen p00:4AA0 (42 bytes)
+F 0x6A28 2
+D 0x6A52 0x6A7B lista_sprites_0  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (41 bytes)
+F 0x6A52 4
+D 0x6A7B 0x6AB4 lista_sprites_1  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (57 bytes)
+F 0x6A7B 4
+D 0x6AB4 0x6AE5 lista_sprites_2  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (49 bytes)
+F 0x6AB4 4
+D 0x6AE5 0x6B2E lista_sprites_3  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (73 bytes)
+F 0x6AE5 4
+D 0x6B2E 0x6B47 lista_sprites_4  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (25 bytes)
+F 0x6B2E 4
+D 0x6B47 0x6B64 lista_sprites_5  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (29 bytes)
+F 0x6B47 4
+D 0x6B64 0x6B89 lista_sprites_6  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (37 bytes)
+F 0x6B64 4
+D 0x6B89 0x6BCE lista_sprites_7  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (69 bytes)
+F 0x6B89 4
+D 0x6BCE 0x6BFF lista_sprites_8  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (49 bytes)
+F 0x6BCE 4
+D 0x6BFF 0x6C1C lista_sprites_9  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (29 bytes)
+F 0x6BFF 4
+D 0x6C1C 0x6C4D lista_sprites_10  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (49 bytes)
+F 0x6C1C 4
+D 0x6C4D 0x6C82 lista_sprites_11  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (53 bytes)
+F 0x6C4D 4
+D 0x6C82 0x6C9F lista_sprites_12  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (29 bytes)
+F 0x6C82 4
+D 0x6C9F 0x6CC4 lista_sprites_13  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (37 bytes)
+F 0x6C9F 4
+D 0x6CC4 0x6CF9 lista_sprites_14  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (53 bytes)
+F 0x6CC4 4
+D 0x6CF9 0x6D22 lista_sprites_15  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (41 bytes)
+F 0x6CF9 4
+D 0x6D22 0x6D43 lista_sprites_16  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (33 bytes)
+F 0x6D22 4
+D 0x6D43 0x6D64 lista_sprites_17  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (33 bytes)
+F 0x6D43 4
+D 0x6D64 0x6D89 lista_sprites_18  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (37 bytes)
+F 0x6D64 4
+D 0x6D89 0x6DAA lista_sprites_19  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (33 bytes)
+F 0x6D89 4
+D 0x6DAA 0x6DBF lista_sprites_20  registros [c][n][dir lo][dir hi] hasta 0xFF: c bit 0 = 0, graficos de dir al patron de sprite n (VRAM 0x1800 + 8n, L_5A2A); c bit 0 = 1, copia de patrones de sprite girados (p00:4AD7, L_5A36); lo leen p00:4AA0 (21 bytes)
+F 0x6DAA 4
+D 0x6DBF 0x6E31 graficos_6DBF  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 2; lo leen p00:4AA0 (114 bytes)
+F 0x6DBF 16
+D 0x6E31 0x6E73 graficos_6E31  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 2; lo leen p00:4AA0 (66 bytes)
+F 0x6E31 16
+D 0x6E73 0x6EF1 graficos_6E73  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 2; lo leen p00:4AA0 (126 bytes)
+F 0x6E73 16
+D 0x6EF1 0x6FEB graficos_6EF1  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 15; lo leen p00:4AA0 (250 bytes)
+F 0x6EF1 16
+D 0x6FEB 0x706D graficos_6FEB  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 15; lo leen p00:4AA0 (130 bytes)
+F 0x6FEB 16
+D 0x706D 0x7163 graficos_706D  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 0; lo leen p00:4AA0 (246 bytes)
+F 0x706D 16
+D 0x7163 0x71D9 graficos_7163  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 0; lo leen p00:4AA0 (118 bytes)
+F 0x7163 16
+D 0x71D9 0x724F graficos_71D9  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 3; lo leen p00:4AA0 (118 bytes)
+F 0x71D9 16
+D 0x724F 0x728E graficos_724F  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 3; lo leen p00:4AA0 (63 bytes)
+F 0x724F 16
+D 0x728E 0x730C graficos_728E  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 3; lo leen p00:4AA0 (126 bytes)
+F 0x728E 16
+D 0x730C 0x73ED graficos_730C  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 0; lo leen p00:4AA0 (225 bytes)
+F 0x730C 16
+D 0x73ED 0x7462 graficos_73ED  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 0; lo leen p00:4AA0 (117 bytes)
+F 0x73ED 16
+D 0x7462 0x7609 graficos_7462  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 5; lo leen p00:4AA0 (423 bytes)
+F 0x7462 16
+D 0x7609 0x7635 graficos_7609  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 1; lo leen p00:4AA0 (44 bytes)
+F 0x7609 16
+D 0x7635 0x76A9 graficos_7635  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 1; lo leen p00:4AA0 (116 bytes)
+F 0x7635 16
+D 0x76A9 0x7718 graficos_76A9  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 1; lo leen p00:4AA0 (111 bytes)
+F 0x76A9 16
+D 0x7718 0x777D graficos_7718  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 8; lo leen p00:4AA0 (101 bytes)
+F 0x7718 16
+D 0x777D 0x77B9 resto_777D  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (60 bytes)
+F 0x777D 16
+D 0x77B9 0x782D graficos_77B9  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 8; lo leen p00:4AA0 (116 bytes)
+F 0x77B9 16
+D 0x782D 0x78B0 graficos_782D  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 0; lo leen p00:4AA0 (131 bytes)
+F 0x782D 16
+D 0x78B0 0x78F2 graficos_78B0  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 0; lo leen p00:4AA0 (66 bytes)
+F 0x78B0 16
+D 0x78F2 0x7975 graficos_78F2  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 2; lo leen p00:4AA0 (131 bytes)
+F 0x78F2 16
+D 0x7975 0x79B4 graficos_7975  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 2; lo leen p00:4AA0 (63 bytes)
+F 0x7975 16
+D 0x79B4 0x7AAC graficos_79B4  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 5; lo leen p00:4AA0 (248 bytes)
+F 0x79B4 16
+D 0x7AAC 0x7B25 graficos_7AAC  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 5; lo leen p00:4AA0 (121 bytes)
+F 0x7AAC 16
+D 0x7B25 0x7BA7 graficos_7B25  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 9; lo leen p00:4AA0 (130 bytes)
+F 0x7B25 16
+D 0x7BA7 0x7BE8 graficos_7BA7  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 9; lo leen p00:4AA0 (65 bytes)
+F 0x7BA7 16
+D 0x7BE8 0x7C2A graficos_7BE8  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 1; lo leen p00:4AA0 (66 bytes)
+F 0x7BE8 16
+D 0x7C2A 0x7C67 graficos_7C2A  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 1; lo leen p00:4AA0 (61 bytes)
+F 0x7C2A 16
+D 0x7C67 0x7CE6 graficos_7C67  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 3; lo leen p00:4AA0 (127 bytes)
+F 0x7C67 16
+D 0x7CE6 0x7D27 graficos_7CE6  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 3; lo leen p00:4AA0 (65 bytes)
+F 0x7CE6 16
+D 0x7D27 0x7DA4 graficos_7D27  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 7; lo leen p00:4AA0 (125 bytes)
+F 0x7D27 16
+D 0x7DA4 0x7DE3 graficos_7DA4  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 7; lo leen p00:4AA0 (63 bytes)
+F 0x7DA4 16
+D 0x7DE3 0x7E4A graficos_7DE3  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 10; lo leen p00:4AA0 (103 bytes)
+F 0x7DE3 16
+D 0x7E4A 0x7E78 graficos_7E4A  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 10; lo leen p00:4AA0 (46 bytes)
+F 0x7E4A 16
+D 0x7E78 0x7EB5 graficos_7E78  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 10; lo leen p00:4AA0 (61 bytes)
+F 0x7E78 16
+D 0x7EB5 0x7EF4 graficos_7EB5  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 9; lo leen p00:4AA0 (63 bytes)
+F 0x7EB5 16
+D 0x7EF4 0x7F2A graficos_7EF4  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 6; lo leen p00:4AA0 (54 bytes)
+F 0x7EF4 16
+D 0x7F2A 0x7FBF graficos_7F2A  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 2; lo leen p00:4AA0 (149 bytes)
+F 0x7F2A 16
+D 0x7FBF 0x7FFA graficos_7FBF  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 2; lo leen p00:4AA0 (59 bytes)
+F 0x7FBF 16
+D 0x7FFA 0x8000 graficos_7FFA  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 10 (sigue en el banco 19, en 0x8000); lo leen p00:4AA0 (6 bytes)
+F 0x7FFA 16
+# --- fin de los bloques de bloques.py ---

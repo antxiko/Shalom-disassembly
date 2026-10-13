@@ -1,0 +1,950 @@
+# Notas del banco 07
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8010 0x8018 saltos_8010  tabla de 4 palabras del despachador (call 0x408D en 0x800D); lo leen L_40AB (8 bytes)
+F 0x8010 2
+D 0x8037 0x803F resto_8037  lo apuntan con el banco puesto p07:8028 (0x8037); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p07:8028 (8 bytes)
+F 0x8037 16
+D 0x805E 0x8062 resto_805E  lo apuntan con el banco puesto p07:804F (0x805E); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p07:804F (4 bytes)
+F 0x805E 16
+D 0x8092 0x827A resto_8092  lo apuntan con el banco puesto p07:8073 (0x8092), p07:8083 (0x8096); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p07:8073, p07:8083 (488 bytes)
+F 0x8092 16
+D 0x83B4 0x865C resto_83B4  lo apuntan con el banco puesto p07:8359 (0x83B4); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p07:8359 (680 bytes)
+F 0x83B4 16
+D 0x8762 0x876C saltos_8762  tabla de 5 palabras del despachador (call 0x408D en 0x875F); lo leen L_40AB (10 bytes)
+F 0x8762 2
+D 0x882D 0x8AD5 saltos_882D  tabla de 340 palabras del despachador (call 0x408D en 0x882A); lo leen L_40AB (680 bytes)
+F 0x882D 2
+D 0x8B36 0x8B40 resto_8B36  lo apuntan con el banco puesto p07:8B29 (0x8B36); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p07:8B29 (10 bytes)
+F 0x8B36 16
+D 0x8BC2 0x9032 actores_por_sala  568 palabras: la lista de actores de cada sala (0x8BC2 + 0xEB40 x 2); lo leen p07:82A4 (1136 bytes)
+F 0x8BC2 2
+D 0x9032 0x904C actores_9032  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE (la lista de la sala 0xB0/0xD0 cuando 0xEB5D tiene el bit 0, p07:8295); lo leen p07:82A4 (26 bytes)
+F 0x9032 5
+D 0x904C 0x9057 actores_904C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE (la lista de la sala 0xB0/0xD0 cuando 0xEB5D tiene el bit 0, p07:8295); lo leen p07:82A4 (11 bytes)
+F 0x904C 5
+D 0x9057 0x9058 actores_9057  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9057 5
+D 0x9058 0x905E actores_9058  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9058 5
+D 0x905E 0x905F actores_905E  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x905E 5
+D 0x905F 0x9065 actores_905F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x905F 5
+D 0x9065 0x906B actores_9065  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9065 5
+D 0x906B 0x9071 actores_906B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x906B 5
+D 0x9071 0x9072 actores_9071  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9071 5
+D 0x9072 0x9078 actores_9072  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9072 5
+D 0x9078 0x9079 actores_9078  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9078 5
+D 0x9079 0x907F actores_9079  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9079 5
+D 0x907F 0x9080 actores_907F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x907F 5
+D 0x9080 0x9086 actores_9080  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9080 5
+D 0x9086 0x9087 actores_9086  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9086 5
+D 0x9087 0x908D actores_9087  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9087 5
+D 0x908D 0x9098 actores_908D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x908D 5
+D 0x9098 0x9099 actores_9098  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9098 5
+D 0x9099 0x909F actores_9099  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9099 5
+D 0x909F 0x90A5 actores_909F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x909F 5
+D 0x90A5 0x90AB actores_90A5  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x90A5 5
+D 0x90AB 0x90AC actores_90AB  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x90AB 5
+D 0x90AC 0x90B2 actores_90AC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x90AC 5
+D 0x90B2 0x90B8 actores_90B2  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x90B2 5
+D 0x90B8 0x90C3 actores_90B8  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x90B8 5
+D 0x90C3 0x90C4 actores_90C3  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x90C3 5
+D 0x90C4 0x90CA actores_90C4  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x90C4 5
+D 0x90CA 0x90CB actores_90CA  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x90CA 5
+D 0x90CB 0x90D1 actores_90CB  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x90CB 5
+D 0x90D1 0x90D2 actores_90D1  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x90D1 5
+D 0x90D2 0x90D8 actores_90D2  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x90D2 5
+D 0x90D8 0x90D9 actores_90D8  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x90D8 5
+D 0x90D9 0x90DF actores_90D9  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x90D9 5
+D 0x90DF 0x90E0 actores_90DF  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x90DF 5
+D 0x90E0 0x90F5 actores_90E0  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (21 bytes)
+F 0x90E0 5
+D 0x90F5 0x90F6 actores_90F5  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x90F5 5
+D 0x90F6 0x90FC actores_90F6  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x90F6 5
+D 0x90FC 0x90FD actores_90FC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x90FC 5
+D 0x90FD 0x9103 actores_90FD  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x90FD 5
+D 0x9103 0x9104 actores_9103  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9103 5
+D 0x9104 0x910A actores_9104  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9104 5
+D 0x910A 0x910B actores_910A  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x910A 5
+D 0x910B 0x9111 actores_910B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x910B 5
+D 0x9111 0x9112 actores_9111  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9111 5
+D 0x9112 0x911D actores_9112  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9112 5
+D 0x911D 0x911E actores_911D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x911D 5
+D 0x911E 0x9124 actores_911E  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x911E 5
+D 0x9124 0x912F actores_9124  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9124 5
+D 0x912F 0x9130 actores_912F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x912F 5
+D 0x9130 0x9136 actores_9130  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9130 5
+D 0x9136 0x9137 actores_9136  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9136 5
+D 0x9137 0x9142 actores_9137  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9137 5
+D 0x9142 0x9152 actores_9142  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x9142 5
+D 0x9152 0x9153 actores_9152  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9152 5
+D 0x9153 0x9159 actores_9153  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9153 5
+D 0x9159 0x915F actores_9159  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9159 5
+D 0x915F 0x9165 actores_915F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x915F 5
+D 0x9165 0x916B actores_9165  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9165 5
+D 0x916B 0x916C actores_916B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x916B 5
+D 0x916C 0x9172 actores_916C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x916C 5
+D 0x9172 0x9173 actores_9172  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9172 5
+D 0x9173 0x9179 actores_9173  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9173 5
+D 0x9179 0x917F actores_9179  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9179 5
+D 0x917F 0x9180 actores_917F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x917F 5
+D 0x9180 0x9195 actores_9180  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (21 bytes)
+F 0x9180 5
+D 0x9195 0x919B actores_9195  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9195 5
+D 0x919B 0x919C actores_919B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x919B 5
+D 0x919C 0x91A7 actores_919C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x919C 5
+D 0x91A7 0x91A8 actores_91A7  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x91A7 5
+D 0x91A8 0x91B3 actores_91A8  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x91A8 5
+D 0x91B3 0x91B4 actores_91B3  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x91B3 5
+D 0x91B4 0x91C4 actores_91B4  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x91B4 5
+D 0x91C4 0x91CF actores_91C4  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x91C4 5
+D 0x91CF 0x91D0 actores_91CF  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x91CF 5
+D 0x91D0 0x91D6 actores_91D0  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x91D0 5
+D 0x91D6 0x91D7 actores_91D6  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x91D6 5
+D 0x91D7 0x91DD actores_91D7  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x91D7 5
+D 0x91DD 0x91DE actores_91DD  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x91DD 5
+D 0x91DE 0x91E4 actores_91DE  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x91DE 5
+D 0x91E4 0x91EA actores_91E4  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x91E4 5
+D 0x91EA 0x91EB actores_91EA  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x91EA 5
+D 0x91EB 0x91F1 actores_91EB  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x91EB 5
+D 0x91F1 0x91FC actores_91F1  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x91F1 5
+D 0x91FC 0x91FD actores_91FC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x91FC 5
+D 0x91FD 0x9203 actores_91FD  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x91FD 5
+D 0x9203 0x9204 actores_9203  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9203 5
+D 0x9204 0x920A actores_9204  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9204 5
+D 0x920A 0x9210 actores_920A  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x920A 5
+D 0x9210 0x9211 actores_9210  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9210 5
+D 0x9211 0x9217 actores_9211  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9211 5
+D 0x9217 0x9218 actores_9217  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9217 5
+D 0x9218 0x9223 actores_9218  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9218 5
+D 0x9223 0x9224 actores_9223  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9223 5
+D 0x9224 0x922A actores_9224  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9224 5
+D 0x922A 0x9230 actores_922A  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x922A 5
+D 0x9230 0x9245 actores_9230  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (21 bytes)
+F 0x9230 5
+D 0x9245 0x924B actores_9245  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9245 5
+D 0x924B 0x9251 actores_924B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x924B 5
+D 0x9251 0x9252 actores_9251  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9251 5
+D 0x9252 0x9258 actores_9252  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9252 5
+D 0x9258 0x9259 actores_9258  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9258 5
+D 0x9259 0x925F actores_9259  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9259 5
+D 0x925F 0x9260 actores_925F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x925F 5
+D 0x9260 0x9266 actores_9260  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9260 5
+D 0x9266 0x9267 actores_9266  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9266 5
+D 0x9267 0x926D actores_9267  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9267 5
+D 0x926D 0x9273 actores_926D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x926D 5
+D 0x9273 0x9279 actores_9273  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9273 5
+D 0x9279 0x9284 actores_9279  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9279 5
+D 0x9284 0x9285 actores_9284  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9284 5
+D 0x9285 0x928B actores_9285  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9285 5
+D 0x928B 0x9291 actores_928B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x928B 5
+D 0x9291 0x9297 actores_9291  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9291 5
+D 0x9297 0x92B1 actores_9297  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (26 bytes)
+F 0x9297 5
+D 0x92B1 0x92D5 actores_92B1  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (36 bytes)
+F 0x92B1 5
+D 0x92D5 0x92DB actores_92D5  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x92D5 5
+D 0x92DB 0x92E1 actores_92DB  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x92DB 5
+D 0x92E1 0x92E2 actores_92E1  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x92E1 5
+D 0x92E2 0x92FC actores_92E2  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (26 bytes)
+F 0x92E2 5
+D 0x92FC 0x92FD actores_92FC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x92FC 5
+D 0x92FD 0x9303 actores_92FD  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x92FD 5
+D 0x9303 0x9304 actores_9303  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9303 5
+D 0x9304 0x930F actores_9304  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9304 5
+D 0x930F 0x9310 actores_930F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x930F 5
+D 0x9310 0x9316 actores_9310  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9310 5
+D 0x9316 0x931C actores_9316  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9316 5
+D 0x931C 0x9322 actores_931C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x931C 5
+D 0x9322 0x9328 actores_9322  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9322 5
+D 0x9328 0x932E actores_9328  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9328 5
+D 0x932E 0x9334 actores_932E  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x932E 5
+D 0x9334 0x9335 actores_9334  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9334 5
+D 0x9335 0x9345 actores_9335  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x9335 5
+D 0x9345 0x934B actores_9345  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9345 5
+D 0x934B 0x934C actores_934B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x934B 5
+D 0x934C 0x9352 actores_934C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x934C 5
+D 0x9352 0x9358 actores_9352  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9352 5
+D 0x9358 0x935E actores_9358  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9358 5
+D 0x935E 0x9364 actores_935E  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x935E 5
+D 0x9364 0x9365 actores_9364  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9364 5
+D 0x9365 0x936B actores_9365  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9365 5
+D 0x936B 0x9371 actores_936B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x936B 5
+D 0x9371 0x9377 actores_9371  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9371 5
+D 0x9377 0x9378 actores_9377  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9377 5
+D 0x9378 0x9383 actores_9378  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9378 5
+D 0x9383 0x9384 actores_9383  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9383 5
+D 0x9384 0x938F actores_9384  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9384 5
+D 0x938F 0x9390 actores_938F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x938F 5
+D 0x9390 0x9396 actores_9390  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9390 5
+D 0x9396 0x9397 actores_9396  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9396 5
+D 0x9397 0x939D actores_9397  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9397 5
+D 0x939D 0x93A8 actores_939D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x939D 5
+D 0x93A8 0x93AE actores_93A8  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x93A8 5
+D 0x93AE 0x93AF actores_93AE  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x93AE 5
+D 0x93AF 0x93B5 actores_93AF  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x93AF 5
+D 0x93B5 0x93B6 actores_93B5  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x93B5 5
+D 0x93B6 0x93C6 actores_93B6  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x93B6 5
+D 0x93C6 0x93C7 actores_93C6  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x93C6 5
+D 0x93C7 0x93D2 actores_93C7  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x93C7 5
+D 0x93D2 0x93D8 actores_93D2  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x93D2 5
+D 0x93D8 0x93D9 actores_93D8  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x93D8 5
+D 0x93D9 0x93DF actores_93D9  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x93D9 5
+D 0x93DF 0x93E0 actores_93DF  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x93DF 5
+D 0x93E0 0x93E1 actores_93E0  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x93E0 5
+D 0x93E1 0x93EC actores_93E1  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x93E1 5
+D 0x93EC 0x93F7 actores_93EC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x93EC 5
+D 0x93F7 0x9402 actores_93F7  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x93F7 5
+D 0x9402 0x9408 actores_9402  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9402 5
+D 0x9408 0x940E actores_9408  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9408 5
+D 0x940E 0x940F actores_940E  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x940E 5
+D 0x940F 0x9415 actores_940F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x940F 5
+D 0x9415 0x941B actores_9415  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9415 5
+D 0x941B 0x941C actores_941B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x941B 5
+D 0x941C 0x942C actores_941C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x941C 5
+D 0x942C 0x942D actores_942C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x942C 5
+D 0x942D 0x9433 actores_942D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x942D 5
+D 0x9433 0x9434 actores_9433  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9433 5
+D 0x9434 0x943A actores_9434  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9434 5
+D 0x943A 0x9440 actores_943A  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x943A 5
+D 0x9440 0x9441 actores_9440  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9440 5
+D 0x9441 0x9447 actores_9441  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9441 5
+D 0x9447 0x9448 actores_9447  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9447 5
+D 0x9448 0x945D actores_9448  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (21 bytes)
+F 0x9448 5
+D 0x945D 0x945E actores_945D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x945D 5
+D 0x945E 0x9469 actores_945E  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x945E 5
+D 0x9469 0x946A actores_9469  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9469 5
+D 0x946A 0x9470 actores_946A  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x946A 5
+D 0x9470 0x9476 actores_9470  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9470 5
+D 0x9476 0x9481 actores_9476  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9476 5
+D 0x9481 0x9487 actores_9481  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9481 5
+D 0x9487 0x9488 actores_9487  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9487 5
+D 0x9488 0x948E actores_9488  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9488 5
+D 0x948E 0x948F actores_948E  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x948E 5
+D 0x948F 0x949A actores_948F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x948F 5
+D 0x949A 0x94A5 actores_949A  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x949A 5
+D 0x94A5 0x94A6 actores_94A5  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x94A5 5
+D 0x94A6 0x94AC actores_94A6  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x94A6 5
+D 0x94AC 0x94AD actores_94AC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x94AC 5
+D 0x94AD 0x94B3 actores_94AD  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x94AD 5
+D 0x94B3 0x94B4 actores_94B3  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x94B3 5
+D 0x94B4 0x94BA actores_94B4  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x94B4 5
+D 0x94BA 0x94BB actores_94BA  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x94BA 5
+D 0x94BB 0x94C1 actores_94BB  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x94BB 5
+D 0x94C1 0x94CC actores_94C1  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x94C1 5
+D 0x94CC 0x94CD actores_94CC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x94CC 5
+D 0x94CD 0x94D3 actores_94CD  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x94CD 5
+D 0x94D3 0x94D4 actores_94D3  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x94D3 5
+D 0x94D4 0x94DA actores_94D4  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x94D4 5
+D 0x94DA 0x94DB actores_94DA  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x94DA 5
+D 0x94DB 0x94E1 actores_94DB  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x94DB 5
+D 0x94E1 0x94EC actores_94E1  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x94E1 5
+D 0x94EC 0x94ED actores_94EC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x94EC 5
+D 0x94ED 0x94F3 actores_94ED  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x94ED 5
+D 0x94F3 0x94F4 actores_94F3  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x94F3 5
+D 0x94F4 0x94FA actores_94F4  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x94F4 5
+D 0x94FA 0x9500 actores_94FA  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x94FA 5
+D 0x9500 0x9501 actores_9500  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9500 5
+D 0x9501 0x9507 actores_9501  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9501 5
+D 0x9507 0x950D actores_9507  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9507 5
+D 0x950D 0x950E actores_950D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x950D 5
+D 0x950E 0x9514 actores_950E  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x950E 5
+D 0x9514 0x9515 actores_9514  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9514 5
+D 0x9515 0x951B actores_9515  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9515 5
+D 0x951B 0x9521 actores_951B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x951B 5
+D 0x9521 0x9527 actores_9521  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9521 5
+D 0x9527 0x952D actores_9527  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9527 5
+D 0x952D 0x953D actores_952D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x952D 5
+D 0x953D 0x9543 actores_953D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x953D 5
+D 0x9543 0x9549 actores_9543  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9543 5
+D 0x9549 0x954F actores_9549  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9549 5
+D 0x954F 0x955A actores_954F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x954F 5
+D 0x955A 0x955B actores_955A  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x955A 5
+D 0x955B 0x9561 actores_955B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x955B 5
+D 0x9561 0x9562 actores_9561  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9561 5
+D 0x9562 0x9568 actores_9562  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9562 5
+D 0x9568 0x956E actores_9568  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9568 5
+D 0x956E 0x9574 actores_956E  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x956E 5
+D 0x9574 0x9575 actores_9574  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9574 5
+D 0x9575 0x957B actores_9575  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9575 5
+D 0x957B 0x957C actores_957B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x957B 5
+D 0x957C 0x9582 actores_957C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x957C 5
+D 0x9582 0x958D actores_9582  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9582 5
+D 0x958D 0x9593 actores_958D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x958D 5
+D 0x9593 0x9594 actores_9593  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9593 5
+D 0x9594 0x959A actores_9594  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9594 5
+D 0x959A 0x95AA actores_959A  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x959A 5
+D 0x95AA 0x95B5 actores_95AA  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x95AA 5
+D 0x95B5 0x95B6 actores_95B5  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x95B5 5
+D 0x95B6 0x95C6 actores_95B6  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x95B6 5
+D 0x95C6 0x95CC actores_95C6  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x95C6 5
+D 0x95CC 0x95D2 actores_95CC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x95CC 5
+D 0x95D2 0x95D8 actores_95D2  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x95D2 5
+D 0x95D8 0x95DE actores_95D8  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x95D8 5
+D 0x95DE 0x95E4 actores_95DE  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x95DE 5
+D 0x95E4 0x95E5 actores_95E4  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x95E4 5
+D 0x95E5 0x95EB actores_95E5  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x95E5 5
+D 0x95EB 0x95EC actores_95EB  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x95EB 5
+D 0x95EC 0x95FC actores_95EC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x95EC 5
+D 0x95FC 0x9602 actores_95FC  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x95FC 5
+D 0x9602 0x960D actores_9602  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9602 5
+D 0x960D 0x9613 actores_960D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x960D 5
+D 0x9613 0x9614 actores_9613  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9613 5
+D 0x9614 0x961A actores_9614  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9614 5
+D 0x961A 0x961B actores_961A  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x961A 5
+D 0x961B 0x9621 actores_961B  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x961B 5
+D 0x9621 0x9622 actores_9621  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9621 5
+D 0x9622 0x9632 actores_9622  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x9622 5
+D 0x9632 0x9642 actores_9632  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x9632 5
+D 0x9642 0x9652 actores_9642  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x9642 5
+D 0x9652 0x965D actores_9652  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x9652 5
+D 0x965D 0x966D actores_965D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x965D 5
+D 0x966D 0x9682 actores_966D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (21 bytes)
+F 0x966D 5
+D 0x9682 0x9688 actores_9682  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9682 5
+D 0x9688 0x9689 actores_9688  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9688 5
+D 0x9689 0x968F actores_9689  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9689 5
+D 0x968F 0x9690 actores_968F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x968F 5
+D 0x9690 0x9696 actores_9690  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9690 5
+D 0x9696 0x969C actores_9696  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9696 5
+D 0x969C 0x969D actores_969C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x969C 5
+D 0x969D 0x96A3 actores_969D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x969D 5
+D 0x96A3 0x96A4 actores_96A3  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x96A3 5
+D 0x96A4 0x96B4 actores_96A4  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x96A4 5
+D 0x96B4 0x96BA actores_96B4  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x96B4 5
+D 0x96BA 0x96BB actores_96BA  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x96BA 5
+D 0x96BB 0x96C1 actores_96BB  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x96BB 5
+D 0x96C1 0x96C2 actores_96C1  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x96C1 5
+D 0x96C2 0x96C8 actores_96C2  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x96C2 5
+D 0x96C8 0x96D3 actores_96C8  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x96C8 5
+D 0x96D3 0x96E8 actores_96D3  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (21 bytes)
+F 0x96D3 5
+D 0x96E8 0x96FD actores_96E8  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (21 bytes)
+F 0x96E8 5
+D 0x96FD 0x9708 actores_96FD  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (11 bytes)
+F 0x96FD 5
+D 0x9708 0x9718 actores_9708  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (16 bytes)
+F 0x9708 5
+D 0x9718 0x9719 actores_9718  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9718 5
+D 0x9719 0x971F actores_9719  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9719 5
+D 0x971F 0x9720 actores_971F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x971F 5
+D 0x9720 0x9726 actores_9720  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9720 5
+D 0x9726 0x972C actores_9726  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9726 5
+D 0x972C 0x9755 actores_972C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (41 bytes)
+F 0x972C 5
+D 0x9755 0x9756 actores_9755  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9755 5
+D 0x9756 0x975C actores_9756  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9756 5
+D 0x975C 0x9762 actores_975C  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x975C 5
+D 0x9762 0x9763 actores_9762  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9762 5
+D 0x9763 0x9769 actores_9763  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9763 5
+D 0x9769 0x976A actores_9769  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9769 5
+D 0x976A 0x9770 actores_976A  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x976A 5
+D 0x9770 0x9771 actores_9770  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x9770 5
+D 0x9771 0x9777 actores_9771  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9771 5
+D 0x9777 0x977D actores_9777  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9777 5
+D 0x977D 0x9783 actores_977D  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x977D 5
+D 0x9783 0x9789 actores_9783  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9783 5
+D 0x9789 0x978F actores_9789  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (6 bytes)
+F 0x9789 5
+D 0x978F 0x97AE actores_978F  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (31 bytes)
+F 0x978F 5
+D 0x97AE 0x97CD actores_97AE  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (31 bytes)
+F 0x97AE 5
+D 0x97CD 0x97E7 actores_97CD  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (26 bytes)
+F 0x97CD 5
+D 0x97E7 0x97E8 actores_97E7  [n] y n actores de 5 bytes [c][b, bit 7 aparte][e][d][l] que p07:82B6 pasa a p07:82FE; lo leen p07:82A4 (1 bytes)
+F 0x97E7 5
+D 0x97E8 0x9838 cuadros_de_actor  40 palabras: el cuadro de cada actor segun (ix+8) (L_43A4); lo leen p07:8673 (80 bytes)
+F 0x97E8 2
+D 0x9838 0x988E cuadros  los cuadros de 0x97E8: dos sprites (p07:86C2, p07:86D5) o cuatro fichas (p07:8715-8733); dos o cuatro bytes cada uno, el ultimo acaba donde empieza 0x988E; lo leen p07:8673 (86 bytes)
+F 0x9838 2
+D 0x988E 0x9B3A opciones_de_personaje  342 palabras: lo que ofrece cada personaje (0x988E + (0xE363 - 1) x 2); lo leen p00:5401 (684 bytes)
+F 0x988E 2
+D 0x9B3A 0x9B3C opciones_9B3A  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (2 bytes)
+F 0x9B3A 16
+D 0x9B3C 0x9B40 opciones_9B3C  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (4 bytes)
+F 0x9B3C 16
+D 0x9B40 0x9B4A opciones_9B40  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9B40 16
+D 0x9B4A 0x9B56 opciones_9B4A  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9B4A 16
+D 0x9B56 0x9B66 subopciones_9B56  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (16 bytes)
+F 0x9B56 16
+D 0x9B66 0x9B71 opciones_9B66  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (11 bytes)
+F 0x9B66 16
+D 0x9B71 0x9B77 opciones_9B71  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (6 bytes)
+F 0x9B71 16
+D 0x9B77 0x9B81 opciones_9B77  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9B77 16
+D 0x9B81 0x9B85 subopciones_9B81  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9B81 16
+D 0x9B85 0x9B8F opciones_9B85  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9B85 16
+D 0x9B8F 0x9B99 opciones_9B8F  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9B8F 16
+D 0x9B99 0x9BA3 opciones_9B99  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9B99 16
+D 0x9BA3 0x9BAD opciones_9BA3  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9BA3 16
+D 0x9BAD 0x9BB7 opciones_9BAD  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9BAD 16
+D 0x9BB7 0x9BC1 opciones_9BB7  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9BB7 16
+D 0x9BC1 0x9BCB opciones_9BC1  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9BC1 16
+D 0x9BCB 0x9BDF opciones_9BCB  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (20 bytes)
+F 0x9BCB 16
+D 0x9BDF 0x9BE3 subopciones_9BDF  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9BDF 16
+D 0x9BE3 0x9BE7 subopciones_9BE3  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9BE3 16
+D 0x9BE7 0x9BEB subopciones_9BE7  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9BE7 16
+D 0x9BEB 0x9BF5 opciones_9BEB  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9BEB 16
+D 0x9BF5 0x9BF9 subopciones_9BF5  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9BF5 16
+D 0x9BF9 0x9C0B opciones_9BF9  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (18 bytes)
+F 0x9BF9 16
+D 0x9C0B 0x9C0F subopciones_9C0B  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9C0B 16
+D 0x9C0F 0x9C15 opciones_9C0F  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (6 bytes)
+F 0x9C0F 16
+D 0x9C15 0x9C19 subopciones_9C15  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9C15 16
+D 0x9C19 0x9C25 opciones_9C19  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9C19 16
+D 0x9C25 0x9C2A subopciones_9C25  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (5 bytes)
+F 0x9C25 16
+D 0x9C2A 0x9C32 opciones_9C2A  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (8 bytes)
+F 0x9C2A 16
+D 0x9C32 0x9C36 subopciones_9C32  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9C32 16
+D 0x9C36 0x9C44 opciones_9C36  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (14 bytes)
+F 0x9C36 16
+D 0x9C44 0x9C4A subopciones_9C44  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (6 bytes)
+F 0x9C44 16
+D 0x9C4A 0x9C52 opciones_9C4A  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (8 bytes)
+F 0x9C4A 16
+D 0x9C52 0x9C56 subopciones_9C52  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9C52 16
+D 0x9C56 0x9C5A subopciones_9C56  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9C56 16
+D 0x9C5A 0x9C62 opciones_9C5A  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (8 bytes)
+F 0x9C5A 16
+D 0x9C62 0x9C66 subopciones_9C62  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9C62 16
+D 0x9C66 0x9C72 opciones_9C66  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9C66 16
+D 0x9C72 0x9C76 subopciones_9C72  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9C72 16
+D 0x9C76 0x9C79 subopciones_9C76  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9C76 16
+D 0x9C79 0x9C83 opciones_9C79  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9C79 16
+D 0x9C83 0x9C93 opciones_9C83  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (16 bytes)
+F 0x9C83 16
+D 0x9C93 0x9C9F opciones_9C93  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9C93 16
+D 0x9C9F 0x9CA4 opciones_9C9F  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (5 bytes)
+F 0x9C9F 16
+D 0x9CA4 0x9CB4 opciones_9CA4  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (16 bytes)
+F 0x9CA4 16
+D 0x9CB4 0x9CB8 subopciones_9CB4  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9CB4 16
+D 0x9CB8 0x9CBC subopciones_9CB8  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9CB8 16
+D 0x9CBC 0x9CCE opciones_9CBC  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (18 bytes)
+F 0x9CBC 16
+D 0x9CCE 0x9CE0 opciones_9CCE  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (18 bytes)
+F 0x9CCE 16
+D 0x9CE0 0x9CE3 subopciones_9CE0  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9CE0 16
+D 0x9CE3 0x9CF5 opciones_9CE3  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (18 bytes)
+F 0x9CE3 16
+D 0x9CF5 0x9CFA subopciones_9CF5  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (5 bytes)
+F 0x9CF5 16
+D 0x9CFA 0x9D05 opciones_9CFA  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (11 bytes)
+F 0x9CFA 16
+D 0x9D05 0x9D11 opciones_9D05  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9D05 16
+D 0x9D11 0x9D1C opciones_9D11  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (11 bytes)
+F 0x9D11 16
+D 0x9D1C 0x9D26 opciones_9D1C  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9D1C 16
+D 0x9D26 0x9D30 opciones_9D26  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9D26 16
+D 0x9D30 0x9D3A opciones_9D30  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9D30 16
+D 0x9D3A 0x9D45 opciones_9D3A  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (11 bytes)
+F 0x9D3A 16
+D 0x9D45 0x9D4B opciones_9D45  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (6 bytes)
+F 0x9D45 16
+D 0x9D4B 0x9D4E subopciones_9D4B  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9D4B 16
+D 0x9D4E 0x9D5A opciones_9D4E  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9D4E 16
+D 0x9D5A 0x9D67 opciones_9D5A  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (13 bytes)
+F 0x9D5A 16
+D 0x9D67 0x9D76 opciones_9D67  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (15 bytes)
+F 0x9D67 16
+D 0x9D76 0x9D80 opciones_9D76  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9D76 16
+D 0x9D80 0x9D8C opciones_9D80  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9D80 16
+D 0x9D8C 0x9D8F subopciones_9D8C  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9D8C 16
+D 0x9D8F 0x9D93 opciones_9D8F  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (4 bytes)
+F 0x9D8F 16
+D 0x9D93 0x9D97 subopciones_9D93  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9D93 16
+D 0x9D97 0x9DA7 opciones_9D97  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (16 bytes)
+F 0x9D97 16
+D 0x9DA7 0x9DAD subopciones_9DA7  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (6 bytes)
+F 0x9DA7 16
+D 0x9DAD 0x9DB1 opciones_9DAD  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (4 bytes)
+F 0x9DAD 16
+D 0x9DB1 0x9DB5 subopciones_9DB1  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9DB1 16
+D 0x9DB5 0x9DC1 opciones_9DB5  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9DB5 16
+D 0x9DC1 0x9DCB opciones_9DC1  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9DC1 16
+D 0x9DCB 0x9DCF subopciones_9DCB  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9DCB 16
+D 0x9DCF 0x9DDC opciones_9DCF  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (13 bytes)
+F 0x9DCF 16
+D 0x9DDC 0x9DE6 opciones_9DDC  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9DDC 16
+D 0x9DE6 0x9DE9 subopciones_9DE6  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9DE6 16
+D 0x9DE9 0x9DF9 opciones_9DE9  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (16 bytes)
+F 0x9DE9 16
+D 0x9DF9 0x9DFC subopciones_9DF9  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9DF9 16
+D 0x9DFC 0x9E08 opciones_9DFC  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9DFC 16
+D 0x9E08 0x9E0B subopciones_9E08  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9E08 16
+D 0x9E0B 0x9E15 opciones_9E0B  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9E0B 16
+D 0x9E15 0x9E19 subopciones_9E15  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9E15 16
+D 0x9E19 0x9E23 opciones_9E19  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9E19 16
+D 0x9E23 0x9E27 subopciones_9E23  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9E23 16
+D 0x9E27 0x9E35 opciones_9E27  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (14 bytes)
+F 0x9E27 16
+D 0x9E35 0x9E39 subopciones_9E35  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9E35 16
+D 0x9E39 0x9E3D subopciones_9E39  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9E39 16
+D 0x9E3D 0x9E47 opciones_9E3D  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9E3D 16
+D 0x9E47 0x9E4B subopciones_9E47  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9E47 16
+D 0x9E4B 0x9E55 opciones_9E4B  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9E4B 16
+D 0x9E55 0x9E59 subopciones_9E55  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9E55 16
+D 0x9E59 0x9E69 opciones_9E59  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (16 bytes)
+F 0x9E59 16
+D 0x9E69 0x9E6C subopciones_9E69  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9E69 16
+D 0x9E6C 0x9E78 opciones_9E6C  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9E6C 16
+D 0x9E78 0x9E7C subopciones_9E78  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9E78 16
+D 0x9E7C 0x9E86 opciones_9E7C  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9E7C 16
+D 0x9E86 0x9E8A subopciones_9E86  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9E86 16
+D 0x9E8A 0x9E94 opciones_9E8A  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9E8A 16
+D 0x9E94 0x9E98 subopciones_9E94  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9E94 16
+D 0x9E98 0x9EA4 opciones_9E98  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9E98 16
+D 0x9EA4 0x9EA8 subopciones_9EA4  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9EA4 16
+D 0x9EA8 0x9EB0 opciones_9EA8  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (8 bytes)
+F 0x9EA8 16
+D 0x9EB0 0x9EBC opciones_9EB0  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9EB0 16
+D 0x9EBC 0x9EC1 subopciones_9EBC  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (5 bytes)
+F 0x9EBC 16
+D 0x9EC1 0x9EC9 opciones_9EC1  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (8 bytes)
+F 0x9EC1 16
+D 0x9EC9 0x9ECF subopciones_9EC9  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (6 bytes)
+F 0x9EC9 16
+D 0x9ECF 0x9EDB opciones_9ECF  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9ECF 16
+D 0x9EDB 0x9EDF subopciones_9EDB  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9EDB 16
+D 0x9EDF 0x9EE2 subopciones_9EDF  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9EDF 16
+D 0x9EE2 0x9EF0 opciones_9EE2  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (14 bytes)
+F 0x9EE2 16
+D 0x9EF0 0x9EF4 subopciones_9EF0  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9EF0 16
+D 0x9EF4 0x9EFA subopciones_9EF4  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (6 bytes)
+F 0x9EF4 16
+D 0x9EFA 0x9F06 opciones_9EFA  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9EFA 16
+D 0x9F06 0x9F0A subopciones_9F06  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9F06 16
+D 0x9F0A 0x9F0E subopciones_9F0A  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9F0A 16
+D 0x9F0E 0x9F18 opciones_9F0E  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (10 bytes)
+F 0x9F0E 16
+D 0x9F18 0x9F1C subopciones_9F18  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9F18 16
+D 0x9F1C 0x9F24 opciones_9F1C  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (8 bytes)
+F 0x9F1C 16
+D 0x9F24 0x9F30 opciones_9F24  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9F24 16
+D 0x9F30 0x9F34 subopciones_9F30  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9F30 16
+D 0x9F34 0x9F40 opciones_9F34  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9F34 16
+D 0x9F40 0x9F43 subopciones_9F40  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9F40 16
+D 0x9F43 0x9F4F opciones_9F43  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9F43 16
+D 0x9F4F 0x9F52 subopciones_9F4F  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9F4F 16
+D 0x9F52 0x9F5E opciones_9F52  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9F52 16
+D 0x9F5E 0x9F61 subopciones_9F5E  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (3 bytes)
+F 0x9F5E 16
+D 0x9F61 0x9F6D opciones_9F61  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9F61 16
+D 0x9F6D 0x9F73 subopciones_9F6D  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (6 bytes)
+F 0x9F6D 16
+D 0x9F73 0x9F7F opciones_9F73  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9F73 16
+D 0x9F7F 0x9F8D opciones_9F7F  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (14 bytes)
+F 0x9F7F 16
+D 0x9F8D 0x9F9D opciones_9F8D  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (16 bytes)
+F 0x9F8D 16
+D 0x9F9D 0x9FA1 subopciones_9F9D  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9F9D 16
+D 0x9FA1 0x9FB1 opciones_9FA1  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (16 bytes)
+F 0x9FA1 16
+D 0x9FB1 0x9FB5 subopciones_9FB1  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9FB1 16
+D 0x9FB5 0x9FBB subopciones_9FB5  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (6 bytes)
+F 0x9FB5 16
+D 0x9FBB 0x9FBF subopciones_9FBB  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9FBB 16
+D 0x9FBF 0x9FCB opciones_9FBF  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9FBF 16
+D 0x9FCB 0x9FCF subopciones_9FCB  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9FCB 16
+D 0x9FCF 0x9FD3 subopciones_9FCF  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (4 bytes)
+F 0x9FCF 16
+D 0x9FD3 0x9FDF opciones_9FD3  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (12 bytes)
+F 0x9FD3 16
+D 0x9FDF 0x9FE4 subopciones_9FDF  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (5 bytes)
+F 0x9FDF 16
+D 0x9FE4 0x9FF4 opciones_9FE4  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E); lo leen p00:5401 (16 bytes)
+F 0x9FE4 16
+D 0x9FF4 0x9FF9 subopciones_9FF4  [0xE8A3][n] y la lista que recorren p00:5567 y p00:5574; la apunta un registro de 0x988E y acaba donde empieza el siguiente; lo leen p00:5401 (5 bytes)
+F 0x9FF4 16
+D 0x9FF9 0xA000 opciones_9FF9  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E) (sigue en el banco 8, en 0xA000); lo leen p00:5401 (7 bytes)
+F 0x9FF9 16
+# --- fin de los bloques de bloques.py ---

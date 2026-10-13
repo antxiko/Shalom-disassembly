@@ -1,0 +1,332 @@
+# Notas del banco 04
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x6057 0x605D dibujo_6057  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p04:6051 (6 bytes)
+F 0x6057 4
+D 0x605D 0x606C vram_605D  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p04:6241 (15 bytes)
+F 0x605D 16
+D 0x606C 0x6090 vram_606C  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p04:6231 (36 bytes)
+F 0x606C 16
+D 0x60B5 0x60C9 resto_60B5  lo apuntan con el banco puesto p04:6098 (0x60B5); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:6098 (20 bytes)
+F 0x60B5 16
+D 0x60C9 0x622B graficos_60C9  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p04:60AF (354 bytes)
+F 0x60C9 16
+D 0x62C3 0x631E resto_62C3  lo apuntan con el banco puesto p04:62B1 (0x62C3); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:62B1 (91 bytes)
+F 0x62C3 16
+D 0x633D 0x6432 graficos_633D  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p04:6322 (245 bytes)
+F 0x633D 16
+D 0x6432 0x6443 graficos_6432  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p04:6328 (17 bytes)
+F 0x6432 16
+D 0x6443 0x6487 resto_6443  lo apuntan con el banco puesto p04:632B (0x6443), p04:6337 (0x6447); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:632B, p04:6337 (68 bytes)
+F 0x6443 16
+D 0x65B8 0x65C4 pantallas_a_ram  6 palabras: 6 RLE que p04:659D descomprime a 0xED00 (p04:65D4, el formato de los graficos); lo leen p04:659D (12 bytes)
+F 0x65B8 2
+D 0x65C4 0x65D0 direcciones_vram  6 palabras: 6 direcciones de VRAM (0x0A00-0x0D48) que da p04:65AE; lo leen p04:65AE (12 bytes)
+F 0x65C4 2
+D 0x6683 0x668B resto_6683  lo apuntan con el banco puesto p04:665A (0x6683); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:665A (8 bytes)
+F 0x6683 16
+D 0x6699 0x6703 saltos_6699  tabla de 53 palabras del despachador (call 0x408D en 0x6696); lo leen L_40AB (106 bytes)
+F 0x6699 2
+D 0x678E 0x6792 resto_678E  lo apuntan con el banco puesto p04:6782 (0x678E); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:6782 (4 bytes)
+F 0x678E 16
+D 0x6873 0x688B resto_6873  lo apuntan con el banco puesto p04:681F (0x6873), p04:681A (0x687B), p04:6815 (0x6883); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:681F, p04:681A, p04:6815 (24 bytes)
+F 0x6873 16
+D 0x6907 0x693B resto_6907  lo apuntan con el banco puesto p04:68B8 (0x6907); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:68B8 (52 bytes)
+F 0x6907 16
+D 0x69A7 0x6A15 resto_69A7  lo apuntan con el banco puesto p04:6996 (0x69A7), p04:6A5B (0x69A7), p04:6A61 (0x69BB), p04:6A85 (0x69C7), p04:6AAC (0x69C7), p04:6AB2 (0x69DF); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:6996, p04:6A5B, p04:6A61, p04:6A85, p04:6AAC, p04:6AB2 (110 bytes)
+F 0x69A7 16
+D 0x6A39 0x6A41 resto_6A39  lo apuntan con el banco puesto p04:6A25 (0x6A39); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:6A25 (8 bytes)
+F 0x6A39 16
+D 0x6CA7 0x6CBF resto_6CA7  lo apuntan con el banco puesto p04:6D11 (0x6CA7); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:6D11 (24 bytes)
+F 0x6CA7 16
+D 0x6D51 0x6D55 resto_6D51  lo apuntan con el banco puesto p04:6D2E (0x6D51); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:6D2E (4 bytes)
+F 0x6D51 16
+D 0x6E09 0x6E13 saltos_6E09  tabla de 5 palabras del despachador (call 0x408D en 0x6E06); lo leen L_40AB (10 bytes)
+F 0x6E09 2
+D 0x6EDC 0x6EE4 resto_6EDC  lo apuntan con el banco puesto p04:6EA2 (0x6EDC); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:6EA2 (8 bytes)
+F 0x6EDC 16
+D 0x6F1E 0x6F26 resto_6F1E  lo apuntan con el banco puesto p04:6F0E (0x6F1E); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p04:6F0E (8 bytes)
+F 0x6F1E 16
+D 0x6F39 0x76E9 fuente  la fuente: 246 caracteres de 8 x 8 (1 bit por punto) que p04:64BB copia con LDIRVM (0x7B0 bytes) a los patrones de la VRAM 0x2000, 0x2800 y 0x3000; p06:AEDA saca uno a uno (0x6F39 + caracter x 8); lo leen p04:64BB (1968 bytes)
+F 0x6F39 8
+D 0x76E9 0x7761 fuente_extra  15 caracteres mas que p04:64AF copia (0x78 bytes) a la VRAM 0x2808; lo leen p04:64AF (120 bytes)
+F 0x76E9 8
+D 0x7761 0x78C3 graficos_7761  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p04:6530 (354 bytes)
+F 0x7761 16
+D 0x78C3 0x78E0 rle_78C3  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: SIN LECTOR A LA VISTA: una RLE como las de 0x65B8 que ninguna tabla apunta; lo leen nadie (29 bytes)
+F 0x78C3 16
+D 0x78E0 0x78E5 rle_78E0  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: a 0xED00 (p04:65D4), de la tabla 0x65B8; lo leen p04:659D (5 bytes)
+F 0x78E0 16
+D 0x78E5 0x78EA rle_78E5  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: a 0xED00 (p04:65D4), de la tabla 0x65B8; lo leen p04:659D (5 bytes)
+F 0x78E5 16
+D 0x78EA 0x78F1 rle_78EA  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: a 0xED00 (p04:65D4), de la tabla 0x65B8; lo leen p04:659D (7 bytes)
+F 0x78EA 16
+D 0x78F1 0x78F8 rle_78F1  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: a 0xED00 (p04:65D4), de la tabla 0x65B8; lo leen p04:659D (7 bytes)
+F 0x78F1 16
+D 0x78F8 0x78FD rle_78F8  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: a 0xED00 (p04:65D4), de la tabla 0x65B8; lo leen p04:659D (5 bytes)
+F 0x78F8 16
+D 0x78FD 0x7902 rle_78FD  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: a 0xED00 (p04:65D4), de la tabla 0x65B8; lo leen p04:659D (5 bytes)
+F 0x78FD 16
+D 0x7902 0x795A listas_de_objetos  44 palabras: una lista de objetos por numero (L_43A4 con A); lo leen p00:5694 (88 bytes)
+F 0x7902 2
+D 0x795A 0x795E objetos_795A  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x795A 16
+D 0x795E 0x7962 objetos_795E  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x795E 16
+D 0x7962 0x7967 objetos_7962  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (5 bytes)
+F 0x7962 16
+D 0x7967 0x7971 objetos_7967  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (10 bytes)
+F 0x7967 16
+D 0x7971 0x7975 objetos_7971  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x7971 16
+D 0x7975 0x7979 objetos_7975  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x7975 16
+D 0x7979 0x797D objetos_7979  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x7979 16
+D 0x797D 0x7980 objetos_797D  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x797D 16
+D 0x7980 0x7986 objetos_7980  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (6 bytes)
+F 0x7980 16
+D 0x7986 0x798B objetos_7986  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (5 bytes)
+F 0x7986 16
+D 0x798B 0x798F objetos_798B  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x798B 16
+D 0x798F 0x7993 objetos_798F  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x798F 16
+D 0x7993 0x7999 objetos_7993  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (6 bytes)
+F 0x7993 16
+D 0x7999 0x799C objetos_7999  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x7999 16
+D 0x799C 0x799F objetos_799C  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x799C 16
+D 0x799F 0x79A4 objetos_799F  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (5 bytes)
+F 0x799F 16
+D 0x79A4 0x79AA objetos_79A4  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (6 bytes)
+F 0x79A4 16
+D 0x79AA 0x79AE objetos_79AA  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x79AA 16
+D 0x79AE 0x79B1 objetos_79AE  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x79AE 16
+D 0x79B1 0x79B7 objetos_79B1  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (6 bytes)
+F 0x79B1 16
+D 0x79B7 0x79BA objetos_79B7  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x79B7 16
+D 0x79BA 0x79BE objetos_79BA  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x79BA 16
+D 0x79BE 0x79C3 objetos_79BE  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (5 bytes)
+F 0x79BE 16
+D 0x79C3 0x79C7 objetos_79C3  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x79C3 16
+D 0x79C7 0x79CD objetos_79C7  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (6 bytes)
+F 0x79C7 16
+D 0x79CD 0x79D1 objetos_79CD  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x79CD 16
+D 0x79D1 0x79D6 objetos_79D1  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (5 bytes)
+F 0x79D1 16
+D 0x79D6 0x79D9 objetos_79D6  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x79D6 16
+D 0x79D9 0x79DD objetos_79D9  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x79D9 16
+D 0x79DD 0x79E1 objetos_79DD  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x79DD 16
+D 0x79E1 0x79E7 objetos_79E1  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (6 bytes)
+F 0x79E1 16
+D 0x79E7 0x79EC objetos_79E7  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (5 bytes)
+F 0x79E7 16
+D 0x79EC 0x79F2 objetos_79EC  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (6 bytes)
+F 0x79EC 16
+D 0x79F2 0x79F6 objetos_79F2  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (4 bytes)
+F 0x79F2 16
+D 0x79F6 0x79F9 objetos_79F6  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x79F6 16
+D 0x79F9 0x79FC objetos_79F9  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x79F9 16
+D 0x79FC 0x7A01 objetos_79FC  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (5 bytes)
+F 0x79FC 16
+D 0x7A01 0x7A06 objetos_7A01  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (5 bytes)
+F 0x7A01 16
+D 0x7A06 0x7A09 objetos_7A06  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x7A06 16
+D 0x7A09 0x7A0C objetos_7A09  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x7A09 16
+D 0x7A0C 0x7A0F objetos_7A0C  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x7A0C 16
+D 0x7A0F 0x7A12 objetos_7A0F  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x7A0F 16
+D 0x7A12 0x7A15 objetos_7A12  [0xE8A1] y numeros de objeto hasta 0xFF, que p00:56A6 copia a 0xE8B8; lo leen p00:5694 (3 bytes)
+F 0x7A12 16
+D 0x7A15 0x7AD1 nombres_de_objeto  94 palabras: el nombre de cada objeto (0x7A15 + objeto x 2); lo leen p00:5700 (188 bytes)
+F 0x7A15 2
+D 0x7AD1 0x7AD6 nombre_7AD1  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7AD1 16
+D 0x7AD6 0x7ADB nombre_7AD6  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7AD6 16
+D 0x7ADB 0x7ADF nombre_7ADB  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7ADB 16
+D 0x7ADF 0x7AE4 nombre_7ADF  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7ADF 16
+D 0x7AE4 0x7AEA nombre_7AE4  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7AE4 16
+D 0x7AEA 0x7AEF nombre_7AEA  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7AEA 16
+D 0x7AEF 0x7AF2 nombre_7AEF  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (3 bytes)
+F 0x7AEF 16
+D 0x7AF2 0x7AF7 nombre_7AF2  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7AF2 16
+D 0x7AF7 0x7AFE nombre_7AF7  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (7 bytes)
+F 0x7AF7 16
+D 0x7AFE 0x7B04 nombre_7AFE  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7AFE 16
+D 0x7B04 0x7B08 nombre_7B04  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7B04 16
+D 0x7B08 0x7B0D nombre_7B08  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7B08 16
+D 0x7B0D 0x7B11 nombre_7B0D  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7B0D 16
+D 0x7B11 0x7B16 nombre_7B11  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7B11 16
+D 0x7B16 0x7B1C nombre_7B16  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7B16 16
+D 0x7B1C 0x7B22 nombre_7B1C  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7B1C 16
+D 0x7B22 0x7B28 nombre_7B22  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7B22 16
+D 0x7B28 0x7B2B nombre_7B28  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (3 bytes)
+F 0x7B28 16
+D 0x7B2B 0x7B30 nombre_7B2B  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7B2B 16
+D 0x7B30 0x7B33 nombre_7B30  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (3 bytes)
+F 0x7B30 16
+D 0x7B33 0x7B36 nombre_7B33  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (3 bytes)
+F 0x7B33 16
+D 0x7B36 0x7B3A nombre_7B36  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7B36 16
+D 0x7B3A 0x7B3E nombre_7B3A  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7B3A 16
+D 0x7B3E 0x7B43 nombre_7B3E  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7B3E 16
+D 0x7B43 0x7B46 nombre_7B43  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (3 bytes)
+F 0x7B43 16
+D 0x7B46 0x7B4A nombre_7B46  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7B46 16
+D 0x7B4A 0x7B50 nombre_7B4A  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7B4A 16
+D 0x7B50 0x7B56 nombre_7B50  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7B50 16
+D 0x7B56 0x7B5B nombre_7B56  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7B56 16
+D 0x7B5B 0x7B61 nombre_7B5B  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7B5B 16
+D 0x7B61 0x7B67 nombre_7B61  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7B61 16
+D 0x7B67 0x7B6E nombre_7B67  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (7 bytes)
+F 0x7B67 16
+D 0x7B6E 0x7B75 nombre_7B6E  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (7 bytes)
+F 0x7B6E 16
+D 0x7B75 0x7B7A nombre_7B75  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7B75 16
+D 0x7B7A 0x7B7D nombre_7B7A  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (3 bytes)
+F 0x7B7A 16
+D 0x7B7D 0x7B80 nombre_7B7D  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (3 bytes)
+F 0x7B7D 16
+D 0x7B80 0x7B84 nombre_7B80  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7B80 16
+D 0x7B84 0x7B88 nombre_7B84  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7B84 16
+D 0x7B88 0x7B8B nombre_7B88  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (3 bytes)
+F 0x7B88 16
+D 0x7B8B 0x7B91 nombre_7B8B  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7B8B 16
+D 0x7B91 0x7B97 nombre_7B91  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7B91 16
+D 0x7B97 0x7B9C nombre_7B97  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7B97 16
+D 0x7B9C 0x7BA2 nombre_7B9C  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7B9C 16
+D 0x7BA2 0x7BA9 nombre_7BA2  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (7 bytes)
+F 0x7BA2 16
+D 0x7BA9 0x7BAE nombre_7BA9  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7BA9 16
+D 0x7BAE 0x7BB3 nombre_7BAE  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7BAE 16
+D 0x7BB3 0x7BBA nombre_7BB3  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (7 bytes)
+F 0x7BB3 16
+D 0x7BBA 0x7BC0 nombre_7BBA  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7BBA 16
+D 0x7BC0 0x7BC6 nombre_7BC0  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7BC0 16
+D 0x7BC6 0x7BCA nombre_7BC6  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7BC6 16
+D 0x7BCA 0x7BD1 nombre_7BCA  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (7 bytes)
+F 0x7BCA 16
+D 0x7BD1 0x7BD7 nombre_7BD1  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7BD1 16
+D 0x7BD7 0x7BDD nombre_7BD7  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7BD7 16
+D 0x7BDD 0x7BE1 nombre_7BDD  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7BDD 16
+D 0x7BE1 0x7BE6 nombre_7BE1  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7BE1 16
+D 0x7BE6 0x7BEB nombre_7BE6  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7BE6 16
+D 0x7BEB 0x7BF1 nombre_7BEB  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7BEB 16
+D 0x7BF1 0x7BF6 nombre_7BF1  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7BF1 16
+D 0x7BF6 0x7BFA nombre_7BF6  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7BF6 16
+D 0x7BFA 0x7BFE nombre_7BFA  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7BFA 16
+D 0x7BFE 0x7C02 nombre_7BFE  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7BFE 16
+D 0x7C02 0x7C07 nombre_7C02  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7C02 16
+D 0x7C07 0x7C0C nombre_7C07  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7C07 16
+D 0x7C0C 0x7C11 nombre_7C0C  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7C0C 16
+D 0x7C11 0x7C16 nombre_7C11  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7C11 16
+D 0x7C16 0x7C1C nombre_7C16  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7C16 16
+D 0x7C1C 0x7C21 nombre_7C1C  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7C1C 16
+D 0x7C21 0x7C26 nombre_7C21  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7C21 16
+D 0x7C26 0x7C2B nombre_7C26  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7C26 16
+D 0x7C2B 0x7C30 nombre_7C2B  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7C2B 16
+D 0x7C30 0x7C36 nombre_7C30  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7C30 16
+D 0x7C36 0x7C3C nombre_7C36  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7C36 16
+D 0x7C3C 0x7C41 nombre_7C3C  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7C3C 16
+D 0x7C41 0x7C44 nombre_7C41  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (3 bytes)
+F 0x7C41 16
+D 0x7C44 0x7C48 nombre_7C44  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (4 bytes)
+F 0x7C44 16
+D 0x7C48 0x7C4B nombre_7C48  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (3 bytes)
+F 0x7C48 16
+D 0x7C4B 0x7C51 nombre_7C4B  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7C4B 16
+D 0x7C51 0x7C56 nombre_7C51  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (5 bytes)
+F 0x7C51 16
+D 0x7C56 0x7C5C nombre_7C56  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7C56 16
+D 0x7C5C 0x7C63 nombre_7C5C  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (7 bytes)
+F 0x7C5C 16
+D 0x7C63 0x7C69 nombre_7C63  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (6 bytes)
+F 0x7C63 16
+D 0x7C69 0x7C71 nombre_7C69  nombre de objeto: caracteres hasta 0xFF; 3 y 4 son las marcas que van encima del caracter anterior (p00:59DD); lo leen p00:5700 (8 bytes)
+F 0x7C69 16
+D 0x7C71 0x7C85 animaciones_e34c  10 palabras: lo que p04:6DEC pone en 0xE34C segun 0xE351; lo leen p04:6DEC (20 bytes)
+F 0x7C71 2
+D 0x7C85 0x7CB6 animaciones  registros de 4 bytes [graficos lo][hi][..][..] que recorre p04:65F0 desde 0xE34C; los graficos, con su direccion de VRAM (L_59FB), estan en el banco 5; lo leen p04:6DEC (49 bytes)
+F 0x7C85 4
+D 0x7CB6 0x7FFA graficos_7CB6  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; se solapan 2 bloques: (graficos_7CB8 7CB8-7FFA); lo leen p04:6E2F, p00:4D90 (836 bytes)
+F 0x7CB6 16
+D 0x7FFA 0x8000 graficos_7FFA  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba (sigue en el banco 5, en 0x8000); se solapan 2 bloques: (graficos_7FFC 7FFC-8000); lo leen p04:6E35, p00:4D75 (6 bytes)
+F 0x7FFA 16
+# --- fin de los bloques de bloques.py ---

@@ -1,0 +1,127 @@
+# Puntos de entrada del banco 1 (se ejecuta en 0x6000).
+#
+# Cada uno lleva la instruccion que lo justifica. Los que ponen "pNN:XXXX"
+# vienen de OTRO banco: el trazador de una sola pagina no puede seguirlos,
+# porque en esa direccion -segun lo que haya en el registro del mapper- puede
+# estar cualquiera de seis bancos. Los que ponen "tabla" salen de una tabla
+# del despachador 0x408D, que va pegada detras de su `call` y esta declarada
+# como datos en el .nocode: el trazador tampoco puede seguirla.
+#
+# Los saltos y llamadas DENTRO del propio banco no se ponen aqui: los
+# encuentra tools/z80trace.py solo, siguiendo el flujo.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x6000   # p03:BB37 call
+0x6026   # p03:BB79 call
+0x60CB   # p00:4232 call
+0x6148   # p02:99E9 call
+0x615E   # p01:6151 entrada 0 de la tabla de 0x6154 (despachador en 0x6151)
+0x6194   # p01:6151 entrada 1 de la tabla de 0x6154 (despachador en 0x6151)
+0x61B8   # p01:6151 entrada 2 de la tabla de 0x6154 (despachador en 0x6151)
+0x61CA   # p01:6151 entrada 3 de la tabla de 0x6154 (despachador en 0x6151)
+0x6200   # p01:6151 entrada 4 de la tabla de 0x6154 (despachador en 0x6151)
+0x6212   # p02:99EE call
+0x623D   # p00:48D3 jp
+0x6261   # p00:48D9 jp
+0x6279   # p00:48DF jp
+0x62C1   # p00:48E5 jp
+0x6312   # p00:4350 call
+0x6320   # p00:4359 call
+0x6328   # sin entrada: 0xE353 = 0x80 y sigue en codigo trazado
+0x6369   # sin entrada: copia 0xE3C1/2 a 0xE8E0/1 y salta
+0x64C8   # p00:4095 call
+0x64F1   # p01:64DC entrada 0 de la tabla de 0x64DF (despachador en 0x64DC)
+0x651B   # p01:64DC entrada 1 de la tabla de 0x64DF (despachador en 0x64DC)
+0x6533   # p01:64DC entrada 2 de la tabla de 0x64DF (despachador en 0x64DC)
+0x6564   # p01:64DC entrada 3 de la tabla de 0x64DF (despachador en 0x64DC)
+0x656E   # p01:64DC entrada 4 de la tabla de 0x64DF (despachador en 0x64DC)
+0x65F6   # p01:64DC entrada 5 de la tabla de 0x64DF (despachador en 0x64DC)
+0x6609   # p01:64DC entrada 6 de la tabla de 0x64DF (despachador en 0x64DC)
+0x6621   # p01:64DC entrada 7 de la tabla de 0x64DF (despachador en 0x64DC)
+0x662E   # p01:64DC entrada 8 de la tabla de 0x64DF (despachador en 0x64DC)
+0x66AD   # sin entrada: escribe en la VRAM dos cifras de cada byte de (DE)
+0x677F   # p00:5AEF call
+0x67C8   # p02:9A02 call
+0x6801   # p01:67EC entrada 0 de la tabla de 0x67EF (despachador en 0x67EC)
+0x681A   # p01:67EC entrada 1 de la tabla de 0x67EF (despachador en 0x67EC)
+0x6988   # p01:67EC entrada 2 de la tabla de 0x67EF (despachador en 0x67EC)
+0x69A3   # p01:67EC entrada 3 de la tabla de 0x67EF (despachador en 0x67EC)
+0x69AB   # p01:67EC entrada 4 de la tabla de 0x67EF (despachador en 0x67EC)
+0x69C4   # p01:67EC entrada 7 de la tabla de 0x67EF (despachador en 0x67EC)
+0x6AE5   # p01:6AD1 entrada 0 de la tabla de 0x6AD4 (despachador en 0x6AD1)
+0x6B24   # p01:6AD1 entrada 1 de la tabla de 0x6AD4 (despachador en 0x6AD1)
+0x6B51   # p01:6AD1 entrada 2 de la tabla de 0x6AD4 (despachador en 0x6AD1)
+0x6B6A   # p01:6B54 entrada 0 de la tabla de 0x6B57 (despachador en 0x6B54)
+0x6B76   # p01:6B54 entrada 1 de la tabla de 0x6B57 (despachador en 0x6B54)
+0x6B8B   # p01:6B54 entrada 2 de la tabla de 0x6B57 (despachador en 0x6B54)
+0x6BE5   # p01:6B54 entrada 3 de la tabla de 0x6B57 (despachador en 0x6B54)
+0x6BFC   # p01:6B54 entrada 4 de la tabla de 0x6B57 (despachador en 0x6B54)
+0x6C04   # p01:6B54 entrada 5 de la tabla de 0x6B57 (despachador en 0x6B54)
+0x6C1D   # p01:6B54 entrada 6 de la tabla de 0x6B57 (despachador en 0x6B54)
+0x6C27   # p01:6AD1 entrada 3 de la tabla de 0x6AD4 (despachador en 0x6AD1)
+0x6C3B   # p01:6C2A entrada 0 de la tabla de 0x6C2D (despachador en 0x6C2A)
+0x6C47   # p01:6C2A entrada 1 de la tabla de 0x6C2D (despachador en 0x6C2A)
+0x6C60   # p01:6C2A entrada 2 de la tabla de 0x6C2D (despachador en 0x6C2A)
+0x6C6D   # p01:6C2A entrada 3 de la tabla de 0x6C2D (despachador en 0x6C2A)
+0x6C8F   # p01:6C2A entrada 4 de la tabla de 0x6C2D (despachador en 0x6C2A)
+0x6C97   # p01:6C2A entrada 5 de la tabla de 0x6C2D (despachador en 0x6C2A)
+0x6CAD   # p01:6C2A entrada 6 de la tabla de 0x6C2D (despachador en 0x6C2A)
+0x6CB7   # p01:6AD1 entrada 4 de la tabla de 0x6AD4 (despachador en 0x6AD1)
+0x6CCB   # p01:6CBA entrada 0 de la tabla de 0x6CBD (despachador en 0x6CBA)
+0x6CD7   # p01:6CBA entrada 1 de la tabla de 0x6CBD (despachador en 0x6CBA)
+0x6CF0   # p01:6CBA entrada 2 de la tabla de 0x6CBD (despachador en 0x6CBA)
+0x6CFD   # p01:6CBA entrada 3 de la tabla de 0x6CBD (despachador en 0x6CBA)
+0x6D1F   # p01:6CBA entrada 4 de la tabla de 0x6CBD (despachador en 0x6CBA)
+0x6D27   # p01:6CBA entrada 5 de la tabla de 0x6CBD (despachador en 0x6CBA)
+0x6D3D   # p01:6CBA entrada 6 de la tabla de 0x6CBD (despachador en 0x6CBA)
+0x6D47   # p01:6AD1 entrada 5 de la tabla de 0x6AD4 (despachador en 0x6AD1)
+0x6D59   # p01:6D4A entrada 0 de la tabla de 0x6D4D (despachador en 0x6D4A)
+0x6D6C   # p01:6D4A entrada 1 de la tabla de 0x6D4D (despachador en 0x6D4A)
+0x6D7B   # p01:6D4A entrada 2 de la tabla de 0x6D4D (despachador en 0x6D4A)
+0x6D92   # p01:6D4A entrada 3 de la tabla de 0x6D4D (despachador en 0x6D4A)
+0x6D9A   # p01:6D4A entrada 4 de la tabla de 0x6D4D (despachador en 0x6D4A)
+0x6DB1   # p01:6D4A entrada 5 de la tabla de 0x6D4D (despachador en 0x6D4A)
+0x7083   # p00:4235 call
+0x70B8   # p00:4082 call
+0x70BE   # p00:430D call
+0x7162   # p00:5AA6 call
+0x71B6   # p01:718B entrada 0 de la tabla de 0x718E (despachador en 0x718B)
+0x7289   # p01:718B entrada 2 de la tabla de 0x718E (despachador en 0x718B)
+0x72BD   # p01:718B entrada 3 de la tabla de 0x718E (despachador en 0x718B)
+0x72DC   # p01:718B entrada 4 de la tabla de 0x718E (despachador en 0x718B)
+0x72FD   # p01:718B entrada 5 de la tabla de 0x718E (despachador en 0x718B)
+0x730C   # p01:718B entrada 6 de la tabla de 0x718E (despachador en 0x718B)
+0x73D4   # p01:73C9 entrada 0 de la tabla de 0x73CC (despachador en 0x73C9)
+0x73E8   # p01:73C9 entrada 1 de la tabla de 0x73CC (despachador en 0x73C9)
+0x73FC   # p01:73C9 entrada 2 de la tabla de 0x73CC (despachador en 0x73C9)
+0x740E   # p01:73C9 entrada 3 de la tabla de 0x73CC (despachador en 0x73C9)
+0x74C6   # p01:718B entrada 7 de la tabla de 0x718E (despachador en 0x718B)
+0x74F4   # p01:718B entrada 8 de la tabla de 0x718E (despachador en 0x718B)
+0x7513   # p01:718B entrada 10 de la tabla de 0x718E (despachador en 0x718B)
+0x7564   # p01:718B entrada 11 de la tabla de 0x718E (despachador en 0x718B)
+0x758E   # p01:718B entrada 12 de la tabla de 0x718E (despachador en 0x718B)
+0x75AF   # p01:718B entrada 9 de la tabla de 0x718E (despachador en 0x718B)
+0x75B0   # p01:718B entrada 13 de la tabla de 0x718E (despachador en 0x718B)
+0x75BA   # p01:718B entrada 14 de la tabla de 0x718E (despachador en 0x718B)
+0x75BB   # p01:718B entrada 15 de la tabla de 0x718E (despachador en 0x718B)
+0x75DA   # p01:718B entrada 16 de la tabla de 0x718E (despachador en 0x718B)
+0x75F6   # p01:718B entrada 17 de la tabla de 0x718E (despachador en 0x718B)
+0x7620   # p01:718B entrada 18 de la tabla de 0x718E (despachador en 0x718B)
+0x7632   # p01:718B entrada 19 de la tabla de 0x718E (despachador en 0x718B)
+0x76C9   # sin entrada: 0xE3C0 = 0 y mira la sala 0x21F
+0x771F   # p00:5C03 call
+0x77D3   # p00:5C29 call
+0x77FB   # sin entrada: un `ret` suelto entre dos rutinas
+0x7805   # p01:77DE entrada 0 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7853   # p01:77DE entrada 1 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7A20   # p01:77DE entrada 2 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7B6A   # p01:77DE entrada 3 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7C06   # p02:80E0 jp cc
+0x7C57   # p01:77DE entrada 4 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7CCB   # p01:77DE entrada 5 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7D63   # p01:77DE entrada 6 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7D7A   # p01:77DE entrada 7 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7E62   # p01:77DE entrada 8 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7ED8   # p01:77DE entrada 9 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7FC2   # p01:77DE entrada 10 de la tabla de 0x77E1 (despachador en 0x77DE)
+0x7FD3   # p01:77DE entrada 11 de la tabla de 0x77E1 (despachador en 0x77DE)

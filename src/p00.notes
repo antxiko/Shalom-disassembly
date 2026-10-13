@@ -1,0 +1,30 @@
+# Notas del banco 00
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x4000 0x402E resto_4000  lo apuntan con el banco puesto p00:41EE (0x4000), p01:7098 (0x4000), p02:8A40 (0x4000), p08:AE93 (0x4001), p01:6122 (0x4010); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p00:41EE, p01:7098, p02:8A40, p08:AE93, p01:6122 (46 bytes)
+F 0x4000 16
+D 0x454A 0x4560 vram_454A  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p00:588F (22 bytes)
+F 0x454A 16
+D 0x4696 0x47C6 resto_4696  lo apuntan con el banco puesto p00:45EA (0x4696), p00:4662 (0x47B6); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p00:45EA, p00:4662 (304 bytes)
+F 0x4696 16
+D 0x48BE 0x48D0 saltos_48BE  tabla de 9 palabras del despachador (call 0x408D en 0x48BB); lo leen L_40AB (18 bytes)
+F 0x48BE 2
+D 0x4E08 0x4E0C saltos_4E08  tabla de 2 palabras del despachador (call 0x408D en 0x4E05); lo leen L_40AB (4 bytes)
+F 0x4E08 2
+D 0x4E70 0x4E76 saltos_4E70  tabla de 3 palabras del despachador (call 0x408D en 0x4E6D); lo leen L_40AB (6 bytes)
+F 0x4E70 2
+D 0x5231 0x5245 saltos_5231  tabla de 10 palabras del despachador (call 0x408D en 0x522E); lo leen L_40AB (20 bytes)
+F 0x5231 2
+D 0x5676 0x567A resto_5676  lo apuntan con el banco puesto p00:564B (0x5676); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p00:564B (4 bytes)
+F 0x5676 16
+D 0x5A83 0x5A97 saltos_5A83  tabla de 10 palabras del despachador (call 0x408D en 0x5A80); lo leen L_40AB (20 bytes)
+F 0x5A83 2
+D 0x5D8D 0x5D95 saltos_5D8D  tabla de 4 palabras del despachador (call 0x408D en 0x5D8A); lo leen L_40AB (8 bytes)
+F 0x5D8D 2
+D 0x5DAF 0x5DB7 saltos_5DAF  tabla de 4 palabras del despachador (call 0x408D en 0x5DAC); lo leen L_40AB (8 bytes)
+F 0x5DAF 2
+D 0x5DE7 0x5DF1 resto_5DE7  lo apuntan con el banco puesto p00:5D6C (0x5DE7), p00:5DD4 (0x5DE7); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p00:5D6C, p00:5DD4 (10 bytes)
+F 0x5DE7 16
+D 0x5F21 0x6000 relleno_ff  223 bytes a 0xFF hasta el final del banco: relleno; lo leen nadie (223 bytes)
+F 0x5F21 16
+# --- fin de los bloques de bloques.py ---

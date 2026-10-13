@@ -1,0 +1,28 @@
+# Notas del banco 20
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xA000 0xA14C graficos_9E89_cola  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba (sigue del banco 19); lo leen p00:4951 (332 bytes)
+F 0xA000 16
+D 0xA14C 0xA158 graficos_A14C  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4966 (12 bytes)
+F 0xA14C 16
+D 0xA158 0xA2F9 graficos_A158  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:496F (417 bytes)
+F 0xA158 16
+D 0xA2F9 0xA627 graficos_A2F9  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:497B, p00:4984 (814 bytes)
+F 0xA2F9 16
+D 0xA627 0xA84E graficos_A627  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:498D (551 bytes)
+F 0xA627 16
+D 0xA84E 0xAB2E resto_A84E  lo apuntan con el banco puesto p00:4A1A (0xA84E), p00:4A65 (0xAA2E); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p00:4A1A, p00:4A65 (736 bytes)
+F 0xA84E 16
+D 0xAB2E 0xAECE graficos_AB2E  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:49A2, p00:49AB (928 bytes)
+F 0xAB2E 16
+D 0xAECE 0xB0F2 graficos_AECE  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:49B4 (548 bytes)
+F 0xAECE 16
+D 0xB0F2 0xB40C graficos_B0F2  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:49C6, p00:49CF (794 bytes)
+F 0xB0F2 16
+D 0xB40C 0xB606 graficos_B40C  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:49D8 (506 bytes)
+F 0xB40C 16
+D 0xB606 0xBFF6 salas_200_234  las salas 0x200-0x234, 48 bytes cada una (p00:5168: 0xB606 + (sala - 0x200) x 48); lo leen p00:514B (2544 bytes)
+F 0xB606 24
+D 0xBFF6 0xC000 resto_BFF6  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (10 bytes)
+F 0xBFF6 16
+# --- fin de los bloques de bloques.py ---

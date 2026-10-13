@@ -1,0 +1,60 @@
+# Notas del banco 03
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xAABE 0xAB92 resto_AABE  lo apuntan con el banco puesto p02:9CF3 (0xAABE); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p02:9CF3 (212 bytes)
+F 0xAABE 16
+D 0xB3A8 0xB3B6 resto_B3A8  lo apuntan con el banco puesto p03:B37B (0xB3A8); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p03:B37B (14 bytes)
+F 0xB3A8 16
+D 0xB402 0xB406 saltos_B402  tabla de 2 palabras del despachador (call 0x408D en 0xB3FF); lo leen L_40AB (4 bytes)
+F 0xB402 2
+D 0xB47C 0xB486 dibujo_B47C  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p03:B436 (10 bytes)
+F 0xB47C 4
+D 0xB486 0xB490 dibujo_B486  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p03:B42A (10 bytes)
+F 0xB486 4
+D 0xB490 0xB49A dibujo_B490  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p03:B41E (10 bytes)
+F 0xB490 4
+D 0xB49A 0xB4A4 dibujo_B49A  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p03:B471 (10 bytes)
+F 0xB49A 4
+D 0xB4A4 0xB4AE dibujo_B4A4  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p03:B465 (10 bytes)
+F 0xB4A4 4
+D 0xB4AE 0xB4B8 dibujo_B4AE  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p03:B459 (10 bytes)
+F 0xB4AE 4
+D 0xB4E7 0xB525 resto_B4E7  lo apuntan con el banco puesto p03:B4BC (0xB4F5); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p03:B4BC (62 bytes)
+F 0xB4E7 16
+D 0xB563 0xB56D saltos_B563  tabla de 5 palabras del despachador (call 0x408D en 0xB560); lo leen L_40AB (10 bytes)
+F 0xB563 2
+D 0xB56D 0xB578 resto_B56D  lo apuntan con el banco puesto p03:B549 (0xB56E); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p03:B549 (11 bytes)
+F 0xB56D 16
+D 0xB5CF 0xB5D9 saltos_B5CF  tabla de 5 palabras del despachador (call 0x408D en 0xB5CC); lo leen L_40AB (10 bytes)
+F 0xB5CF 2
+D 0xB6FA 0xB6FE saltos_B6FA  tabla de 2 palabras del despachador (call 0x408D en 0xB6F7); lo leen L_40AB (4 bytes)
+F 0xB6FA 2
+D 0xB889 0xB88F resto_B889  lo apuntan con el banco puesto p03:B87E (0xB889); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p03:B87E (6 bytes)
+F 0xB889 16
+D 0xB8BA 0xB8D2 resto_B8BA  lo apuntan con el banco puesto p03:B8AA (0xB8BA), p03:B897 (0xB8C6); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p03:B8AA, p03:B897 (24 bytes)
+F 0xB8BA 16
+D 0xB908 0xB928 resto_B908  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (32 bytes)
+F 0xB908 16
+D 0xBB1A 0xBB20 saltos_BB1A  tabla de 3 palabras del despachador (call 0x408D en 0xBB17); lo leen L_40AB (6 bytes)
+F 0xBB1A 2
+D 0xBB65 0xBB6D saltos_BB65  tabla de 4 palabras del despachador (call 0x408D en 0xBB62); lo leen L_40AB (8 bytes)
+F 0xBB65 2
+D 0xBBBA 0xBBC0 saltos_BBBA  tabla de 3 palabras del despachador (call 0x408D en 0xBBB7); lo leen L_40AB (6 bytes)
+F 0xBBBA 2
+D 0xBC05 0xBC0D saltos_BC05  tabla de 4 palabras del despachador (call 0x408D en 0xBC02); lo leen L_40AB (8 bytes)
+F 0xBC05 2
+D 0xBC85 0xBC90 resto_BC85  lo apuntan con el banco puesto p03:BC66 (0xBC85), p03:BCA2 (0xBC85); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p03:BC66, p03:BCA2 (11 bytes)
+F 0xBC85 16
+D 0xBD5E 0xBD6D resto_BD5E  lo apuntan con el banco puesto p00:41BB (0xBD5E); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p00:41BB (15 bytes)
+F 0xBD5E 16
+D 0xBDB5 0xBDBD saltos_BDB5  tabla de 4 palabras del despachador (call 0x408D en 0xBDB2); lo leen L_40AB (8 bytes)
+F 0xBDB5 2
+D 0xBE03 0xBE09 resto_BE03  lo apuntan con el banco puesto p01:6BA1 (0xBE03), p03:BDEF (0xBE03), p03:BF59 (0xBE03); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p01:6BA1, p03:BDEF, p03:BF59 (6 bytes)
+F 0xBE03 16
+D 0xBEC5 0xBEE1 vram_BEC5  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; lo leen p03:BE9E (28 bytes)
+F 0xBEC5 16
+D 0xBEE7 0xBEED saltos_BEE7  tabla de 3 palabras del despachador (call 0x408D en 0xBEE4); lo leen L_40AB (6 bytes)
+F 0xBEE7 2
+D 0xBF7D 0xC000 vram_BF7D  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; se solapan 2 bloques: (relleno_ff BF9C-C000); lo leen p03:BF77, nadie (131 bytes)
+F 0xBF7D 16
+# --- fin de los bloques de bloques.py ---

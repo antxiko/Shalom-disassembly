@@ -1,0 +1,75 @@
+# Puntos de entrada del banco 10 (se ejecuta en 0x8000).
+#
+# Cada uno lleva la instruccion que lo justifica. Los que ponen "pNN:XXXX"
+# vienen de OTRO banco: el trazador de una sola pagina no puede seguirlos,
+# porque en esa direccion -segun lo que haya en el registro del mapper- puede
+# estar cualquiera de seis bancos. Los que ponen "tabla" salen de una tabla
+# del despachador 0x408D, que va pegada detras de su `call` y esta declarada
+# como datos en el .nocode: el trazador tampoco puede seguirla.
+#
+# Los saltos y llamadas DENTRO del propio banco no se ponen aqui: los
+# encuentra tools/z80trace.py solo, siguiendo el flujo.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x8C56   # p00:5C20 call
+0x8C60   # p10:8C59 entrada 0 de la tabla de 0x8C5C (despachador en 0x8C59)
+0x8CAC   # p10:8C59 entrada 1 de la tabla de 0x8C5C (despachador en 0x8C59)
+0x8CFF   # p10:8CCA entrada 11 de la tabla de 0x8CCD (despachador en 0x8CCA)
+0x8DD8   # p10:8CCA entrada 0 de la tabla de 0x8CCD (despachador en 0x8CCA)
+0x8DF8   # p10:8DDB entrada 0 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x8E08   # p10:8DDB entrada 1 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x8E0D   # p10:8DDB entrada 2 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x8E56   # p10:8DDB entrada 3 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x8E5B   # p10:8DDB entrada 4 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x8E75   # p10:8DDB entrada 5 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x8E7A   # p10:8DDB entrada 6 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x8E8A   # p10:8DDB entrada 7 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x8EB3   # p10:8DDB entrada 8 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x8EC6   # p10:8DDB entrada 9 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x8EDE   # p10:8DDB entrada 10 de la tabla de 0x8DDE (despachador en 0x8DDB)
+0x90E6   # p10:8CCA entrada 1 de la tabla de 0x8CCD (despachador en 0x8CCA)
+0x9100   # p10:90E9 entrada 0 de la tabla de 0x90EC (despachador en 0x90E9)
+0x9118   # p10:90E9 entrada 1 de la tabla de 0x90EC (despachador en 0x90E9)
+0x9120   # p10:90E9 entrada 2 de la tabla de 0x90EC (despachador en 0x90E9)
+0x9157   # p10:90E9 entrada 3 de la tabla de 0x90EC (despachador en 0x90E9)
+0x9163   # p10:90E9 entrada 4 de la tabla de 0x90EC (despachador en 0x90E9)
+0x918F   # p10:90E9 entrada 5 de la tabla de 0x90EC (despachador en 0x90E9)
+0x91A7   # p10:90E9 entrada 6 de la tabla de 0x90EC (despachador en 0x90E9)
+0x91B0   # p10:90E9 entrada 7 de la tabla de 0x90EC (despachador en 0x90E9)
+0x939E   # p10:8CCA entrada 2 de la tabla de 0x8CCD (despachador en 0x8CCA)
+0x93B0   # p10:93A1 entrada 0 de la tabla de 0x93A4 (despachador en 0x93A1)
+0x93F0   # p10:93A1 entrada 1 de la tabla de 0x93A4 (despachador en 0x93A1)
+0x9408   # p10:93A1 entrada 2 de la tabla de 0x93A4 (despachador en 0x93A1)
+0x9420   # p10:93A1 entrada 3 de la tabla de 0x93A4 (despachador en 0x93A1)
+0x968C   # p10:8CCA entrada 3 de la tabla de 0x8CCD (despachador en 0x8CCA)
+0x96A2   # p10:968F entrada 0 de la tabla de 0x9692 (despachador en 0x968F)
+0x9708   # p10:968F entrada 1 de la tabla de 0x9692 (despachador en 0x968F)
+0x9710   # p10:968F entrada 2 de la tabla de 0x9692 (despachador en 0x968F)
+0x974E   # p10:968F entrada 3 de la tabla de 0x9692 (despachador en 0x968F)
+0x9752   # p10:968F entrada 4 de la tabla de 0x9692 (despachador en 0x968F)
+0x976A   # p10:968F entrada 5 de la tabla de 0x9692 (despachador en 0x968F)
+0x98E4   # p10:8CCA entrada 4 de la tabla de 0x8CCD (despachador en 0x8CCA)
+0x98F4   # p10:98E7 entrada 0 de la tabla de 0x98EA (despachador en 0x98E7)
+0x9955   # p10:98E7 entrada 1 de la tabla de 0x98EA (despachador en 0x98E7)
+0x9987   # p10:98E7 entrada 2 de la tabla de 0x98EA (despachador en 0x98E7)
+0x9B0D   # p10:8CCA entrada 5 de la tabla de 0x8CCD (despachador en 0x8CCA)
+0x9B1F   # p10:9B10 entrada 0 de la tabla de 0x9B13 (despachador en 0x9B10)
+0x9B4A   # p10:9B10 entrada 1 de la tabla de 0x9B13 (despachador en 0x9B10)
+0x9B59   # p10:9B10 entrada 2 de la tabla de 0x9B13 (despachador en 0x9B10)
+0x9B71   # p10:9B10 entrada 3 de la tabla de 0x9B13 (despachador en 0x9B10)
+0x9BD2   # p10:9BC3 entrada 0 de la tabla de 0x9BC6 (despachador en 0x9BC3)
+0x9BDF   # p10:9BC3 entrada 2 de la tabla de 0x9BC6 (despachador en 0x9BC3)
+0x9BED   # p10:9BC3 entrada 3 de la tabla de 0x9BC6 (despachador en 0x9BC3)
+0x9BFE   # p10:9BC3 entrada 4 de la tabla de 0x9BC6 (despachador en 0x9BC3)
+0x9C58   # p11:A151 jp
+0x9E93   # p10:8CCA entrada 6 de la tabla de 0x8CCD (despachador en 0x8CCA)
+0x9EA1   # p11:A13E jp
+0x9EA5   # p10:9E96 entrada 0 de la tabla de 0x9E99 (despachador en 0x9E96)
+0x9ECC   # p10:9E96 entrada 1 de la tabla de 0x9E99 (despachador en 0x9E96)
+0x9EDB   # p10:9E96 entrada 2 de la tabla de 0x9E99 (despachador en 0x9E96)
+0x9EF3   # p10:9E96 entrada 3 de la tabla de 0x9E99 (despachador en 0x9E96)
+0x9F52   # p10:9F47 entrada 0 de la tabla de 0x9F4A (despachador en 0x9F47)
+0x9F5F   # p10:9F47 entrada 2 de la tabla de 0x9F4A (despachador en 0x9F47)
+0x9F6D   # p10:9F47 entrada 3 de la tabla de 0x9F4A (despachador en 0x9F47)
+0x9FFC   # p11:A00F jr cc
+0x9FFF   # p11:A006 jr cc

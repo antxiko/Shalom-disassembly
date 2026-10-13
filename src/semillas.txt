@@ -1,0 +1,35 @@
+# Semillas a mano: 'pNN 0xADDR b6000 b8000 bA000  # por que'.
+#
+# CODIGO SIN ENTRADA. Rutinas enteras (acaban en `ret`/`jp` o caen en codigo
+# ya trazado) a las que ninguna instruccion del cartucho salta ni apunta con
+# un inmediato de 16 bits con su banco puesto (tools/lectores.py,
+# 2026-10-13). Van como codigo para que el listado las lea; NO esta medido
+# que no se ejecuten por un camino calculado.
+p00 0x431D 1 2 3  # sin entrada: pasarela 4-5-6 -> p00:4B1A -> 9-10-11, como las de al lado
+p00 0x44B4 1 2 3  # sin entrada: DE y BC de (HL) y cae en p00:44B8 (la copia de 2x2 fichas)
+p00 0x4583 1 2 3  # sin entrada: pide el sonido 1 (p00:415B), como las de al lado
+p00 0x45BA 1 2 3  # sin entrada: pide el sonido 0x24
+p00 0x5937 1 2 3  # sin entrada: SETRD y C = puerto de lectura del VDP (la pareja de p00:592B)
+p00 0x594A 1 2 3  # sin entrada: B = 3 y cae en p00:594D (copia a los tres tercios)
+p00 0x598A 1 2 3  # sin entrada: B = 3 y cae en p00:598C
+p00 0x5A2E 1 2 3  # sin entrada: C = 1 (espejo) y salta a p00:59FB
+p01 0x6328 1 2 3  # sin entrada: 0xE353 = 0x80 y sigue en codigo trazado
+p01 0x6369 1 2 3  # sin entrada: copia 0xE3C1/2 a 0xE8E0/1 y salta
+p01 0x66AD 1 2 3  # sin entrada: escribe en la VRAM dos cifras de cada byte de (DE)
+p01 0x76C9 1 2 3  # sin entrada: 0xE3C0 = 0 y mira la sala 0x21F
+p01 0x77FB 1 2 3  # sin entrada: un `ret` suelto entre dos rutinas
+p03 0xAEAA 1 2 3  # sin entrada: compara DE con las salas 0x214-0x21E
+p03 0xB5D9 1 2 3  # sin entrada: un `ret` suelto
+p03 0xBB0A 1 2 3  # sin entrada: piden los sonidos 0x3F y 0x42 (p00:415B)
+p03 0xBD02 1 2 3  # sin entrada: ld (0xE035),hl y cae en codigo trazado
+p08 0xA963 1 7 8  # sin entrada: mira (ix+3) y (ix+4) y salta a codigo trazado
+p11 0xA4B9 9 10 11  # sin entrada: inc (ix+1) / ret
+p11 0xAC01 9 10 11  # sin entrada: call p11:AC09 y salta atras
+p11 0xAC09 9 10 11  # sin entrada: DE = 0 y salta atras
+p03 0xBB0F 1 2 3  # sin entrada: pide el sonido 0x42 (p00:415B)
+p04 0x6506 4 5 6  # sin entrada: copia 0x200 bytes de la fuente (0x6F39) a la VRAM 0x2000 (p00:5941)
+p09 0x6005 9 10 11  # sin entrada: pide el sonido 0x0C, como las de al lado
+p09 0x605F 9 10 11  # sin entrada: pide el sonido 0x2C
+p09 0x6064 9 10 11  # sin entrada: pide el sonido 0x4D
+p09 0x6069 9 10 11  # sin entrada: pide el sonido 0x5B
+p29 0x68A4 29 30 31  # sin entrada: res 1,(hl) / ret

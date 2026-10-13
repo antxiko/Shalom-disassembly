@@ -1,0 +1,210 @@
+# Notas del banco 23
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xA000 0xA00C mensaje_22_9FF0_cola  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba (sigue del banco 22); lo leen p00:4E76 (12 bytes)
+F 0xA000 16
+D 0xA00C 0xA049 mensaje_23_A00C  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (61 bytes)
+F 0xA00C 16
+D 0xA049 0xA062 mensaje_23_A049  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (25 bytes)
+F 0xA049 16
+D 0xA062 0xA094 mensaje_23_A062  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (50 bytes)
+F 0xA062 16
+D 0xA094 0xA0B7 mensaje_23_A094  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (35 bytes)
+F 0xA094 16
+D 0xA0B7 0xA0C0 mensaje_23_A0B7  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (9 bytes)
+F 0xA0B7 16
+D 0xA0C0 0xA0DB mensaje_23_A0C0  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (27 bytes)
+F 0xA0C0 16
+D 0xA0DB 0xA0E7 mensaje_23_A0DB  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (12 bytes)
+F 0xA0DB 16
+D 0xA0E7 0xA0F6 mensaje_23_A0E7  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (15 bytes)
+F 0xA0E7 16
+D 0xA0F6 0xA106 mensaje_23_A0F6  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (16 bytes)
+F 0xA0F6 16
+D 0xA106 0xA121 mensaje_23_A106  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (27 bytes)
+F 0xA106 16
+D 0xA121 0xA12B mensajes_23_A121  5 palabras: los mensajes de la sala 491 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (10 bytes)
+F 0xA121 2
+D 0xA12B 0xA137 mensaje_23_A12B  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (12 bytes)
+F 0xA12B 16
+D 0xA137 0xA161 mensaje_23_A137  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (42 bytes)
+F 0xA137 16
+D 0xA161 0xA176 mensaje_23_A161  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (21 bytes)
+F 0xA161 16
+D 0xA176 0xA186 mensajes_23_A176  8 palabras: los mensajes de la sala 513 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (16 bytes)
+F 0xA176 2
+D 0xA186 0xA1D6 mensaje_23_A186  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (80 bytes)
+F 0xA186 16
+D 0xA1D6 0xA1F8 mensaje_23_A1D6  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (34 bytes)
+F 0xA1D6 16
+D 0xA1F8 0xA21C mensaje_23_A1F8  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (36 bytes)
+F 0xA1F8 16
+D 0xA21C 0xA23B mensaje_23_A21C  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (31 bytes)
+F 0xA21C 16
+D 0xA23B 0xA25F mensaje_23_A23B  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (36 bytes)
+F 0xA23B 16
+D 0xA25F 0xA287 mensaje_23_A25F  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (40 bytes)
+F 0xA25F 16
+D 0xA287 0xA295 mensaje_23_A287  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (14 bytes)
+F 0xA287 16
+D 0xA295 0xA2B7 mensajes_23_A295  17 palabras: los mensajes de la sala 514 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; se solapan 2 bloques: (mensajes_23_A29B A29B-A2B7); lo leen p00:4E76 (34 bytes)
+F 0xA295 2
+D 0xA2B7 0xA2F2 mensaje_23_A2B7  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (59 bytes)
+F 0xA2B7 16
+D 0xA2F2 0xA31F mensaje_23_A2F2  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (45 bytes)
+F 0xA2F2 16
+D 0xA31F 0xA32F mensaje_23_A31F  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (16 bytes)
+F 0xA31F 16
+D 0xA32F 0xA366 mensaje_23_A32F  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (55 bytes)
+F 0xA32F 16
+D 0xA366 0xA39E mensaje_23_A366  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (56 bytes)
+F 0xA366 16
+D 0xA39E 0xA3B1 mensaje_23_A39E  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (19 bytes)
+F 0xA39E 16
+D 0xA3B1 0xA3C4 mensaje_23_A3B1  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (19 bytes)
+F 0xA3B1 16
+D 0xA3C4 0xA3D6 mensaje_23_A3C4  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (18 bytes)
+F 0xA3C4 16
+D 0xA3D6 0xA446 mensaje_23_A3D6  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (112 bytes)
+F 0xA3D6 16
+D 0xA446 0xA452 mensaje_23_A446  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (12 bytes)
+F 0xA446 16
+D 0xA452 0xA476 mensaje_23_A452  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (36 bytes)
+F 0xA452 16
+D 0xA476 0xA4BD mensaje_23_A476  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (71 bytes)
+F 0xA476 16
+D 0xA4BD 0xA4E5 mensajes_23_A4BD  20 palabras: los mensajes de la sala 529 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (40 bytes)
+F 0xA4BD 2
+D 0xA4E5 0xA51D mensaje_23_A4E5  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (56 bytes)
+F 0xA4E5 16
+D 0xA51D 0xA64A mensaje_23_A51D  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (301 bytes)
+F 0xA51D 16
+D 0xA64A 0xA659 mensaje_23_A64A  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (15 bytes)
+F 0xA64A 16
+D 0xA659 0xA67E mensaje_23_A659  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (37 bytes)
+F 0xA659 16
+D 0xA67E 0xA6A5 mensaje_23_A67E  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (39 bytes)
+F 0xA67E 16
+D 0xA6A5 0xA6A6 mensaje_23_A6A5  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (1 bytes)
+F 0xA6A5 16
+D 0xA6A6 0xA6D5 mensaje_23_A6A6  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (47 bytes)
+F 0xA6A6 16
+D 0xA6D5 0xA6EA mensaje_23_A6D5  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (21 bytes)
+F 0xA6D5 16
+D 0xA6EA 0xA70B mensaje_23_A6EA  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (33 bytes)
+F 0xA6EA 16
+D 0xA70B 0xA75B mensaje_23_A70B  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (80 bytes)
+F 0xA70B 16
+D 0xA75B 0xAA44 mensaje_23_A75B  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (745 bytes)
+F 0xA75B 16
+D 0xAA44 0xAA7C mensaje_23_AA44  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (56 bytes)
+F 0xAA44 16
+D 0xAA7C 0xAB03 mensaje_23_AA7C  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (135 bytes)
+F 0xAA7C 16
+D 0xAB03 0xABEC mensaje_23_AB03  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (233 bytes)
+F 0xAB03 16
+D 0xABEC 0xAC72 mensaje_23_ABEC  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; se solapan 2 bloques: (mensaje_23_AC5E AC5E-AC72); lo leen p00:4E76 (134 bytes)
+F 0xABEC 16
+D 0xAC72 0xAC81 mensaje_23_AC72  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (15 bytes)
+F 0xAC72 16
+D 0xAC81 0xAC96 mensaje_23_AC81  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (21 bytes)
+F 0xAC81 16
+D 0xAC96 0xACB6 mensajes_23_AC96  16 palabras: los mensajes de la sala 551 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (32 bytes)
+F 0xAC96 2
+D 0xACB6 0xADD6 mensaje_23_ACB6  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (288 bytes)
+F 0xACB6 16
+D 0xADD6 0xAE3F mensaje_23_ADD6  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (105 bytes)
+F 0xADD6 16
+D 0xAE3F 0xAE67 mensaje_23_AE3F  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (40 bytes)
+F 0xAE3F 16
+D 0xAE67 0xAEB0 mensaje_23_AE67  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (73 bytes)
+F 0xAE67 16
+D 0xAEB0 0xAEDE mensaje_23_AEB0  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (46 bytes)
+F 0xAEB0 16
+D 0xAEDE 0xAF18 mensaje_23_AEDE  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (58 bytes)
+F 0xAEDE 16
+D 0xAF18 0xAF26 mensaje_23_AF18  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (14 bytes)
+F 0xAF18 16
+D 0xAF26 0xAF4F mensaje_23_AF26  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (41 bytes)
+F 0xAF26 16
+D 0xAF4F 0xAF79 mensaje_23_AF4F  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (42 bytes)
+F 0xAF4F 16
+D 0xAF79 0xAF97 mensaje_23_AF79  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (30 bytes)
+F 0xAF79 16
+D 0xAF97 0xAFDE mensaje_23_AF97  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (71 bytes)
+F 0xAF97 16
+D 0xAFDE 0xB1B6 mensaje_23_AFDE  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (472 bytes)
+F 0xAFDE 16
+D 0xB1B6 0xB1C6 mensaje_23_B1B6  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (16 bytes)
+F 0xB1B6 16
+D 0xB1C6 0xB1E8 mensaje_23_B1C6  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (34 bytes)
+F 0xB1C6 16
+D 0xB1E8 0xB204 mensajes_23_B1E8  14 palabras: los mensajes de la sala 561 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (28 bytes)
+F 0xB1E8 2
+D 0xB204 0xB20F mensaje_23_B204  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (11 bytes)
+F 0xB204 16
+D 0xB20F 0xB246 mensaje_23_B20F  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (55 bytes)
+F 0xB20F 16
+D 0xB246 0xB266 mensaje_23_B246  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (32 bytes)
+F 0xB246 16
+D 0xB266 0xB291 mensaje_23_B266  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (43 bytes)
+F 0xB266 16
+D 0xB291 0xB2A4 mensaje_23_B291  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (19 bytes)
+F 0xB291 16
+D 0xB2A4 0xB2AE mensaje_23_B2A4  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (10 bytes)
+F 0xB2A4 16
+D 0xB2AE 0xB2DA mensaje_23_B2AE  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (44 bytes)
+F 0xB2AE 16
+D 0xB2DA 0xB45F mensaje_23_B2DA  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (389 bytes)
+F 0xB2DA 16
+D 0xB45F 0xB53A mensaje_23_B45F  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (219 bytes)
+F 0xB45F 16
+D 0xB53A 0xB54A mensaje_23_B53A  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (16 bytes)
+F 0xB53A 16
+D 0xB54A 0xB557 mensaje_23_B54A  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (13 bytes)
+F 0xB54A 16
+D 0xB557 0xB5FD mensaje_23_B557  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (166 bytes)
+F 0xB557 16
+D 0xB5FD 0xB6C2 mensaje_23_B5FD  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (197 bytes)
+F 0xB5FD 16
+D 0xB6C2 0xB6EE mensajes_23_B6C2  22 palabras: los mensajes de la sala 566 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (44 bytes)
+F 0xB6C2 2
+D 0xB6EE 0xB6FB mensaje_23_B6EE  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (13 bytes)
+F 0xB6EE 16
+D 0xB6FB 0xB7D7 mensaje_23_B6FB  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; se solapan 2 bloques: (mensaje_23_B780 B780-B7D7); lo leen p00:4E76 (220 bytes)
+F 0xB6FB 16
+D 0xB7D7 0xB822 mensaje_23_B7D7  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (75 bytes)
+F 0xB7D7 16
+D 0xB822 0xB86C mensaje_23_B822  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (74 bytes)
+F 0xB822 16
+D 0xB86C 0xB89D mensaje_23_B86C  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; se solapan 2 bloques: (mensaje_23_B883 B883-B89D); lo leen p00:4E76 (49 bytes)
+F 0xB86C 16
+D 0xB89D 0xB941 mensaje_23_B89D  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; se solapan 2 bloques: (mensaje_23_B8C9 B8C9-B941); lo leen p00:4E76 (164 bytes)
+F 0xB89D 16
+D 0xB941 0xBB6F mensaje_23_B941  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; se solapan 3 bloques: (mensaje_23_BB63 BB63-BB6A) (mensaje_23_BB69 BB69-BB6F); lo leen p00:4E76 (558 bytes)
+F 0xB941 16
+D 0xBB6F 0xBEA0 mensaje_23_BB6F  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; se solapan 11 bloques: (mensaje_23_BB75 BB75-BB98) (mensaje_23_BB97 BB97-BBD0) (mensaje_23_BBCF BBCF-BC03) (mensaje_23_BC02 BC02-BC43) (mensaje_23_BC42 BC42-BC76) (mensaje_23_BC75 BC75-BDA7) (mensaje_23_BDA6 BDA6-BE6A) (mensaje_23_BE69 BE69-BE8C) (mensaje_23_BE8B BE8B-BE9F) (mensajes_23_BE9E BE9E-BEA0); lo leen p00:4E76 (817 bytes)
+F 0xBB6F 16
+D 0xBEA0 0xBEAA mensaje_23_BEA0  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (10 bytes)
+F 0xBEA0 16
+D 0xBEAA 0xBEAC mensajes_23_BEAA  1 palabras: los mensajes de la sala 267 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBEAA 2
+D 0xBEAC 0xBEB8 mensaje_23_BEAC  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (12 bytes)
+F 0xBEAC 16
+D 0xBEB8 0xBEBA mensajes_23_BEB8  1 palabras: los mensajes de la sala 273 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBEB8 2
+D 0xBEBA 0xBF07 mensaje_23_BEBA  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (77 bytes)
+F 0xBEBA 16
+D 0xBF07 0xBF09 mensajes_23_BF07  1 palabras: los mensajes de la sala 177 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBF07 2
+D 0xBF09 0xBF43 mensaje_23_BF09  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (58 bytes)
+F 0xBF09 16
+D 0xBF43 0xBF45 mensajes_23_BF43  1 palabras: los mensajes de la sala 206 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBF43 2
+D 0xBF45 0xBF6E mensaje_23_BF45  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (41 bytes)
+F 0xBF45 16
+D 0xBF6E 0xBF70 mensajes_23_BF6E  1 palabras: los mensajes de la sala 237 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBF6E 2
+D 0xBF70 0xC000 mensaje_23_BF70  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; se solapan 2 bloques: (relleno_ff BF95-C000); lo leen p00:4E76, nadie (144 bytes)
+F 0xBF70 16
+# --- fin de los bloques de bloques.py ---

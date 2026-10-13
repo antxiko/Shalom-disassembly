@@ -1,0 +1,86 @@
+# Puntos de entrada del banco 4 (se ejecuta en 0x6000).
+#
+# Cada uno lleva la instruccion que lo justifica. Los que ponen "pNN:XXXX"
+# vienen de OTRO banco: el trazador de una sola pagina no puede seguirlos,
+# porque en esa direccion -segun lo que haya en el registro del mapper- puede
+# estar cualquiera de seis bancos. Los que ponen "tabla" salen de una tabla
+# del despachador 0x408D, que va pegada detras de su `call` y esta declarada
+# como datos en el .nocode: el trazador tampoco puede seguirla.
+#
+# Los saltos y llamadas DENTRO del propio banco no se ponen aqui: los
+# encuentra tools/z80trace.py solo, siguiendo el flujo.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x600A   # p06:AFAA call
+0x6019   # p00:5BD7 call
+0x603F   # p00:5BEB call
+0x622B   # p00:424E call
+0x6266   # p00:4260 call
+0x631F   # p00:42B8 call
+0x6487   # p06:AF9E call
+0x648C   # p00:42AF call
+0x6506   # sin entrada: copia 0x200 bytes de la fuente (0x6F39) a la VRAM 0x2000 (p00:5941)
+0x6527   # p00:4257 call
+0x6555   # p00:4245 call
+0x6693   # p00:4269 call
+0x6703   # p04:6696 entrada 0 de la tabla de 0x6699 (despachador en 0x6696)
+0x670B   # p04:6696 entrada 1 de la tabla de 0x6699 (despachador en 0x6696)
+0x670E   # p04:6696 entrada 2 de la tabla de 0x6699 (despachador en 0x6696)
+0x6711   # p04:6696 entrada 3 de la tabla de 0x6699 (despachador en 0x6696)
+0x6714   # p04:6696 entrada 4 de la tabla de 0x6699 (despachador en 0x6696)
+0x671A   # p04:6696 entrada 5 de la tabla de 0x6699 (despachador en 0x6696)
+0x6792   # p00:433E call
+0x67A3   # p04:6696 entrada 6 de la tabla de 0x6699 (despachador en 0x6696)
+0x67C1   # p04:6696 entrada 7 de la tabla de 0x6699 (despachador en 0x6696)
+0x6802   # p04:6696 entrada 8 de la tabla de 0x6699 (despachador en 0x6696)
+0x6815   # p04:6696 entrada 14 de la tabla de 0x6699 (despachador en 0x6696)
+0x681A   # p04:6696 entrada 12 de la tabla de 0x6699 (despachador en 0x6696)
+0x681F   # p04:6696 entrada 9 de la tabla de 0x6699 (despachador en 0x6696)
+0x6893   # p04:6696 entrada 11 de la tabla de 0x6699 (despachador en 0x6696)
+0x68AC   # p04:6696 entrada 15 de la tabla de 0x6699 (despachador en 0x6696)
+0x68F0   # p00:4DAD call
+0x693B   # p00:4347 call
+0x695A   # p04:6696 entrada 16 de la tabla de 0x6699 (despachador en 0x6696)
+0x696C   # p04:6696 entrada 17 de la tabla de 0x6699 (despachador en 0x6696)
+0x6A41   # p04:6696 entrada 18 de la tabla de 0x6699 (despachador en 0x6696)
+0x6A4C   # p04:6696 entrada 19 de la tabla de 0x6699 (despachador en 0x6696)
+0x6A6A   # p04:6696 entrada 20 de la tabla de 0x6699 (despachador en 0x6696)
+0x6A8E   # p04:6696 entrada 21 de la tabla de 0x6699 (despachador en 0x6696)
+0x6ABB   # p04:6696 entrada 22 de la tabla de 0x6699 (despachador en 0x6696)
+0x6AD5   # p04:6696 entrada 23 de la tabla de 0x6699 (despachador en 0x6696)
+0x6B01   # p04:6696 entrada 24 de la tabla de 0x6699 (despachador en 0x6696)
+0x6B18   # p04:6696 entrada 25 de la tabla de 0x6699 (despachador en 0x6696)
+0x6B2D   # p00:439E call
+0x6B89   # p04:6696 entrada 26 de la tabla de 0x6699 (despachador en 0x6696)
+0x6B8F   # p04:6696 entrada 27 de la tabla de 0x6699 (despachador en 0x6696)
+0x6B95   # p04:6696 entrada 28 de la tabla de 0x6699 (despachador en 0x6696)
+0x6BAA   # p04:6696 entrada 29 de la tabla de 0x6699 (despachador en 0x6696)
+0x6BB8   # p04:6696 entrada 30 de la tabla de 0x6699 (despachador en 0x6696)
+0x6BD6   # p04:6696 entrada 31 de la tabla de 0x6699 (despachador en 0x6696)
+0x6C01   # p04:6696 entrada 32 de la tabla de 0x6699 (despachador en 0x6696)
+0x6C10   # p04:6696 entrada 33 de la tabla de 0x6699 (despachador en 0x6696)
+0x6C16   # p04:6696 entrada 34 de la tabla de 0x6699 (despachador en 0x6696)
+0x6C2E   # p04:6696 entrada 35 de la tabla de 0x6699 (despachador en 0x6696)
+0x6C40   # p04:6696 entrada 36 de la tabla de 0x6699 (despachador en 0x6696)
+0x6C64   # p04:6696 entrada 37 de la tabla de 0x6699 (despachador en 0x6696)
+0x6C7E   # p04:6696 entrada 38 de la tabla de 0x6699 (despachador en 0x6696)
+0x6C90   # p04:6696 entrada 39 de la tabla de 0x6699 (despachador en 0x6696)
+0x6CBF   # p04:6696 entrada 40 de la tabla de 0x6699 (despachador en 0x6696)
+0x6CC2   # p04:6696 entrada 41 de la tabla de 0x6699 (despachador en 0x6696)
+0x6CF2   # p04:6696 entrada 42 de la tabla de 0x6699 (despachador en 0x6696)
+0x6D29   # p04:6696 entrada 43 de la tabla de 0x6699 (despachador en 0x6696)
+0x6D55   # p04:6696 entrada 44 de la tabla de 0x6699 (despachador en 0x6696)
+0x6D67   # p04:6696 entrada 45 de la tabla de 0x6699 (despachador en 0x6696)
+0x6D83   # p04:6696 entrada 46 de la tabla de 0x6699 (despachador en 0x6696)
+0x6D97   # p04:6696 entrada 47 de la tabla de 0x6699 (despachador en 0x6696)
+0x6DA9   # p04:6696 entrada 48 de la tabla de 0x6699 (despachador en 0x6696)
+0x6DAF   # p04:6696 entrada 49 de la tabla de 0x6699 (despachador en 0x6696)
+0x6DC8   # p04:6696 entrada 50 de la tabla de 0x6699 (despachador en 0x6696)
+0x6DCE   # p04:6696 entrada 51 de la tabla de 0x6699 (despachador en 0x6696)
+0x6DE6   # p04:6696 entrada 52 de la tabla de 0x6699 (despachador en 0x6696)
+0x6E03   # p00:437A call
+0x6E13   # p04:6E06 entrada 0 de la tabla de 0x6E09 (despachador en 0x6E06)
+0x6E80   # p04:6E06 entrada 1 de la tabla de 0x6E09 (despachador en 0x6E06)
+0x6E86   # p04:6E06 entrada 2 de la tabla de 0x6E09 (despachador en 0x6E06)
+0x6E97   # p04:6E06 entrada 3 de la tabla de 0x6E09 (despachador en 0x6E06)
+0x6EBF   # p04:6E06 entrada 4 de la tabla de 0x6E09 (despachador en 0x6E06)

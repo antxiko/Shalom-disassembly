@@ -1,0 +1,5 @@
+# Tamanos de tabla puestos a mano: 'pNN 0xCALL n  # por que'.
+#
+# El trazador (tools/bancos.py) mide cada tabla hasta el destino mas bajo o
+# hasta el primer byte que ya sabe que es codigo; cuando eso se pasa, aqui.
+p06 0xAEFF 2   # 0xE338 solo vale 0 o 1 (p01:6779, 769B, 76B0, 7D6E, p02:9043); las palabras 2 y 3 apuntan al texto de p06:AF0A (p06:AF60)

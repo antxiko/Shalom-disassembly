@@ -1,0 +1,60 @@
+# Notas del banco 12
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x6000 0x6120 juego_de_cada_sala  un nibble por sala (L_43BB con 0xEB40, el alto la sala par): el juego de fichas 0-13; 576 nibbles, las salas pasan de 0x236 y el resto es 0; lo leen p00:47C6 (288 bytes)
+F 0x6000 16
+D 0x6120 0x6140 juegos_de_fichas  16 palabras: el descriptor de cada juego (L_43A4); los 14 primeros se usan y los dos ultimos apuntan al final, 0x64CE; lo leen p00:47C6 (32 bytes)
+F 0x6120 2
+D 0x6140 0x6181 juego_0  juego de fichas 0: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x6140 16
+D 0x6181 0x61C2 juego_1  juego de fichas 1: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x6181 16
+D 0x61C2 0x6203 juego_2  juego de fichas 2: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x61C2 16
+D 0x6203 0x6244 juego_3  juego de fichas 3: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x6203 16
+D 0x6244 0x6285 juego_4  juego de fichas 4: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x6244 16
+D 0x6285 0x62C6 juego_5  juego de fichas 5: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x6285 16
+D 0x62C6 0x6307 juego_6  juego de fichas 6: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x62C6 16
+D 0x6307 0x6348 juego_7  juego de fichas 7: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x6307 16
+D 0x6348 0x6389 juego_8  juego de fichas 8: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x6348 16
+D 0x6389 0x63CA juego_9  juego de fichas 9: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x6389 16
+D 0x63CA 0x640B juego_10  juego de fichas 10: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x63CA 16
+D 0x640B 0x644C juego_11  juego de fichas 11: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x640B 16
+D 0x644C 0x648D juego_12  juego de fichas 12: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x644C 16
+D 0x648D 0x64CE juego_13  juego de fichas 13: [0xE361, la primera ficha que no se pisa] y las 64 fichas del juego (indices de 0x64CE/0x6C06) que p00:47E8 copia a la VRAM 0x2080/0x0080; lo leen p00:47C6 (65 bytes)
+F 0x648D 16
+D 0x64CE 0x6C06 fichas_patrones  231 fichas de 8 x 8, los patrones (8 bytes cada una: p00:47F5); lo leen p00:47C6 (1848 bytes)
+F 0x64CE 8
+D 0x6C06 0x733E fichas_colores  231 fichas de 8 x 8, los colores (8 bytes cada una: p00:480D); lo leen p00:47C6 (1848 bytes)
+F 0x6C06 8
+D 0x733E 0x7360 graficos_p4856  17 palabras: graficos que p00:4856 (A - 1) pone en la VRAM 0x2D80; la tabla acaba donde empiezan los de p00:4875 (0x7360); lo leen p00:4856 (34 bytes)
+F 0x733E 2
+D 0x7360 0x73D0 graficos_7360  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:487E (112 bytes)
+F 0x7360 16
+D 0x73D0 0x73FD graficos_73D0  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4887 (45 bytes)
+F 0x73D0 16
+D 0x73FD 0x7750 graficos_73FD  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:488D (851 bytes)
+F 0x73FD 16
+D 0x7750 0x7990 graficos_de_cada_sala  un byte por sala (0x7750 + 0xEB40): la entrada de 0x7990; 576 bytes, las salas pasan de 0x236 y el resto es 0; lo leen p00:482F (576 bytes)
+F 0x7750 16
+D 0x7990 0x79B0 graficos_de_sala  16 palabras: 8 x [colores][patrones]: p00:4845 los pone en la VRAM 0x2280 y p00:4850 en la 0x0280, en dos tercios (L_5972); lo leen p00:482F (32 bytes)
+F 0x7990 2
+D 0x79B0 0x7B87 graficos_79B0  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 0 de la tabla 0x733E; lo leen p00:4856 (471 bytes)
+F 0x79B0 16
+D 0x7B87 0x7D5A graficos_7B87  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 1 de la tabla 0x733E; lo leen p00:4856 (467 bytes)
+F 0x7B87 16
+D 0x7D5A 0x7F73 graficos_7D5A  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 2 de la tabla 0x733E; lo leen p00:4856 (537 bytes)
+F 0x7D5A 16
+D 0x7F73 0x8000 graficos_7F73  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 3 de la tabla 0x733E (sigue en el banco 13, en 0x8000); lo leen p00:4856 (141 bytes)
+F 0x7F73 16
+# --- fin de los bloques de bloques.py ---

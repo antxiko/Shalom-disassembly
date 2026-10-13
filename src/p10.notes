@@ -1,0 +1,50 @@
+# Notas del banco 10
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x877B resto_8000  lo apuntan con el banco puesto p00:410D (0x8000), p00:4175 (0x8000), p10:9437 (0x8030), p10:999E (0x8030), p11:A25B (0x8030); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p00:410D, p00:4175, p10:9437, p10:999E, p11:A25B (1915 bytes)
+F 0x8000 16
+D 0x877B 0x8AA7 graficos_877B  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p09:6EF5 (812 bytes)
+F 0x877B 16
+D 0x8AA7 0x8C56 graficos_8AA7  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p09:6EFE (431 bytes)
+F 0x8AA7 16
+D 0x8C5C 0x8C60 saltos_8C5C  tabla de 2 palabras del despachador (call 0x408D en 0x8C59); lo leen L_40AB (4 bytes)
+F 0x8C5C 2
+D 0x8CCD 0x8CFF saltos_8CCD  tabla de 25 palabras del despachador (call 0x408D en 0x8CCA); lo leen L_40AB (50 bytes)
+F 0x8CCD 2
+D 0x8D6F 0x8DD8 resto_8D6F  lo apuntan con el banco puesto p10:8D1E (0x8D6F); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:8D1E (105 bytes)
+F 0x8D6F 16
+D 0x8DDE 0x8DF4 saltos_8DDE  tabla de 11 palabras del despachador (call 0x408D en 0x8DDB); lo leen L_40AB (22 bytes)
+F 0x8DDE 2
+D 0x8EEA 0x90E6 resto_8EEA  lo apuntan con el banco puesto p10:8DF8 (0x8EEA), p10:8E5E (0x8EEA), p10:8EDE (0x8EEA), p10:8E2E (0x8F2A), p10:8E6C (0x8F2A), p10:8E81 (0x8F2A); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:8DF8, p10:8E5E, p10:8EDE, p10:8E2E, p10:8E6C, p10:8E81 (508 bytes)
+F 0x8EEA 16
+D 0x90EC 0x90FC saltos_90EC  tabla de 8 palabras del despachador (call 0x408D en 0x90E9); lo leen L_40AB (16 bytes)
+F 0x90EC 2
+D 0x91B6 0x939E resto_91B6  lo apuntan con el banco puesto p10:9100 (0x91B6), p10:9129 (0x9244), p10:9106 (0x924E), p10:91A7 (0x9354); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:9100, p10:9129, p10:9106, p10:91A7 (488 bytes)
+F 0x91B6 16
+D 0x93A4 0x93AC saltos_93A4  tabla de 4 palabras del despachador (call 0x408D en 0x93A1); lo leen L_40AB (8 bytes)
+F 0x93A4 2
+D 0x94D1 0x968C resto_94D1  lo apuntan con el banco puesto p10:93B2 (0x94D1), p10:949F (0x954E), p10:93B8 (0x9587), p10:94AD (0x95ED), p10:93BE (0x9626); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:93B2, p10:949F, p10:93B8, p10:94AD, p10:93BE (443 bytes)
+F 0x94D1 16
+D 0x9692 0x969E saltos_9692  tabla de 6 palabras del despachador (call 0x408D en 0x968F); lo leen L_40AB (12 bytes)
+F 0x9692 2
+D 0x978A 0x98E4 resto_978A  lo apuntan con el banco puesto p10:9719 (0x978A); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:9719 (346 bytes)
+F 0x978A 16
+D 0x98EA 0x98F0 saltos_98EA  tabla de 3 palabras del despachador (call 0x408D en 0x98E7); lo leen L_40AB (6 bytes)
+F 0x98EA 2
+D 0x99AA 0x9B0D resto_99AA  lo apuntan con el banco puesto p10:9935 (0x99AA), p10:9975 (0x9AD3), p10:9981 (0x9AF0); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:9935, p10:9975, p10:9981 (355 bytes)
+F 0x99AA 16
+D 0x9B13 0x9B1B saltos_9B13  tabla de 4 palabras del despachador (call 0x408D en 0x9B10); lo leen L_40AB (8 bytes)
+F 0x9B13 2
+D 0x9BC6 0x9BD2 saltos_9BC6  tabla de 6 palabras del despachador (call 0x408D en 0x9BC3); lo leen L_40AB (12 bytes)
+F 0x9BC6 2
+D 0x9C49 0x9C58 resto_9C49  lo apuntan con el banco puesto p10:9C2A (0x9C49); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:9C2A (15 bytes)
+F 0x9C49 16
+D 0x9CC1 0x9E93 resto_9CC1  lo apuntan con el banco puesto p10:9B26 (0x9CC1), p10:9CA2 (0x9D9B); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:9B26, p10:9CA2 (466 bytes)
+F 0x9CC1 16
+D 0x9E99 0x9EA1 saltos_9E99  tabla de 4 palabras del despachador (call 0x408D en 0x9E96); lo leen L_40AB (8 bytes)
+F 0x9E99 2
+D 0x9F4A 0x9F52 saltos_9F4A  tabla de 4 palabras del despachador (call 0x408D en 0x9F47); lo leen L_40AB (8 bytes)
+F 0x9F4A 2
+D 0x9FC4 0x9FD3 resto_9FC4  lo apuntan con el banco puesto p10:9FA5 (0x9FC4); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:9FA5 (15 bytes)
+F 0x9FC4 16
+# --- fin de los bloques de bloques.py ---

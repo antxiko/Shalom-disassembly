@@ -1,0 +1,326 @@
+# Notas del banco 09
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x607C 0x6085 resto_607C  lo apuntan con el banco puesto p09:6072 (0x607C); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:6072 (9 bytes)
+F 0x607C 16
+D 0x60A4 0x60CC resto_60A4  lo apuntan con el banco puesto p09:6086 (0x60A4), p09:6096 (0x60AC); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:6086, p09:6096 (40 bytes)
+F 0x60A4 16
+D 0x613C 0x6162 cofres_9_salas  18 salas (palabras) y 0xFFFF: p09:60CC busca 0xEB40 en ellas y se queda con el orden; lo leen p09:60CC (38 bytes)
+F 0x613C 2
+D 0x6162 0x6186 cofres_9_listas  18 palabras: la lista de cada sala de 0x613C; lo leen p09:60CC (36 bytes)
+F 0x6162 2
+D 0x6186 0x618E cofres_9_6186  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x6186 16
+D 0x618E 0x6196 cofres_9_618E  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x618E 16
+D 0x6196 0x619E cofres_9_6196  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x6196 16
+D 0x619E 0x61A6 cofres_9_619E  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x619E 16
+D 0x61A6 0x61AE cofres_9_61A6  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x61A6 16
+D 0x61AE 0x61B6 cofres_9_61AE  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x61AE 16
+D 0x61B6 0x61BE cofres_9_61B6  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x61B6 16
+D 0x61BE 0x61C6 cofres_9_61BE  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x61BE 16
+D 0x61C6 0x61CE cofres_9_61C6  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x61C6 16
+D 0x61CE 0x61D6 cofres_9_61CE  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x61CE 16
+D 0x61D6 0x61DE cofres_9_61D6  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x61D6 16
+D 0x61DE 0x61ED cofres_9_61DE  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (15 bytes)
+F 0x61DE 16
+D 0x61ED 0x61F5 cofres_9_61ED  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x61ED 16
+D 0x61F5 0x61FD cofres_9_61F5  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x61F5 16
+D 0x61FD 0x6213 cofres_9_61FD  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (22 bytes)
+F 0x61FD 16
+D 0x6213 0x621B cofres_9_6213  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x6213 16
+D 0x621B 0x6223 cofres_9_621B  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x621B 16
+D 0x6223 0x622B cofres_9_6223  registros hasta 0xFF que recorre p09:610B; lo leen p09:60CC (8 bytes)
+F 0x6223 16
+D 0x6291 0x63A5 cosas_9_salas  137 salas (palabras) y 0xFFFF: p09:622B busca 0xEB40 en ellas y se queda con el orden; lo leen p09:622B (276 bytes)
+F 0x6291 2
+D 0x63A5 0x64B7 cosas_9_listas  137 palabras: la lista de cada sala de 0x6291; lo leen p09:622B (274 bytes)
+F 0x63A5 2
+D 0x64B7 0x64BB cosas_9_64B7  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x64B7 16
+D 0x64BB 0x64C2 cosas_9_64BB  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x64BB 16
+D 0x64C2 0x64C6 cosas_9_64C2  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x64C2 16
+D 0x64C6 0x64CD cosas_9_64C6  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x64C6 16
+D 0x64CD 0x64DD cosas_9_64CD  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (16 bytes)
+F 0x64CD 16
+D 0x64DD 0x64E4 cosas_9_64DD  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x64DD 16
+D 0x64E4 0x64E8 cosas_9_64E4  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x64E4 16
+D 0x64E8 0x64EC cosas_9_64E8  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x64E8 16
+D 0x64EC 0x64F3 cosas_9_64EC  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x64EC 16
+D 0x64F3 0x64FA cosas_9_64F3  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x64F3 16
+D 0x64FA 0x6507 cosas_9_64FA  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (13 bytes)
+F 0x64FA 16
+D 0x6507 0x6517 cosas_9_6507  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (16 bytes)
+F 0x6507 16
+D 0x6517 0x651C cosas_9_6517  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (5 bytes)
+F 0x6517 16
+D 0x651C 0x6523 cosas_9_651C  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x651C 16
+D 0x6523 0x6527 cosas_9_6523  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x6523 16
+D 0x6527 0x652A cosas_9_6527  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (3 bytes)
+F 0x6527 16
+D 0x652A 0x652C resto_652A  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (2 bytes)
+F 0x652A 16
+D 0x652C 0x653F cosas_9_652C  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (19 bytes)
+F 0x652C 16
+D 0x653F 0x654C cosas_9_653F  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (13 bytes)
+F 0x653F 16
+D 0x654C 0x6556 cosas_9_654C  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (10 bytes)
+F 0x654C 16
+D 0x6556 0x655A cosas_9_6556  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x6556 16
+D 0x655A 0x6567 cosas_9_655A  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (13 bytes)
+F 0x655A 16
+D 0x6567 0x656F cosas_9_6567  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (8 bytes)
+F 0x6567 16
+D 0x656F 0x657C cosas_9_656F  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (13 bytes)
+F 0x656F 16
+D 0x657C 0x6581 cosas_9_657C  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (5 bytes)
+F 0x657C 16
+D 0x6581 0x6586 cosas_9_6581  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (5 bytes)
+F 0x6581 16
+D 0x6586 0x658B cosas_9_6586  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (5 bytes)
+F 0x6586 16
+D 0x658B 0x6590 cosas_9_658B  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (5 bytes)
+F 0x658B 16
+D 0x6590 0x6595 cosas_9_6590  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (5 bytes)
+F 0x6590 16
+D 0x6595 0x659A cosas_9_6595  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (5 bytes)
+F 0x6595 16
+D 0x659A 0x659F cosas_9_659A  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (5 bytes)
+F 0x659A 16
+D 0x659F 0x65AC cosas_9_659F  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (13 bytes)
+F 0x659F 16
+D 0x65AC 0x65BD cosas_9_65AC  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (17 bytes)
+F 0x65AC 16
+D 0x65BD 0x65CE cosas_9_65BD  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (17 bytes)
+F 0x65BD 16
+D 0x65CE 0x65DA cosas_9_65CE  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (12 bytes)
+F 0x65CE 16
+D 0x65DA 0x65DE cosas_9_65DA  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x65DA 16
+D 0x65DE 0x65E2 cosas_9_65DE  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x65DE 16
+D 0x65E2 0x65E6 cosas_9_65E2  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x65E2 16
+D 0x65E6 0x65EA cosas_9_65E6  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x65E6 16
+D 0x65EA 0x65EF cosas_9_65EA  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (5 bytes)
+F 0x65EA 16
+D 0x65EF 0x660C cosas_9_65EF  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (29 bytes)
+F 0x65EF 16
+D 0x660C 0x662A cosas_9_660C  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (30 bytes)
+F 0x660C 16
+D 0x662A 0x6651 cosas_9_662A  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (39 bytes)
+F 0x662A 16
+D 0x6651 0x6668 cosas_9_6651  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (23 bytes)
+F 0x6651 16
+D 0x6668 0x6675 cosas_9_6668  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (13 bytes)
+F 0x6668 16
+D 0x6675 0x6686 cosas_9_6675  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (17 bytes)
+F 0x6675 16
+D 0x6686 0x6693 cosas_9_6686  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (13 bytes)
+F 0x6686 16
+D 0x6693 0x669A cosas_9_6693  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x6693 16
+D 0x669A 0x66A1 cosas_9_669A  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x669A 16
+D 0x66A1 0x66A5 cosas_9_66A1  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x66A1 16
+D 0x66A5 0x66AC cosas_9_66A5  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x66A5 16
+D 0x66AC 0x66B5 cosas_9_66AC  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (9 bytes)
+F 0x66AC 16
+D 0x66B5 0x66BC cosas_9_66B5  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x66B5 16
+D 0x66BC 0x66C3 cosas_9_66BC  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x66BC 16
+D 0x66C3 0x66CA cosas_9_66C3  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x66C3 16
+D 0x66CA 0x66D1 cosas_9_66CA  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x66CA 16
+D 0x66D1 0x66DA cosas_9_66D1  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (9 bytes)
+F 0x66D1 16
+D 0x66DA 0x66E7 cosas_9_66DA  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (13 bytes)
+F 0x66DA 16
+D 0x66E7 0x66EE cosas_9_66E7  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x66E7 16
+D 0x66EE 0x66F5 cosas_9_66EE  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x66EE 16
+D 0x66F5 0x66FC cosas_9_66F5  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x66F5 16
+D 0x66FC 0x6703 cosas_9_66FC  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (7 bytes)
+F 0x66FC 16
+D 0x6703 0x6707 cosas_9_6703  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x6703 16
+D 0x6707 0x670B cosas_9_6707  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x6707 16
+D 0x670B 0x670F cosas_9_670B  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x670B 16
+D 0x670F 0x6713 cosas_9_670F  registros hasta 0xFF que recorre p09:626A; lo leen p09:622B (4 bytes)
+F 0x670F 16
+D 0x6713 0x6735 dibujos_p443D  17 palabras: el dibujo de 0xE368 - 1 (p00:444C); todas apuntan a 0x6735; lo leen p00:443D (34 bytes)
+F 0x6713 2
+D 0x6735 0x675B dibujo_6735  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (38 bytes)
+F 0x6735 4
+D 0x675B 0x676D dibujo_675B  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (18 bytes)
+F 0x675B 4
+D 0x676D 0x6787 dibujo_676D  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (26 bytes)
+F 0x676D 4
+D 0x6787 0x6791 dibujo_6787  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (10 bytes)
+F 0x6787 4
+D 0x6791 0x67B7 dibujo_6791  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (38 bytes)
+F 0x6791 4
+D 0x67B7 0x67DD dibujo_67B7  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (38 bytes)
+F 0x67B7 4
+D 0x67DD 0x67E3 dibujo_67DD  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x67DD 4
+D 0x67E3 0x67E9 dibujo_67E3  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x67E3 4
+D 0x67E9 0x67F7 dibujo_67E9  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (14 bytes)
+F 0x67E9 4
+D 0x67F7 0x6811 dibujo_67F7  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (26 bytes)
+F 0x67F7 4
+D 0x6811 0x6823 dibujo_6811  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (18 bytes)
+F 0x6811 4
+D 0x6823 0x6855 dibujo_6823  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (50 bytes)
+F 0x6823 4
+D 0x6855 0x6897 dibujo_6855  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (66 bytes)
+F 0x6855 4
+D 0x6897 0x689D dibujo_6897  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6897 4
+D 0x689D 0x68A3 dibujo_689D  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x689D 4
+D 0x68A3 0x68BD dibujo_68A3  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (26 bytes)
+F 0x68A3 4
+D 0x68BD 0x68C3 dibujo_68BD  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x68BD 4
+D 0x68C3 0x68C9 dibujo_68C3  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x68C3 4
+D 0x68C9 0x68CF dibujo_68C9  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x68C9 4
+D 0x68CF 0x68D5 dibujo_68CF  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x68CF 4
+D 0x68D5 0x68FF dibujo_68D5  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (42 bytes)
+F 0x68D5 4
+D 0x68FF 0x6931 dibujo_68FF  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (50 bytes)
+F 0x68FF 4
+D 0x6931 0x6937 dibujo_6931  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6931 4
+D 0x6937 0x693D dibujo_6937  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6937 4
+D 0x693D 0x6943 dibujo_693D  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x693D 4
+D 0x6943 0x6969 dibujo_6943  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (38 bytes)
+F 0x6943 4
+D 0x6969 0x696F dibujo_6969  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6969 4
+D 0x696F 0x6975 dibujo_696F  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x696F 4
+D 0x6975 0x697B dibujo_6975  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6975 4
+D 0x697B 0x6981 dibujo_697B  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x697B 4
+D 0x6981 0x6987 dibujo_6981  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6981 4
+D 0x6987 0x6991 dibujo_6987  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (10 bytes)
+F 0x6987 4
+D 0x6991 0x6997 dibujo_6991  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6991 4
+D 0x6997 0x69A1 dibujo_6997  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (10 bytes)
+F 0x6997 4
+D 0x69A1 0x69AF dibujo_69A1  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (14 bytes)
+F 0x69A1 4
+D 0x69AF 0x69B5 dibujo_69AF  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x69AF 4
+D 0x69B5 0x69BB dibujo_69B5  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x69B5 4
+D 0x69BB 0x69DD dibujo_69BB  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (34 bytes)
+F 0x69BB 4
+D 0x69DD 0x6A0F dibujo_69DD  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (50 bytes)
+F 0x69DD 4
+D 0x6A0F 0x6A41 dibujo_6A0F  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (50 bytes)
+F 0x6A0F 4
+D 0x6A41 0x6A67 dibujo_6A41  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (38 bytes)
+F 0x6A41 4
+D 0x6A67 0x6A8D dibujo_6A67  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (38 bytes)
+F 0x6A67 4
+D 0x6A8D 0x6AB3 dibujo_6A8D  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (38 bytes)
+F 0x6A8D 4
+D 0x6AB3 0x6AB9 dibujo_6AB3  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6AB3 4
+D 0x6AB9 0x6ABF dibujo_6AB9  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6AB9 4
+D 0x6ABF 0x6AC5 dibujo_6ABF  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6ABF 4
+D 0x6AC5 0x6ACB dibujo_6AC5  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6AC5 4
+D 0x6ACB 0x6AD1 dibujo_6ACB  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6ACB 4
+D 0x6AD1 0x6B1B dibujo_6AD1  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (74 bytes)
+F 0x6AD1 4
+D 0x6B1B 0x6B25 dibujo_6B1B  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (10 bytes)
+F 0x6B1B 4
+D 0x6B25 0x6B2F dibujo_6B25  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (10 bytes)
+F 0x6B25 4
+D 0x6B2F 0x6B35 dibujo_6B2F  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2: uno de los 52 que van seguidos de 0x6735 a 0x6B35 (el ultimo acaba justo donde empieza el codigo); lo leen p00:44B8 (6 bytes)
+F 0x6B2F 4
+D 0x6B3F 0x6B51 saltos_6B3F  tabla de 9 palabras del despachador (call 0x408D en 0x6B3C); lo leen L_40AB (18 bytes)
+F 0x6B3F 2
+D 0x6BCA 0x6BDC saltos_6BCA  tabla de 9 palabras del despachador (call 0x408D en 0x6BC7); lo leen L_40AB (18 bytes)
+F 0x6BCA 2
+D 0x6C29 0x6C6D saltos_6C29  tabla de 34 palabras del despachador (call 0x408D en 0x6C26); lo leen L_40AB (68 bytes)
+F 0x6C29 2
+D 0x6D6B 0x6D6F resto_6D6B  lo apuntan con el banco puesto p09:6D4F (0x6D6B); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:6D4F (4 bytes)
+F 0x6D6B 16
+D 0x6E18 0x6E2A resto_6E18  lo apuntan con el banco puesto p09:6DC5 (0x6E18), p09:6DC0 (0x6E1E), p09:6DCA (0x6E24); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:6DC5, p09:6DC0, p09:6DCA (18 bytes)
+F 0x6E18 16
+D 0x6F57 0x6F8B resto_6F57  lo apuntan con el banco puesto p09:6F3F (0x6F57); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:6F3F (52 bytes)
+F 0x6F57 16
+D 0x6FA2 0x6FBE resto_6FA2  lo apuntan con el banco puesto p09:6F2D (0x6FA2); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:6F2D (28 bytes)
+F 0x6FA2 16
+D 0x6FF9 0x7009 resto_6FF9  lo apuntan con el banco puesto p09:7016 (0x6FF9); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:7016 (16 bytes)
+F 0x6FF9 16
+D 0x7050 0x7053 resto_7050  lo apuntan con el banco puesto p09:703C (0x7050); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:703C (3 bytes)
+F 0x7050 16
+D 0x7077 0x707F saltos_7077  tabla de 4 palabras del despachador (call 0x408D en 0x7074); lo leen L_40AB (8 bytes)
+F 0x7077 2
+D 0x70AE 0x710E resto_70AE  lo apuntan con el banco puesto p09:7082 (0x70AE); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:7082 (96 bytes)
+F 0x70AE 16
+D 0x7133 0x713B saltos_7133  tabla de 4 palabras del despachador (call 0x408D en 0x7130); lo leen L_40AB (8 bytes)
+F 0x7133 2
+D 0x713E 0x7146 saltos_713E  tabla de 4 palabras del despachador (call 0x408D en 0x713B); lo leen L_40AB (8 bytes)
+F 0x713E 2
+D 0x72CD 0x72ED resto_72CD  lo apuntan con el banco puesto p09:7298 (0x72CD), p09:72A8 (0x72CD), p09:72B6 (0x72DD), p09:72C5 (0x72DD); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:7298, p09:72A8, p09:72B6, p09:72C5 (32 bytes)
+F 0x72CD 16
+D 0x72ED 0x755D graficos_72ED  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p09:6D25 (624 bytes)
+F 0x72ED 16
+D 0x755D 0x7C5E resto_755D  lo apuntan con el banco puesto p10:8EB3 (0x7820), p11:AAF9 (0x7820); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:8EB3, p11:AAF9 (1793 bytes)
+F 0x755D 16
+D 0x7C5E 0x7CBD graficos_7C5E  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p09:6F28 (95 bytes)
+F 0x7C5E 16
+D 0x7CBD 0x8000 resto_7CBD  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (835 bytes)
+F 0x7CBD 16
+# --- fin de los bloques de bloques.py ---

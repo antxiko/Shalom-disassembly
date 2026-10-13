@@ -1,0 +1,96 @@
+# Notas del banco 02
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x8001 partida_8000  el ultimo byte de `ld a,(0xE3F3)` de p01:7FFE, que empieza en el banco 1; lo leen p01:7FFE (1 bytes)
+F 0x8000 1
+D 0x828A 0x8292 resto_828A  lo apuntan con el banco puesto p02:827F (0x828A); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p02:827F (8 bytes)
+F 0x828A 16
+D 0x858C 0x859C resto_858C  lo apuntan con el banco puesto p02:84F8 (0x858C); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p02:84F8 (16 bytes)
+F 0x858C 16
+D 0x85A4 0x85BC saltos_85A4  tabla de 12 palabras del despachador (call 0x408D en 0x85A1); lo leen L_40AB (24 bytes)
+F 0x85A4 2
+D 0x871C 0x8734 saltos_871C  tabla de 12 palabras del despachador (call 0x408D en 0x8719); lo leen L_40AB (24 bytes)
+F 0x871C 2
+D 0x88DC 0x88E0 saltos_88DC  tabla de 2 palabras del despachador (call 0x408D en 0x88D9); lo leen L_40AB (4 bytes)
+F 0x88DC 2
+D 0x8C83 0x8C89 resto_8C83  lo apuntan con el banco puesto p02:8C6E (0x8C83); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p02:8C6E (6 bytes)
+F 0x8C83 16
+D 0x8CED 0x8CF5 resto_8CED  lo apuntan con el banco puesto p02:8CE2 (0x8CED); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p02:8CE2 (8 bytes)
+F 0x8CED 16
+D 0x9126 0x912E resto_9126  lo apuntan con el banco puesto p02:8CF9 (0x9126); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p02:8CF9 (8 bytes)
+F 0x9126 16
+D 0x9135 0x9189 saltos_9135  tabla de 42 palabras del despachador (call 0x408D en 0x9132); lo leen L_40AB (84 bytes)
+F 0x9135 2
+D 0x9194 0x919A saltos_9194  tabla de 3 palabras del despachador (call 0x408D en 0x9191); lo leen L_40AB (6 bytes)
+F 0x9194 2
+D 0x920C 0x9216 saltos_920C  tabla de 5 palabras del despachador (call 0x408D en 0x9209); lo leen L_40AB (10 bytes)
+F 0x920C 2
+D 0x9249 0x926C resto_9249  lo apuntan con el banco puesto p02:921F (0x9249), p02:9233 (0x9257); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p02:921F, p02:9233 (35 bytes)
+F 0x9249 16
+D 0x92D6 0x92DA saltos_92D6  tabla de 2 palabras del despachador (call 0x408D en 0x92D3); lo leen L_40AB (4 bytes)
+F 0x92D6 2
+D 0x9310 0x9315 resto_9310  lo apuntan con el banco puesto p02:92EA (0x9310), p02:92FD (0x9312); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p02:92EA, p02:92FD (5 bytes)
+F 0x9310 16
+D 0x932C 0x9332 saltos_932C  tabla de 3 palabras del despachador (call 0x408D en 0x9329); lo leen L_40AB (6 bytes)
+F 0x932C 2
+D 0x9388 0x9390 saltos_9388  tabla de 4 palabras del despachador (call 0x408D en 0x9385); lo leen L_40AB (8 bytes)
+F 0x9388 2
+D 0x93EE 0x93F6 saltos_93EE  tabla de 4 palabras del despachador (call 0x408D en 0x93EB); lo leen L_40AB (8 bytes)
+F 0x93EE 2
+D 0x945C 0x9464 saltos_945C  tabla de 4 palabras del despachador (call 0x408D en 0x9459); lo leen L_40AB (8 bytes)
+F 0x945C 2
+D 0x94BE 0x94E4 dibujo_94BE  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p02:94AC (38 bytes)
+F 0x94BE 4
+D 0x94E4 0x950A dibujo_94E4  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p02:9494 (38 bytes)
+F 0x94E4 4
+D 0x950A 0x9510 dibujo_950A  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p02:947D (6 bytes)
+F 0x950A 4
+D 0x9516 0x951A saltos_9516  tabla de 2 palabras del despachador (call 0x408D en 0x9513); lo leen L_40AB (4 bytes)
+F 0x9516 2
+D 0x9551 0x9557 saltos_9551  tabla de 3 palabras del despachador (call 0x408D en 0x954E); lo leen L_40AB (6 bytes)
+F 0x9551 2
+D 0x95C0 0x95DE saltos_95C0  tabla de 15 palabras del despachador (call 0x408D en 0x95BD); lo leen L_40AB (30 bytes)
+F 0x95C0 2
+D 0x973C 0x9746 saltos_973C  tabla de 5 palabras del despachador (call 0x408D en 0x9739); lo leen L_40AB (10 bytes)
+F 0x973C 2
+D 0x97A1 0x97AB saltos_97A1  tabla de 5 palabras del despachador (call 0x408D en 0x979E); lo leen L_40AB (10 bytes)
+F 0x97A1 2
+D 0x9806 0x980A saltos_9806  tabla de 2 palabras del despachador (call 0x408D en 0x9803); lo leen L_40AB (4 bytes)
+F 0x9806 2
+D 0x982B 0x9831 dibujo_982B  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p02:9810 (6 bytes)
+F 0x982B 4
+D 0x9837 0x9841 saltos_9837  tabla de 5 palabras del despachador (call 0x408D en 0x9834); lo leen L_40AB (10 bytes)
+F 0x9837 2
+D 0x9892 0x989C saltos_9892  tabla de 5 palabras del despachador (call 0x408D en 0x988F); lo leen L_40AB (10 bytes)
+F 0x9892 2
+D 0x98ED 0x98F3 saltos_98ED  tabla de 3 palabras del despachador (call 0x408D en 0x98EA); lo leen L_40AB (6 bytes)
+F 0x98ED 2
+D 0x9941 0x9947 saltos_9941  tabla de 3 palabras del despachador (call 0x408D en 0x993E); lo leen L_40AB (6 bytes)
+F 0x9941 2
+D 0x997C 0x9982 saltos_997C  tabla de 3 palabras del despachador (call 0x408D en 0x9979); lo leen L_40AB (6 bytes)
+F 0x997C 2
+D 0x99D5 0x99D9 saltos_99D5  tabla de 2 palabras del despachador (call 0x408D en 0x99D2); lo leen L_40AB (4 bytes)
+F 0x99D5 2
+D 0x9A58 0x9A62 saltos_9A58  tabla de 5 palabras del despachador (call 0x408D en 0x9A55); lo leen L_40AB (10 bytes)
+F 0x9A58 2
+D 0x9A81 0x9A85 resto_9A81  lo apuntan con el banco puesto p02:9A76 (0x9A81); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p02:9A76 (4 bytes)
+F 0x9A81 16
+D 0x9AF1 0x9AFB saltos_9AF1  tabla de 5 palabras del despachador (call 0x408D en 0x9AEE); lo leen L_40AB (10 bytes)
+F 0x9AF1 2
+D 0x9B56 0x9B60 saltos_9B56  tabla de 5 palabras del despachador (call 0x408D en 0x9B53); lo leen L_40AB (10 bytes)
+F 0x9B56 2
+D 0x9BC3 0x9BCD dibujo_9BC3  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p02:9BB5 (10 bytes)
+F 0x9BC3 4
+D 0x9C04 0x9C0A dibujo_9C04  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p02:9BFB (6 bytes)
+F 0x9C04 4
+D 0x9C19 0x9C1F dibujo_9C19  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p02:9C10 (6 bytes)
+F 0x9C19 4
+D 0x9C5F 0x9C65 dibujo_9C5F  dibujo (L_44B8): [filas][columnas] y 4 fichas por celda de 2 x 2; lo leen p02:9C56 (6 bytes)
+F 0x9C5F 4
+D 0x9C6B 0x9C73 saltos_9C6B  tabla de 4 palabras del despachador (call 0x408D en 0x9C68); lo leen L_40AB (8 bytes)
+F 0x9C6B 2
+D 0x9CB0 0x9CB8 saltos_9CB0  tabla de 4 palabras del despachador (call 0x408D en 0x9CAD); lo leen L_40AB (8 bytes)
+F 0x9CB0 2
+D 0x9D1E 0x9DF0 saltos_9D1E  tabla de 105 palabras del despachador (call 0x408D en 0x9D1B); lo leen L_40AB (210 bytes)
+F 0x9D1E 2
+# --- fin de los bloques de bloques.py ---

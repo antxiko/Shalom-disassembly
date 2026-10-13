@@ -1,0 +1,180 @@
+# Puntos de entrada del banco 0 (se ejecuta en 0x4000).
+#
+# Cada uno lleva la instruccion que lo justifica. Los que ponen "pNN:XXXX"
+# vienen de OTRO banco: el trazador de una sola pagina no puede seguirlos,
+# porque en esa direccion -segun lo que haya en el registro del mapper- puede
+# estar cualquiera de seis bancos. Los que ponen "tabla" salen de una tabla
+# del despachador 0x408D, que va pegada detras de su `call` y esta declarada
+# como datos en el .nocode: el trazador tampoco puede seguirla.
+#
+# Los saltos y llamadas DENTRO del propio banco no se ponen aqui: los
+# encuentra tools/z80trace.py solo, siguiendo el flujo.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x402E   # p21:607D call
+0x4034   # p21:6080 call
+0x403A   # p21:60B9 call
+0x4040   # p21:60B1 call
+0x4046   # p14:BB32 call
+0x404C   # gancho de interrupcion H.KEYI: escribe 0xC3 en 0xFD9A y esta direccion en 0xFD9B (p00:41E2-p00:41EA)
+0x40A0   # p02:84FC call
+0x40B5   # p02:9D1B call
+0x413D   # p00:4E6D entrada 0 de la tabla de 0x4E70 (despachador en 0x4E6D)
+0x4143   # p00:4E6D entrada 1 de la tabla de 0x4E70 (despachador en 0x4E6D)
+0x4149   # p00:4E6D entrada 2 de la tabla de 0x4E70 (despachador en 0x4E6D)
+0x415B   # p09:606B jp
+0x41A3   # cabecera AB: INIT
+0x41B5   # gancho H.STKE: INIT escribe `rst 30h`, el slot y esta direccion en 0xFEDA (p00:41A7-p00:41B1)
+0x4242   # p01:64F8 call
+0x424B   # p01:6506 call
+0x4254   # p01:6516 call
+0x425D   # p01:651E call
+0x4266   # p01:65A4 call
+0x426F   # p01:65E4 call
+0x4278   # p01:660B call
+0x4281   # p01:6631 jp
+0x428A   # p02:92DA call
+0x4297   # p01:74A6 call
+0x42A6   # p01:7B4D jp
+0x42BE   # p01:67D4 call
+0x42C7   # p01:67A4 call
+0x42D0   # p01:67AD call
+0x42E2   # p11:B91C call
+0x42EF   # p01:653B call
+0x42F8   # p01:6542 call
+0x4301   # p01:6545 call
+0x430A   # p11:BCC6 call
+0x4313   # p11:BA3B call
+0x431D   # sin entrada: pasarela 4-5-6 -> p00:4B1A -> 9-10-11, como las de al lado
+0x4326   # p09:6FEB call
+0x432F   # p09:6E58 call
+0x4335   # p09:6FE5 call
+0x433B   # p09:6E84 call
+0x4344   # p09:6F36 call
+0x4356   # p11:AF49 call
+0x435F   # p09:71AA call
+0x4365   # p11:BC7C call
+0x436E   # p11:BCC9 call
+0x4377   # p01:6554 call
+0x4380   # p04:6E13 call
+0x4389   # p01:6D6C call
+0x4392   # p02:9CC2 call
+0x439B   # p09:6CB8 call
+0x43A4   # p07:8B2C call
+0x43AD   # p01:6350 call cc
+0x43D0   # p11:B55A call
+0x4462   # p04:68A3 call
+0x4468   # p09:6E10 call
+0x44B4   # sin entrada: DE y BC de (HL) y cae en p00:44B8 (la copia de 2x2 fichas)
+0x4503   # p02:926C call
+0x452D   # p09:6E61 jp
+0x4560   # p11:A95F call
+0x4565   # p11:B7DC call
+0x456A   # p09:6CAC call
+0x456F   # p11:B64F call
+0x4574   # p09:6E13 call
+0x457E   # p03:BB73 call
+0x4583   # sin entrada: pide el sonido 1 (p00:415B), como las de al lado
+0x458D   # p04:603F call
+0x4592   # p03:B450 call
+0x4597   # p08:A328 call
+0x459C   # p11:A7B5 call
+0x45A1   # p03:B77A call
+0x45A6   # p09:6F01 call
+0x45AB   # p09:7058 call
+0x45B0   # p02:9C36 call
+0x45B5   # p09:700E call
+0x45BA   # sin entrada: pide el sonido 0x24
+0x45BF   # p11:B681 call
+0x45C4   # p02:9987 call
+0x45C9   # p09:6CEC call
+0x45E1   # p03:BB99 call
+0x47C6   # p01:67CB call
+0x482F   # p01:67CE call
+0x4869   # p04:68A0 call
+0x486F   # p09:6E0D call
+0x4893   # p10:8CA4 call
+0x48D0   # p00:48BB entrada 0 de la tabla de 0x48BE (despachador en 0x48BB)
+0x48D6   # p00:48BB entrada 1 de la tabla de 0x48BE (despachador en 0x48BB)
+0x48DC   # p00:48BB entrada 2 de la tabla de 0x48BE (despachador en 0x48BB)
+0x48E2   # p00:48BB entrada 3 de la tabla de 0x48BE (despachador en 0x48BB)
+0x48E8   # p00:48BB entrada 4 de la tabla de 0x48BE (despachador en 0x48BB)
+0x493F   # p00:48BB entrada 5 de la tabla de 0x48BE (despachador en 0x48BB)
+0x4954   # p00:48BB entrada 6 de la tabla de 0x48BE (despachador en 0x48BB)
+0x4972   # p00:48BB entrada 7 de la tabla de 0x48BE (despachador en 0x48BB)
+0x4999   # p00:48BB entrada 8 de la tabla de 0x48BE (despachador en 0x48BB)
+0x49F0   # p11:B827 call
+0x4A29   # p11:B996 call
+0x4A74   # p11:B9C3 call
+0x4A8C   # p01:679B call
+0x4CC2   # p04:6648 jp
+0x4CD4   # p04:6E8C call
+0x4D28   # p09:6DB6 call
+0x4D6C   # p09:6D1C call
+0x4D87   # p09:6E79 call
+0x4D9B   # p09:6F3C call
+0x4DAA   # p09:6C7B call
+0x4DFD   # p09:6FC2 call
+0x4E0C   # p00:4E05 entrada 0 de la tabla de 0x4E08 (despachador en 0x4E05)
+0x4E4E   # p00:4E05 entrada 1 de la tabla de 0x4E08 (despachador en 0x4E05)
+0x514B   # p01:67D1 call
+0x5245   # p00:522E entrada 0 de la tabla de 0x5231 (despachador en 0x522E)
+0x52DE   # p00:522E entrada 1 de la tabla de 0x5231 (despachador en 0x522E)
+0x52F1   # p00:522E entrada 2 de la tabla de 0x5231 (despachador en 0x522E)
+0x5390   # p00:522E entrada 3 de la tabla de 0x5231 (despachador en 0x522E)
+0x53DE   # p00:522E entrada 4 de la tabla de 0x5231 (despachador en 0x522E)
+0x5401   # p00:522E entrada 5 de la tabla de 0x5231 (despachador en 0x522E)
+0x55BA   # p00:522E entrada 6 de la tabla de 0x5231 (despachador en 0x522E)
+0x55E5   # p00:522E entrada 8 de la tabla de 0x5231 (despachador en 0x522E)
+0x5641   # p00:522E entrada 9 de la tabla de 0x5231 (despachador en 0x522E)
+0x567A   # p09:6E44 call
+0x56DB   # p09:6E47 call
+0x5774   # p09:6E64 call
+0x57AE   # p09:6E67 call
+0x58A7   # p11:BA33 call
+0x58BF   # p09:6FE2 call
+0x58D4   # p09:6EB8 call
+0x58EA   # p01:7CAB jp
+0x58FF   # p09:6FE8 call
+0x590D   # p02:9687 call
+0x591B   # p09:6FDC call
+0x5937   # sin entrada: SETRD y C = puerto de lectura del VDP (la pareja de p00:592B)
+0x5945   # p04:650F call
+0x594A   # sin entrada: B = 3 y cae en p00:594D (copia a los tres tercios)
+0x595D   # p04:651A call
+0x5972   # p04:68FA call
+0x5986   # p09:6F28 call
+0x598A   # sin entrada: B = 3 y cae en p00:598C
+0x599A   # p09:6FDF call
+0x59AE   # p04:6D67 call
+0x59D9   # p01:6DB9 call
+0x5A2E   # sin entrada: C = 1 (espejo) y salta a p00:59FB
+0x5A6E   # p01:65F6 call
+0x5A97   # p00:5A80 entrada 0 de la tabla de 0x5A83 (despachador en 0x5A80)
+0x5AD9   # p00:5A80 entrada 1 de la tabla de 0x5A83 (despachador en 0x5A80)
+0x5AFA   # p00:5A80 entrada 2 de la tabla de 0x5A83 (despachador en 0x5A80)
+0x5B4A   # p00:5A80 entrada 3 de la tabla de 0x5A83 (despachador en 0x5A80)
+0x5BC0   # p00:5A80 entrada 4 de la tabla de 0x5A83 (despachador en 0x5A80)
+0x5BD3   # p00:5A80 entrada 5 de la tabla de 0x5A83 (despachador en 0x5A80)
+0x5BD4   # p00:5A80 entrada 6 de la tabla de 0x5A83 (despachador en 0x5A80)
+0x5BF6   # p00:5A80 entrada 7 de la tabla de 0x5A83 (despachador en 0x5A80)
+0x5C11   # p00:5A80 entrada 8 de la tabla de 0x5A83 (despachador en 0x5A80)
+0x5C41   # p00:5A80 entrada 9 de la tabla de 0x5A83 (despachador en 0x5A80)
+0x5D64   # p01:7350 call
+0x5D6A   # p08:B1D1 call
+0x5D80   # p01:734A call
+0x5D89   # p08:B1D8 call
+0x5D95   # p00:5D8A entrada 0 de la tabla de 0x5D8D (despachador en 0x5D8A)
+0x5D9A   # p00:5D8A entrada 1 de la tabla de 0x5D8D (despachador en 0x5D8A)
+0x5DA0   # p00:5D8A entrada 2 de la tabla de 0x5D8D (despachador en 0x5D8A)
+0x5DA5   # p00:5D8A entrada 3 de la tabla de 0x5D8D (despachador en 0x5D8A)
+0x5DAB   # p08:B9E4 call
+0x5DB7   # p00:5DAC entrada 0 de la tabla de 0x5DAF (despachador en 0x5DAC)
+0x5DBE   # p00:5DAC entrada 1 de la tabla de 0x5DAF (despachador en 0x5DAC)
+0x5DC5   # p00:5DAC entrada 2 de la tabla de 0x5DAF (despachador en 0x5DAC)
+0x5DCC   # p00:5DAC entrada 3 de la tabla de 0x5DAF (despachador en 0x5DAC)
+0x5DD3   # p08:B1EE call
+0x5DF1   # p04:6E29 call
+0x5E18   # p04:6C49 call
+0x5E5F   # p09:6EC4 call
+0x5ECA   # p01:662E call

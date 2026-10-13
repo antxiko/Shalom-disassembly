@@ -1,0 +1,42 @@
+# Notas del banco 13
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x8194 graficos_7F73_cola  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 3 de la tabla 0x733E (sigue del banco 12); lo leen p00:4856 (404 bytes)
+F 0x8000 16
+D 0x8194 0x82F6 graficos_8194  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 4 de la tabla 0x733E; lo leen p00:4856 (354 bytes)
+F 0x8194 16
+D 0x82F6 0x84D5 graficos_82F6  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 5 de la tabla 0x733E; lo leen p00:4856 (479 bytes)
+F 0x82F6 16
+D 0x84D5 0x86CF graficos_84D5  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 6 de la tabla 0x733E; lo leen p00:4856 (506 bytes)
+F 0x84D5 16
+D 0x86CF 0x88CC graficos_86CF  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 7 de la tabla 0x733E; lo leen p00:4856 (509 bytes)
+F 0x86CF 16
+D 0x88CC 0x8A39 graficos_88CC  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 8 de la tabla 0x733E; lo leen p00:4856 (365 bytes)
+F 0x88CC 16
+D 0x8A39 0x8C59 graficos_8A39  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 9 de la tabla 0x733E; lo leen p00:4856 (544 bytes)
+F 0x8A39 16
+D 0x8C59 0x8E74 graficos_8C59  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 10 de la tabla 0x733E; lo leen p00:4856 (539 bytes)
+F 0x8C59 16
+D 0x8E74 0x9053 graficos_8E74  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 11 de la tabla 0x733E; lo leen p00:4856 (479 bytes)
+F 0x8E74 16
+D 0x9053 0x9251 graficos_9053  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 12 de la tabla 0x733E; lo leen p00:4856 (510 bytes)
+F 0x9053 16
+D 0x9251 0x9341 graficos_9251  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 13 de la tabla 0x733E; lo leen p00:4856 (240 bytes)
+F 0x9251 16
+D 0x9341 0x94E0 graficos_9341  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 14 de la tabla 0x733E; lo leen p00:4856 (415 bytes)
+F 0x9341 16
+D 0x94E0 0x9641 graficos_94E0  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 15 de la tabla 0x733E; lo leen p00:4856 (353 bytes)
+F 0x94E0 16
+D 0x9641 0x97C6 graficos_9641  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: entrada 16 de la tabla 0x733E; lo leen p00:4856 (389 bytes)
+F 0x9641 16
+D 0x97C6 0x9948 graficos_97C6  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: colores de la entrada 0 de 0x7990; lo leen p00:482F (386 bytes)
+F 0x97C6 16
+D 0x9948 0x9A89 graficos_9948  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: patrones de la entrada 0 de 0x7990; lo leen p00:482F (321 bytes)
+F 0x9948 16
+D 0x9A89 0x9D62 graficos_9A89  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: colores de la entrada 1 de 0x7990; lo leen p00:482F (729 bytes)
+F 0x9A89 16
+D 0x9D62 0x9F68 graficos_9D62  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: patrones de la entrada 1 de 0x7990; lo leen p00:482F (518 bytes)
+F 0x9D62 16
+D 0x9F68 0xA000 graficos_9F68  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: colores de la entrada 2 de 0x7990 (sigue en el banco 14, en 0xA000); lo leen p00:482F (152 bytes)
+F 0x9F68 16
+# --- fin de los bloques de bloques.py ---

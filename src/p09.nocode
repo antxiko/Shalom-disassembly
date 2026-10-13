@@ -1,0 +1,14 @@
+# Zonas que el trazador NO puede entrar a desensamblar como codigo.
+#
+# La tabla de destinos del despachador de Konami (0x408D) va pegada JUSTO
+# DETRAS de su `call`: sin declararla, el trazador sigue de largo y se la come
+# como instrucciones, y ademas sigue desde ahi. Es la contaminacion mas facil
+# de este cartucho.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x6B3F 0x6B51   tabla de 9 palabras del despachador (call 0x408D en 0x6B3C)
+0x6BCA 0x6BDC   tabla de 9 palabras del despachador (call 0x408D en 0x6BC7)
+0x6C29 0x6C6D   tabla de 34 palabras del despachador (call 0x408D en 0x6C26)
+0x7077 0x707F   tabla de 4 palabras del despachador (call 0x408D en 0x7074)
+0x7133 0x713B   tabla de 4 palabras del despachador (call 0x408D en 0x7130)
+0x713E 0x7146   tabla de 4 palabras del despachador (call 0x408D en 0x713B)

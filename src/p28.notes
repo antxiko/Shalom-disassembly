@@ -1,0 +1,166 @@
+# Notas del banco 28
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xA000 0xA1C8 graficos_9ED9_cola  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba (sigue del banco 27); lo leen p01:6243, p01:624C (456 bytes)
+F 0xA000 16
+D 0xA1C8 0xA415 graficos_A1C8  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:6255 (589 bytes)
+F 0xA1C8 16
+D 0xA415 0xA654 graficos_A415  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:6264 (575 bytes)
+F 0xA415 16
+D 0xA654 0xA974 graficos_A654  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:6270 (800 bytes)
+F 0xA654 16
+D 0xA974 0xAABA graficos_A974  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:626A (326 bytes)
+F 0xA974 16
+D 0xAABA 0xAC67 graficos_AABA  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:6276 (429 bytes)
+F 0xAABA 16
+D 0xAC67 0xAF27 graficos_AC67  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:627F, p01:6288 (704 bytes)
+F 0xAC67 16
+D 0xAF27 0xB085 graficos_AF27  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:6291 (350 bytes)
+F 0xAF27 16
+D 0xB085 0xB25C graficos_B085  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:62A3, p01:62AC (471 bytes)
+F 0xB085 16
+D 0xB25C 0xB372 graficos_B25C  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:62B5 (278 bytes)
+F 0xB25C 16
+D 0xB372 0xB5B4 graficos_B372  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:62C7, p01:62D0 (578 bytes)
+F 0xB372 16
+D 0xB5B4 0xB69C graficos_B5B4  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:62D9 (232 bytes)
+F 0xB5B4 16
+D 0xB69C 0xB8A8 graficos_B69C  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:62EB, p01:62F4 (524 bytes)
+F 0xB69C 16
+D 0xB8A8 0xB987 graficos_B8A8  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:62FD (223 bytes)
+F 0xB8A8 16
+D 0xB987 0xBBC4 graficos_B987  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:49EA (573 bytes)
+F 0xB987 16
+D 0xBBC4 0xBBDE graficos_BBC4  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4A9D (26 bytes)
+F 0xBBC4 16
+D 0xBBDE 0xBBE0 mensajes_28_BBDE  1 palabras: los mensajes de la sala 331 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBBDE 2
+D 0xBBE0 0xBC0E mensaje_28_BBE0  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (46 bytes)
+F 0xBBE0 16
+D 0xBC0E 0xBC10 mensajes_28_BC0E  1 palabras: los mensajes de la sala 366 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBC0E 2
+D 0xBC10 0xBC39 mensaje_28_BC10  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (41 bytes)
+F 0xBC10 16
+D 0xBC39 0xBC3B mensajes_28_BC39  1 palabras: los mensajes de la sala 483 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBC39 2
+D 0xBC3B 0xBC50 mensaje_28_BC3B  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (21 bytes)
+F 0xBC3B 16
+D 0xBC50 0xBC52 mensajes_28_BC50  1 palabras: los mensajes de la sala 485 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBC50 2
+D 0xBC52 0xBC82 mensaje_28_BC52  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (48 bytes)
+F 0xBC52 16
+D 0xBC82 0xBC84 mensajes_28_BC82  1 palabras: los mensajes de la sala 418 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBC82 2
+D 0xBC84 0xBC9B mensaje_28_BC84  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (23 bytes)
+F 0xBC84 16
+D 0xBC9B 0xBC9D mensajes_28_BC9B  1 palabras: los mensajes de la sala 420 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBC9B 2
+D 0xBC9D 0xBCBC mensaje_28_BC9D  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (31 bytes)
+F 0xBC9D 16
+D 0xBCBC 0xBCBE mensajes_28_BCBC  1 palabras: los mensajes de la sala 511 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBCBC 2
+D 0xBCBE 0xBCDF mensaje_28_BCBE  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (33 bytes)
+F 0xBCBE 16
+D 0xBCDF 0xBCE1 mensajes_28_BCDF  1 palabras: los mensajes de la sala 480 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBCDF 2
+D 0xBCE1 0xBD0C mensaje_28_BCE1  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (43 bytes)
+F 0xBCE1 16
+D 0xBD0C 0xBD0E mensajes_28_BD0C  1 palabras: los mensajes de la sala 326 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBD0C 2
+D 0xBD0E 0xBD1C mensaje_28_BD0E  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (14 bytes)
+F 0xBD0E 16
+D 0xBD1C 0xBD1E mensajes_28_BD1C  1 palabras: los mensajes de la sala 30 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBD1C 2
+D 0xBD1E 0xBD42 mensaje_28_BD1E  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (36 bytes)
+F 0xBD1E 16
+D 0xBD42 0xBD44 mensajes_28_BD42  1 palabras: los mensajes de la sala 246 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBD42 2
+D 0xBD44 0xBD67 mensaje_28_BD44  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (35 bytes)
+F 0xBD44 16
+D 0xBD67 0xBD69 mensajes_28_BD67  1 palabras: los mensajes de la sala 247 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBD67 2
+D 0xBD69 0xBD8E mensaje_28_BD69  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (37 bytes)
+F 0xBD69 16
+D 0xBD8E 0xBD90 mensajes_28_BD8E  1 palabras: los mensajes de la sala 310 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBD8E 2
+D 0xBD90 0xBD9F mensaje_28_BD90  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (15 bytes)
+F 0xBD90 16
+D 0xBD9F 0xBDA1 mensajes_28_BD9F  1 palabras: los mensajes de la sala 343 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBD9F 2
+D 0xBDA1 0xBDB0 mensaje_28_BDA1  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (15 bytes)
+F 0xBDA1 16
+D 0xBDB0 0xBDB2 mensajes_28_BDB0  1 palabras: los mensajes de la sala 53 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBDB0 2
+D 0xBDB2 0xBDC2 mensaje_28_BDB2  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (16 bytes)
+F 0xBDB2 16
+D 0xBDC2 0xBDC4 mensajes_28_BDC2  1 palabras: los mensajes de la sala 149 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBDC2 2
+D 0xBDC4 0xBDE8 mensaje_28_BDC4  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (36 bytes)
+F 0xBDC4 16
+D 0xBDE8 0xBDEA mensajes_28_BDE8  1 palabras: los mensajes de la sala 152 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBDE8 2
+D 0xBDEA 0xBDF5 mensaje_28_BDEA  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (11 bytes)
+F 0xBDEA 16
+D 0xBDF5 0xBDF7 mensajes_28_BDF5  1 palabras: los mensajes de la sala 425 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBDF5 2
+D 0xBDF7 0xBE0D mensaje_28_BDF7  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (22 bytes)
+F 0xBDF7 16
+D 0xBE0D 0xBE0F mensajes_28_BE0D  1 palabras: los mensajes de la sala 497 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBE0D 2
+D 0xBE0F 0xBE1A mensaje_28_BE0F  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (11 bytes)
+F 0xBE0F 16
+D 0xBE1A 0xBE1C mensajes_28_BE1A  1 palabras: los mensajes de la sala 465 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBE1A 2
+D 0xBE1C 0xBE2A mensaje_28_BE1C  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (14 bytes)
+F 0xBE1C 16
+D 0xBE2A 0xBE2C mensajes_28_BE2A  1 palabras: los mensajes de la sala 395 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBE2A 2
+D 0xBE2C 0xBE5F mensaje_28_BE2C  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (51 bytes)
+F 0xBE2C 16
+D 0xBE5F 0xBE61 mensajes_28_BE5F  1 palabras: los mensajes de la sala 466 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBE5F 2
+D 0xBE61 0xBE7E mensaje_28_BE61  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (29 bytes)
+F 0xBE61 16
+D 0xBE7E 0xBE80 mensajes_28_BE7E  1 palabras: los mensajes de la sala 440 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBE7E 2
+D 0xBE80 0xBEA9 mensaje_28_BE80  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (41 bytes)
+F 0xBE80 16
+D 0xBEA9 0xBEAB mensajes_28_BEA9  1 palabras: los mensajes de la sala 252 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBEA9 2
+D 0xBEAB 0xBEB8 mensaje_28_BEAB  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (13 bytes)
+F 0xBEAB 16
+D 0xBEB8 0xBEBA mensajes_28_BEB8  1 palabras: los mensajes de la sala 106 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBEB8 2
+D 0xBEBA 0xBEDF mensaje_28_BEBA  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (37 bytes)
+F 0xBEBA 16
+D 0xBEDF 0xBEE1 mensajes_28_BEDF  1 palabras: los mensajes de la sala 71 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBEDF 2
+D 0xBEE1 0xBF0F mensaje_28_BEE1  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (46 bytes)
+F 0xBEE1 16
+D 0xBF0F 0xBF11 mensajes_28_BF0F  1 palabras: los mensajes de la sala 38 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBF0F 2
+D 0xBF11 0xBF37 mensaje_28_BF11  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (38 bytes)
+F 0xBF11 16
+D 0xBF37 0xBF39 mensajes_28_BF37  1 palabras: los mensajes de la sala 18 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBF37 2
+D 0xBF39 0xBF5B mensaje_28_BF39  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (34 bytes)
+F 0xBF39 16
+D 0xBF5B 0xBF5D mensajes_28_BF5B  1 palabras: los mensajes de la sala 91 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBF5B 2
+D 0xBF5D 0xBF86 mensaje_28_BF5D  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (41 bytes)
+F 0xBF5D 16
+D 0xBF86 0xBF88 mensajes_28_BF86  1 palabras: los mensajes de la sala 123 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBF86 2
+D 0xBF88 0xBFB9 mensaje_28_BF88  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (49 bytes)
+F 0xBF88 16
+D 0xBFB9 0xBFBB mensajes_28_BFB9  1 palabras: los mensajes de la sala 155 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBFB9 2
+D 0xBFBB 0xBFC8 mensaje_28_BFBB  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (13 bytes)
+F 0xBFBB 16
+D 0xBFC8 0xBFCA mensajes_28_BFC8  1 palabras: los mensajes de la sala 442 (y de las que apuntan aqui); el tamano, hasta el primer mensaje; lo leen p00:4E76 (2 bytes)
+F 0xBFC8 2
+D 0xBFCA 0xBFFA mensaje_28_BFCA  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba; lo leen p00:4E76 (48 bytes)
+F 0xBFCA 16
+D 0xBFFA 0xC000 resto_BFFA  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (6 bytes)
+F 0xBFFA 16
+# --- fin de los bloques de bloques.py ---

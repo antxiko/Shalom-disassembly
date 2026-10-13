@@ -1,0 +1,60 @@
+# Notas del banco 19
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x803A graficos_7FFA_cola  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 10 (sigue del banco 18); lo leen p00:4AA0 (58 bytes)
+F 0x8000 16
+D 0x803A 0x81B3 graficos_803A  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 1; lo leen p00:4AA0 (377 bytes)
+F 0x803A 16
+D 0x81B3 0x83A3 graficos_81B3  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 0; lo leen p00:4AA0 (496 bytes)
+F 0x81B3 16
+D 0x83A3 0x8522 graficos_83A3  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 4; lo leen p00:4AA0 (383 bytes)
+F 0x83A3 16
+D 0x8522 0x869E graficos_8522  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 4; lo leen p00:4AA0 (380 bytes)
+F 0x8522 16
+D 0x869E 0x8823 graficos_869E  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 16; lo leen p00:4AA0 (389 bytes)
+F 0x869E 16
+D 0x8823 0x8864 graficos_8823  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 7; lo leen p00:4AA0 (65 bytes)
+F 0x8823 16
+D 0x8864 0x89AE graficos_8864  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 17; lo leen p00:4AA0 (330 bytes)
+F 0x8864 16
+D 0x89AE 0x8B02 graficos_89AE  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 10; lo leen p00:4AA0 (340 bytes)
+F 0x89AE 16
+D 0x8B02 0x8BBA graficos_8B02  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 16; lo leen p00:4AA0 (184 bytes)
+F 0x8B02 16
+D 0x8BBA 0x8BFC graficos_8BBA  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 9; lo leen p00:4AA0 (66 bytes)
+F 0x8BBA 16
+D 0x8BFC 0x8C3E graficos_8BFC  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 9; lo leen p00:4AA0 (66 bytes)
+F 0x8BFC 16
+D 0x8C3E 0x8D5C graficos_8C3E  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 16; lo leen p00:4AA0 (286 bytes)
+F 0x8C3E 16
+D 0x8D5C 0x8E5E graficos_8D5C  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 15; lo leen p00:4AA0 (258 bytes)
+F 0x8D5C 16
+D 0x8E5E 0x8EFD graficos_8E5E  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 17; lo leen p00:4AA0 (159 bytes)
+F 0x8E5E 16
+D 0x8EFD 0x9075 graficos_8EFD  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 15; lo leen p00:4AA0 (376 bytes)
+F 0x8EFD 16
+D 0x9075 0x90B5 graficos_9075  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 10; lo leen p00:4AA0 (64 bytes)
+F 0x9075 16
+D 0x90B5 0x9117 graficos_90B5  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 16; lo leen p00:4AA0 (98 bytes)
+F 0x90B5 16
+D 0x9117 0x9159 graficos_9117  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 19; lo leen p00:4AA0 (66 bytes)
+F 0x9117 16
+D 0x9159 0x91D1 graficos_9159  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: sprite de la lista 19; lo leen p00:4AA0 (120 bytes)
+F 0x9159 16
+D 0x91D1 0x938A graficos_91D1  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:48F1, p00:48FA (441 bytes)
+F 0x91D1 16
+D 0x938A 0x94A7 graficos_938A  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4903 (285 bytes)
+F 0x938A 16
+D 0x94A7 0x973D graficos_94A7  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4915, p00:491E (662 bytes)
+F 0x94A7 16
+D 0x973D 0x9910 graficos_973D  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4927 (467 bytes)
+F 0x973D 16
+D 0x9910 0x9928 graficos_9910  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4936 (24 bytes)
+F 0x9910 16
+D 0x9928 0x9935 graficos_9928  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:493C (13 bytes)
+F 0x9928 16
+D 0x9935 0x9E89 graficos_9935  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:495D, p00:4948 (1364 bytes)
+F 0x9935 16
+D 0x9E89 0xA000 graficos_9E89  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba (sigue en el banco 20, en 0xA000); lo leen p00:4951 (375 bytes)
+F 0x9E89 16
+# --- fin de los bloques de bloques.py ---

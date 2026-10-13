@@ -1,0 +1,6 @@
+# Notas del banco 30
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0xA000 pistas_cola  las 177 pistas de los sonidos 0x01-0x61: notas (< 0xD0), ordenes 0xD0-0xFE (p29:68B7: octava, volumen, envolvente, saltos, bucles, llamadas) y 0xFF fin; medido ejecutando el motor, ninguna pieza lee 4 trozos: p31:AFF4 (un 0xFF tras un salto), p31:B652-B660 (una secuencia que nadie apunta), p31:BF52-BF53 (la direccion de un bucle que no vuelve) y la cola de 0xFF (sigue del banco 29) (sigue en el banco 31, en 0xA000); lo leen p29:64B3 (8192 bytes)
+F 0x8000 16
+# --- fin de los bloques de bloques.py ---

@@ -1,0 +1,6 @@
+# Notas del banco 16
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0xA000 salas_000_1FF_cola  las salas 0x000-0x1FF, 48 bytes cada una: 8 filas de 12 bloques a nibbles, el de la izquierda en el nibble alto (p00:5191: 0x6000 + sala x 48) (sigue del banco 15) (sigue en el banco 17, en 0xA000); lo leen p00:514B (8192 bytes)
+F 0x8000 24
+# --- fin de los bloques de bloques.py ---

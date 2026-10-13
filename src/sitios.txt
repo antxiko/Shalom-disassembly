@@ -1,0 +1,7 @@
+# Sitios con el reparto FORZADO: pNN 0xPC b6000 b8000 bA000  # por que
+#
+# La interrupcion (p00:404C) pone 29-30-31 para la musica (p00:4057) y luego
+# devuelve el reparto que habia leyendolo de la copia en RAM (p00:4067). El
+# juego corre entero desde la interrupcion y deja siempre 1-2-3 al acabar el
+# cuadro (las pasarelas del banco 0 salen por `jp p00:40F9`).
+p00 0x4079 1 2 3   # tras devolver el reparto de 0xF0F1-0xF0F3

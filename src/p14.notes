@@ -1,0 +1,60 @@
+# Notas del banco 14
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0xA000 0xA0D3 graficos_9F68_cola  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: colores de la entrada 2 de 0x7990 (sigue del banco 13); lo leen p00:482F (211 bytes)
+F 0xA000 16
+D 0xA0D3 0xA1C4 graficos_A0D3  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: patrones de la entrada 2 de 0x7990; lo leen p00:482F (241 bytes)
+F 0xA0D3 16
+D 0xA1C4 0xA2BB graficos_A1C4  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: colores de la entrada 3 de 0x7990; lo leen p00:482F (247 bytes)
+F 0xA1C4 16
+D 0xA2BB 0xA344 graficos_A2BB  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: patrones de la entrada 3 de 0x7990; lo leen p00:482F (137 bytes)
+F 0xA2BB 16
+D 0xA344 0xA40B graficos_A344  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: colores de la entrada 4 de 0x7990; lo leen p00:482F (199 bytes)
+F 0xA344 16
+D 0xA40B 0xA4A8 graficos_A40B  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: patrones de la entrada 4 de 0x7990; lo leen p00:482F (157 bytes)
+F 0xA40B 16
+D 0xA4A8 0xA4E0 graficos_A4A8  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: colores de la entrada 5 de 0x7990; lo leen p00:482F (56 bytes)
+F 0xA4A8 16
+D 0xA4E0 0xA4FD graficos_A4E0  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: patrones de la entrada 5 de 0x7990; lo leen p00:482F (29 bytes)
+F 0xA4E0 16
+D 0xA4FD 0xA58A graficos_A4FD  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: colores de la entrada 6 de 0x7990; lo leen p00:482F (141 bytes)
+F 0xA4FD 16
+D 0xA58A 0xA5ED graficos_A58A  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: patrones de la entrada 6 de 0x7990; lo leen p00:482F (99 bytes)
+F 0xA58A 16
+D 0xA5ED 0xA71E graficos_A5ED  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: colores de la entrada 7 de 0x7990; lo leen p00:482F (305 bytes)
+F 0xA5ED 16
+D 0xA71E 0xA7EA graficos_A71E  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: patrones de la entrada 7 de 0x7990; lo leen p00:482F (204 bytes)
+F 0xA71E 16
+D 0xA7EA 0xA7EF resto_A7EA  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (5 bytes)
+F 0xA7EA 16
+D 0xA7EF 0xAD5E graficos_A7EF  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:49F9 (1391 bytes)
+F 0xA7EF 16
+D 0xAD5E 0xAEFF graficos_AD5E  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4A0B (417 bytes)
+F 0xAD5E 16
+D 0xAEFF 0xB37B graficos_AEFF  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4A02 (1148 bytes)
+F 0xAEFF 16
+D 0xB37B 0xB636 graficos_B37B  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4A14 (699 bytes)
+F 0xB37B 16
+D 0xB636 0xB7AF graficos_B636  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4A32, p00:4A3B (377 bytes)
+F 0xB636 16
+D 0xB7AF 0xB880 graficos_B7AF  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4A44 (209 bytes)
+F 0xB7AF 16
+D 0xB880 0xB924 graficos_B880  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4A4D (164 bytes)
+F 0xB880 16
+D 0xB924 0xB96F graficos_B924  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4A5F (75 bytes)
+F 0xB924 16
+D 0xB96F 0xBA17 graficos_B96F  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4A7D (168 bytes)
+F 0xB96F 16
+D 0xBA17 0xBA95 graficos_BA17  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4A86 (126 bytes)
+F 0xBA17 16
+D 0xBAA4 0xBAAC saltos_BAA4  tabla de 4 palabras del despachador (call 0x408D en 0xBAA3); lo leen L_40AB (8 bytes)
+F 0xBAA4 2
+D 0xBBFF 0xBC07 saltos_BBFF  tabla de 4 palabras del despachador (call 0x408D en 0xBBFE); lo leen L_40AB (8 bytes)
+F 0xBBFF 2
+D 0xBC37 0xBC5B resto_BC37  lo apuntan con el banco puesto p14:BC16 (0xBC37), p14:BC0A (0xBC3B); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p14:BC16, p14:BC0A (36 bytes)
+F 0xBC37 16
+D 0xBDA9 0xBDF1 resto_BDA9  lo apuntan con el banco puesto p14:BD9A (0xBDA9); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p14:BD9A (72 bytes)
+F 0xBDA9 16
+D 0xBDF1 0xC000 relleno_ff  527 bytes a 0xFF hasta el final del banco: relleno; lo leen nadie (527 bytes)
+F 0xBDF1 16
+# --- fin de los bloques de bloques.py ---

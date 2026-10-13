@@ -1,0 +1,37 @@
+# Zonas que el trazador NO puede entrar a desensamblar como codigo.
+#
+# La tabla de destinos del despachador de Konami (0x408D) va pegada JUSTO
+# DETRAS de su `call`: sin declararla, el trazador sigue de largo y se la come
+# como instrucciones, y ademas sigue desde ahi. Es la contaminacion mas facil
+# de este cartucho.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x85A4 0x85BC   tabla de 12 palabras del despachador (call 0x408D en 0x85A1)
+0x871C 0x8734   tabla de 12 palabras del despachador (call 0x408D en 0x8719)
+0x88DC 0x88E0   tabla de 2 palabras del despachador (call 0x408D en 0x88D9)
+0x9135 0x9189   tabla de 42 palabras del despachador (call 0x408D en 0x9132)
+0x9194 0x919A   tabla de 3 palabras del despachador (call 0x408D en 0x9191)
+0x920C 0x9216   tabla de 5 palabras del despachador (call 0x408D en 0x9209)
+0x92D6 0x92DA   tabla de 2 palabras del despachador (call 0x408D en 0x92D3)
+0x932C 0x9332   tabla de 3 palabras del despachador (call 0x408D en 0x9329)
+0x9388 0x9390   tabla de 4 palabras del despachador (call 0x408D en 0x9385)
+0x93EE 0x93F6   tabla de 4 palabras del despachador (call 0x408D en 0x93EB)
+0x945C 0x9464   tabla de 4 palabras del despachador (call 0x408D en 0x9459)
+0x9516 0x951A   tabla de 2 palabras del despachador (call 0x408D en 0x9513)
+0x9551 0x9557   tabla de 3 palabras del despachador (call 0x408D en 0x954E)
+0x95C0 0x95DE   tabla de 15 palabras del despachador (call 0x408D en 0x95BD)
+0x973C 0x9746   tabla de 5 palabras del despachador (call 0x408D en 0x9739)
+0x97A1 0x97AB   tabla de 5 palabras del despachador (call 0x408D en 0x979E)
+0x9806 0x980A   tabla de 2 palabras del despachador (call 0x408D en 0x9803)
+0x9837 0x9841   tabla de 5 palabras del despachador (call 0x408D en 0x9834)
+0x9892 0x989C   tabla de 5 palabras del despachador (call 0x408D en 0x988F)
+0x98ED 0x98F3   tabla de 3 palabras del despachador (call 0x408D en 0x98EA)
+0x9941 0x9947   tabla de 3 palabras del despachador (call 0x408D en 0x993E)
+0x997C 0x9982   tabla de 3 palabras del despachador (call 0x408D en 0x9979)
+0x99D5 0x99D9   tabla de 2 palabras del despachador (call 0x408D en 0x99D2)
+0x9A58 0x9A62   tabla de 5 palabras del despachador (call 0x408D en 0x9A55)
+0x9AF1 0x9AFB   tabla de 5 palabras del despachador (call 0x408D en 0x9AEE)
+0x9B56 0x9B60   tabla de 5 palabras del despachador (call 0x408D en 0x9B53)
+0x9C6B 0x9C73   tabla de 4 palabras del despachador (call 0x408D en 0x9C68)
+0x9CB0 0x9CB8   tabla de 4 palabras del despachador (call 0x408D en 0x9CAD)
+0x9D1E 0x9DF0   tabla de 105 palabras del despachador (call 0x408D en 0x9D1B)

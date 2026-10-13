@@ -1,0 +1,45 @@
+# Puntos de entrada del banco 29 (se ejecuta en 0x6000).
+#
+# Cada uno lleva la instruccion que lo justifica. Los que ponen "pNN:XXXX"
+# vienen de OTRO banco: el trazador de una sola pagina no puede seguirlos,
+# porque en esa direccion -segun lo que haya en el registro del mapper- puede
+# estar cualquiera de seis bancos. Los que ponen "tabla" salen de una tabla
+# del despachador 0x408D, que va pegada detras de su `call` y esta declarada
+# como datos en el .nocode: el trazador tampoco puede seguirla.
+#
+# Los saltos y llamadas DENTRO del propio banco no se ponen aqui: los
+# encuentra tools/z80trace.py solo, siguiendo el flujo.
+#
+# Este fichero lo regenera `make semillas` (tools/bancos.py escribe).
+0x6000   # p00:4183 call
+0x6449   # p00:4064 call
+0x68A4   # sin entrada: res 1,(hl) / ret
+0x690A   # p29:68CB entrada 0 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6920   # p29:68CB entrada 1 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6940   # p29:68CB entrada 4 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x696B   # p29:68CB entrada 5 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x697F   # p29:68CB entrada 6 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x698F   # p29:68CB entrada 7 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x69A1   # p29:68CB entrada 8 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x69B2   # p29:68CB entrada 9 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x69B9   # p29:68CB entrada 10 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x69C0   # p29:68CB entrada 11 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A13   # p29:68CB entrada 12 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A1D   # p29:68CB entrada 13 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A24   # p29:68CB entrada 14 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A2F   # p29:68CB entrada 15 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A35   # p29:68CB entrada 16 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A3F   # p29:68CB entrada 17 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A5A   # p29:68CB entrada 18 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A69   # p29:68CB entrada 19 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A6F   # p29:68CB entrada 20 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A75   # p29:68CB entrada 21 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A7B   # p29:68CB entrada 22 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A85   # p29:68CB entrada 23 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A8B   # p29:68CB entrada 24 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A92   # p29:68CB entrada 25 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6A9D   # p29:68CB entrada 26 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6AA5   # p29:68CB entrada 27 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6AC0   # p29:68CB entrada 28 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6AD7   # p29:68CB entrada 29 de la tabla de 0x68CC (jp (hl) en 0x68CB)
+0x6ADB   # p29:68CB entrada 30 de la tabla de 0x68CC (jp (hl) en 0x68CB)

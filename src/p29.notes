@@ -1,0 +1,212 @@
+# Notas del banco 29
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x60E0 0x60EC canal_al_arrancar  12 bytes que p29:60D7 copia a cada canal cuando arranca una pista; lo leen p29:60D7 (12 bytes)
+F 0x60E0 12
+D 0x6131 0x61F3 sonidos  97 palabras: la cabecera de los sonidos 0x01-0x61 (p29:604C: 0x612F + numero x 2; el 0 no se pide y su palabra es el final de p29:612D); lo leen p29:6048 (194 bytes)
+F 0x6131 2
+D 0x61F3 0x61FF cabecera_61F3  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (12 bytes)
+F 0x61F3 16
+D 0x61FF 0x6203 cabecera_61FF  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x61FF 16
+D 0x6203 0x6207 cabecera_6203  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6203 16
+D 0x6207 0x620B cabecera_6207  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6207 16
+D 0x620B 0x620F cabecera_620B  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x620B 16
+D 0x620F 0x6213 cabecera_620F  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x620F 16
+D 0x6213 0x621B cabecera_6213  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6213 16
+D 0x621B 0x6223 cabecera_621B  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x621B 16
+D 0x6223 0x6227 cabecera_6223  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6223 16
+D 0x6227 0x622B cabecera_6227  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6227 16
+D 0x622B 0x622F cabecera_622B  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x622B 16
+D 0x622F 0x6233 cabecera_622F  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x622F 16
+D 0x6233 0x6237 cabecera_6233  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6233 16
+D 0x6237 0x623B cabecera_6237  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6237 16
+D 0x623B 0x623F cabecera_623B  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x623B 16
+D 0x623F 0x6243 cabecera_623F  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x623F 16
+D 0x6243 0x6247 cabecera_6243  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6243 16
+D 0x6247 0x624B cabecera_6247  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6247 16
+D 0x624B 0x6251 cabecera_624B  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (6 bytes)
+F 0x624B 16
+D 0x6251 0x6255 cabecera_6251  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6251 16
+D 0x6255 0x6259 cabecera_6255  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6255 16
+D 0x6259 0x625D cabecera_6259  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6259 16
+D 0x625D 0x6261 cabecera_625D  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x625D 16
+D 0x6261 0x6265 cabecera_6261  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6261 16
+D 0x6265 0x6269 cabecera_6265  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6265 16
+D 0x6269 0x626D cabecera_6269  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6269 16
+D 0x626D 0x6271 cabecera_626D  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x626D 16
+D 0x6271 0x6275 cabecera_6271  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6271 16
+D 0x6275 0x6279 cabecera_6275  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6275 16
+D 0x6279 0x627D cabecera_6279  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6279 16
+D 0x627D 0x6281 cabecera_627D  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x627D 16
+D 0x6281 0x6285 cabecera_6281  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6281 16
+D 0x6285 0x6289 cabecera_6285  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6285 16
+D 0x6289 0x628D cabecera_6289  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6289 16
+D 0x628D 0x6291 cabecera_628D  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x628D 16
+D 0x6291 0x6299 cabecera_6291  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6291 16
+D 0x6299 0x629D cabecera_6299  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6299 16
+D 0x629D 0x62A5 cabecera_629D  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x629D 16
+D 0x62A5 0x62AD cabecera_62A5  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62A5 16
+D 0x62AD 0x62B5 cabecera_62AD  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62AD 16
+D 0x62B5 0x62B9 cabecera_62B5  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x62B5 16
+D 0x62B9 0x62C1 cabecera_62B9  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62B9 16
+D 0x62C1 0x62C9 cabecera_62C1  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62C1 16
+D 0x62C9 0x62D1 cabecera_62C9  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62C9 16
+D 0x62D1 0x62D9 cabecera_62D1  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62D1 16
+D 0x62D9 0x62E1 cabecera_62D9  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62D9 16
+D 0x62E1 0x62E9 cabecera_62E1  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62E1 16
+D 0x62E9 0x62F1 cabecera_62E9  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62E9 16
+D 0x62F1 0x62F9 cabecera_62F1  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62F1 16
+D 0x62F9 0x6301 cabecera_62F9  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x62F9 16
+D 0x6301 0x6309 cabecera_6301  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6301 16
+D 0x6309 0x6311 cabecera_6309  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6309 16
+D 0x6311 0x6319 cabecera_6311  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6311 16
+D 0x6319 0x6321 cabecera_6319  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6319 16
+D 0x6321 0x6329 cabecera_6321  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6321 16
+D 0x6329 0x6331 cabecera_6329  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6329 16
+D 0x6331 0x6339 cabecera_6331  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6331 16
+D 0x6339 0x6341 cabecera_6339  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6339 16
+D 0x6341 0x6349 cabecera_6341  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6341 16
+D 0x6349 0x6351 cabecera_6349  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6349 16
+D 0x6351 0x6359 cabecera_6351  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6351 16
+D 0x6359 0x6361 cabecera_6359  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6359 16
+D 0x6361 0x6369 cabecera_6361  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6361 16
+D 0x6369 0x6371 cabecera_6369  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6369 16
+D 0x6371 0x6375 cabecera_6371  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6371 16
+D 0x6375 0x637D cabecera_6375  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6375 16
+D 0x637D 0x6381 cabecera_637D  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x637D 16
+D 0x6381 0x6385 cabecera_6381  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6381 16
+D 0x6385 0x6389 cabecera_6385  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6385 16
+D 0x6389 0x638D cabecera_6389  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6389 16
+D 0x638D 0x6391 cabecera_638D  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x638D 16
+D 0x6391 0x6395 cabecera_6391  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6391 16
+D 0x6395 0x639D cabecera_6395  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6395 16
+D 0x639D 0x63A5 cabecera_639D  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x639D 16
+D 0x63A5 0x63AD cabecera_63A5  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x63A5 16
+D 0x63AD 0x63B5 cabecera_63AD  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x63AD 16
+D 0x63B5 0x63BD cabecera_63B5  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x63B5 16
+D 0x63BD 0x63C1 cabecera_63BD  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x63BD 16
+D 0x63C1 0x63C9 cabecera_63C1  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x63C1 16
+D 0x63C9 0x63D1 cabecera_63C9  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x63C9 16
+D 0x63D1 0x63D5 cabecera_63D1  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x63D1 16
+D 0x63D5 0x63DD cabecera_63D5  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x63D5 16
+D 0x63DD 0x63E3 cabecera_63DD  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (6 bytes)
+F 0x63DD 16
+D 0x63E3 0x63EB cabecera_63E3  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x63E3 16
+D 0x63EB 0x63F3 cabecera_63EB  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x63EB 16
+D 0x63F3 0x63FB cabecera_63F3  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x63F3 16
+D 0x63FB 0x6403 cabecera_63FB  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x63FB 16
+D 0x6403 0x640B cabecera_6403  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6403 16
+D 0x640B 0x6411 cabecera_640B  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (6 bytes)
+F 0x640B 16
+D 0x6411 0x6419 cabecera_6411  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6411 16
+D 0x6419 0x6421 cabecera_6419  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6419 16
+D 0x6421 0x6429 cabecera_6421  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6421 16
+D 0x6429 0x6431 cabecera_6429  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6429 16
+D 0x6431 0x6435 cabecera_6431  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6431 16
+D 0x6435 0x643D cabecera_6435  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x6435 16
+D 0x643D 0x6445 cabecera_643D  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (8 bytes)
+F 0x643D 16
+D 0x6445 0x6449 cabecera_6445  [canales: bits 7-3][prioridad] y la pista de cada canal (p29:6061-60BD; el motor copia 12 bytes, p29:605C); lo leen p29:6048 (4 bytes)
+F 0x6445 16
+D 0x6537 0x6543 periodos  12 bytes: el periodo de cada nota de la octava (p29:6501), que p29:6513 dobla por octava; lo leen p29:6501 (12 bytes)
+F 0x6537 12
+D 0x68CC 0x690A saltos_68CC  tabla de 31 palabras del despachador (call 0x408D en 0x68CB); lo leen L_40AB (62 bytes)
+F 0x68CC 2
+D 0x6C51 0x6C5D mezclador_por_modo  3 x 4 bytes: los bits del registro 7 de cada canal segun su modo (p29:6C0B, 6C21, 6C37); lo leen p29:6C07 (12 bytes)
+F 0x6C51 4
+D 0x6C5D 0x6F3A percusiones  las ocho tablas de palabras de p29:65F4 (0x6C5D, 0x6C71, 0x6CD4, 0x6D97, 0x6E21, 0x6E73, 0x6E8C, 0x6F0D, segun el modo del canal y (ix+0x16)) y las secuencias a las que apuntan, que p29:65D3 toca como notas; los huecos que ninguna pieza lee son entradas sin usar; lo leen p29:65BD (733 bytes)
+F 0x6C5D 16
+D 0x6F3A 0x8000 pistas  las 177 pistas de los sonidos 0x01-0x61: notas (< 0xD0), ordenes 0xD0-0xFE (p29:68B7: octava, volumen, envolvente, saltos, bucles, llamadas) y 0xFF fin; medido ejecutando el motor, ninguna pieza lee 4 trozos: p31:AFF4 (un 0xFF tras un salto), p31:B652-B660 (una secuencia que nadie apunta), p31:BF52-BF53 (la direccion de un bucle que no vuelve) y la cola de 0xFF (sigue en el banco 30, en 0x8000); lo leen p29:64B3 (4294 bytes)
+F 0x6F3A 16
+# --- fin de los bloques de bloques.py ---

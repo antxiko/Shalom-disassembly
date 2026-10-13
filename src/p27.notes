@@ -1,0 +1,42 @@
+# Notas del banco 27
+
+# --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
+D 0x8000 0x8282 graficos_8000  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:6164 (642 bytes)
+F 0x8000 16
+D 0x8282 0x83DF graficos_8282  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:616D, p01:6176 (349 bytes)
+F 0x8282 16
+D 0x83DF 0x85BF graficos_83DF  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:617F (480 bytes)
+F 0x83DF 16
+D 0x85BF 0x8613 graficos_85BF  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:6188 (84 bytes)
+F 0x85BF 16
+D 0x8613 0x88D0 graficos_8613  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:619A, p01:61A3 (701 bytes)
+F 0x8613 16
+D 0x88D0 0x8985 graficos_88D0  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:61AC (181 bytes)
+F 0x88D0 16
+D 0x8985 0x8EF9 graficos_8985  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:61BE (1396 bytes)
+F 0x8985 16
+D 0x8EF9 0x9175 graficos_8EF9  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:61C7 (636 bytes)
+F 0x8EF9 16
+D 0x9175 0x94A2 graficos_9175  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:6206 (813 bytes)
+F 0x9175 16
+D 0x94A2 0x9611 graficos_94A2  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:620F (367 bytes)
+F 0x94A2 16
+D 0x9611 0x9695 graficos_9611  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:61D0 (132 bytes)
+F 0x9611 16
+D 0x9695 0x973C graficos_9695  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:61D9, p01:61E2 (167 bytes)
+F 0x9695 16
+D 0x973C 0x9786 graficos_973C  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:61EB (74 bytes)
+F 0x973C 16
+D 0x9786 0x97CB graficos_9786  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p01:61F4 (69 bytes)
+F 0x9786 16
+D 0x97CB 0x9B8B resto_97CB  SIN LECTOR A LA VISTA: ninguna instruccion lo apunta con su banco puesto; lo leen nadie (960 bytes)
+F 0x97CB 16
+D 0x9B8B 0x9ECB graficos_9B8B  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:4899 (832 bytes)
+F 0x9B8B 16
+D 0x9ECB 0x9ED4 graficos_9ECB  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:48A8 (9 bytes)
+F 0x9ECB 16
+D 0x9ED4 0x9ED9 graficos_9ED4  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba; lo leen p00:48B1 (5 bytes)
+F 0x9ED4 16
+D 0x9ED9 0xA000 graficos_9ED9  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba (sigue en el banco 28, en 0xA000); lo leen p01:6243, p01:624C (295 bytes)
+F 0x9ED9 16
+# --- fin de los bloques de bloques.py ---
