@@ -197,6 +197,8 @@ POR_TIPO = {
     0x73: ("fijo", 0x00), 0x74: ("fijo", 0x01),
     # actor_4e y actor_52: el paso 0 de su tabla (p08:B49D, p08:B4B1) no lo cambia
     0x4E: ("fijo", 0x00), 0x52: ("fijo", 0x00),
+    # actor_11b (p08:BCF3): con la bandera 0x1E, bit 1, L_A4E6 (0x18); sin ella, se borra
+    0x11B: ("fijo", 0x18),
 }
 
 
@@ -304,6 +306,19 @@ def atributos(actores, k=0):
     return out
 
 
+def pon_fichas(v, actores):
+    """p07:8705: los que van en fichas ponen las 4 de su fotograma (p07:97E8)
+    en su bloque de 2 x 2 (p00:4509: fila Y / 8, columna X / 8)."""
+    rom = rom_78()
+    for tipo, y, x, fichas, _ in actores:
+        f = fotograma(tipo)
+        if not fichas or f is None:
+            continue
+        de = rom.palabra(0x97E8 + 2 * f)
+        a = P.NOMBRES + 32 * (y // 8) + x // 8
+        v.v[a], v.v[a + 1], v.v[a + 32], v.v[a + 33] = rom.bytes(de, 4)
+
+
 def pon_sprites(v, sprites):
     a = bytearray()
     for y, x, d, c in sprites[:32]:
@@ -316,7 +331,9 @@ def sala_con_actores(sala, k=0):
     import salas as S
     v, _ = S.sala_vram(sala)
     sprites_de_la_sala(v, sala)
-    pon_sprites(v, atributos(lista_de_la_sala(sala), k))
+    lista = lista_de_la_sala(sala)
+    pon_fichas(v, lista)
+    pon_sprites(v, atributos(lista, k))
     return P.imagen(v).crop((0, 0, 8 * S.ANCHO, 8 * S.ALTO))
 
 
@@ -329,14 +346,21 @@ def gif(sala, ruta, escala=2):
     return ms
 
 
-def salas_de_cada_tipo():
-    """{tipo: [(sala, y, x)]} de todas las listas."""
+def salas_de_cada_tipo(con_fichas=False):
+    """{tipo: [(sala, y, x)]} de todas las listas (los que van en fichas, solo
+    si se piden)."""
     out = {}
     for s in range(0x237):
         for tipo, y, x, fichas, _ in lista_de_la_sala(s):
-            if not fichas:
+            if con_fichas or not fichas:
                 out.setdefault(tipo, []).append((s, y, x))
     return out
+
+
+def en_fichas():
+    """{tipo: (sala, y, x)} de los que van en fichas."""
+    return {t: (s, y, x) for s in range(0x237)
+            for t, y, x, f, _ in lista_de_la_sala(s) if f}
 
 
 def letras(codigos):
@@ -383,9 +407,20 @@ def hoja(columnas=16, escala=2):
     from PIL import Image
     import salas as S
     tipos = salas_de_cada_tipo()
+    fichas = en_fichas()
     celdas = []
     fondos = {}
-    for tipo in sorted(tipos):
+    for tipo in sorted(set(tipos) | set(fichas)):
+        if tipo in fichas:
+            sala, y, x = fichas[tipo]
+            v, _ = S.sala_vram(sala)
+            pon_fichas(v, [(tipo, y, x, 1, 0)])
+            v.llena(P.SPR_ATRIBUTOS, 1, 0xD0)
+            pantalla = Image.new("RGB", (256 + 32, 192 + 32), (24, 24, 24))
+            pantalla.paste(P.imagen(v).crop((0, 0, 8 * S.ANCHO, 8 * S.ALTO)), (16, 16))
+            celdas.append((pantalla.crop((x + 8, y + 8, x + 40, y + 40)), texto_png(nombre(tipo)),
+                           texto_png(codigos_de("%03X" % tipo), (160, 160, 160))))
+            continue
         if not atributos([(tipo, 0, 0, 0, 0)]) or colores(tipo) == (0, 0):
             continue                      # no se ve: sin dibujo o transparente
         sala, y, x = tipos[tipo][0]

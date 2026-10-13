@@ -18,6 +18,11 @@ class Actores(unittest.TestCase):
         # recien creado sigue con el fotograma 0
         self.assertEqual([(t, f) for t, _, f, _, _ in mal], [(0x02, 0), (0x05, 0)])
 
+    def test_los_que_van_en_fichas(self):
+        import actores as A
+        self.assertEqual(sorted(A.en_fichas()), [0x68, 0xAA, 0x11B])
+        self.assertEqual(A.fotograma(0x11B), 0x18)
+
     def test_la_plaza_de_la_fuente(self):
         import actores as A
         tipos = [t for t, *_ in A.lista_de_la_sala(0x0D0)]

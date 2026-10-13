@@ -12,7 +12,7 @@ banks of 8 KB.
   comments.
 - The listing reassembles into the original ROM **byte for byte**.
 - The 512-room world and its dungeons, the title, the story, the opening scene,
-  Shalom, the 265 visible characters with their names, the action scenes and
+  Shalom, the 268 visible characters with their names, the action scenes and
   their bosses and the status-panel pictures are **drawn from the ROM**, not
   captured. The 902 Japanese texts are taken out with the cartridge's font
   table, and the 42 tunes by running its sound engine.

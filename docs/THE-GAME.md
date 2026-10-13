@@ -78,11 +78,12 @@ have not started walking yet.
 
 ![The fountain square](imagenes/sala_0D0_con_personajes.png)
 
-![The 265 visible characters, with their names](imagenes/personajes_de_las_salas.png)
+![The 268 visible characters, with their names](imagenes/personajes_de_las_salas.png)
 
 [A room with its characters walking](imagenes/sala_21F_con_personajes.gif).
-There are 325 types; those with colours 0/0 or no drawing are not shown, and
-those drawn with tiles are not painted.
+There are 325 types; those with colours 0/0 or no drawing are not shown. Three
+(0x68, 0xAA and 0x11B) are not sprites: they put the 4 tiles of their frame in
+their block (`p07:8705`).
 
 ## The action scenes and their bosses
 

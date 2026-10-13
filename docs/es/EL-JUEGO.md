@@ -78,11 +78,12 @@ tipos cotejados, 300 cuadran y los otros 2 aún no han echado a andar.
 
 ![La plaza de la fuente](../imagenes/sala_0D0_con_personajes.png)
 
-![Los 265 personajes que se ven, con su nombre](../imagenes/personajes_de_las_salas.png)
+![Los 268 personajes que se ven, con su nombre](../imagenes/personajes_de_las_salas.png)
 
 [Una sala con sus personajes andando](../imagenes/sala_21F_con_personajes.gif).
-Hay 325 tipos; no se ven los de colores 0/0 ni los que no tienen dibujo, y los
-que van en fichas no están pintados.
+Hay 325 tipos; no se ven los de colores 0/0 ni los que no tienen dibujo. Tres
+(0x68, 0xAA y 0x11B) no son sprites: ponen las 4 fichas de su fotograma en su
+bloque (`p07:8705`).
 
 ## Las escenas de acción y sus jefes
 

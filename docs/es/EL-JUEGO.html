@@ -106,8 +106,8 @@ audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
 <h2 id="los-personajes-de-las-salas">Los personajes de las salas</h2>
 <p>Cada sala tiene su lista (<code>p07:8BC2</code>): tipo, posición y voz. Sus dos colores y su nombre salen de <code>p07:83B4</code>; el nombre son 4 letras de <code>p08:A063</code>. Se pintan con dos sprites con los dibujos de <code>p07:97E8</code> y los patrones de la sala (<code>p18:6A28</code>). El fotograma lo pone la rutina de cada tipo (<code>p07:882D</code>), leída una a una y cotejada ejecutando su creación (<code>tools/coteja_actores.py</code>): de 302 tipos cotejados, 300 cuadran y los otros 2 aún no han echado a andar.</p>
 <p><img src="../imagenes/sala_0D0_con_personajes.png" alt="La plaza de la fuente"></p>
-<p><img src="../imagenes/personajes_de_las_salas.png" alt="Los 265 personajes que se ven, con su nombre"></p>
-<p><a href="../imagenes/sala_21F_con_personajes.gif">Una sala con sus personajes andando</a>. Hay 325 tipos; no se ven los de colores 0/0 ni los que no tienen dibujo, y los que van en fichas no están pintados.</p>
+<p><img src="../imagenes/personajes_de_las_salas.png" alt="Los 268 personajes que se ven, con su nombre"></p>
+<p><a href="../imagenes/sala_21F_con_personajes.gif">Una sala con sus personajes andando</a>. Hay 325 tipos; no se ven los de colores 0/0 ni los que no tienen dibujo. Tres (0x68, 0xAA y 0x11B) no son sprites: ponen las 4 fichas de su fotograma en su bloque (<code>p07:8705</code>).</p>
 <h2 id="las-escenas-de-accion-y-sus-jefes">Las escenas de acción y sus jefes</h2>
 <p>Nueve escenas (<code>p02:906E</code>). <code>p10:8C60</code> las prepara y <code>p00:4893</code> carga sus gráficos; el rival es el objeto de la clase igual al número de escena y se pinta con fichas en su primer paso. En la 2 y la 4 solo está el escenario: su jefe no pone fichas.</p>
 <p><img src="../imagenes/accion_9.png" alt="El gran demonio Gog, escena 9"></p>

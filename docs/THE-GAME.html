@@ -106,8 +106,8 @@ audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
 <h2 id="the-characters-in-the-rooms">The characters in the rooms</h2>
 <p>Each room has its list (<code>p07:8BC2</code>): type, position and voice. Their two colours and their name come from <code>p07:83B4</code>; the name is 4 letters from <code>p08:A063</code>. They are drawn with two sprites using the drawings of <code>p07:97E8</code> and the room&#x27;s patterns (<code>p18:6A28</code>). The frame is set by each type&#x27;s routine (<code>p07:882D</code>), read one by one and checked by running its creation (<code>tools/coteja_actores.py</code>): of 302 types checked, 300 match and the other 2 have not started walking yet.</p>
 <p><img src="imagenes/sala_0D0_con_personajes.png" alt="The fountain square"></p>
-<p><img src="imagenes/personajes_de_las_salas.png" alt="The 265 visible characters, with their names"></p>
-<p><a href="imagenes/sala_21F_con_personajes.gif">A room with its characters walking</a>. There are 325 types; those with colours 0/0 or no drawing are not shown, and those drawn with tiles are not painted.</p>
+<p><img src="imagenes/personajes_de_las_salas.png" alt="The 268 visible characters, with their names"></p>
+<p><a href="imagenes/sala_21F_con_personajes.gif">A room with its characters walking</a>. There are 325 types; those with colours 0/0 or no drawing are not shown. Three (0x68, 0xAA and 0x11B) are not sprites: they put the 4 tiles of their frame in their block (<code>p07:8705</code>).</p>
 <h2 id="the-action-scenes-and-their-bosses">The action scenes and their bosses</h2>
 <p>Nine scenes (<code>p02:906E</code>). <code>p10:8C60</code> prepares them and <code>p00:4893</code> loads their graphics; the rival is the object whose class equals the scene number and it is painted with tiles on its first step. Scenes 2 and 4 only show the setting: their boss puts no tiles.</p>
 <p><img src="imagenes/accion_9.png" alt="The great demon Gog, scene 9"></p>

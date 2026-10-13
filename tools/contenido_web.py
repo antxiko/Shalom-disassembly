@@ -40,7 +40,7 @@ PIE_LEGAL = {
 PORTADA = {
     "es": dict(
         titulo="Shalom: Knightmare III - desensamblado comentado",
-        claim="El mundo de 512 salas y sus mazmorras, 265 personajes con su "
+        claim="El mundo de 512 salas y sus mazmorras, 268 personajes con su "
               "nombre, los nueve jefes, la historia en ocho vi&ntilde;etas, los "
               "902 textos en japon&eacute;s y 42 m&uacute;sicas. Todo dibujado "
               "y sacado desde la ROM.",
@@ -55,7 +55,7 @@ PORTADA = {
     ),
     "en": dict(
         titulo="Shalom: Knightmare III - a commented disassembly",
-        claim="The 512-room world and its dungeons, 265 characters with their "
+        claim="The 512-room world and its dungeons, 268 characters with their "
               "names, the nine bosses, the story in eight panels, the 902 "
               "Japanese texts and 42 tunes. All drawn and taken from the ROM.",
         ficha=["Konami - <b>(c) Konami 1987</b>",
@@ -149,9 +149,9 @@ GALERIA = [
      "La plaza de la fuente con sus vecinos (<code>p07:8BC2</code>).",
      "The fountain square with its neighbours (<code>p07:8BC2</code>)."),
     ("personajes_de_las_salas.png",
-     "Los 265 personajes que se ven, cada uno en su sala y con su nombre "
+     "Los 268 personajes que se ven, cada uno en su sala y con su nombre "
      "(<code>p08:A063</code>).",
-     "The 265 visible characters, each in its room and with its name "
+     "The 268 visible characters, each in its room and with its name "
      "(<code>p08:A063</code>)."),
     ("accion_9.png",
      "El gran demonio Gog, el jefe de la escena 9 (<code>p11:A52A</code>).",

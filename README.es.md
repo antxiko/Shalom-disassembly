@@ -12,7 +12,7 @@ bancos de 8 KB.
   de comentarios.
 - El listado se reensambla en la ROM original **byte a byte**.
 - El mundo de 512 salas y sus mazmorras, el título, la historia, la escena
-  inicial, Shalom, los 265 personajes que se ven con su nombre, las escenas de
+  inicial, Shalom, los 268 personajes que se ven con su nombre, las escenas de
   acción y sus jefes y las viñetas del marcador están **dibujados desde la
   ROM**, no capturados. Los 902 textos en japonés salen con la tabla de la
   fuente del cartucho, y las 42 músicas, ejecutando su motor de sonido.
