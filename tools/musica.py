@@ -139,12 +139,12 @@ PAGINA = motor_musica.pagina_basica(
     "p29:6000, which the game reaches through `pide_sonido` (p00:415B) with "
     "banks 29-30-31",
     "C-BIOS MSX1 japonés",
-    [("el exterior (0x36) entero, 7.426 cuadros, y la pantalla de nombres "
-      "(0x3B) entera, 3.361 cuadros; en la 0x3B, en 6 cuadros, el periodo del "
-      "canal A no coincide mientras ese canal está callado",
-      "the outside world (0x36), whole, 7,426 frames, and the name screen "
-      "(0x3B), whole, 3,361 frames; in 0x3B, in 6 frames, the period of "
-      "channel A differs while that channel is silent")],
+    [("el exterior (0x36) entero, 7.426 cuadros",
+      "the outside world (0x36), whole, 7,426 frames"),
+     ("la pantalla de nombres (0x3B) entera, 3.361 cuadros, salvo 6 en los "
+      "que el periodo del canal A no coincide mientras ese canal está callado",
+      "the name screen (0x3B), whole, 3,361 frames, except 6 in which the "
+      "period of channel A differs while that channel is silent")],
     [("Cómo se pide una pieza",
       "`pide_sonido` recibe el número en A. El motor tiene cinco canales de "
       "0x2C bytes desde 0xE210: la música va en los tres primeros y los "
