@@ -89,8 +89,8 @@ their block (`p07:8705`).
 
 Nine scenes (`p02:906E`). `p10:8C60` prepares them and `p00:4893` loads their
 graphics; the rival is the object whose class equals the scene number and it
-is painted with tiles on its first step. Scenes 2 and 4 only show the setting:
-their boss puts no tiles.
+is painted with tiles as it appears: on its first step or, for 2 and 4, bit by
+bit in step 2 (`p10:9120`, `p10:9710`).
 
 ![The great demon Gog, scene 9](imagenes/accion_9.png)
 

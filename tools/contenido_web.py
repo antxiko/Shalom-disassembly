@@ -91,8 +91,8 @@ HALLAZGOS = {
          "(&laquo;t&uacute;&raquo;) como primer nombre antes de presentar a los "
          "personajes (<code>p04:6E5D</code>).</p>" + LEIDO["es"]),
         ("Los jefes se dibujan con fichas",
-         "<p>Siete de los nueve no son sprites: se pintan en la pantalla de "
-         "nombres en su primer paso. El de la escena 1 baja fila a fila hasta "
+         "<p>Ninguno de los nueve es un sprite: se pintan en la pantalla de "
+         "nombres al aparecer. El de la escena 1 baja fila a fila hasta "
          "su sitio (<code>p10:8E0D</code>).</p>" + LEIDO["es"]),
     ],
     "en": [
@@ -115,8 +115,8 @@ HALLAZGOS = {
          "(&ldquo;you&rdquo;) as the first name before introducing the "
          "characters (<code>p04:6E5D</code>).</p>" + LEIDO["en"]),
         ("The bosses are drawn with tiles",
-         "<p>Seven of the nine are not sprites: they are painted into the name "
-         "table on their first step. The one in scene 1 comes down row by row "
+         "<p>None of the nine is a sprite: they are painted into the name "
+         "table as they appear. The one in scene 1 comes down row by row "
          "to its place (<code>p10:8E0D</code>).</p>" + LEIDO["en"]),
     ],
 }

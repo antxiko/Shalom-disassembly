@@ -17,9 +17,8 @@ que se viene y la fuente del tercio de abajo): aqui la VRAM empieza a cero y
 lleva la fuente (p04:648C).
 
 EL RIVAL es el objeto de clase = escena (p10:8D00, posicion en p10:8D6F) y se
-pinta con fichas en el bufer de nombres en su primer paso: ver jefe_1-9. Los
-de las escenas 2 y 4 no ponen fichas en ese paso (alli solo esta el
-escenario); el 9 lleva ademas cinco sprites. Lo que cambia despues (dibujos al
+pinta con fichas en el bufer de nombres al aparecer: ver jefe_1-9 (el 2 y el
+4, en su paso 2); el 9 lleva ademas cinco sprites. Lo que cambia despues (dibujos al
 azar, piezas que parpadean, sprites) no esta.
 
 Uso: accion.py png <1-9> <png>
@@ -175,21 +174,37 @@ def dibujo_6x10(rom, buf, hl, tabla, fotograma=1):
             de += 1
 
 
+def con_destino(rom, buf, de):
+    """p10:913A: [destino] y tramos [n] bytes [salto] hasta 0xFF."""
+    tramos(rom, buf, de + 2, rom.palabra(de) - 0xED00)
+
+
+def aparece(rom, buf, tabla):
+    """El paso 2 de las clases 2 y 4 (p10:9120, p10:9710): cada 16 cuadros el
+    dibujo con destino TABLA[cuenta]; al llegar la cuenta a 5 pasa de paso sin
+    pintar el ultimo: se pintan los cuatro primeros."""
+    for k in range(4):
+        con_destino(rom, buf, rom.palabra(tabla + 2 * k))
+
+
 def jefe_2(rom, buf):
-    """objeto_02 paso 0 (p10:9100): los dibujos con destino p10:91B6 y 924E."""
+    """objeto_02: el paso 0 (p10:9100), los dibujos con destino p10:91B6 y
+    924E, y el paso 2, los de p10:9244."""
     for de in (0x91B6, 0x924E):
-        tramos(rom, buf, de + 2, rom.palabra(de) - 0xED00)
+        con_destino(rom, buf, de)
+    aparece(rom, buf, 0x9244)
 
 
 def jefe_4(rom, buf):
-    """objeto_04 paso 0 (p10:96A2): un marco de bloques 0x10-0x13 y el
-    interior con la ficha 0x18."""
+    """objeto_04: el paso 0 (p10:96A2), un marco de bloques 0x10-0x13 y el
+    interior con la ficha 0x18, y el paso 2, los dibujos de p10:978A."""
     bloques_de_fichas(buf, 0x24, 12, 1)
     bloques_de_fichas(buf, 0x64, 1, 5)
     bloques_de_fichas(buf, 0x7A, 1, 5)
     bloques_de_fichas(buf, 0x1A4, 12, 1)
     for f in range(10):
         buf[0x66 + 32 * f:0x66 + 32 * f + 20] = bytes([0x18]) * 20
+    aparece(rom, buf, 0x978A)                     # el paso 2 (p10:9710)
 
 
 def jefe_5(rom, buf):

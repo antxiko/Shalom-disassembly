@@ -26,5 +26,5 @@ personajes (`p04:6E5D`).
 
 ## Los jefes se dibujan con fichas
 
-Siete de los nueve no son sprites: se pintan en la pantalla de nombres en su
-primer paso. El de la escena 1 baja fila a fila hasta su sitio (`p10:8E0D`).
+Ninguno de los nueve es un sprite: se pintan en la pantalla de nombres al
+aparecer. El de la escena 1 baja fila a fila hasta su sitio (`p10:8E0D`).

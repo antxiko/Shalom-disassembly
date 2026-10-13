@@ -1,7 +1,5 @@
 # Open questions
 
-- **The bosses of scenes 2 and 4** put no tiles: they are sprites, and they are
-  not drawn.
 - **The answer tree of the opening scene**: the messages are there, but not
   which answer goes with each option.
 - **Items 13-24** are all called あける in `p04:7A15`.

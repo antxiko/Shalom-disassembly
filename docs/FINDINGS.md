@@ -26,5 +26,5 @@ characters (`p04:6E5D`).
 
 ## The bosses are drawn with tiles
 
-Seven of the nine are not sprites: they are painted into the name table on their
-first step. The one in scene 1 comes down row by row to its place (`p10:8E0D`).
+None of the nine is a sprite: they are painted into the name table as they
+appear. The one in scene 1 comes down row by row to its place (`p10:8E0D`).

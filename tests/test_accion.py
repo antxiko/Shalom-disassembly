@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.join(RAIZ, "tools"))
 class Accion(unittest.TestCase):
     def test_los_jefes_ponen_fichas(self):
         import accion as A
-        for e in (1, 3, 5, 6, 7, 8, 9):
+        for e in range(1, 10):
             v = A.pantalla(e)
             self.assertGreater(sum(1 for b in v.v[0x3800:0x39E0] if b), 50, e)
 

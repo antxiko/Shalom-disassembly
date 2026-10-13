@@ -89,8 +89,8 @@ bloque (`p07:8705`).
 
 Nueve escenas (`p02:906E`). `p10:8C60` las prepara y `p00:4893` carga sus
 gráficos; el rival es el objeto de la clase igual al número de escena y se
-pinta con fichas en su primer paso. En la 2 y la 4 solo está el escenario: su
-jefe no pone fichas.
+pinta con fichas al aparecer: en su primer paso, o, el 2 y el 4, poco a poco en
+el paso 2 (`p10:9120`, `p10:9710`).
 
 ![El gran demonio Gog, escena 9](../imagenes/accion_9.png)
 
