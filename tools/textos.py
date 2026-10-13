@@ -20,7 +20,7 @@ bancos (0: 21-22-23, 1: 24-25-26, 2: 27-28 con el 21 en 0x6000) y p21:64BA
 una tabla no lo dice el cartucho: aqui se cuenta hasta el primer mensaje
 (los mensajes van detras de su tabla).
 
-Uso: textos.py md <md>       todos los textos en Markdown
+Uso: textos.py md <md>       todos los textos en Markdown (y los de p04:7A15)
      textos.py tabla         la tabla de la fuente
 """
 import os
@@ -143,11 +143,33 @@ def tablas():
     return out
 
 
+def opciones():
+    """La tabla p04:7A15 (bancos 4-5-6): los nombres de los 24 objetos (1-24,
+    p00:56B0 y p00:5728) y las opciones de los menus (p00:56DB). Acaba donde
+    empieza el primer texto."""
+    rom = P.Rom().trio(4)
+    primero = min(rom.palabra(0x7A15 + 2 * i) for i in range(4))
+    out = []
+    i = 0
+    while 0x7A15 + 2 * i < primero:
+        w = rom.palabra(0x7A15 + 2 * i)
+        if not 0x6000 <= w < 0xC000:
+            break
+        out.append((i, w, decodifica(rom, w, 40)[0]))
+        i += 1
+    return out
+
+
 def md():
     rom = P.Rom()
     lineas = ["# Los textos de Shalom (sacados de la ROM)", "",
               "Generado por `tools/textos.py`. Cada mensaje: su numero en la tabla, "
-              "su direccion y el texto. 〔tecla〕 = espera una tecla.", ""]
+              "su direccion y el texto. 〔tecla〕 = espera una tecla.", "",
+              "## Objetos y opciones de los menus (p04:7A15)", "",
+              "Los numeros 1-24 son los objetos que se llevan (0xE9D0); los demas, "
+              "las opciones de los menus.", ""]
+    lineas += ["- **0x%02X** (p04:%04X): %s" % o for o in opciones()]
+    lineas.append("")
     for titulo, g, t, salas in tablas():
         bancos_de_grupo(rom, g)
         nombre = titulo or "salas " + ", ".join("0x%03X" % s for s in salas[:12]) + \
