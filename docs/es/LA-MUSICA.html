@@ -1,0 +1,221 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La música — Shalom: Knightmare III (Konami, 1987)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Portada</a><a href="EMPEZAR.html">Empezar</a><a href="EL-JUEGO.html">El juego</a><a href="LA-MUSICA.html" style=color:var(--tinta)>La música</a><a href="EL-CARTUCHO.html">El cartucho</a><a href="EL-CODIGO.html">El código</a><a href="HALLAZGOS.html">Hallazgos</a><a href="PREGUNTAS-ABIERTAS.html">Preguntas abiertas</a><a href="../THE-MUSIC.html" style="margin-left:auto;color:var(--oro)">English</a></nav>
+<h1 id="la-musica">La música</h1>
+<p>Todo lo que suena aquí sale de ejecutar el motor de sonido del cartucho (<code>motor_cuadro</code>, p29:6449, que llama la interrupción, y <code>motor_pide</code>, p29:6000, al que el juego llega por <code>pide_sonido</code> (p00:415B) con los bancos 29-30-31) en un Z80 emulado, cuadro a cuadro y a 60 por segundo, igual que lo llama el juego. Lo que el motor escribe en el PSG pasa a sonido con un AY-3-8910 (<code>tools/musica.py</code>). Cada MP3 es la pieza entera hasta donde vuelve a empezar, más 8 segundos de la vuelta apagándose; las que no se repiten acaban donde acaba el motor.</p>
+<h2 id="cotejado-con-openmsx">Cotejado con openMSX</h2>
+<p>Las escrituras al PSG se han comparado cuadro a cuadro con las de openMSX (C-BIOS MSX1 japonés). En todos los cuadros el PSG queda igual:</p>
+<ul><li>el exterior (0x36) entero, 7.426 cuadros;</li><li>la pantalla de nombres (0x3B) entera, 3.361 cuadros, salvo 6 en los que el periodo del canal A no coincide mientras ese canal está callado.</li></ul>
+<p>El timbre no está cotejado: es el de un AY-3-8910 de manual, no una grabación del emulador. Las sondas están en <code>tools/omsx_psg.tcl</code> y <code>tools/coteja_psg.py</code>.</p>
+<h2 id="como-se-pide-una-pieza">Cómo se pide una pieza</h2>
+<p><code>pide_sonido</code> recibe el número en A. El motor tiene cinco canales de 0x2C bytes desde 0xE210: la música va en los tres primeros y los efectos en los dos últimos, que toman prestada una voz del PSG y la devuelven al acabar. La música de cada sala sale de un nibble por sala en p00:4696 y de la tabla de 16 números de p00:47B6; con la bandera de la historia 0x20, bit 0, el exterior cambia de pieza. Las escenas de acción toman la suya de p09:607C. Aquí solo están las músicas, sin repetir: 0x32, 0x56, 0x5C y 0x5D suenan igual que 0x30, 0x4B, 0x5B y 0x31. La 0x60 no vuelve al principio en 25 minutos: se corta a los 5 minutos.</p>
+<h2 id="las-musicas">Las músicas</h2>
+<p><b>El título</b> (0x50)</p>
+<p>Lo pide <code>titulo_cuadro</code> (p04:6286); dura 1,0 s.</p>
+<audio controls preload="none" src="../audio/musica_50.mp3?v=db4e6d6f"></audio>
+<p><b>La pantalla de nombres y diez salas</b> (0x3B)</p>
+<p>Lo pide el paso 0 del estado 4 (p01:65F2) y <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: las 10 salas del grupo 5; dura 56,0 s y vuelve a empezar en el segundo 26,1.</p>
+<audio controls preload="none" src="../audio/musica_3B.mp3?v=5815ee05"></audio>
+<p><b>La escena inicial y el final del juego</b> (0x2B)</p>
+<p>Lo pide <code>escena_inicial_46</code> (p04:6D91) y <code>final_paso_03</code> (p09:6CEC); dura 136,8 s y vuelve a empezar en el segundo 64,8.</p>
+<audio controls preload="none" src="../audio/musica_2B.mp3?v=592dc113"></audio>
+<p><b>Otra pieza de la escena inicial y del final</b> (0x26)</p>
+<p>Lo pide <code>escena_inicial_24</code> (p04:6B09) y <code>final_paso_00</code> (p09:6CAC); dura 7,6 s.</p>
+<audio controls preload="none" src="../audio/musica_26.mp3?v=975af8e3"></audio>
+<p><b>La escena inicial, paso 36</b> (0x4A)</p>
+<p>Lo pide <code>escena_inicial_36</code> (p04:6C40); dura 37,6 s y vuelve a empezar en el segundo 18,2.</p>
+<audio controls preload="none" src="../audio/musica_4A.mp3?v=345746e9"></audio>
+<p><b>La historia y cuatro salas</b> (0x4B)</p>
+<p>Lo pide <code>historia_0</code> (p04:6E47) y <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: las salas 0x03E y 0x232-0x234; dura 110,4 s y vuelve a empezar en el segundo 52,8.</p>
+<audio controls preload="none" src="../audio/musica_4B.mp3?v=0e4bd38c"></audio>
+<p><b>El exterior</b> (0x36)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: las 471 salas del grupo 0, casi todo el exterior; y <code>final_paso_28</code> (p09:6F51); dura 123,8 s y vuelve a empezar en el segundo 7,2.</p>
+<audio controls preload="none" src="../audio/musica_36.mp3?v=5e74a47a"></audio>
+<p><b>El exterior con la bandera 0x20</b> (0x34)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: las salas de los grupos 0 y 1 con la bandera de la historia 0x20, bit 0 (p00:4632); dura 21,6 s y vuelve a empezar en el segundo 2,4.</p>
+<audio controls preload="none" src="../audio/musica_34.mp3?v=8595739e"></audio>
+<p><b>El exterior con la bandera 0x20, tras la 0x2B</b> (0x42)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: con la bandera 0x20, bit 0, si sonaba la 0x2B, o en la sala 0x12D viniendo de la 0x12C; dura 28,0 s y vuelve a empezar en el segundo 8,8.</p>
+<audio controls preload="none" src="../audio/musica_42.mp3?v=54ec427b"></audio>
+<p><b>Ocho salas del exterior</b> (0x2D)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: el grupo 1: salas 0x062, 0x063, 0x082, 0x083, 0x0AF, 0x0B0, 0x0CF y 0x0D0; dura 63,0 s y vuelve a empezar en el segundo 5,4.</p>
+<audio controls preload="none" src="../audio/musica_2D.mp3?v=dd0e2773"></audio>
+<p><b>Treinta salas</b> (0x59)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: las 30 salas del grupo 0x0B; dura 54,3 s y vuelve a empezar en el segundo 6,3.</p>
+<audio controls preload="none" src="../audio/musica_59.mp3?v=ddaa0f6b"></audio>
+<p><b>Nueve salas</b> (0x5F)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: el grupo 0x0D: salas 0x138, 0x139, 0x158, 0x159, 0x178, 0x179, 0x1A1, 0x226 y 0x227; dura 27,8 s y vuelve a empezar en el segundo 2,1.</p>
+<audio controls preload="none" src="../audio/musica_5F.mp3?v=f89e2dc5"></audio>
+<p><b>La sala 0x118</b> (0x2E)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: la sala 0x118, sin la bandera 0x24, bit 7; dura 36,9 s y vuelve a empezar en el segundo 0,1.</p>
+<audio controls preload="none" src="../audio/musica_2E.mp3?v=3db944a7"></audio>
+<p><b>Las mazmorras</b> (0x31)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: las 26 salas del grupo 4 (0x202-0x231); y como 0x5D, en una escena de acción (p01:7CBA); dura 113,7 s y vuelve a empezar en el segundo 50,7.</p>
+<audio controls preload="none" src="../audio/musica_31.mp3?v=fae5b669"></audio>
+<p><b>La sala 0x208</b> (0x30)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: la sala 0x208; y como 0x32, el paso 0 de los eventos 0x15 y 0x18 (p02:98F8, p02:99DE); dura 35,4 s y vuelve a empezar en el segundo 16,0.</p>
+<audio controls preload="none" src="../audio/musica_30.mp3?v=5c185c18"></audio>
+<p><b>Las salas 0x20C y 0x20D</b> (0x33)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: las salas 0x20C y 0x20D, y siempre que 0xE3D9 vale 1 (p08:B814); dura 65,2 s y vuelve a empezar en el segundo 35,1.</p>
+<audio controls preload="none" src="../audio/musica_33.mp3?v=44e1510d"></audio>
+<p><b>La sala 0x210</b> (0x35)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: la sala 0x210; dura 26,4 s y vuelve a empezar en el segundo 9,3.</p>
+<audio controls preload="none" src="../audio/musica_35.mp3?v=098495bd"></audio>
+<p><b>Las salas 0x228, 0x229 y 0x231</b> (0x3F)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: las salas 0x228 y 0x229, y la 0x231 sin la bandera 0x1D, bit 1; dura 106,7 s y vuelve a empezar en el segundo 24,3.</p>
+<audio controls preload="none" src="../audio/musica_3F.mp3?v=90b2fc1f"></audio>
+<p><b>Las salas 0x22C y 0x22D</b> (0x60)</p>
+<p>Lo pide <code>musica_de_la_sala</code> (p00:45E1), por el nibble de p00:4696: las salas 0x22C y 0x22D; se corta a los 300 s (la pieza sigue).</p>
+<audio controls preload="none" src="../audio/musica_60.mp3?v=cf9465c8"></audio>
+<p><b>La escena de acción 1</b> (0x39)</p>
+<p>Lo pide <code>sonido_de_la_escena</code> (p09:606E), tabla p09:607C; dura 53,4 s y vuelve a empezar en el segundo 29,4.</p>
+<audio controls preload="none" src="../audio/musica_39.mp3?v=f74e0efe"></audio>
+<p><b>Las escenas de acción 2, 3, 4, 6 y 7</b> (0x49)</p>
+<p>Lo pide <code>sonido_de_la_escena</code> (p09:606E), tabla p09:607C; dura 76,8 s y vuelve a empezar en el segundo 38,4.</p>
+<audio controls preload="none" src="../audio/musica_49.mp3?v=5b852195"></audio>
+<p><b>Las escenas de acción 5 y 8</b> (0x4C)</p>
+<p>Lo pide <code>sonido_de_la_escena</code> (p09:606E), tabla p09:607C; dura 102,7 s y vuelve a empezar en el segundo 25,9.</p>
+<audio controls preload="none" src="../audio/musica_4C.mp3?v=81324bb7"></audio>
+<p><b>La escena de acción 9</b> (0x57)</p>
+<p>Lo pide <code>sonido_de_la_escena</code> (p09:606E), tabla p09:607C; dura 33,8 s y vuelve a empezar en el segundo 1,8.</p>
+<audio controls preload="none" src="../audio/musica_57.mp3?v=e17c0dfa"></audio>
+<p><b>La clase 9 de los objetos, paso 6</b> (0x5A)</p>
+<p>Lo pide la clase 9 de los objetos (<code>objeto_09</code>, p11:A47A), paso 6; dura 3,0 s.</p>
+<audio controls preload="none" src="../audio/musica_5A.mp3?v=7ffbff30"></audio>
+<p><b>La clase 9 de los objetos, paso 17</b> (0x55)</p>
+<p>Lo pide la clase 9 de los objetos (<code>objeto_09</code>, p11:A47A), paso 17; dura 77,5 s y vuelve a empezar en el segundo 2,9.</p>
+<audio controls preload="none" src="../audio/musica_55.mp3?v=7b9885c2"></audio>
+<p><b>La clase 9 de los objetos, paso 20</b> (0x4E)</p>
+<p>Lo pide la clase 9 de los objetos (<code>objeto_09</code>, p11:A47A), paso 20; dura 7,2 s y vuelve a empezar en el segundo 3,0.</p>
+<audio controls preload="none" src="../audio/musica_4E.mp3?v=78be7075"></audio>
+<p><b>La clase 9 de los objetos, paso 21</b> (0x3E)</p>
+<p>Lo pide la clase 9 de los objetos (<code>objeto_09</code>, p11:A47A), paso 21; dura 107,4 s y vuelve a empezar en el segundo 48,5.</p>
+<audio controls preload="none" src="../audio/musica_3E.mp3?v=528112bf"></audio>
+<p><b>La clase 9 de los objetos, paso 23</b> (0x51)</p>
+<p>Lo pide la clase 9 de los objetos (<code>objeto_09</code>, p11:A47A), paso 23; dura 4,4 s.</p>
+<audio controls preload="none" src="../audio/musica_51.mp3?v=d938afbc"></audio>
+<p><b>Un objeto sin vida</b> (0x53)</p>
+<p>Lo pide un proyectil deja sin vida a un objeto de las clases 2, 3, 4, 6 o 7 (p11:A867); y <code>evento_27</code> (p02:9C46); dura 3,0 s.</p>
+<audio controls preload="none" src="../audio/musica_53.mp3?v=f2dab517"></audio>
+<p><b>El paso 0 de cuatro eventos</b> (0x2F)</p>
+<p>Lo pide los eventos 0x01, 0x06, 0x0C y 0x17 (p02:919A, p02:9332, p02:9574, p02:9987); dura 21,9 s y vuelve a empezar en el segundo 8,8.</p>
+<audio controls preload="none" src="../audio/musica_2F.mp3?v=ccb4d976"></audio>
+<p><b>El evento 0x19</b> (0x27)</p>
+<p>Lo pide <code>evento_19</code> (p02:9A14); dura 2,1 s.</p>
+<audio controls preload="none" src="../audio/musica_27.mp3?v=5f5dc3b6"></audio>
+<p><b>El actor 0xA5</b> (0x37)</p>
+<p>Lo pide <code>actor_a5</code> (p08:A35C), cuando el personaje queda a menos de 0x11 puntos en vertical; dura 39,2 s y vuelve a empezar en el segundo 19,9.</p>
+<audio controls preload="none" src="../audio/musica_37.mp3?v=d24677a8"></audio>
+<p><b>La entrada por arriba</b> (0x07)</p>
+<p>Lo pide <code>personaje_modo_2</code> (p01:72B9) y <code>actor_a5</code> (p08:A328); dura 1,1 s.</p>
+<audio controls preload="none" src="../audio/musica_07.mp3?v=3c6fad76"></audio>
+<p><b>El personaje baja</b> (0x08)</p>
+<p>Lo pide <code>personaje_baja</code> (p01:72D8), el modo 3 del personaje; dura 38,0 s y vuelve a empezar en el segundo 1,2.</p>
+<audio controls preload="none" src="../audio/musica_08.mp3?v=89fe6839"></audio>
+<p><b>El desplazamiento de la pantalla</b> (0x28)</p>
+<p>Lo pide <code>sonido_28_y_21_22_23</code> (p00:4040), desde p21:606C y p21:60B1; dura 8,6 s.</p>
+<audio controls preload="none" src="../audio/musica_28.mp3?v=cdb0c42d"></audio>
+<p><b>Los finales del estado 6</b> (0x3A)</p>
+<p>Lo pide <code>final_1</code> y <code>final_2</code>, paso 0 (p06:AF69, p06:AFAA); dura 45,9 s y vuelve a empezar en el segundo 22,4.</p>
+<audio controls preload="none" src="../audio/musica_3A.mp3?v=1ef49399"></audio>
+<p><b>El final del juego, paso 31</b> (0x58)</p>
+<p>Lo pide <code>final_paso_31</code> (p09:7013); dura 76,8 s y vuelve a empezar en el segundo 38,4.</p>
+<audio controls preload="none" src="../audio/musica_58.mp3?v=d59fefae"></audio>
+<p><b>Sin petición: 0x2C</b> (0x2C)</p>
+<p>Lo pide ninguna rutina del listado la pide, ni está en p00:47B6 ni en p09:607C; dura 78,5 s y vuelve a empezar en el segundo 19,6.</p>
+<audio controls preload="none" src="../audio/musica_2C.mp3?v=6b4f2787"></audio>
+<p><b>Sin petición: 0x38</b> (0x38)</p>
+<p>Lo pide ninguna rutina del listado la pide, ni está en p00:47B6 ni en p09:607C; dura 38,2 s y vuelve a empezar en el segundo 18,8.</p>
+<audio controls preload="none" src="../audio/musica_38.mp3?v=cb5459a7"></audio>
+<p><b>Sin petición: 0x3C</b> (0x3C)</p>
+<p>Lo pide ninguna rutina del listado la pide, ni está en p00:47B6 ni en p09:607C; dura 58,0 s y vuelve a empezar en el segundo 27,9.</p>
+<audio controls preload="none" src="../audio/musica_3C.mp3?v=7412f5c8"></audio>
+<p><b>Sin petición: 0x3D</b> (0x3D)</p>
+<p>Lo pide ninguna rutina del listado la pide, ni está en p00:47B6 ni en p09:607C; dura 114,0 s y vuelve a empezar en el segundo 56,4.</p>
+<audio controls preload="none" src="../audio/musica_3D.mp3?v=934c72e5"></audio>
+<p><b>Sin petición: 0x5B (y 0x5C)</b> (0x5B)</p>
+<p>Lo pide ninguna rutina del listado la pide, ni está en p00:47B6 ni en p09:607C; dura 74,8 s y vuelve a empezar en el segundo 0,2.</p>
+<audio controls preload="none" src="../audio/musica_5B.mp3?v=521364f2"></audio>
+<footer><p><em>Shalom: Knightmare III</em> lo public&oacute; Konami para MSX en 1987; su n&uacute;mero de cat&aacute;logo es RC-754 y son 256 KB. Todos los derechos sobre el juego siguen siendo de sus titulares. Este trabajo es de preservaci&oacute;n, estudio y documentaci&oacute;n, y la imagen del cartucho no se distribuye.</p></footer></div>

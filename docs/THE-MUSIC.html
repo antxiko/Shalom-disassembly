@@ -1,0 +1,221 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The music — Shalom: Knightmare III (Konami, 1987)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Home</a><a href="GETTING-STARTED.html">Start</a><a href="THE-GAME.html">The game</a><a href="THE-MUSIC.html" style=color:var(--tinta)>The music</a><a href="THE-CARTRIDGE.html">The cartridge</a><a href="THE-CODE.html">The code</a><a href="FINDINGS.html">Findings</a><a href="OPEN-QUESTIONS.html">Open questions</a><a href="es/LA-MUSICA.html" style="margin-left:auto;color:var(--oro)">Castellano</a></nav>
+<h1 id="the-music">The music</h1>
+<p>Everything you hear here comes from running the cartridge&#x27;s own sound engine (<code>motor_cuadro</code>, p29:6449, called by the interrupt, and <code>motor_pide</code>, p29:6000, which the game reaches through <code>pide_sonido</code> (p00:415B) with banks 29-30-31) on an emulated Z80, frame by frame at 60 per second, just as the game calls it. What the engine writes to the PSG is turned into sound with an AY-3-8910 (<code>tools/musica.py</code>). Each MP3 is the whole piece up to where it starts again, plus 8 seconds of the repeat fading out; those that do not repeat end where the engine ends.</p>
+<h2 id="checked-against-openmsx">Checked against openMSX</h2>
+<p>The PSG writes have been compared frame by frame with those of openMSX (C-BIOS MSX1 japonés). In every frame the PSG ends up the same:</p>
+<ul><li>the outside world (0x36), whole, 7,426 frames;</li><li>the name screen (0x3B), whole, 3,361 frames, except 6 in which the period of channel A differs while that channel is silent.</li></ul>
+<p>The timbre is not checked: it is a textbook AY-3-8910, not a recording of the emulator. The probes are <code>tools/omsx_psg.tcl</code> and <code>tools/coteja_psg.py</code>.</p>
+<h2 id="how-a-piece-is-asked-for">How a piece is asked for</h2>
+<p><code>pide_sonido</code> takes the number in A. The engine has five channels of 0x2C bytes from 0xE210: the music uses the first three and the effects the last two, which borrow a PSG voice and give it back when they finish. Each room&#x27;s music comes from a nibble per room in p00:4696 and the table of 16 numbers at p00:47B6; with story flag 0x20, bit 0, the outside world changes piece. The action scenes take theirs from p09:607C. Only the tunes are here, without repeats: 0x32, 0x56, 0x5C and 0x5D sound the same as 0x30, 0x4B, 0x5B and 0x31. Piece 0x60 does not loop back within 25 minutes: it is cut at 5 minutes.</p>
+<h2 id="the-tunes">The tunes</h2>
+<p><b>The title</b> (0x50)</p>
+<p>Asked for by <code>titulo_cuadro</code> (p04:6286); lasts 1.0 s.</p>
+<audio controls preload="none" src="audio/musica_50.mp3?v=db4e6d6f"></audio>
+<p><b>The name screen and ten rooms</b> (0x3B)</p>
+<p>Asked for by step 0 of state 4 (p01:65F2) and <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: the 10 rooms of group 5; lasts 56.0 s and starts again at second 26.1.</p>
+<audio controls preload="none" src="audio/musica_3B.mp3?v=5815ee05"></audio>
+<p><b>The opening scene and the game&#x27;s ending</b> (0x2B)</p>
+<p>Asked for by <code>escena_inicial_46</code> (p04:6D91) and <code>final_paso_03</code> (p09:6CEC); lasts 136.8 s and starts again at second 64.8.</p>
+<audio controls preload="none" src="audio/musica_2B.mp3?v=592dc113"></audio>
+<p><b>Another piece of the opening and the ending</b> (0x26)</p>
+<p>Asked for by <code>escena_inicial_24</code> (p04:6B09) and <code>final_paso_00</code> (p09:6CAC); lasts 7.6 s.</p>
+<audio controls preload="none" src="audio/musica_26.mp3?v=975af8e3"></audio>
+<p><b>The opening scene, step 36</b> (0x4A)</p>
+<p>Asked for by <code>escena_inicial_36</code> (p04:6C40); lasts 37.6 s and starts again at second 18.2.</p>
+<audio controls preload="none" src="audio/musica_4A.mp3?v=345746e9"></audio>
+<p><b>The story and four rooms</b> (0x4B)</p>
+<p>Asked for by <code>historia_0</code> (p04:6E47) and <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: rooms 0x03E and 0x232-0x234; lasts 110.4 s and starts again at second 52.8.</p>
+<audio controls preload="none" src="audio/musica_4B.mp3?v=0e4bd38c"></audio>
+<p><b>The outside world</b> (0x36)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: the 471 rooms of group 0, most of the outside world; and <code>final_paso_28</code> (p09:6F51); lasts 123.8 s and starts again at second 7.2.</p>
+<audio controls preload="none" src="audio/musica_36.mp3?v=5e74a47a"></audio>
+<p><b>The outside world with flag 0x20</b> (0x34)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: the rooms of groups 0 and 1 with story flag 0x20, bit 0 (p00:4632); lasts 21.6 s and starts again at second 2.4.</p>
+<audio controls preload="none" src="audio/musica_34.mp3?v=8595739e"></audio>
+<p><b>The outside world with flag 0x20, after 0x2B</b> (0x42)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: with flag 0x20, bit 0, if 0x2B was playing, or in room 0x12D coming from 0x12C; lasts 28.0 s and starts again at second 8.8.</p>
+<audio controls preload="none" src="audio/musica_42.mp3?v=54ec427b"></audio>
+<p><b>Eight outdoor rooms</b> (0x2D)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: group 1: rooms 0x062, 0x063, 0x082, 0x083, 0x0AF, 0x0B0, 0x0CF and 0x0D0; lasts 63.0 s and starts again at second 5.4.</p>
+<audio controls preload="none" src="audio/musica_2D.mp3?v=dd0e2773"></audio>
+<p><b>Thirty rooms</b> (0x59)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: the 30 rooms of group 0x0B; lasts 54.3 s and starts again at second 6.3.</p>
+<audio controls preload="none" src="audio/musica_59.mp3?v=ddaa0f6b"></audio>
+<p><b>Nine rooms</b> (0x5F)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: group 0x0D: rooms 0x138, 0x139, 0x158, 0x159, 0x178, 0x179, 0x1A1, 0x226 and 0x227; lasts 27.8 s and starts again at second 2.1.</p>
+<audio controls preload="none" src="audio/musica_5F.mp3?v=f89e2dc5"></audio>
+<p><b>Room 0x118</b> (0x2E)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: room 0x118, without flag 0x24, bit 7; lasts 36.9 s and starts again at second 0.1.</p>
+<audio controls preload="none" src="audio/musica_2E.mp3?v=3db944a7"></audio>
+<p><b>The dungeons</b> (0x31)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: the 26 rooms of group 4 (0x202-0x231); and, as 0x5D, in an action scene (p01:7CBA); lasts 113.7 s and starts again at second 50.7.</p>
+<audio controls preload="none" src="audio/musica_31.mp3?v=fae5b669"></audio>
+<p><b>Room 0x208</b> (0x30)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: room 0x208; and, as 0x32, step 0 of events 0x15 and 0x18 (p02:98F8, p02:99DE); lasts 35.4 s and starts again at second 16.0.</p>
+<audio controls preload="none" src="audio/musica_30.mp3?v=5c185c18"></audio>
+<p><b>Rooms 0x20C and 0x20D</b> (0x33)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: rooms 0x20C and 0x20D, and whenever 0xE3D9 is 1 (p08:B814); lasts 65.2 s and starts again at second 35.1.</p>
+<audio controls preload="none" src="audio/musica_33.mp3?v=44e1510d"></audio>
+<p><b>Room 0x210</b> (0x35)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: room 0x210; lasts 26.4 s and starts again at second 9.3.</p>
+<audio controls preload="none" src="audio/musica_35.mp3?v=098495bd"></audio>
+<p><b>Rooms 0x228, 0x229 and 0x231</b> (0x3F)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: rooms 0x228 and 0x229, and 0x231 without flag 0x1D, bit 1; lasts 106.7 s and starts again at second 24.3.</p>
+<audio controls preload="none" src="audio/musica_3F.mp3?v=90b2fc1f"></audio>
+<p><b>Rooms 0x22C and 0x22D</b> (0x60)</p>
+<p>Asked for by <code>musica_de_la_sala</code> (p00:45E1), by the nibble in p00:4696: rooms 0x22C and 0x22D; is cut at 300 s (the piece goes on).</p>
+<audio controls preload="none" src="audio/musica_60.mp3?v=cf9465c8"></audio>
+<p><b>Action scene 1</b> (0x39)</p>
+<p>Asked for by <code>sonido_de_la_escena</code> (p09:606E), table p09:607C; lasts 53.4 s and starts again at second 29.4.</p>
+<audio controls preload="none" src="audio/musica_39.mp3?v=f74e0efe"></audio>
+<p><b>Action scenes 2, 3, 4, 6 and 7</b> (0x49)</p>
+<p>Asked for by <code>sonido_de_la_escena</code> (p09:606E), table p09:607C; lasts 76.8 s and starts again at second 38.4.</p>
+<audio controls preload="none" src="audio/musica_49.mp3?v=5b852195"></audio>
+<p><b>Action scenes 5 and 8</b> (0x4C)</p>
+<p>Asked for by <code>sonido_de_la_escena</code> (p09:606E), table p09:607C; lasts 102.7 s and starts again at second 25.9.</p>
+<audio controls preload="none" src="audio/musica_4C.mp3?v=81324bb7"></audio>
+<p><b>Action scene 9</b> (0x57)</p>
+<p>Asked for by <code>sonido_de_la_escena</code> (p09:606E), table p09:607C; lasts 33.8 s and starts again at second 1.8.</p>
+<audio controls preload="none" src="audio/musica_57.mp3?v=e17c0dfa"></audio>
+<p><b>Object class 9, step 6</b> (0x5A)</p>
+<p>Asked for by object class 9 (<code>objeto_09</code>, p11:A47A), step 6; lasts 3.0 s.</p>
+<audio controls preload="none" src="audio/musica_5A.mp3?v=7ffbff30"></audio>
+<p><b>Object class 9, step 17</b> (0x55)</p>
+<p>Asked for by object class 9 (<code>objeto_09</code>, p11:A47A), step 17; lasts 77.5 s and starts again at second 2.9.</p>
+<audio controls preload="none" src="audio/musica_55.mp3?v=7b9885c2"></audio>
+<p><b>Object class 9, step 20</b> (0x4E)</p>
+<p>Asked for by object class 9 (<code>objeto_09</code>, p11:A47A), step 20; lasts 7.2 s and starts again at second 3.0.</p>
+<audio controls preload="none" src="audio/musica_4E.mp3?v=78be7075"></audio>
+<p><b>Object class 9, step 21</b> (0x3E)</p>
+<p>Asked for by object class 9 (<code>objeto_09</code>, p11:A47A), step 21; lasts 107.4 s and starts again at second 48.5.</p>
+<audio controls preload="none" src="audio/musica_3E.mp3?v=528112bf"></audio>
+<p><b>Object class 9, step 23</b> (0x51)</p>
+<p>Asked for by object class 9 (<code>objeto_09</code>, p11:A47A), step 23; lasts 4.4 s.</p>
+<audio controls preload="none" src="audio/musica_51.mp3?v=d938afbc"></audio>
+<p><b>An object out of life</b> (0x53)</p>
+<p>Asked for by a projectile leaves an object of class 2, 3, 4, 6 or 7 without life (p11:A867); and <code>evento_27</code> (p02:9C46); lasts 3.0 s.</p>
+<audio controls preload="none" src="audio/musica_53.mp3?v=f2dab517"></audio>
+<p><b>Step 0 of four events</b> (0x2F)</p>
+<p>Asked for by events 0x01, 0x06, 0x0C and 0x17 (p02:919A, p02:9332, p02:9574, p02:9987); lasts 21.9 s and starts again at second 8.8.</p>
+<audio controls preload="none" src="audio/musica_2F.mp3?v=ccb4d976"></audio>
+<p><b>Event 0x19</b> (0x27)</p>
+<p>Asked for by <code>evento_19</code> (p02:9A14); lasts 2.1 s.</p>
+<audio controls preload="none" src="audio/musica_27.mp3?v=5f5dc3b6"></audio>
+<p><b>Actor 0xA5</b> (0x37)</p>
+<p>Asked for by <code>actor_a5</code> (p08:A35C), when the character is less than 0x11 pixels away vertically; lasts 39.2 s and starts again at second 19.9.</p>
+<audio controls preload="none" src="audio/musica_37.mp3?v=d24677a8"></audio>
+<p><b>Entering from the top</b> (0x07)</p>
+<p>Asked for by <code>personaje_modo_2</code> (p01:72B9) and <code>actor_a5</code> (p08:A328); lasts 1.1 s.</p>
+<audio controls preload="none" src="audio/musica_07.mp3?v=3c6fad76"></audio>
+<p><b>The character goes down</b> (0x08)</p>
+<p>Asked for by <code>personaje_baja</code> (p01:72D8), character mode 3; lasts 38.0 s and starts again at second 1.2.</p>
+<audio controls preload="none" src="audio/musica_08.mp3?v=89fe6839"></audio>
+<p><b>The screen scroll</b> (0x28)</p>
+<p>Asked for by <code>sonido_28_y_21_22_23</code> (p00:4040), from p21:606C and p21:60B1; lasts 8.6 s.</p>
+<audio controls preload="none" src="audio/musica_28.mp3?v=cdb0c42d"></audio>
+<p><b>The endings of state 6</b> (0x3A)</p>
+<p>Asked for by <code>final_1</code> and <code>final_2</code>, step 0 (p06:AF69, p06:AFAA); lasts 45.9 s and starts again at second 22.4.</p>
+<audio controls preload="none" src="audio/musica_3A.mp3?v=1ef49399"></audio>
+<p><b>The game&#x27;s ending, step 31</b> (0x58)</p>
+<p>Asked for by <code>final_paso_31</code> (p09:7013); lasts 76.8 s and starts again at second 38.4.</p>
+<audio controls preload="none" src="audio/musica_58.mp3?v=d59fefae"></audio>
+<p><b>Not asked for: 0x2C</b> (0x2C)</p>
+<p>Asked for by no routine in the listing asks for it, and it is not in p00:47B6 or p09:607C; lasts 78.5 s and starts again at second 19.6.</p>
+<audio controls preload="none" src="audio/musica_2C.mp3?v=6b4f2787"></audio>
+<p><b>Not asked for: 0x38</b> (0x38)</p>
+<p>Asked for by no routine in the listing asks for it, and it is not in p00:47B6 or p09:607C; lasts 38.2 s and starts again at second 18.8.</p>
+<audio controls preload="none" src="audio/musica_38.mp3?v=cb5459a7"></audio>
+<p><b>Not asked for: 0x3C</b> (0x3C)</p>
+<p>Asked for by no routine in the listing asks for it, and it is not in p00:47B6 or p09:607C; lasts 58.0 s and starts again at second 27.9.</p>
+<audio controls preload="none" src="audio/musica_3C.mp3?v=7412f5c8"></audio>
+<p><b>Not asked for: 0x3D</b> (0x3D)</p>
+<p>Asked for by no routine in the listing asks for it, and it is not in p00:47B6 or p09:607C; lasts 114.0 s and starts again at second 56.4.</p>
+<audio controls preload="none" src="audio/musica_3D.mp3?v=934c72e5"></audio>
+<p><b>Not asked for: 0x5B (and 0x5C)</b> (0x5B)</p>
+<p>Asked for by no routine in the listing asks for it, and it is not in p00:47B6 or p09:607C; lasts 74.8 s and starts again at second 0.2.</p>
+<audio controls preload="none" src="audio/musica_5B.mp3?v=521364f2"></audio>
+<footer><p><em>Shalom: Knightmare III</em> was published by Konami for the MSX in 1987; its catalogue number is RC-754 and it is 256 KB. All rights in the game remain with their holders. This is preservation, study and documentation work, and the cartridge image is not distributed.</p></footer></div>

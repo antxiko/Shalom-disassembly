@@ -1,0 +1,130 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>El juego — Shalom: Knightmare III (Konami, 1987)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Portada</a><a href="EMPEZAR.html">Empezar</a><a href="EL-JUEGO.html" style=color:var(--tinta)>El juego</a><a href="LA-MUSICA.html">La música</a><a href="EL-CARTUCHO.html">El cartucho</a><a href="EL-CODIGO.html">El código</a><a href="HALLAZGOS.html">Hallazgos</a><a href="PREGUNTAS-ABIERTAS.html">Preguntas abiertas</a><a href="../THE-GAME.html" style="margin-left:auto;color:var(--oro)">English</a></nav>
+<h1 id="el-juego">El juego</h1>
+<p><em>Shalom: Knightmare III</em> (Konami, 1987, RC-754) es una aventura para MSX en japonés: se explora un mundo de salas, se habla con la gente con un menú de órdenes y se combate en escenas de acción. Todo lo que hay en esta página sale de las tablas del cartucho; ninguna imagen es una captura.</p>
+<h2 id="el-titulo">El título</h2>
+<p><img src="../imagenes/titulo.png" alt="La pantalla de título"></p>
+<p>El rótulo de Konami (<code>p04:6527</code>, <a href="../imagenes/rotulo.png">imagen</a>) y la pantalla de título (<code>p04:622B</code>): cinco gráficos en dos tercios, los volteados de <code>p06:B255</code>, la fuente y el rectángulo de nombres de <code>p06:B5CA</code>.</p>
+<h2 id="la-historia">La historia</h2>
+<p>Ocho viñetas que aparecen una por página (<code>p04:6E03</code>). <code>historia_0</code> carga sus dibujos con cuatro RLE (<code>p04:7CB6</code>, <code>p04:7FFA</code>, <code>p05:81C0</code>, <code>p05:833E</code>) y pone los colores a cero; cada página destapa una viñeta copiando sus colores con una cortinilla (lista <code>p04:7C71</code>, <code>p00:4CD4</code>) y escribe su texto (<code>p04:6EDC</code>). Las viñetas se quedan: al final se ven las ocho.</p>
+<p><img src="../imagenes/historia_7.png" alt="La historia completa"></p>
+<p>Los textos son la presentación de los personajes: el protagonista, la heroína, el rey Pampas, la princesa Chelsea, Popolon, Afrodita, Butako y el gran demonio Gog. La historia pone «あなた» («tú») como primer nombre (<code>p04:6E5D</code>). Página a página: <a href="../imagenes/historia_0.png">1</a>, <a href="../imagenes/historia_1.png">2</a>, <a href="../imagenes/historia_2.png">3</a>, <a href="../imagenes/historia_3.png">4</a>, <a href="../imagenes/historia_4.png">5</a>, <a href="../imagenes/historia_5.png">6</a>, <a href="../imagenes/historia_6.png">7</a>, <a href="../imagenes/historia_7.png">8</a>.</p>
+<h2 id="la-escena-inicial">La escena inicial</h2>
+<p>Una conversación con opciones (<code>p04:6693</code>, 53 pasos). El paso 5 (<code>p04:671A</code>) monta la cara de la heroína (los mismos colores que su viñeta de la historia), un dibujo de 12 x 8 fichas y el marco con el emblema; el cuerpo solo toma color si se elige la opción 1 (<code>p04:678E</code>, cortinilla <code>p00:4D28</code>).</p>
+<p><img src="../imagenes/escena_inicial.png" alt="La escena inicial con la opción 1"></p>
+<p>Lo que se dice son los mensajes 0x02-0x2A de la tabla de la sala 0x200, con tablas de respuesta por opción (<code>p04:6873</code>, <code>p04:687B</code>, <code>p04:6883</code>).</p>
+<h2 id="el-mundo">El mundo</h2>
+<p>El exterior es una rejilla de 32 x 16 salas (sala = fila x 32 + columna): la tabla <code>p02:858C</code> suma -0x20, +0x20, -1 o +1 al salir por cada lado. Cada sala son 12 x 8 bloques de 16 x 16 a nibbles (<code>p00:514B</code>), con su juego de fichas (<code>p00:47C6</code>), sus gráficos (<code>p00:482F</code>) y los dibujos que dependen de las banderas de la historia (<code>p09:60CC</code>).</p>
+<p><img src="../imagenes/mundo_4.png" alt="El exterior, a un cuarto de tamaño"></p>
+<p><a href="../imagenes/mundo.png">El exterior a tamaño real</a>. Las salas desde la 0x200 se enlazan a mano en el código (<code>p02:859C</code>, <code>p02:8714</code>, <code>p02:88D4</code>; las 0x228-0x22D, al azar con <code>p02:8C83</code>): <a href="../imagenes/mazmorra1.png">la primera mazmorra</a>, <a href="../imagenes/mazmorra2.png">la segunda</a> y <a href="../imagenes/salas_especiales.png">todas las salas desde la 0x200 sueltas</a>.</p>
+<h2 id="shalom">Shalom</h2>
+<p>Tres sprites de 16 x 16 por fotograma (<code>p01:772A</code>); el fotograma es la dirección más el bit 4 de su cuenta de cuadros (<code>p01:7709</code>): cambia de dibujo cada 16 cuadros.</p>
+<p><img src="../imagenes/personaje.gif" alt="Shalom andando"></p>
+<h2 id="los-personajes-de-las-salas">Los personajes de las salas</h2>
+<p>Cada sala tiene su lista (<code>p07:8BC2</code>): tipo, posición y voz. Sus dos colores y su nombre salen de <code>p07:83B4</code>; el nombre son 4 letras de <code>p08:A063</code>. Se pintan con dos sprites con los dibujos de <code>p07:97E8</code> y los patrones de la sala (<code>p18:6A28</code>). El fotograma lo pone la rutina de cada tipo (<code>p07:882D</code>), leída una a una y cotejada ejecutando su creación (<code>tools/coteja_actores.py</code>): de 302 tipos cotejados, 300 cuadran y los otros 2 aún no han echado a andar.</p>
+<p><img src="../imagenes/sala_0D0_con_personajes.png" alt="La plaza de la fuente"></p>
+<p><img src="../imagenes/personajes_de_las_salas.png" alt="Los 265 personajes que se ven, con su nombre"></p>
+<p><a href="../imagenes/sala_21F_con_personajes.gif">Una sala con sus personajes andando</a>. Hay 325 tipos; no se ven los de colores 0/0 ni los que no tienen dibujo, y los que van en fichas no están pintados.</p>
+<h2 id="las-escenas-de-accion-y-sus-jefes">Las escenas de acción y sus jefes</h2>
+<p>Nueve escenas (<code>p02:906E</code>). <code>p10:8C60</code> las prepara y <code>p00:4893</code> carga sus gráficos; el rival es el objeto de la clase igual al número de escena y se pinta con fichas en su primer paso. En la 2 y la 4 solo está el escenario: su jefe no pone fichas.</p>
+<p><img src="../imagenes/accion_9.png" alt="El gran demonio Gog, escena 9"></p>
+<p>Las nueve: <a href="../imagenes/accion_1.png">1</a>, <a href="../imagenes/accion_2.png">2</a>, <a href="../imagenes/accion_3.png">3</a>, <a href="../imagenes/accion_4.png">4</a>, <a href="../imagenes/accion_5.png">5</a>, <a href="../imagenes/accion_6.png">6</a>, <a href="../imagenes/accion_7.png">7</a>, <a href="../imagenes/accion_8.png">8</a>, <a href="../imagenes/accion_9.png">9</a>.</p>
+<p>La vida (<code>0xE3F6</code>) empieza en 0x14 (en la escena 7 del guion, en 8); cada golpe quita 1 y deja 0x40 o 0x20 cuadros sin daño. Con el objeto 11, la capa, solo cuenta un golpe de cada dos (<code>p11:A7B8</code>). La barra son 10 casillas, 13 en la escena 4 (<code>p09:6B51</code>).</p>
+<h2 id="el-marcador">El marcador</h2>
+<p>El recuadro de la derecha enseña una de 17 viñetas (<code>0xE368</code>): el RLE de <code>p12:733E</code> y la colocación de <code>p09:6713</code>.</p>
+<p><img src="../imagenes/marcador.png" alt="Las 17 viñetas"></p>
+<h2 id="las-ordenes-y-los-objetos">Las órdenes y los objetos</h2>
+<p>La tabla <code>p04:7A15</code> tiene 94 nombres: del 1 al 24, los objetos que se llevan (<code>0xE9D0</code>, bit 0); el resto, las órdenes de los menús.</p>
+<ul><li>Objetos 1-12: たんけん, ローソク, みず, ゆびわ, はたけのき, てがみ, オノ, ダイヤ, フリーパス, ネックレス, マント, ハンマー. Del 13 al 24 la tabla dice あける.</li><li>Algunas órdenes: 耳をすます, 目を開ける, 話しかける, 見る, 調べる, 取る, 使う, 見せる, わたす, たたかう, にげる, パスワード.</li></ul>
+<p>Los objetos se guardan como bits de la partida (<code>0xEB53-0xEB55</code>, <code>p03:BE63</code>).</p>
+<h2 id="los-textos">Los textos</h2>
+<p>Los 902 mensajes de las tablas de cada sala (<code>p21:639E</code>, <code>p21:64BA</code>) y las 94 opciones, sacados con la tabla de la fuente: 246 caracteres de 8 x 8 (<code>p04:6F39</code>) con kana, cifras, letras y 70 kanji. Los acentos (dakuten) van en la fila de arriba (<code>p00:4F1B</code>).</p>
+<p><img src="../imagenes/fuente.png" alt="La fuente"></p>
+<h2 id="grabar-la-partida">Grabar la partida</h2>
+<ul><li><b>Contraseña</b> (banco 14): los 62 bytes de la partida, un CRC-16 (polinomio <code>0xA001</code>) y una clave; 130 letras.</li><li><b>Cinta</b> (BIOS <code>00E1-00F0</code>), <b>disco</b> (BDOS) y <b>otro cartucho</b> con «YZ» en <code>0x4010</code> (<code>p01:60CB</code>).</li></ul>
+<h2 id="la-musica">La música</h2>
+<p>En <a href="LA-MUSICA.html">La música</a>: 42 piezas sacadas ejecutando el motor del banco 29 y cotejadas con openMSX.</p>
+<footer><p><em>Shalom: Knightmare III</em> lo public&oacute; Konami para MSX en 1987; su n&uacute;mero de cat&aacute;logo es RC-754 y son 256 KB. Todos los derechos sobre el juego siguen siendo de sus titulares. Este trabajo es de preservaci&oacute;n, estudio y documentaci&oacute;n, y la imagen del cartucho no se distribuye.</p></footer></div>

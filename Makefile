@@ -178,6 +178,11 @@ test:
 # Programs, no el python3 de la Store).
 PYIMG ?= python
 
+PYIMG ?= python3     # el que tenga PIL
+# Las imagenes de la web, dibujadas desde la ROM (tools/imagenes.py)
+imagenes: $(ROM)
+	$(PYIMG) tools/imagenes.py docs/imagenes
+
 # La web: las paginas se escriben en markdown y se convierten con md2html.py;
 # la portada la monta make_web.py con lo de tools/contenido_web.py.
 web: $(ROM)
@@ -198,5 +203,5 @@ musica: $(ROM)
 	$(PYMUS) tools/musica.py todas docs/audio
 	$(PYMUS) tools/pagina_musica.py
 
-.PHONY: musica all comprueba reconoce paginas semillas trace listado verify \
+.PHONY: imagenes musica all comprueba reconoce paginas semillas trace listado verify \
         sanity densidad test web clean
