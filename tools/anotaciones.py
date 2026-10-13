@@ -64,7 +64,7 @@ RUTINAS = {
     (0, 0x43B3): ("hl_negativo", "HL = -HL"),
     (0, 0x43BB): ("nibble_de_la_sala", "A = el nibble de la sala 0xEB40 en la tabla DE (par: el alto)"),
     (0, 0x43D0): ("aleatorio", "A = el registro R revuelto con la cuenta de cuadros"),
-    (0, 0x442C): ("borra_barra", "borra con FILVRM la parte que sobra de una barra del marcador"),
+    (0, 0x442C): ("hunde_sprite", "borra con FILVRM las A ultimas lineas del dibujo de sprite que acaba en HL: el personaje se hunde"),
     (0, 0x4509): ("mapa_de_bloques", "HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL"),
     (0, 0x451D): ("bloque_de_la_sala", "HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala en la posicion L = Y, H = X"),
     # --- banco 0: sonido ---
@@ -1930,7 +1930,7 @@ RAM.update({
 
 RUTINAS.update({
     (0, 0x43DB): ("patrones_de_la_escena", "los patrones de sprite de p18:627C[0xE3A1] a 0x1800 (sigue en p00:43F5)"),
-    (0, 0x43E9): ("patrones_del_fotograma", "los patrones de sprite de p18:6000[0xE3C3] a 0x1800 y la barra del marcador"),
+    (0, 0x43E9): ("patrones_del_fotograma", "los dibujos de sprite del fotograma 0xE3C3 (RLE de p18:6000) a 0x1800; con 0xE3C9 el personaje se hunde"),
     (0, 0x443D): ("dibujo_del_marcador", "el dibujo 0xE368 (p09:6713) en el marcador, o el marcador vacio"),
     (0, 0x448A): ("marco_del_marcador", "el marco del marcador en 0xEE18 (5, 1..1, 6 y los lados 2 y 0x0B)"),
     (0, 0x44AA): ("columna_del_marco", "6 veces A en HL, bajando una fila cada vez"),
