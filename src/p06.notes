@@ -1,5 +1,15 @@
 # Notas del banco 06
 
+# --- A MANO: comentarios, nombres y bloques ---
+C 0xAE56 la letra siguiente
+C 0xAE57 tres atras: la fila de arriba
+C 0xAE5A el acento
+C 0xAE5B y vuelve
+C 0xAFEE la letra
+C 0xAFF0 0xFF: acaba
+C 0xAFF3 3 y 4: acentos
+C 0xAFFB a la VRAM
+
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xA000 0xA5B8 resto_A000  lo apuntan con el banco puesto p00:4113 (0xA000), p00:417F (0xA000); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p00:4113, p00:417F (1464 bytes)
 F 0xA000 16
@@ -62,6 +72,7 @@ L 0xA7E4 x_al_azar H = una X al azar de p06:A810
 L 0xA7F3 y_al_azar_b L = una Y al azar de p06:A820
 L 0xA802 x_al_azar_b H = una X al azar de p06:A820
 L 0xAE36 nombre_en_pares las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
+L 0xAE56 acento_arriba el acento A a la fila de arriba de la letra anterior
 L 0xAE5F nombres_en_sprites los dos nombres como patrones de sprite desde 0x1980
 L 0xAE8F texto_en_sprites_bf98 el texto p06:BF98 como patrones de sprite desde 0x1800
 L 0xAE97 texto_en_sprites_a830 el texto p06:A830 como patrones de sprite desde 0x1800
@@ -75,13 +86,21 @@ L 0xAF4E final_1 un paso del final 1 (0xE339, tabla p06:AF54): el texto p06:AF0A
 L 0xAF6C final_siguiente 0xE339 + 1
 L 0xAF8B final_2 un paso del final 2 (0xE339, tabla p06:AF91): espera la tecla de la fila 2, bit 4, y vuelve al estado 4, paso 4
 L 0xAFE8 nombre_en_0x390d el primer nombre en la VRAM 0x390D
+C 0xA5B9 guarda las particulas se alejan del personaje
+C 0xA5BC lee la cuenta de la escena (parpadeo, paso de las particulas)
 C 0xA5BF despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xA5D3 copia_a_vram: LDIRVM de DE a la VRAM HL
 C 0xA5D9 apunta a los 8 actores de la sala (0x80 bytes cada uno)
+C 0xA5E2 guarda la vida de las particulas, en cuadros
 C 0xA5E6 guarda si la particula esta viva
 C 0xA5E9 guarda el patron de la particula
 C 0xA5EC guarda la Y de la particula
+C 0xA5F5 guarda la cuenta de la escena (parpadeo, paso de las particulas)
+C 0xA659 lee la vida de las particulas, en cuadros
+C 0xA65D guarda la vida de las particulas, en cuadros
+C 0xA662 apunta a la cuenta de la escena (parpadeo, paso de las particulas)
 C 0xA669 apunta a la cuenta de cuadros
+C 0xA674 lee las particulas se alejan del personaje
 C 0xA67B despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xA686 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xA691 x_al_azar: H = una X al azar de p06:A810
@@ -95,9 +114,13 @@ C 0xA6C2 y_al_azar_b: L = una Y al azar de p06:A820
 C 0xA6C7 particula_libre: IX = la primera particula escondida (Y = 0xE0); Z si la hay
 C 0xA6CC guarda la Y de la particula
 C 0xA6CF guarda la X de la particula
+C 0xA6D2 lee la cuenta de la escena (parpadeo, paso de las particulas)
+C 0xA6DA lee la vida de las particulas, en cuadros
 C 0xA6E3 si la particula esta viva = 0x01
 C 0xA6E7 el patron de la particula = 0x08
+C 0xA6EB lee la vida de las particulas, en cuadros
 C 0xA6F5 a_rumbo_desde_ix: con 1-2-3, p01:6312 (el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A); vuelve con 4-5-6
+C 0xA6F8 lee las particulas se alejan del personaje
 C 0xA6FE hl_negativo: HL = -HL
 C 0xA701 de_negativo: DE = -DE
 C 0xA704 guarda la velocidad Y de la particula
@@ -128,6 +151,7 @@ C 0xA788 apunta a los atributos de los 32 sprites
 C 0xA78E lee la Y de la particula
 C 0xA793 lee la X de la particula
 C 0xA798 lee el patron de la particula
+C 0xA7B6 apunta a el paso de la escena (inicial, historia, final)
 C 0xA7CE compara con la Y de la particula
 C 0xA7D5 apunta a la cuenta de cuadros
 C 0xA7DE hl_mas_a: HL = HL + A
@@ -137,29 +161,46 @@ C 0xA7F3 apunta a la cuenta de cuadros
 C 0xA7FC hl_mas_a: HL = HL + A
 C 0xA802 apunta a la cuenta de cuadros
 C 0xA80B hl_mas_a: HL = HL + A
+C 0xAE46 acento_arriba: el acento A a la fila de arriba de la letra anterior
+C 0xAE4B acento_arriba: el acento A a la fila de arriba de la letra anterior
+C 0xAE5F apunta a la variable de trabajo 0xE8E2 (16 bits)
+C 0xAE6C apunta a la variable de trabajo 0xE8E2 (16 bits)
 C 0xAE6F apunta a el primer nombre (8 letras y 0xFF)
 C 0xAE72 nombre_en_pares: las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
 C 0xAE78 apunta a el segundo nombre (8 letras y 0xFF)
 C 0xAE7B nombre_en_pares: las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
+C 0xAE80 guarda la variable de trabajo 0xE8F2 (16 bits)
+C 0xAE86 apunta a la variable de trabajo 0xE8E2 (16 bits)
+C 0xAE89 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0xAE9F guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xAEB5 dos_letras_en_sprite: dos letras de la fuente (p04:6F39) a 0xE8E0 y 0xE8E0 + 0x10
 C 0xAEBC retrocede_destino: 0xE8E0 -= DE
 C 0xAEC4 retrocede_destino: 0xE8E0 -= DE
+C 0xAECA lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0xAED0 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xAED6 letra_en_sprite: los 8 bytes de la letra A de la fuente a la VRAM 0xE8E0
+C 0xAEE6 lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xAEEC copia_a_vram: LDIRVM de DE a la VRAM HL
+C 0xAEEF lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0xAEF6 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xAEFC lee la sala de partida (indice de p01:67E3)
 C 0xAEFF despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xAF4E lee el paso del final del estado 6
 C 0xAF51 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xAF5A pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
 C 0xAF5D fuente_y_colores: la fuente en los tres tercios y su color
 C 0xAF63 bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
 C 0xAF66 nombre_en_0x390d: el primer nombre en la VRAM 0x390D
 C 0xAF69 sonido_3a: pide el sonido 0x3A
-C 0xAF71 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xAF6C apunta a el paso del final del estado 6
+C 0xAF71 lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 C 0xAF76 sonido_85: pide el sonido 0x85
 C 0xAF7B guarda la espera del estado, en cuadros
 C 0xAF80 apunta a la espera del estado, en cuadros
 C 0xAF87 guarda en partida (bit 7: la demo acaba)
+C 0xAF8B lee el paso del final del estado 6
 C 0xAF8E despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xAF98 guarda la animacion de fichas de la sala (p07:800A)
 C 0xAF9B pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
 C 0xAF9E fuente_y_colores: la fuente en los tres tercios y su color
 C 0xAFA4 bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba

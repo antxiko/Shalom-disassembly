@@ -1,5 +1,147 @@
 # Notas del banco 07
 
+# --- A MANO: comentarios, nombres y bloques ---
+C 0x800A la animacion de la sala
+C 0x8019 cuenta los cuadros
+C 0x801E cada 16
+C 0x8021 la fase (0-3)
+C 0x8028 los patrones de esa fase
+C 0x802E a 0x20A0
+C 0x8031 0x40 bytes
+C 0x8034 en dos tercios
+C 0x803F cuenta los cuadros
+C 0x8044 cada 32
+C 0x8047 la fase (0-1)
+C 0x804F los patrones de esa fase
+C 0x8055 a 0x21E0
+C 0x8062 cuenta los cuadros
+C 0x8067 cada 32
+C 0x806A la fase (0-1)
+C 0x8073 los patrones de esa fase
+C 0x8079 a 0x2200
+C 0x8083 y sus colores
+C 0x8089 a 0x0200
+C 0x827A los 8 actores a cero
+C 0x8287 con el bit 0 de 0xEB5D
+C 0x828D y en las salas 0xB0 o 0xD0
+C 0x8295 la lista p07:9032
+C 0x829C o la p07:904C
+C 0x82A4 la sala
+C 0x82A7 dos bytes por sala
+C 0x82A8 la tabla de listas
+C 0x82AF HL = la lista de la sala
+C 0x82B0 el numero de actores
+C 0x82B2 ninguno
+C 0x82B7 C = el tipo (bajo)
+C 0x82B9 B = el tipo (alto) y el bit 7: en fichas
+C 0x82C2 E = la Y
+C 0x82C4 D = la X
+C 0x82C7 L = la voz
+C 0x82C8 crea el actor
+C 0x82D0 el actor 0xC8 del bloque empujado
+C 0x82D5 si el bit 1 de 0xEB5A esta puesto
+C 0x82DB y la sala es la de 0xEB69
+C 0x82E9 en la posicion de 0xEB7A
+C 0x82F8 el tipo 0xC8
+C 0x82FE el tipo
+C 0x8302 la posicion
+C 0x8306 en fichas
+C 0x830A la voz
+C 0x830D busca un hueco
+C 0x8310 entre los 8
+C 0x8316 libre?
+C 0x831C ninguno: no se crea
+C 0x8322 el tipo
+C 0x832D la Y
+C 0x832F la X
+C 0x833D una direccion al azar
+C 0x8343 de 1 a 3
+C 0x834F el tipo
+C 0x8357 tipo - 1
+C 0x8358 dos bytes por tipo
+C 0x8359 en la tabla de colores y nombres
+C 0x8365 los dos colores
+C 0x8368 en fichas o en sprites
+C 0x8371 el numero de nombre
+C 0x8378 la tabla de nombres p08:A063 (4 bytes cada uno)
+C 0x8389 el nombre a la ficha
+C 0x838E hasta 3 letras mas
+C 0x8390 la primera libre
+C 0x839A acaba con 0xFF
+C 0x839C la voz
+C 0x83A1 y su rutina por primera vez
+C 0x865C los 8 actores
+C 0x8660 desde el sprite 8
+C 0x8666 activo?
+C 0x8673 la tabla de fotogramas
+C 0x8676 DE = los patrones del fotograma
+C 0x867A los que se pueden hablar
+C 0x8688 marcan su bloque
+C 0x868C sin fotograma: escondido
+C 0x8691 en fichas?
+C 0x8697 los tipos 0x23, 0x56, 0x57, 0x58, 0x6F y 0x72 llevan un solo sprite
+C 0x86B8 primer sprite: Y
+C 0x86BD X
+C 0x86C2 patron
+C 0x86C6 color
+C 0x86CB segundo sprite: Y
+C 0x86D0 X
+C 0x86D5 patron
+C 0x86D8 color
+C 0x86DE el siguiente actor
+C 0x86E6 un solo sprite
+C 0x86FA y el segundo escondido
+C 0x8705 en fichas: las 2x2 fichas en la VRAM
+C 0x870C el bloque
+C 0x8711 en la VRAM de nombres
+C 0x8738 escondido
+C 0x8758 IX = el actor de enfrente
+C 0x875C el paso de la animacion
+C 0x876C empieza
+C 0x8777 cuenta
+C 0x877B el tipo 0x2B va al paso 4
+C 0x8788 color 6
+C 0x878C fotograma 0x12
+C 0x8790 siguiente paso
+C 0x8797 cuenta hasta 0x80
+C 0x87A8 libera su bloque
+C 0x87AB y desaparece
+C 0x87B1 alterna los fotogramas 0x12 y 0x13
+C 0x87BE se acaba: el actor se borra
+C 0x87CB resultado 2
+C 0x87D1 colores 5 y 0x0B
+C 0x87D9 cuenta hasta 0x20
+C 0x87EC los 8 actores
+C 0x87F1 activo?
+C 0x87F7 su rutina
+C 0x87FA y si se mueve, su paso
+C 0x8803 el siguiente
+C 0x8820 un cuadro mas
+C 0x8823 HL = el tipo
+C 0x882A a la rutina de su tipo
+C 0x8B47 empieza por arriba
+C 0x8B49 hasta la derecha
+C 0x8B52 el bloque en esa direccion
+C 0x8B56 es el personaje (2)?
+C 0x8B5B si: acarreo
+C 0x8B65 cuenta las direcciones libres
+C 0x8B6A las cuatro
+C 0x8B77 libre: una mas
+C 0x8B81 dos o mas libres?
+C 0x8B88 empieza por una al azar
+C 0x8B97 libre?
+C 0x8BA5 si no, una al azar sin mirar
+C 0x8BAD el personaje vuelve a andar
+C 0x8BBA la ficha a cero
+C 0x83A4 el nibble alto
+C 0x83AB al primer byte
+C 0x83AC el nibble bajo
+C 0x83B0 al segundo
+C 0x86E9 Y
+C 0x86EE X
+C 0x86F1 patron
+C 0x86F7 color
+
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0x8010 0x8018 saltos_8010  tabla de 4 palabras del despachador (call 0x408D en 0x800D); lo leen L_40AB (8 bytes)
 F 0x8010 2
@@ -978,38 +1120,29 @@ L 0x8B40 mira_al_personaje (ix+0x0B) = la direccion en la que tiene al personaje
 L 0x8B47 direccion_del_personaje la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
 L 0x8B5D actor_quieto (ix+6) y (ix+7) a cero
 L 0x8B65 direccion_al_azar una direccion al azar, libre si hay al menos dos libres
+L 0x8B7C cuenta_libre 0xE8E5 + 1
 L 0x8BAC quita_actor_y_anda el personaje vuelve al modo 0 y se borra el actor
 L 0x8BB4 borra_actor los 0x80 bytes de la ficha IX a cero
 C 0x8002 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
 C 0x8007 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
 C 0x800D despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0x802B palabra_de_tabla: DE = la palabra A de la tabla DE
-C 0x8034 copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
 C 0x8052 palabra_de_tabla: DE = la palabra A de la tabla DE
 C 0x805B copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
 C 0x8076 palabra_de_tabla: DE = la palabra A de la tabla DE
 C 0x807F copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
 C 0x8086 palabra_de_tabla: DE = la palabra A de la tabla DE
 C 0x808F copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
-C 0x827A apunta a los 8 actores de la sala (0x80 bytes cada uno)
-C 0x8287 lee las banderas de la historia, byte 0x1D (se graban con la partida)
-C 0x828D lee la sala
-C 0x82A4 lee la sala
-C 0x82C8 crea_actor: en el primer hueco de 0xE400: el tipo BC en (E, D), direccion al azar, colores (p07:83B4) y nombre (p08:A063)
-C 0x82D5 lee las banderas de la historia, byte 0x1A (se graban con la partida)
-C 0x82DB lee la sala
 C 0x82DE lee las banderas de la historia, byte 0x29 (se graban con la partida) y el byte siguiente (16 bits)
-C 0x82E9 lee las banderas de la historia, byte 0x3A (se graban con la partida)
-C 0x830D apunta a los 8 actores de la sala (0x80 bytes cada uno)
-C 0x8365 dos_nibbles: los dos nibbles de (DE) en (HL) y (HL+1)
+C 0x831E lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0x8329 lee la variable de trabajo 0xE8E2 (16 bits) y el byte siguiente (16 bits)
+C 0x8354 lee la variable de trabajo 0xE8E6 (16 bits) y el byte siguiente (16 bits)
+C 0x835D guarda la variable de trabajo 0xE8E6 (16 bits) y el byte siguiente (16 bits)
+C 0x8361 lee la variable de trabajo 0xE8E6 (16 bits) y el byte siguiente (16 bits)
 C 0x836E hl_mas_a: HL = HL + A
-C 0x83A1 rutina_del_actor: IX = HL, cuenta un cuadro y salta a la rutina de su tipo (tabla p07:882D)
-C 0x865C apunta a los 8 actores de la sala (0x80 bytes cada uno)
-C 0x8666 lee el tipo del actor (bajo)
+C 0x837C guarda la variable de trabajo 0xE8E6 (16 bits) y el byte siguiente (16 bits)
+C 0x8380 lee la variable de trabajo 0xE8E6 (16 bits) y el byte siguiente (16 bits)
 C 0x8669 OR con el tipo del actor (alto)
-C 0x8676 palabra_de_tabla: DE = la palabra A de la tabla DE
-C 0x8688 marca_bloque_del_actor: pone 4 en la dureza del bloque del actor
-C 0x870C mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
 C 0x8716 byte_a_vram: A a la VRAM BC
 C 0x871D byte_a_vram: A a la VRAM BC
 C 0x8723 hl_mas_a: HL = HL + A
@@ -1017,24 +1150,21 @@ C 0x872D byte_a_vram: A a la VRAM BC
 C 0x8734 byte_a_vram: A a la VRAM BC
 C 0x8744 escribe_en_vram: SETWRT en HL y C' = el puerto de datos del VDP
 C 0x8752 bloque_de_la_sala: HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala en la posicion L = Y, H = X
-C 0x8758 lee la ficha del personaje de enfrente
 C 0x875F despacha: salta a la palabra A de la tabla pegada detras del `call`
-C 0x8788 el color del segundo sprite del actor = 0x06
-C 0x878C el fotograma del actor (p07:97E8) = 0x12
+C 0x876D guarda el resultado de la animacion del de enfrente
+C 0x8774 guarda el paso de la animacion del de enfrente (tabla p07:8762)
+C 0x8784 guarda el paso de la animacion del de enfrente (tabla p07:8762)
 C 0x8794 sprites_de_actores: dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas
 C 0x87A2 lee la X del actor
 C 0x87A5 lee la Y del actor
-C 0x87A8 pon_bloque_de_enfrente: pone B en el bloque de delante
-C 0x87AB la Y del actor = 0xE0
 C 0x87B8 guarda el fotograma del actor (p07:97E8)
 C 0x87BB sprites_de_actores: dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas
 C 0x87BF guarda el tipo del actor (bajo)
 C 0x87C2 guarda el tipo del actor (alto)
-C 0x87D1 el color del primer sprite del actor = 0x05
+C 0x87C5 guarda el paso de la animacion del de enfrente (tabla p07:8762)
+C 0x87CD guarda el resultado de la animacion del de enfrente
 C 0x87D5 el color del segundo sprite del actor = 0x0B
-C 0x87EC apunta a los 8 actores de la sala (0x80 bytes cada uno)
-C 0x87F7 rutina_del_actor: IX = HL, cuenta un cuadro y salta a la rutina de su tipo (tabla p07:882D)
-C 0x87FA mira el bit 0 de si el actor se mueve (bit 0; p07:87FA)
+C 0x87E5 apunta a el paso de la animacion del de enfrente (tabla p07:8762)
 C 0x87FE actor_avanza: Y += (ix+6) y X += (ix+7)
 C 0x880A lee la Y del actor
 C 0x880D le suma el paso Y del actor
@@ -1042,7 +1172,6 @@ C 0x8810 guarda la Y del actor
 C 0x8813 lee la X del actor
 C 0x8816 le suma el paso X del actor
 C 0x8819 guarda la X del actor
-C 0x882A despacha_hl: salta a la palabra HL de la tabla pegada detras del `call`
 C 0x8AF4 guarda el fotograma del actor hacia arriba
 C 0x8AF7 guarda el fotograma del actor hacia abajo
 C 0x8AFA guarda el fotograma del actor hacia la izquierda
@@ -1066,11 +1195,11 @@ C 0x8B4C lee la Y del actor
 C 0x8B4F lee la X del actor
 C 0x8B5E guarda el paso Y del actor
 C 0x8B61 guarda el paso X del actor
+C 0x8B66 guarda la variable de trabajo 0xE8E5 (16 bits)
 C 0x8B6E lee la X del actor
 C 0x8B71 lee la Y del actor
-C 0x8B88 aleatorio: A = el registro R revuelto con la cuenta de cuadros
+C 0x8B7C apunta a la variable de trabajo 0xE8E5 (16 bits)
 C 0x8B91 lee la X del actor
 C 0x8B94 lee la Y del actor
-C 0x8BA5 aleatorio: A = el registro R revuelto con la cuenta de cuadros
-C 0x8BAD guarda el modo del personaje (tabla p01:718E)
+C 0x8BB1 guarda un actor lleva al personaje (no hay menu)
 # --- fin de las anotaciones de anota.py ---

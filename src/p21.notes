@@ -1,5 +1,98 @@
 # Notas del banco 21
 
+# --- A MANO: comentarios, nombres y bloques ---
+C 0x6000 la tabla de pasos
+C 0x6003 el paso
+C 0x600A DE = la rutina del paso
+C 0x600E salta a ella
+C 0x601F el fondo
+C 0x6025 8 pasos de espera
+C 0x602A sprites sin rotar
+C 0x602F el personaje en (0x50, 0x50)
+C 0x6035 y un sprite en la Y 0x58
+C 0x603A siguiente paso
+C 0x603F cada 16 cuadros
+C 0x6045 un paso menos
+C 0x6049 acabados: empieza a bajar
+C 0x604B el personaje sube un punto
+C 0x604F y el sprite tambien
+C 0x6054 6 cuadros entre fila y fila
+C 0x605C 0x80 filas
+C 0x6061 el primer dibujo en la fila 0x70
+C 0x6066 el guion de dibujos
+C 0x606C y su sonido
+C 0x606F siguiente paso
+C 0x6077 baja la pantalla
+C 0x607A y mete los dibujos que tocan
+C 0x6083 el otro fondo
+C 0x6089 sprites sin rotar
+C 0x608E 6 cuadros entre fila y fila
+C 0x6096 0x80 filas
+C 0x609B el primer dibujo en la fila 0x70
+C 0x60A0 el guion de subida
+C 0x60A6 el personaje en (0x50, 0x50)
+C 0x60AC y el sprite en la Y 0x58
+C 0x60B1 su sonido
+C 0x60BC sube la pantalla
+C 0x60BF y mete los dibujos que tocan
+C 0x60C2 cuenta los cuadros de esta fila
+C 0x60C7 una fila menos
+C 0x60CB acabadas todas: fin
+C 0x60CD cada 8 filas
+C 0x60D5 va mas deprisa (sin bajar de 1)
+C 0x60DA los cuadros de la siguiente fila
+C 0x60E0 desde abajo
+C 0x60E6 20 filas
+C 0x60E9 24 fichas por fila
+C 0x60EC cada fila baja una
+C 0x60FE la fila de arriba con la ficha 0x10
+C 0x610C bajada acabada
+C 0x6112 cuenta los cuadros de esta fila
+C 0x6117 una fila menos
+C 0x611B acabadas todas: fin
+C 0x611D cada 8 filas
+C 0x6125 va mas deprisa
+C 0x612A los cuadros de la siguiente fila
+C 0x6130 desde arriba
+C 0x6136 20 filas
+C 0x6139 24 fichas por fila
+C 0x613C cada fila sube una
+C 0x614A la fila de abajo con la ficha 0x10
+C 0x6158 subida acabada
+C 0x615E la cuenta de filas
+C 0x6164 es la del siguiente dibujo?
+C 0x6166 el guion
+C 0x6169 C = el dibujo
+C 0x616B B = la columna
+C 0x616D la cuenta del siguiente
+C 0x6175 por donde sigue el guion
+C 0x61A2 la cuenta de filas
+C 0x61A8 es la del siguiente dibujo?
+C 0x61AA el guion
+C 0x61B9 por donde sigue el guion
+C 0x61E6 el dibujo A
+C 0x61E7 en la tabla de dibujos
+C 0x61F3 bajando, en la fila de 0xEC60
+C 0x61F8 subiendo, en la de 0xEF00
+C 0x61FB la columna
+C 0x6201 en esa fila
+C 0x6204 C = el alto
+C 0x6207 B = el ancho
+C 0x620C copia una fila del dibujo
+C 0x6213 la siguiente fila
+C 0x6357 0xEC60 en adelante
+C 0x635D con la ficha 0x10
+C 0x635F 14 filas
+C 0x6361 de 24 fichas
+C 0x636B y 6 filas de dibujo
+C 0x636E de p21:62AF
+C 0x6389 0xED00 en adelante
+C 0x638F con la ficha 0x10
+C 0x6391 21 filas
+C 0x6393 de 24 fichas
+C 0x6395 la ficha 0x10
+C 0x6399 la siguiente fila
+
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0x600F 0x6019 saltos_600F  tabla de 5 palabras del despachador (call 0x408D en 0x600E); lo leen L_40AB (10 bytes)
 F 0x600F 2
@@ -353,30 +446,41 @@ L 0x6389 fondo_de_subida 21 filas de 0xED00 con la ficha 0x10
 C 0x6007 hl_mas_a: HL = HL + A
 C 0x6019 borra_zona_de_juego_y_21_22_23: borra 16 filas x 24 de 0xED00 y las vuelca; vuelve con 21-22-23
 C 0x601C graficos_del_marcador_y_21_22_23: patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD; vuelve con 21-22-23
-C 0x601F fondo_de_bajada: 0xEC60 lleno de la ficha 0x10 y 6 filas de p21:62AF en 0xEE20
 C 0x6022 vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
+C 0x6027 guarda la espera del desplazamiento
 C 0x602C guarda las banderas de sprites (bit 0: sin rotar)
 C 0x6032 guarda la Y del personaje y el byte siguiente (16 bits)
-C 0x603F lee la cuenta de cuadros
-C 0x604B apunta a la Y del personaje
-C 0x606C sonido_28_y_21_22_23: pide el sonido 0x28; vuelve con 21-22-23
+C 0x6037 guarda los sprites de los actores (desde el 8)
+C 0x6056 guarda los cuadros entre fila y fila del desplazamiento
+C 0x6059 guarda la espera del desplazamiento
+C 0x605E guarda la cuenta de filas del desplazamiento
+C 0x6063 guarda la cuenta del siguiente dibujo del desplazamiento
+C 0x6069 guarda el guion de dibujos del desplazamiento (16 bits) y el byte siguiente (16 bits)
 C 0x6074 vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
-C 0x6077 pantalla_baja: cada 0xE389 cuadros baja 20 filas de 0xEEC0 una fila; al acabar, 0xE386 = 1
-C 0x607A dibujo_del_guion_abajo: al llegar la cuenta 0xE38A a la de 0xE38D, el siguiente dibujo del guion (0xE38B) arriba
 C 0x607D borra_zona_de_juego_y_21_22_23: borra 16 filas x 24 de 0xED00 y las vuelca; vuelve con 21-22-23
 C 0x6080 graficos_del_marcador_y_21_22_23: patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD; vuelve con 21-22-23
-C 0x6083 fondo_de_subida: 21 filas de 0xED00 con la ficha 0x10
 C 0x6086 vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
 C 0x608B guarda las banderas de sprites (bit 0: sin rotar)
+C 0x6090 guarda los cuadros entre fila y fila del desplazamiento
+C 0x6093 guarda la espera del desplazamiento
+C 0x6098 guarda la cuenta de filas del desplazamiento
+C 0x609D guarda la cuenta del siguiente dibujo del desplazamiento
+C 0x60A3 guarda el guion de dibujos del desplazamiento (16 bits) y el byte siguiente (16 bits)
 C 0x60A9 guarda la Y del personaje y el byte siguiente (16 bits)
-C 0x60B1 sonido_28_y_21_22_23: pide el sonido 0x28; vuelve con 21-22-23
+C 0x60AE guarda los sprites de los actores (desde el 8)
+C 0x60B4 apunta a el paso del desplazamiento (tabla p21:600F)
 C 0x60B9 vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
-C 0x60BC pantalla_sube: cada 0xE389 cuadros sube 20 filas de 0xED20 una fila; al acabar, 0xE386 = 2
-C 0x60BF dibujo_del_guion_arriba: al llegar la cuenta, el siguiente dibujo del guion abajo
+C 0x60D2 apunta a los cuadros entre fila y fila del desplazamiento
+C 0x60DD guarda la espera del desplazamiento
+C 0x610E guarda el final del desplazamiento (1 abajo, 2 arriba)
+C 0x6122 apunta a los cuadros entre fila y fila del desplazamiento
+C 0x612D guarda la espera del desplazamiento
 C 0x6133 apunta a los nombres de la pantalla (32 x 24)
-C 0x61F8 apunta a la ventana del texto (32 x 8)
-C 0x6201 hl_mas_a: HL = HL + A
+C 0x615A guarda el final del desplazamiento (1 abajo, 2 arriba)
+C 0x6161 apunta a la cuenta del siguiente dibujo del desplazamiento
+C 0x616E guarda la cuenta del siguiente dibujo del desplazamiento
+C 0x61A5 apunta a la cuenta del siguiente dibujo del desplazamiento
+C 0x61B2 guarda la cuenta del siguiente dibujo del desplazamiento
 C 0x6215 hl_mas_a: HL = HL + A
 C 0x637D hl_mas_a: HL = HL + A
-C 0x6389 apunta a los nombres de la pantalla (32 x 24)
 # --- fin de las anotaciones de anota.py ---

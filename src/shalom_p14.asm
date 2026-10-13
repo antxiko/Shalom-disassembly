@@ -613,15 +613,15 @@ DATA_graficos_BA17:
 
 
 da_contrasena:		; un paso de la contrasena que se le da al jugador (0xE38E, tabla p14:BAA4)
-	ld hl,0baa4h		;ba95
-	ld a,(0e38eh)		;ba98   ; lee el paso del menu de carga
+	ld hl,0baa4h		;ba95   ; la tabla de pasos
+	ld a,(0e38eh)		;ba98   ; el paso
 	add a,a			;ba9b
 	call hl_mas_a		;ba9c   ; hl_mas_a: HL = HL + A
-	ld e,(hl)			;ba9f
+	ld e,(hl)			;ba9f   ; DE = la rutina del paso
 	inc hl			;baa0
 	ld d,(hl)			;baa1
 	ex de,hl			;baa2
-	jp (hl)			;baa3
+	jp (hl)			;baa3   ; salta a ella
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_BAA4: tabla de 4 palabras del despachador (call 0x408D en
@@ -639,124 +639,124 @@ DATA_saltos_BAA4:
 
 
 prepara_contrasena:		; la partida (0x3E bytes de 0xEB40) en 0xE8F1, su CRC (p14:BBAD) y todo sumado con el primer byte del CRC
-	ld hl,0eb40h		;baac   ; apunta a la sala (16 bits)
-	ld de,0e8f1h		;baaf
+	ld hl,0eb40h		;baac   ; la partida (0x3E bytes desde la sala)
+	ld de,0e8f1h		;baaf   ; a 0xE8F1
 	ld bc,0003eh		;bab2
-	ldir		;bab5
-	call crc_de_la_partida		;bab7   ; crc_de_la_partida: el CRC de los 0x3E bytes de 0xE8F1 en 0xE92F
-	ld a,(0e92fh)		;baba
-	ld hl,0e8f0h		;babd
+	ldir		;bab5   ; la copia
+	call crc_de_la_partida		;bab7   ; su CRC en 0xE92F-0xE930
+	ld a,(0e92fh)		;baba   ; A = el byte bajo del CRC: la clave
+	ld hl,0e8f0h		;babd   ; la clave va delante (0xE8F0)
 	ld (hl),a			;bac0
-	inc hl			;bac1
+	inc hl			;bac1   ; C = la clave
 	ld c,a			;bac2
-	ld b,040h		;bac3
+	ld b,040h		;bac3   ; 0x40 bytes: la partida y el CRC
 	xor a			;bac5
 L_BAC6:
-	ld a,(hl)			;bac6
+	ld a,(hl)			;bac6   ; cada byte mas la clave
 	add a,c			;bac7
 	ld (hl),a			;bac8
 	inc hl			;bac9
 	djnz L_BAC6		;baca
-	ld hl,0e8f0h		;bacc
-	ld (0e391h),hl		;bacf
-	ld a,041h		;bad2
-	ld (0e8e1h),a		;bad4
-	xor a			;bad7
-	ld (0e8e2h),a		;bad8
+	ld hl,0e8f0h		;bacc   ; la contrasena empieza en 0xE8F0
+	ld (0e391h),hl		;bacf   ; puntero de lo que queda por escribir
+	ld a,041h		;bad2   ; 0x41 bytes, dos letras cada uno
+	ld (0e8e1h),a		;bad4   ; guarda la variable de trabajo 0xE8E1
+	xor a			;bad7   ; la cuenta del cifrado empieza en 0
+	ld (0e8e2h),a		;bad8   ; guarda la variable de trabajo 0xE8E2 (16 bits)
 L_BADB:
 	ld hl,0e38eh		;badb   ; apunta a el paso del menu de carga
 	inc (hl)			;bade
 	ret			;badf
 escribe_contrasena:		; una pagina de la contrasena en la ventana: cada nibble una letra (p14:BB3D), 4 grupos de 4
-	ld b,004h		;bae0
-	ld hl,0efe2h		;bae2
-	ld de,(0e391h)		;bae5
+	ld b,004h		;bae0   ; 4 grupos por pagina
+	ld hl,0efe2h		;bae2   ; desde la fila de abajo de la ventana
+	ld de,(0e391h)		;bae5   ; DE = por donde va la contrasena
 L_BAE9:
 	push bc			;bae9
-	ld b,002h		;baea
+	ld b,002h		;baea   ; 2 bytes por grupo
 L_BAEC:
-	ld a,(de)			;baec
+	ld a,(de)			;baec   ; el nibble alto
 	and 0f0h		;baed
 	rra			;baef
 	rra			;baf0
 	rra			;baf1
 	rra			;baf2
-	call nibble_a_letra		;baf3   ; nibble_a_letra: la letra del nibble A: A + 0x21 + una cuenta que sube 7 en BCD con cada letra (0xE8E2)
-	ld (hl),a			;baf6
+	call nibble_a_letra		;baf3   ; a letra
+	ld (hl),a			;baf6   ; a la ventana
 	inc hl			;baf7
-	ld a,(de)			;baf8
-	call nibble_a_letra		;baf9   ; nibble_a_letra: la letra del nibble A: A + 0x21 + una cuenta que sube 7 en BCD con cada letra (0xE8E2)
-	ld (hl),a			;bafc
+	ld a,(de)			;baf8   ; el nibble bajo
+	call nibble_a_letra		;baf9   ; a letra
+	ld (hl),a			;bafc   ; a la ventana
 	inc hl			;bafd
 	inc de			;bafe
 	exx			;baff
-	ld hl,0e8e1h		;bb00
-	dec (hl)			;bb03
+	ld hl,0e8e1h		;bb00   ; un byte menos
+	dec (hl)			;bb03   ; se acabo la contrasena?
 	jr z,L_BB22		;bb04
 	exx			;bb06
 	djnz L_BAEC		;bb07
 	xor a			;bb09
-	ld (hl),a			;bb0a
+	ld (hl),a			;bb0a   ; un hueco entre grupos
 	inc hl			;bb0b
 	pop bc			;bb0c
 	djnz L_BAE9		;bb0d
-	ld (0e391h),de		;bb0f
-	call cursor_y_vuelca		;bb13   ; cursor_y_vuelca: el cursor en 0xEFF7 y la ventana a la VRAM (p00:4046)
+	ld (0e391h),de		;bb0f   ; por donde sigue
+	call cursor_y_vuelca		;bb13   ; cursor y a pantalla
 	jp L_BADB		;bb16
 cursor_y_vuelca:		; el cursor en 0xEFF7 y la ventana a la VRAM (p00:4046)
-	ld hl,0eff7h		;bb19
-	ld a,01fh		;bb1c
+	ld hl,0eff7h		;bb19   ; apunta a el cursor del texto en la ventana
+	ld a,01fh		;bb1c   ; el cursor en la esquina
 	ld (hl),a			;bb1e
 	jp 04046h		;bb1f   ; vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
 L_BB22:
 	pop bc			;bb22
 	call cursor_y_vuelca		;bb23   ; cursor_y_vuelca: el cursor en 0xEFF7 y la ventana a la VRAM (p00:4046)
-	ld a,003h		;bb26
+	ld a,003h		;bb26   ; acabada: al paso 3
 	ld (0e38eh),a		;bb28   ; guarda el paso del menu de carga
 	ret			;bb2b
 contrasena_acabada:		; con tecla, 0xE38F = 1 y el paso siguiente
-	ld a,(0e008h)		;bb2c   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
-	and 050h		;bb2f
+	ld a,(0e008h)		;bb2c   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
+	and 050h		;bb2f   ; espera disparo o RETURN
 	ret z			;bb31
 	call 04046h		;bb32   ; vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
 	ld a,001h		;bb35
-	ld (0e38fh),a		;bb37   ; guarda el resultado de la carga (2: fallo)
+	ld (0e38fh),a		;bb37   ; contrasena dada
 	jp L_BADB		;bb3a
 nibble_a_letra:		; la letra del nibble A: A + 0x21 + una cuenta que sube 7 en BCD con cada letra (0xE8E2)
-	and 00fh		;bb3d
+	and 00fh		;bb3d   ; el nibble
 	push bc			;bb3f
-	add a,021h		;bb40
+	add a,021h		;bb40   ; mas 0x21 (la letra '0')
 	ld c,a			;bb42
-	ld a,(0e8e2h)		;bb43
-	add a,007h		;bb46
-	daa			;bb48
-	and 00fh		;bb49
-	ld (0e8e2h),a		;bb4b
-	add a,c			;bb4e
+	ld a,(0e8e2h)		;bb43   ; la cuenta del cifrado
+	add a,007h		;bb46   ; mas 7
+	daa			;bb48   ; en BCD
+	and 00fh		;bb49   ; la cifra baja (0-9)
+	ld (0e8e2h),a		;bb4b   ; guarda la variable de trabajo 0xE8E2 (16 bits)
+	add a,c			;bb4e   ; se suma a la letra
 	pop bc			;bb4f
 	ret			;bb50
 pagina_siguiente:		; espera tecla con el cursor parpadeando y sube la ventana para la pagina siguiente
-	ld hl,0eff7h		;bb51
-	ld a,(0e003h)		;bb54   ; lee la cuenta de cuadros
+	ld hl,0eff7h		;bb51   ; apunta a el cursor del texto en la ventana
+	ld a,(0e003h)		;bb54   ; parpadea cada 4 cuadros
 	and 004h		;bb57
 	ld a,01fh		;bb59
 	jr z,L_BB5E		;bb5b
 	xor a			;bb5d
 L_BB5E:
 	ld (hl),a			;bb5e
-	ld a,(0e008h)		;bb5f   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
-	and 050h		;bb62
+	ld a,(0e008h)		;bb5f   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
+	and 050h		;bb62   ; espera disparo o RETURN
 	jp z,04046h		;bb64   ; vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
-	ld hl,0eff7h		;bb67
-	ld (hl),000h		;bb6a
+	ld hl,0eff7h		;bb67   ; apunta a el cursor del texto en la ventana
+	ld (hl),000h		;bb6a   ; sin cursor
 	ld hl,0e38eh		;bb6c   ; apunta a el paso del menu de carga
-	dec (hl)			;bb6f
-	ld de,0ef00h		;bb70   ; apunta a la ventana del texto (32 x 8)
+	dec (hl)			;bb6f   ; vuelve al paso de escribir la pagina siguiente
+	ld de,0ef00h		;bb70   ; sube seis filas de la ventana
 	ld hl,0ef40h		;bb73
 	ld b,006h		;bb76
 L_BB78:
 	push bc			;bb78
-	ld bc,00018h		;bb79
+	ld bc,00018h		;bb79   ; 24 letras por fila
 	ldir		;bb7c
 	ld a,008h		;bb7e
 	call hl_mas_a		;bb80   ; hl_mas_a: HL = HL + A
@@ -764,7 +764,7 @@ L_BB78:
 	call de_mas_a		;bb85   ; de_mas_a: DE = DE + A
 	pop bc			;bb88
 	djnz L_BB78		;bb89
-	ld b,002h		;bb8b
+	ld b,002h		;bb8b   ; y deja dos filas vacias
 L_BB8D:
 	push bc			;bb8d
 	ld bc,00017h		;bb8e
@@ -777,7 +777,7 @@ L_BB8D:
 	call de_mas_a		;bb9a   ; de_mas_a: DE = DE + A
 	pop bc			;bb9d
 	djnz L_BB8D		;bb9e
-	jp 04046h		;bba0   ; vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
+	jp 04046h		;bba0   ; la ventana a la VRAM
 hl_mas_a:		; HL = HL + A
 	add a,l			;bba3
 	ld l,a			;bba4
@@ -791,28 +791,28 @@ de_mas_a:		; DE = DE + A
 	inc d			;bbab
 	ret			;bbac
 crc_de_la_partida:		; el CRC de los 0x3E bytes de 0xE8F1 en 0xE92F
-	call crc_0x3e		;bbad   ; crc_0x3e: HL = el CRC de los 0x3E bytes de 0xE8F1
+	call crc_0x3e		;bbad   ; el CRC de la partida
 	ex de,hl			;bbb0
-	ld hl,0e92fh		;bbb1
+	ld hl,0e92fh		;bbb1   ; en 0xE92F
 	ld (hl),e			;bbb4
 	inc hl			;bbb5
 	ld (hl),d			;bbb6
 	ret			;bbb7
 crc_de_todo:		; HL = el CRC de los 0x40 bytes (partida y CRC); Z si es correcto
-	ld b,040h		;bbb8
+	ld b,040h		;bbb8   ; 0x40 bytes: partida y CRC
 	call crc		;bbba   ; crc: HL = el CRC-16 (polinomio 0xA001, desde 0) de B bytes de 0xE8F1
-	ld a,l			;bbbd
+	ld a,l			;bbbd   ; el CRC de todo es cero si cuadra
 	or h			;bbbe
 	ret			;bbbf
 crc_0x3e:		; HL = el CRC de los 0x3E bytes de 0xE8F1
-	ld b,03eh		;bbc0
+	ld b,03eh		;bbc0   ; 0x3E bytes: solo la partida
 crc:		; HL = el CRC-16 (polinomio 0xA001, desde 0) de B bytes de 0xE8F1
-	ld de,0e8f1h		;bbc2
-	ld hl,00000h		;bbc5
+	ld de,0e8f1h		;bbc2   ; desde 0xE8F1
+	ld hl,00000h		;bbc5   ; el CRC empieza en 0
 L_BBC8:
 	push bc			;bbc8
 	push de			;bbc9
-	ld a,(de)			;bbca
+	ld a,(de)			;bbca   ; un byte
 	call crc_un_byte		;bbcb   ; crc_un_byte: pasa el byte A por el CRC de HL
 	pop de			;bbce
 	inc de			;bbcf
@@ -820,18 +820,18 @@ L_BBC8:
 	djnz L_BBC8		;bbd1
 	ret			;bbd3
 crc_un_byte:		; pasa el byte A por el CRC de HL
-	ld c,a			;bbd4
-	ld de,0a001h		;bbd5
-	ld b,008h		;bbd8
+	ld c,a			;bbd4   ; C = el byte
+	ld de,0a001h		;bbd5   ; el polinomio 0xA001 (CRC-16)
+	ld b,008h		;bbd8   ; 8 bits
 L_BBDA:
 	ld a,c			;bbda
-	rr c		;bbdb
+	rr c		;bbdb   ; el bit bajo del byte
 	and a			;bbdd
-	rr h		;bbde
+	rr h		;bbde   ; el CRC a la derecha
 	rr l		;bbe0
-	adc a,000h		;bbe2
+	adc a,000h		;bbe2   ; el bit que sale XOR el que entra
 	rra			;bbe4
-	jr nc,L_BBED		;bbe5
+	jr nc,L_BBED		;bbe5   ; si es 1, XOR con el polinomio
 	ld a,d			;bbe7
 	xor h			;bbe8
 	ld h,a			;bbe9
@@ -842,15 +842,15 @@ L_BBED:
 	djnz L_BBDA		;bbed
 	ret			;bbef
 pide_contrasena:		; un paso de la entrada de la contrasena (0xE3B2, tabla p14:BBFF)
-	ld hl,0bbffh		;bbf0
-	ld a,(0e3b2h)		;bbf3
+	ld hl,0bbffh		;bbf0   ; la tabla de pasos
+	ld a,(0e3b2h)		;bbf3   ; el paso
 	add a,a			;bbf6
 	call hl_mas_a_b		;bbf7   ; hl_mas_a_b: HL = HL + A
 	ld e,(hl)			;bbfa
 	inc hl			;bbfb
 	ld d,(hl)			;bbfc
 	ex de,hl			;bbfd
-	jp (hl)			;bbfe
+	jp (hl)			;bbfe   ; salta a el
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_BBFF: tabla de 4 palabras del despachador (call 0x408D en
@@ -868,23 +868,23 @@ DATA_saltos_BBFF:
 
 
 contrasena_empieza:		; el sprite del cursor (p14:BC3B, p14:BC37) y 0xE8E0-0xE9CF a cero
-	ld de,01800h		;bc07
-	ld hl,0bc3bh		;bc0a
+	ld de,01800h		;bc07   ; el patron del cursor
+	ld hl,0bc3bh		;bc0a   ; a la VRAM 0x1800
 	ld bc,00020h		;bc0d
 	call 0005ch		;bc10   ; BIOS LDIRVM - Block transfers to VRAM from memory
-	ld de,03b00h		;bc13
+	ld de,03b00h		;bc13   ; el atributo del cursor (sprite 0)
 	ld hl,0bc37h		;bc16
 	ld bc,00004h		;bc19
 	call 0005ch		;bc1c   ; BIOS LDIRVM - Block transfers to VRAM from memory
-	ld hl,0e8e0h		;bc1f
-	ld de,0e8e1h		;bc22
+	ld hl,0e8e0h		;bc1f   ; las letras tecleadas a cero
+	ld de,0e8e1h		;bc22   ; apunta a la variable de trabajo 0xE8E1
 	ld bc,000efh		;bc25
 	ld (hl),000h		;bc28
 	ldir		;bc2a
-	ld hl,0ffffh		;bc2c
+	ld hl,0ffffh		;bc2c   ; la clave a 0xFFFF
 	ld (0e92fh),hl		;bc2f
 contrasena_siguiente:		; 0xE3B2 + 1
-	ld hl,0e3b2h		;bc32
+	ld hl,0e3b2h		;bc32   ; apunta a el paso de la entrada de la contrasena
 	inc (hl)			;bc35
 	ret			;bc36
 
@@ -904,52 +904,52 @@ DATA_resto_BC37:
 
 
 contrasena_teclea:		; una tecla: retroceso, cursores o una letra en la posicion 0xE8E2 (hasta 0x81)
-	call cursor_de_la_contrasena		;bc5b   ; cursor_de_la_contrasena: el sprite del cursor en la posicion 0xE8E2
-	call tecla_nueva		;bc5e   ; tecla_nueva: A = la tecla pulsada si no es la del cuadro anterior; Z si no hay
-	ld (0e8e0h),a		;bc61
-	ret z			;bc64
-	cp 00ch		;bc65
+	call cursor_de_la_contrasena		;bc5b   ; el cursor
+	call tecla_nueva		;bc5e   ; A = la tecla nueva
+	ld (0e8e0h),a		;bc61   ; se apunta
+	ret z			;bc64   ; ninguna: vuelve
+	cp 00ch		;bc65   ; 0x0C: retroceso
 	jr z,L_BC8B		;bc67
-	cp 012h		;bc69
+	cp 012h		;bc69   ; 0x12: adelante
 	jr z,L_BC93		;bc6b
-	cp 015h		;bc6d
+	cp 015h		;bc6d   ; 0x15: una fila arriba
 	jr z,L_BC9C		;bc6f
-	cp 004h		;bc71
+	cp 004h		;bc71   ; 0x04: una fila abajo
 	jr z,L_BCA5		;bc73
-	cp 00dh		;bc75
+	cp 00dh		;bc75   ; 0x0D: se acaba
 	jr z,$-69		;bc77
-	call guarda_letra		;bc79   ; guarda_letra: la letra tecleada en 0xE931 + la posicion
-	call letra_a_pantalla		;bc7c   ; letra_a_pantalla: la letra tecleada en la VRAM, en su posicion
-	call cursor_de_la_contrasena		;bc7f   ; cursor_de_la_contrasena: el sprite del cursor en la posicion 0xE8E2
-	ld hl,0e8e2h		;bc82
+	call guarda_letra		;bc79   ; una letra: se guarda
+	call letra_a_pantalla		;bc7c   ; a la pantalla
+	call cursor_de_la_contrasena		;bc7f   ; y el cursor
+	ld hl,0e8e2h		;bc82   ; la posicion
 	ld a,(hl)			;bc85
-	cp 081h		;bc86
+	cp 081h		;bc86   ; sin pasar de 0x81
 	ret nc			;bc88
-	inc (hl)			;bc89
+	inc (hl)			;bc89   ; avanza
 	ret			;bc8a
 L_BC8B:
-	ld hl,0e8e2h		;bc8b
+	ld hl,0e8e2h		;bc8b   ; retroceso
 	ld a,(hl)			;bc8e
 	and a			;bc8f
 	ret z			;bc90
-	dec (hl)			;bc91
+	dec (hl)			;bc91   ; una menos
 	ret			;bc92
 L_BC93:
-	ld hl,0e8e2h		;bc93
+	ld hl,0e8e2h		;bc93   ; adelante
 	ld a,(hl)			;bc96
 	cp 081h		;bc97
 	ret nc			;bc99
 	inc (hl)			;bc9a
 	ret			;bc9b
 L_BC9C:
-	ld hl,0e8e2h		;bc9c
+	ld hl,0e8e2h		;bc9c   ; 16 menos
 	ld a,(hl)			;bc9f
 	sub 010h		;bca0
 	ret c			;bca2
 	ld (hl),a			;bca3
 	ret			;bca4
 L_BCA5:
-	ld hl,0e8e2h		;bca5
+	ld hl,0e8e2h		;bca5   ; 16 mas
 	ld a,(hl)			;bca8
 	add a,010h		;bca9
 	cp 081h		;bcab
@@ -957,94 +957,94 @@ L_BCA5:
 	ld (hl),a			;bcae
 	ret			;bcaf
 lee_contrasena:		; las 0x82 letras de 0xE931 a 0x41 bytes en 0xE8F0, menos el primero
-	ld a,0e0h		;bcb0
+	ld a,0e0h		;bcb0   ; esconde el cursor
 	ld hl,03b00h		;bcb2
 	call 0004dh		;bcb5   ; BIOS WRTVRM - Writes data in VRAM
 	xor a			;bcb8
-	ld (0e8e1h),a		;bcb9
-	ld b,041h		;bcbc
-	ld hl,0e931h		;bcbe
-	ld de,0e8f0h		;bcc1
+	ld (0e8e1h),a		;bcb9   ; la cuenta del cifrado a 0
+	ld b,041h		;bcbc   ; 0x41 bytes
+	ld hl,0e931h		;bcbe   ; las letras tecleadas
+	ld de,0e8f0h		;bcc1   ; a 0xE8F0
 L_BCC4:
 	push bc			;bcc4
-	ld a,(hl)			;bcc5
+	ld a,(hl)			;bcc5   ; primera letra
 	inc hl			;bcc6
-	call letra_a_nibble		;bcc7   ; letra_a_nibble: el nibble de la letra A (lo contrario de p14:BB3D)
-	add a,a			;bcca
+	call letra_a_nibble		;bcc7   ; a nibble
+	add a,a			;bcca   ; al nibble alto
 	add a,a			;bccb
 	add a,a			;bccc
 	add a,a			;bccd
 	ld b,a			;bcce
-	ld a,(hl)			;bccf
+	ld a,(hl)			;bccf   ; segunda letra
 	inc hl			;bcd0
-	call letra_a_nibble		;bcd1   ; letra_a_nibble: el nibble de la letra A (lo contrario de p14:BB3D)
-	or b			;bcd4
-	ld (de),a			;bcd5
+	call letra_a_nibble		;bcd1   ; a nibble
+	or b			;bcd4   ; juntos
+	ld (de),a			;bcd5   ; el byte
 	inc de			;bcd6
 	pop bc			;bcd7
 	djnz L_BCC4		;bcd8
-	ld hl,0e8f0h		;bcda
+	ld hl,0e8f0h		;bcda   ; el primero es la clave
 	ld c,(hl)			;bcdd
 	inc hl			;bcde
-	ld b,040h		;bcdf
+	ld b,040h		;bcdf   ; los otros 0x40
 L_BCE1:
-	ld a,(hl)			;bce1
+	ld a,(hl)			;bce1   ; menos la clave
 	sub c			;bce2
 	ld (hl),a			;bce3
 	inc hl			;bce4
 	djnz L_BCE1		;bce5
-	jp contrasena_siguiente		;bce7   ; contrasena_siguiente: 0xE3B2 + 1
+	jp contrasena_siguiente		;bce7   ; siguiente paso
 comprueba_contrasena:		; si el CRC cuadra copia la partida a 0xEB40 (0xE38F = 1); si no, 0xE38F = 2
-	call crc_de_todo		;bcea   ; crc_de_todo: HL = el CRC de los 0x40 bytes (partida y CRC); Z si es correcto
+	call crc_de_todo		;bcea   ; el CRC cuadra?
 	jr nz,L_BD00		;bced
-	ld hl,0e8f1h		;bcef
-	ld de,0eb40h		;bcf2   ; apunta a la sala (16 bits)
+	ld hl,0e8f1h		;bcef   ; si: la partida
+	ld de,0eb40h		;bcf2   ; a 0xEB40
 	ld bc,0003eh		;bcf5
 	ldir		;bcf8
-	ld a,001h		;bcfa
+	ld a,001h		;bcfa   ; cargada
 	ld (0e38fh),a		;bcfc   ; guarda el resultado de la carga (2: fallo)
 	ret			;bcff
 L_BD00:
-	ld a,002h		;bd00
+	ld a,002h		;bd00   ; no: mal
 	ld (0e38fh),a		;bd02   ; guarda el resultado de la carga (2: fallo)
 	ret			;bd05
 letra_a_nibble:		; el nibble de la letra A (lo contrario de p14:BB3D)
-	ld c,a			;bd06
-	ld a,(0e8e1h)		;bd07
-	add a,007h		;bd0a
-	daa			;bd0c
-	and 00fh		;bd0d
-	ld (0e8e1h),a		;bd0f
-	add a,041h		;bd12
-	sub c			;bd14
-	neg		;bd15
+	ld c,a			;bd06   ; C = la letra
+	ld a,(0e8e1h)		;bd07   ; la cuenta del cifrado
+	add a,007h		;bd0a   ; mas 7
+	daa			;bd0c   ; en BCD
+	and 00fh		;bd0d   ; la cifra baja
+	ld (0e8e1h),a		;bd0f   ; guarda la variable de trabajo 0xE8E1
+	add a,041h		;bd12   ; mas 0x41
+	sub c			;bd14   ; menos la letra
+	neg		;bd15   ; y cambiado de signo: el nibble
 	ret			;bd17
 cursor_de_la_contrasena:		; el sprite del cursor en la posicion 0xE8E2
-	ld a,(0e8e2h)		;bd18
-	and 0f0h		;bd1b
+	ld a,(0e8e2h)		;bd18   ; la posicion
+	and 0f0h		;bd1b   ; la fila
 	dec a			;bd1d
-	add a,030h		;bd1e
-	ld hl,03b00h		;bd20
+	add a,030h		;bd1e   ; la Y del sprite
+	ld hl,03b00h		;bd20   ; al atributo del cursor
 	call 0004dh		;bd23   ; BIOS WRTVRM - Writes data in VRAM
-	ld a,(0e8e2h)		;bd26
+	ld a,(0e8e2h)		;bd26   ; la columna
 	and 00fh		;bd29
 	ld c,a			;bd2b
-	rra			;bd2c
+	rra			;bd2c   ; con un hueco cada cuatro
 	rra			;bd2d
 	and 003h		;bd2e
 	add a,c			;bd30
 	add a,a			;bd31
 	add a,a			;bd32
 	add a,a			;bd33
-	add a,02fh		;bd34
-	ld hl,03b01h		;bd36
+	add a,02fh		;bd34   ; la X del sprite
+	ld hl,03b01h		;bd36   ; al atributo
 	jp 0004dh		;bd39   ; BIOS WRTVRM - Writes data in VRAM
 letra_a_pantalla:		; la letra tecleada en la VRAM, en su posicion
-	ld a,(0e8e2h)		;bd3c
+	ld a,(0e8e2h)		;bd3c   ; la posicion
 	ld c,a			;bd3f
 	and 0f0h		;bd40
 	ld l,a			;bd42
-	ld h,000h		;bd43
+	ld h,000h		;bd43   ; la fila en la VRAM desde 0x38C6
 	add hl,hl			;bd45
 	add hl,hl			;bd46
 	ld de,038c6h		;bd47
@@ -1058,27 +1058,27 @@ letra_a_pantalla:		; la letra tecleada en la VRAM, en su posicion
 	and 003h		;bd52
 	add a,b			;bd54
 	call hl_mas_a_b		;bd55   ; hl_mas_a_b: HL = HL + A
-	ld a,(0e8e0h)		;bd58
-	sub 020h		;bd5b
-	jp 0004dh		;bd5d   ; BIOS WRTVRM - Writes data in VRAM
+	ld a,(0e8e0h)		;bd58   ; la letra
+	sub 020h		;bd5b   ; como ficha
+	jp 0004dh		;bd5d   ; BIOS WRTVRM - Writes data in VRAM | a la VRAM
 guarda_letra:		; la letra tecleada en 0xE931 + la posicion
-	ld a,(0e8e2h)		;bd60
-	ld hl,0e931h		;bd63
+	ld a,(0e8e2h)		;bd60   ; la posicion
+	ld hl,0e931h		;bd63   ; en 0xE931
 	call hl_mas_a_b		;bd66   ; hl_mas_a_b: HL = HL + A
-	ld a,(0e8e0h)		;bd69
-	ld (hl),a			;bd6c
+	ld a,(0e8e0h)		;bd69   ; la letra
+	ld (hl),a			;bd6c   ; guardada
 	ret			;bd6d
 tecla_nueva:		; A = la tecla pulsada si no es la del cuadro anterior; Z si no hay
-	ld a,(0e3c0h)		;bd6e   ; lee el modo del personaje (tabla p01:718E)
+	ld a,(0e3c0h)		;bd6e   ; con el personaje en un modo negativo no se lee
 	and a			;bd71
 	ret m			;bd72
-	call lee_teclado		;bd73   ; lee_teclado: A = la letra de la primera tecla pulsada en las filas 0-8 de la matriz (p14:BDA9); 0 si ninguna
-	ld hl,0e8e0h		;bd76
+	call lee_teclado		;bd73   ; A = la tecla
+	ld hl,0e8e0h		;bd76   ; la del cuadro anterior
 	ld c,(hl)			;bd79
 	ld (hl),a			;bd7a
 	and a			;bd7b
 	ret z			;bd7c
-	cp c			;bd7d
+	cp c			;bd7d   ; Z si es la misma
 	ret			;bd7e
 hl_mas_a_b:		; HL = HL + A
 	add a,l			;bd7f
@@ -1087,34 +1087,34 @@ hl_mas_a_b:		; HL = HL + A
 	inc h			;bd82
 	ret			;bd83
 lee_teclado:		; A = la letra de la primera tecla pulsada en las filas 0-8 de la matriz (p14:BDA9); 0 si ninguna
-	ld b,009h		;bd84
-	ld e,000h		;bd86
+	ld b,009h		;bd84   ; 9 filas de la matriz
+	ld e,000h		;bd86   ; desde la 0
 L_BD88:
 	ld a,e			;bd88
-	call 00141h		;bd89   ; BIOS SNSMAT - Returns the value of the specified line from the keyboard matrix
-	cpl			;bd8c
+	call 00141h		;bd89   ; BIOS SNSMAT - Returns the value of the specified line from the keyboard matrix | lee la fila
+	cpl			;bd8c   ; pulsadas a 1
 	and a			;bd8d
-	jr nz,L_BD95		;bd8e
-	inc e			;bd90
+	jr nz,L_BD95		;bd8e   ; alguna?
+	inc e			;bd90   ; la siguiente fila
 	djnz L_BD88		;bd91
-	xor a			;bd93
+	xor a			;bd93   ; ninguna
 	ret			;bd94
 L_BD95:
 	ld b,a			;bd95
-	ld a,e			;bd96
+	ld a,e			;bd96   ; 8 teclas por fila
 	add a,a			;bd97
 	add a,a			;bd98
 	add a,a			;bd99
-	ld hl,0bda9h		;bd9a
+	ld hl,0bda9h		;bd9a   ; en la tabla de letras
 	call hl_mas_a_b		;bd9d   ; hl_mas_a_b: HL = HL + A
 	ld a,b			;bda0
 L_BDA1:
-	rra			;bda1
+	rra			;bda1   ; busca el bit pulsado
 	jr c,L_BDA7		;bda2
 	inc hl			;bda4
 	jr L_BDA1		;bda5
 L_BDA7:
-	ld a,(hl)			;bda7
+	ld a,(hl)			;bda7   ; A = la letra de esa tecla
 	ret			;bda8
 
 ; ----------------------------------------------------------------------

@@ -235,7 +235,7 @@ DATA_graficos_8AA7:
 
 
 prepara_escena:		; un paso de la preparacion de la escena de accion (0xE39F, tabla p10:8C5C)
-	ld a,(0e39fh)		;8c56
+	ld a,(0e39fh)		;8c56   ; lee el paso de la preparacion de la escena de accion
 	call 040abh		;8c59   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
@@ -258,7 +258,7 @@ monta_escena:		; sprites y proyectiles a cero, la pantalla, el rival (p10:8D00),
 	ld bc,0007fh		;8c68
 	ldir		;8c6b
 	call 05ecah		;8c6d   ; vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
-	ld hl,0ec30h		;8c70
+	ld hl,0ec30h		;8c70   ; apunta a los 3 proyectiles (16 bytes cada uno)
 	ld de,0ec31h		;8c73
 	ld (hl),000h		;8c76
 	ld bc,0002fh		;8c78
@@ -286,11 +286,11 @@ L_8C98:
 	call 0606eh		;8ca1   ; sonido_de_la_escena: pide el sonido de la escena de accion 0xE3A1 (p09:607C)
 L_8CA4:
 	call 04893h		;8ca4   ; pantalla_de_27: nombres p27:9B8B, fichas p27:9ECB/9ED4 y lo que toque segun 0xE3A1 (tabla p00:48BE)
-	ld hl,0e39fh		;8ca7
+	ld hl,0e39fh		;8ca7   ; apunta a el paso de la preparacion de la escena de accion
 	inc (hl)			;8caa
 	ret			;8cab
 mueve_objetos:		; un cuadro de los 8 objetos de 0xEA00 (0x20 bytes): la rutina de su clase
-	ld ix,0ea00h		;8cac
+	ld ix,0ea00h		;8cac   ; apunta a el rival de la escena (objeto 0, 0x20 bytes)
 	ld b,008h		;8cb0
 L_8CB2:
 	push bc			;8cb2
@@ -352,8 +352,8 @@ crea_rival:		; borra 0xE400-0xE7FF y 0xEA00-0xEAFF y pone en 0xEA00 el de la esc
 	ld bc,003ffh		;8d06
 	ld (hl),000h		;8d09
 	ldir		;8d0b
-	ld hl,0ea00h		;8d0d
-	ld de,0ea01h		;8d10
+	ld hl,0ea00h		;8d0d   ; apunta a el rival de la escena (objeto 0, 0x20 bytes)
+	ld de,0ea01h		;8d10   ; apunta a el paso del rival
 	ld bc,000ffh		;8d13
 	ld (hl),000h		;8d16
 	ldir		;8d18
@@ -362,10 +362,10 @@ crea_rival:		; borra 0xE400-0xE7FF y 0xEA00-0xEAFF y pone en 0xEA00 el de la esc
 	ld de,08d6fh		;8d1e
 	call 043a4h		;8d21   ; palabra_de_tabla: DE = la palabra A de la tabla DE
 	ex de,hl			;8d24
-	ld ix,0ea00h		;8d25
+	ld ix,0ea00h		;8d25   ; apunta a el rival de la escena (objeto 0, 0x20 bytes)
 	ld a,(0e3a1h)		;8d29   ; lee la escena de accion (1-9)
 	ld (ix+000h),a		;8d2c   ; guarda la clase del objeto (tabla p10:8CCD; 0: libre)
-	ld a,(0e3a0h)		;8d2f
+	ld a,(0e3a0h)		;8d2f   ; lee el paso con el que empieza el rival
 	ld (ix+001h),a		;8d32   ; guarda el paso del objeto
 	ld a,(hl)			;8d35
 	ld (ix+007h),a		;8d36   ; guarda la Y del objeto
@@ -485,23 +485,23 @@ objeto_01_2:		; la clase 1, paso 2
 	jr z,L_8E50		;8e2c
 	ld de,08f2ah		;8e2e
 dibujo_a_ram:		; [n] n bytes [salto] hasta 0xFF, de DE a HL (sin pasar de 0xEEA0)
-	ld a,(de)			;8e31
+	ld a,(de)			;8e31   ; [n]: cuantos bytes
 	inc de			;8e32
-	inc a			;8e33
+	inc a			;8e33   ; 0xFF: acaba
 	jr z,L_8E4D		;8e34
 	dec a			;8e36
 	ld b,a			;8e37
 L_8E38:
-	ld a,(de)			;8e38
+	ld a,(de)			;8e38   ; un byte del dibujo
 	ld (hl),a			;8e39
 	inc de			;8e3a
 	inc hl			;8e3b
 	djnz L_8E38		;8e3c
-	ld a,(de)			;8e3e
+	ld a,(de)			;8e3e   ; el salto hasta el siguiente tramo
 	inc de			;8e3f
 	call 040a1h		;8e40   ; hl_mas_a: HL = HL + A
 	push hl			;8e43
-	ld bc,0eea0h		;8e44
+	ld bc,0eea0h		;8e44   ; hasta 0xEEA0
 	and a			;8e47
 	sbc hl,bc		;8e48
 	pop hl			;8e4a
@@ -678,16 +678,16 @@ objeto_02_2:		; la clase 2, paso 2
 	cp 005h		;9135
 	jp z,L_90FC		;9137
 dibujo_con_destino:		; [destino] y el dibujo de DE (p10:9140) y vuelca los nombres
-	ld a,(de)			;913a
+	ld a,(de)			;913a   ; el destino
 	ld l,a			;913b
 	inc de			;913c
 	ld a,(de)			;913d
-	ld h,a			;913e
+	ld h,a			;913e   ; HL = el destino
 	inc de			;913f
 L_9140:
-	ld a,(de)			;9140
+	ld a,(de)			;9140   ; [n]: cuantos bytes
 	inc de			;9141
-	inc a			;9142
+	inc a			;9142   ; 0xFF: acaba
 	jr z,L_9154		;9143
 	dec a			;9145
 	ld b,a			;9146
@@ -730,16 +730,16 @@ L_918A:
 	ld (ix+001h),003h		;918a   ; el paso del objeto = 0x03
 	ret			;918e
 objeto_02_5:		; la clase 2, paso 5
-	ld hl,0e004h		;918f   ; apunta a la espera del estado, en cuadros
+	ld hl,0e004h		;918f   ; la espera
 	dec (hl)			;9192
 	ld a,(hl)			;9193
 	and a			;9194
-	jp z,L_90FC		;9195
-	and 001h		;9198
+	jp z,L_90FC		;9195   ; acabada: siguiente paso
+	and 001h		;9198   ; cada dos cuadros
 	ret nz			;919a
 	ld a,(hl)			;919b
 	and 002h		;919c
-	ld b,00fh		;919e
+	ld b,00fh		;919e   ; el borde blanco o negro
 	jr z,L_91A4		;91a0
 	ld b,000h		;91a2
 L_91A4:
@@ -833,38 +833,38 @@ objeto_03_0:		; la clase 3, paso 0
 	ld (hl),010h		;93cd
 	ldir		;93cf
 	ld a,001h		;93d1
-	ld (ix+01eh),a		;93d3   ; guarda la posicion del dibujo del objeto (bajo)
-	ld (ix+01fh),a		;93d6   ; guarda la posicion del dibujo del objeto (alto)
+	ld (ix+01eh),a		;93d3   ; guarda la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+	ld (ix+01fh),a		;93d6   ; guarda la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 	inc a			;93d9
 	ld (ix+00dh),a		;93da   ; guarda los choques del objeto (bit 0 con el personaje, bit 1 con los proyectiles)
 	ld a,005h		;93dd
-	ld (ix+01ch),a		;93df   ; guarda la segunda cuenta del objeto
-	ld (ix+01dh),a		;93e2   ; guarda la accion del objeto
-	ld hl,0e3a6h		;93e5
+	ld (ix+01ch),a		;93df   ; guarda la variable 0x1C del objeto (cada clase la usa a su manera)
+	ld (ix+01dh),a		;93e2   ; guarda la variable 0x1D del objeto (en los jefes, la accion)
+	ld hl,0e3a6h		;93e5   ; apunta a la cuenta de lanzamientos de la escena
 	dec a			;93e8
 	ld (hl),a			;93e9
 	call 05e51h		;93ea   ; vuelca_nombres: 0x300 de 0xED00 a 0x3800
 	jp L_93AC		;93ed
 objeto_03_1:		; la clase 3, paso 1
-	call L_9496		;93f0
-	call L_94A4		;93f3
-	call L_9440		;93f6
-	call L_9461		;93f9
-	call L_949A		;93fc
-	call L_94A8		;93ff
+	call borra_dibujo_1e		;93f0   ; borra_dibujo_1e: borra el dibujo de (ix+0x1E)
+	call borra_dibujo_1f		;93f3   ; borra_dibujo_1f: borra el dibujo de (ix+0x1F)
+	call cambia_dibujo_1e		;93f6   ; cambia_dibujo_1e: cada 5 cuadros, si no esta tocado, un dibujo al azar en (ix+0x1E)
+	call cambia_dibujo_1f		;93f9   ; cambia_dibujo_1f: cada 5 cuadros, si no esta tocado, un dibujo al azar en (ix+0x1F)
+	call pinta_dibujo_1e		;93fc   ; pinta_dibujo_1e: pinta el dibujo de (ix+0x1E)
+	call pinta_dibujo_1f		;93ff   ; pinta_dibujo_1f: pinta el dibujo de (ix+0x1F)
 	call 0a99bh		;9402   ; lanza_objetos: si el personaje no esta tocado, lo que lanza la escena (p11:A9A8)
 	jp 05e51h		;9405   ; vuelca_nombres: 0x300 de 0xED00 a 0x3800
 objeto_03_2:		; la clase 3, paso 2
-	ld hl,0e004h		;9408   ; apunta a la espera del estado, en cuadros
+	ld hl,0e004h		;9408   ; la espera
 	dec (hl)			;940b
 	ld a,(hl)			;940c
 	and a			;940d
-	jp z,L_93AC		;940e
-	and 001h		;9411
+	jp z,L_93AC		;940e   ; acabada: siguiente paso
+	and 001h		;9411   ; cada dos cuadros
 	ret nz			;9413
 	ld a,(hl)			;9414
 	and 002h		;9415
-	ld b,00fh		;9417
+	ld b,00fh		;9417   ; el borde blanco o negro
 	jr z,L_941D		;9419
 	ld b,000h		;941b
 L_941D:
@@ -883,103 +883,103 @@ jefe_3_vencido:		; pone el bit 5 de 0xEB7D y salta a la sala 0x159
 	ld hl,08030h		;9437
 	ld (0e3c1h),hl		;943a   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	jp 058eah		;943d   ; borra_nombres_sin_ventana: borra 0x1E0 de 0xED00 y los vuelca
-L_9440:
+cambia_dibujo_1e:		; cada 5 cuadros, si no esta tocado, un dibujo al azar en (ix+0x1E)
 	ld a,(ix+013h)		;9440
 	and a			;9443
 	ret nz			;9444
-	dec (ix+01ch)		;9445   ; baja la segunda cuenta del objeto
+	dec (ix+01ch)		;9445   ; baja la variable 0x1C del objeto (cada clase la usa a su manera)
 	ret nz			;9448
-	ld (ix+01ch),005h		;9449   ; la segunda cuenta del objeto = 0x05
+	ld (ix+01ch),005h		;9449   ; la variable 0x1C del objeto (cada clase la usa a su manera) = 0x05
 	call al_azar_0_2		;944d   ; al_azar_0_2: A = 0-2 al azar
 	ld b,a			;9450
-	ld a,(ix+01eh)		;9451   ; lee la posicion del dibujo del objeto (bajo)
+	ld a,(ix+01eh)		;9451   ; lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
 	cp 001h		;9454
 	jr z,L_945D		;9456
 	cp b			;9458
 	jr z,L_945D		;9459
 	ld b,001h		;945b
 L_945D:
-	ld (ix+01eh),b		;945d   ; guarda la posicion del dibujo del objeto (bajo)
+	ld (ix+01eh),b		;945d   ; guarda la variable 0x1E del objeto (en los jefes, donde va su dibujo)
 	ret			;9460
-L_9461:
+cambia_dibujo_1f:		; cada 5 cuadros, si no esta tocado, un dibujo al azar en (ix+0x1F)
 	ld a,(ix+014h)		;9461
 	and a			;9464
 	ret nz			;9465
-	dec (ix+01dh)		;9466   ; baja la accion del objeto
+	dec (ix+01dh)		;9466   ; baja la variable 0x1D del objeto (en los jefes, la accion)
 	ret nz			;9469
-	ld (ix+01dh),005h		;946a   ; la accion del objeto = 0x05
+	ld (ix+01dh),005h		;946a   ; la variable 0x1D del objeto (en los jefes, la accion) = 0x05
 	call al_azar_0_2		;946e   ; al_azar_0_2: A = 0-2 al azar
 	ld b,a			;9471
-	ld a,(ix+01fh)		;9472   ; lee la posicion del dibujo del objeto (alto)
+	ld a,(ix+01fh)		;9472   ; lee la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 	cp 001h		;9475
 	jr z,L_947E		;9477
 	cp b			;9479
 	jr z,L_947E		;947a
 	ld b,001h		;947c
 L_947E:
-	ld (ix+01fh),b		;947e   ; guarda la posicion del dibujo del objeto (alto)
+	ld (ix+01fh),b		;947e   ; guarda la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 	ret			;9481
 al_azar_0_2:		; A = 0-2 al azar
-	ld a,r		;9482
+	ld a,r		;9482   ; dos bits al azar
 	rra			;9484
 	and 003h		;9485
-	cp 003h		;9487
+	cp 003h		;9487   ; si sale 3
 	ret nz			;9489
-	ld a,(0e003h)		;948a   ; lee la cuenta de cuadros
+	ld a,(0e003h)		;948a   ; otros dos de la cuenta de cuadros
 	and 00ch		;948d
 	rra			;948f
 	rra			;9490
 	cp 003h		;9491
 	ret nz			;9493
-	dec a			;9494
+	dec a			;9494   ; y si vuelve a ser 3, 2
 	ret			;9495
-L_9496:
+borra_dibujo_1e:		; borra el dibujo de (ix+0x1E)
 	ld c,000h		;9496
 	jr L_949C		;9498
-L_949A:
+pinta_dibujo_1e:		; pinta el dibujo de (ix+0x1E)
 	ld c,0ffh		;949a
 L_949C:
-	ld a,(ix+01eh)		;949c   ; lee la posicion del dibujo del objeto (bajo)
+	ld a,(ix+01eh)		;949c   ; lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
 	ld de,0954eh		;949f
 	jr L_94B0		;94a2
-L_94A4:
+borra_dibujo_1f:		; borra el dibujo de (ix+0x1F)
 	ld c,000h		;94a4
 	jr L_94AA		;94a6
-L_94A8:
+pinta_dibujo_1f:		; pinta el dibujo de (ix+0x1F)
 	ld c,0ffh		;94a8
 L_94AA:
-	ld a,(ix+01fh)		;94aa   ; lee la posicion del dibujo del objeto (alto)
+	ld a,(ix+01fh)		;94aa   ; lee la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 	ld de,095edh		;94ad
 L_94B0:
 	call 043a4h		;94b0   ; palabra_de_tabla: DE = la palabra A de la tabla DE
 dibujo_con_mascara:		; [destino] y el dibujo de DE, cada byte AND C
-	ld a,(de)			;94b3
+	ld a,(de)			;94b3   ; el destino
 	ld l,a			;94b4
 	inc de			;94b5
 	ld a,(de)			;94b6
-	ld h,a			;94b7
+	ld h,a			;94b7   ; HL = el destino
 	inc de			;94b8
 L_94B9:
-	ld a,(de)			;94b9
+	ld a,(de)			;94b9   ; [n]: cuantos bytes
 	inc de			;94ba
-	inc a			;94bb
+	inc a			;94bb   ; 0xFF: acaba
 	ret z			;94bc
 	dec a			;94bd
 	ld b,a			;94be
 L_94BF:
-	ld a,(de)			;94bf
+	ld a,(de)			;94bf   ; el byte con la mascara C
 	and c			;94c0
 	ld (hl),a			;94c1
 	inc de			;94c2
 	inc hl			;94c3
 	djnz L_94BF		;94c4
-	ld a,(de)			;94c6
+	ld a,(de)			;94c6   ; el salto hasta el siguiente tramo
 	ld b,c			;94c7
 	ld c,a			;94c8
 	ld a,b			;94c9
 	ld b,000h		;94ca
 	inc de			;94cc
-	add hl,bc			;94cd
+	add hl,bc			;94cd   ; se salta
 	ld c,a			;94ce
 	jr L_94B9		;94cf
 
@@ -1084,26 +1084,26 @@ L_96EA:
 	push bc			;96ea
 	push hl			;96eb
 L_96EC:
-	ld a,010h		;96ec
+	ld a,010h		;96ec   ; las fichas 0x10-0x13: un bloque de 2x2
 	push hl			;96ee
 	push hl			;96ef
-	ld (hl),a			;96f0
+	ld (hl),a			;96f0   ; arriba a la izquierda
 	inc a			;96f1
 	inc hl			;96f2
-	ld (hl),a			;96f3
+	ld (hl),a			;96f3   ; arriba a la derecha
 	inc a			;96f4
 	pop hl			;96f5
-	add hl,de			;96f6
-	ld (hl),a			;96f7
+	add hl,de			;96f6   ; la fila de abajo
+	ld (hl),a			;96f7   ; abajo a la izquierda
 	inc a			;96f8
 	inc hl			;96f9
-	ld (hl),a			;96fa
+	ld (hl),a			;96fa   ; abajo a la derecha
 	pop hl			;96fb
-	inc hl			;96fc
+	inc hl			;96fc   ; el siguiente bloque, dos columnas mas alla
 	inc hl			;96fd
 	djnz L_96EC		;96fe
 	pop hl			;9700
-	add hl,de			;9701
+	add hl,de			;9701   ; dos filas mas abajo
 	add hl,de			;9702
 	pop bc			;9703
 	dec c			;9704
@@ -1132,9 +1132,9 @@ objeto_04_2:		; la clase 4, paso 2
 	ld h,a			;972e
 	inc de			;972f
 L_9730:
-	ld a,(de)			;9730
+	ld a,(de)			;9730   ; [n]: cuantos bytes
 	inc de			;9731
-	inc a			;9732
+	inc a			;9732   ; 0xFF: acaba
 	jr z,L_9744		;9733
 	dec a			;9735
 	ld b,a			;9736
@@ -1157,16 +1157,16 @@ objeto_04_3:		; la clase 4, paso 3
 	call 0a99bh		;974e   ; lanza_objetos: si el personaje no esta tocado, lo que lanza la escena (p11:A9A8)
 	ret			;9751
 objeto_04_4:		; la clase 4, paso 4
-	ld hl,0e004h		;9752   ; apunta a la espera del estado, en cuadros
+	ld hl,0e004h		;9752   ; la espera
 	dec (hl)			;9755
 	ld a,(hl)			;9756
 	and a			;9757
-	jp z,L_969E		;9758
-	and 001h		;975b
+	jp z,L_969E		;9758   ; acabada: siguiente paso
+	and 001h		;975b   ; cada dos cuadros
 	ret nz			;975d
 	ld a,(hl)			;975e
 	and 002h		;975f
-	ld b,00fh		;9761
+	ld b,00fh		;9761   ; el borde blanco o negro
 	jr z,L_9767		;9763
 	ld b,000h		;9765
 L_9767:
@@ -1252,17 +1252,17 @@ objeto_05_0:		; la clase 5, paso 0
 	ld de,00020h		;9908
 	ld b,017h		;990b
 L_990D:
-	ld (hl),010h		;990d
+	ld (hl),010h		;990d   ; la columna izquierda con la ficha 0x10
 	add hl,de			;990f
 	djnz L_990D		;9910
-	ld hl,0ed3bh		;9912
+	ld hl,0ed3bh		;9912   ; la derecha
 	ld de,00020h		;9915
 	ld b,017h		;9918
 L_991A:
-	ld (hl),010h		;991a
+	ld (hl),010h		;991a   ; la ficha 0x10
 	add hl,de			;991c
 	djnz L_991A		;991d
-	ld hl,0ed25h		;991f
+	ld hl,0ed25h		;991f   ; el interior con la 0x11
 	ld de,0000ah		;9922
 	ld c,017h		;9925
 L_9927:
@@ -1279,9 +1279,9 @@ L_9929:
 	call dibujo_a_ram_b		;9938   ; dibujo_a_ram_b: [n] n bytes [salto] hasta 0xFF y vuelca los nombres
 	jp L_98F0		;993b
 dibujo_a_ram_b:		; [n] n bytes [salto] hasta 0xFF y vuelca los nombres
-	ld a,(de)			;993e
+	ld a,(de)			;993e   ; [n]: cuantos bytes
 	inc de			;993f
-	inc a			;9940
+	inc a			;9940   ; 0xFF: acaba
 	jr z,L_9952		;9941
 	dec a			;9943
 	ld b,a			;9944
@@ -1406,9 +1406,9 @@ objeto_06_0:		; la clase 6, paso 0
 	call 05e51h		;9b32   ; vuelca_nombres: 0x300 de 0xED00 a 0x3800
 	jr L_9B1B		;9b35
 dibujo_a_ram_c:		; [n] n bytes [salto] hasta 0xFF
-	ld a,(de)			;9b37
+	ld a,(de)			;9b37   ; [n]: cuantos bytes
 	inc de			;9b38
-	inc a			;9b39
+	inc a			;9b39   ; 0xFF: acaba
 	ret z			;9b3a
 	dec a			;9b3b
 	ld b,a			;9b3c
@@ -1424,21 +1424,21 @@ L_9B3D:
 	jr dibujo_a_ram_c		;9b48
 objeto_06_1:		; la clase 6, paso 1
 	call borra_dibujo_del_objeto		;9b4a   ; borra_dibujo_del_objeto: borra las fichas del objeto de donde estaba (ix+0x1E)
-	call L_9B94		;9b4d
+	call mueve_jefe_6		;9b4d   ; mueve_jefe_6: cada 4 cuadros (o cada 2 en las acciones 2-4) avanza y hace su accion (tabla p10:9BC6)
 	call pinta_dibujo_del_objeto		;9b50   ; pinta_dibujo_del_objeto: las 6 x 10 fichas del objeto (p10:9D9B[ix+0x0A]) en su posicion
 	call 0a99bh		;9b53   ; lanza_objetos: si el personaje no esta tocado, lo que lanza la escena (p11:A9A8)
 	jp 05e51h		;9b56   ; vuelca_nombres: 0x300 de 0xED00 a 0x3800
 objeto_06_2:		; la clase 6, paso 2
-	ld hl,0e004h		;9b59   ; apunta a la espera del estado, en cuadros
+	ld hl,0e004h		;9b59   ; la espera
 	dec (hl)			;9b5c
 	ld a,(hl)			;9b5d
 	and a			;9b5e
-	jp z,L_9B1B		;9b5f
-	and 001h		;9b62
+	jp z,L_9B1B		;9b5f   ; acabada: siguiente paso
+	and 001h		;9b62   ; cada dos cuadros
 	ret nz			;9b64
 	ld a,(hl)			;9b65
 	and 002h		;9b66
-	ld b,00fh		;9b68
+	ld b,00fh		;9b68   ; el borde blanco o negro
 	jr z,L_9B6E		;9b6a
 	ld b,000h		;9b6c
 L_9B6E:
@@ -1458,9 +1458,9 @@ jefe_6_vencido:		; pone el bit 2 de 0xEB7D y salta a la sala 0x185
 	ld (0e3c1h),hl		;9b8b   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	call 058bfh		;9b8e   ; borra_nombres: borra los nombres 0xED00 (0x300) y los vuelca
 	jp 04335h		;9b91   ; a_fuente_y_9_10_11: con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3; vuelve con 9-10-11
-L_9B94:
+mueve_jefe_6:		; cada 4 cuadros (o cada 2 en las acciones 2-4) avanza y hace su accion (tabla p10:9BC6)
 	ld c,003h		;9b94
-	ld a,(ix+01dh)		;9b96   ; lee la accion del objeto
+	ld a,(ix+01dh)		;9b96   ; lee la variable 0x1D del objeto (en los jefes, la accion)
 	cp 002h		;9b99
 	jr c,L_9BA3		;9b9b
 	cp 005h		;9b9d
@@ -1483,7 +1483,7 @@ L_9BA3:
 L_9BBD:
 	ld (ix+009h),l		;9bbd   ; guarda la X del objeto
 L_9BC0:
-	ld a,(ix+01dh)		;9bc0   ; lee la accion del objeto
+	ld a,(ix+01dh)		;9bc0   ; lee la variable 0x1D del objeto (en los jefes, la accion)
 	call 040abh		;9bc3   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
@@ -1516,7 +1516,7 @@ L_9BDF:
 	ld a,(ix+01bh)		;9bdf   ; lee la cuenta del objeto
 	cp 008h		;9be2
 	jr nc,L_9BED		;9be4
-	inc (ix+01dh)		;9be6   ; sube la accion del objeto
+	inc (ix+01dh)		;9be6   ; sube la variable 0x1D del objeto (en los jefes, la accion)
 	ld (ix+003h),008h		;9be9   ; la velocidad Y del objeto (alta) = 0x08
 L_9BED:
 	ld a,(ix+00ah)		;9bed   ; lee el fotograma del objeto
@@ -1532,17 +1532,17 @@ L_9BFE:
 	ld (ix+00ah),004h		;9bfe   ; el fotograma del objeto = 0x04
 	ret			;9c02
 L_9C03:
-	ld a,(ix+01dh)		;9c03   ; lee la accion del objeto
+	ld a,(ix+01dh)		;9c03   ; lee la variable 0x1D del objeto (en los jefes, la accion)
 	cp 003h		;9c06
 	jr nz,L_9C0D		;9c08
 	call 06028h		;9c0a   ; sonido_11: pide el sonido 0x11
 L_9C0D:
-	ld a,r		;9c0d
+	ld a,r		;9c0d   ; la accion: dos bits al azar
 	rra			;9c0f
 	and 003h		;9c10
-	cp 003h		;9c12
+	cp 003h		;9c12   ; si sale 3
 	jr nz,L_9C22		;9c14
-	ld a,(0e003h)		;9c16   ; lee la cuenta de cuadros
+	ld a,(0e003h)		;9c16   ; otros dos de la cuenta de cuadros
 	and 00ch		;9c19
 	rra			;9c1b
 	rra			;9c1c
@@ -1550,10 +1550,10 @@ L_9C0D:
 	jr nz,L_9C22		;9c1f
 	dec a			;9c21
 L_9C22:
-	ld (ix+01dh),a		;9c22   ; guarda la accion del objeto
+	ld (ix+01dh),a		;9c22   ; guarda la variable 0x1D del objeto (en los jefes, la accion)
 	add a,a			;9c25
 	add a,a			;9c26
-	add a,(ix+01dh)		;9c27   ; le suma la accion del objeto
+	add a,(ix+01dh)		;9c27   ; le suma la variable 0x1D del objeto (en los jefes, la accion)
 	ld hl,09c49h		;9c2a
 	call 040a1h		;9c2d   ; hl_mas_a: HL = HL + A
 	ld e,(hl)			;9c30
@@ -1602,8 +1602,8 @@ objeto_avanza:		; Y (ix+6/7) += (ix+2/3) y X (ix+8/9) += (ix+4/5)
 	ld (ix+009h),h		;9c7b   ; guarda la X del objeto
 	ret			;9c7e
 borra_dibujo_del_objeto:		; borra las fichas del objeto de donde estaba (ix+0x1E)
-	ld l,(ix+01eh)		;9c7f   ; lee la posicion del dibujo del objeto (bajo)
-	ld h,(ix+01fh)		;9c82   ; lee la posicion del dibujo del objeto (alto)
+	ld l,(ix+01eh)		;9c7f   ; lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+	ld h,(ix+01fh)		;9c82   ; lee la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 	ld b,000h		;9c85
 	jr L_9C9D		;9c87
 pinta_dibujo_del_objeto:		; las 6 x 10 fichas del objeto (p10:9D9B[ix+0x0A]) en su posicion
@@ -1612,8 +1612,8 @@ pinta_dibujo_del_objeto:		; las 6 x 10 fichas del objeto (p10:9D9B[ix+0x0A]) en 
 	sub 030h		;9c8f
 	ld h,a			;9c91
 	call 04509h		;9c92   ; mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
-	ld (ix+01eh),l		;9c95   ; guarda la posicion del dibujo del objeto (bajo)
-	ld (ix+01fh),h		;9c98   ; guarda la posicion del dibujo del objeto (alto)
+	ld (ix+01eh),l		;9c95   ; guarda la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+	ld (ix+01fh),h		;9c98   ; guarda la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 	ld b,0ffh		;9c9b
 L_9C9D:
 	push hl			;9c9d
@@ -1627,7 +1627,7 @@ L_9CAB:
 	exx			;9cab
 	ld b,00ah		;9cac
 L_9CAE:
-	exx			;9cae
+	exx			;9cae   ; una ficha del dibujo, con la mascara B
 	ld a,(de)			;9caf
 	and b			;9cb0
 	ld (hl),a			;9cb1
@@ -1636,7 +1636,7 @@ L_9CAE:
 	exx			;9cb4
 	djnz L_9CAE		;9cb5
 	exx			;9cb7
-	ld a,016h		;9cb8
+	ld a,016h		;9cb8   ; la siguiente fila (10 + 0x16 = 0x20)
 	call 040a1h		;9cba   ; hl_mas_a: HL = HL + A
 	dec c			;9cbd
 	jr nz,L_9CAB		;9cbe
@@ -1720,26 +1720,26 @@ L_9EBB:
 	ld (hl),026h		;9ebe
 	inc hl			;9ec0
 	djnz L_9EBB		;9ec1
-	call L_9FDD		;9ec3
+	call pinta_dibujo_del_jefe_7		;9ec3   ; pinta_dibujo_del_jefe_7: sus fichas en su posicion
 	call 05e45h		;9ec6   ; vuelca_nombres_sin_ventana: 0x1E0 de 0xED00 a 0x3800
 	jp L_9EA1		;9ec9
 objeto_07_1:		; la clase 7, paso 1
-	call L_9FD3		;9ecc
-	call L_9F16		;9ecf
-	call L_9FDD		;9ed2
+	call borra_dibujo_del_jefe_7		;9ecc   ; borra_dibujo_del_jefe_7: borra sus fichas de donde estaba
+	call mueve_jefe_7		;9ecf   ; mueve_jefe_7: cada 4 cuadros (o cada 2 en las acciones 2-4) avanza y hace su accion (tabla p10:9F4A)
+	call pinta_dibujo_del_jefe_7		;9ed2   ; pinta_dibujo_del_jefe_7: sus fichas en su posicion
 	call 0a99bh		;9ed5   ; lanza_objetos: si el personaje no esta tocado, lo que lanza la escena (p11:A9A8)
 	jp 05e45h		;9ed8   ; vuelca_nombres_sin_ventana: 0x1E0 de 0xED00 a 0x3800
 objeto_07_2:		; la clase 7, paso 2
-	ld hl,0e004h		;9edb   ; apunta a la espera del estado, en cuadros
+	ld hl,0e004h		;9edb   ; la espera
 	dec (hl)			;9ede
 	ld a,(hl)			;9edf
 	and a			;9ee0
-	jp z,L_9EA1		;9ee1
-	and 001h		;9ee4
+	jp z,L_9EA1		;9ee1   ; acabada: siguiente paso
+	and 001h		;9ee4   ; cada dos cuadros
 	ret nz			;9ee6
 	ld a,(hl)			;9ee7
 	and 002h		;9ee8
-	ld b,00fh		;9eea
+	ld b,00fh		;9eea   ; el borde blanco o negro
 	jr z,L_9EF0		;9eec
 	ld b,000h		;9eee
 L_9EF0:
@@ -1759,9 +1759,9 @@ jefe_7_vencido:		; pone el bit 1 de 0xEB7D y salta a la sala 0x109
 	ld (0e3c1h),hl		;9f0d   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	call 058eah		;9f10   ; borra_nombres_sin_ventana: borra 0x1E0 de 0xED00 y los vuelca
 	jp 058ffh		;9f13   ; esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
-L_9F16:
+mueve_jefe_7:		; cada 4 cuadros (o cada 2 en las acciones 2-4) avanza y hace su accion (tabla p10:9F4A)
 	ld c,003h		;9f16
-	ld a,(ix+01dh)		;9f18   ; lee la accion del objeto
+	ld a,(ix+01dh)		;9f18   ; lee la variable 0x1D del objeto (en los jefes, la accion)
 	cp 002h		;9f1b
 	jr c,L_9F25		;9f1d
 	cp 005h		;9f1f
@@ -1784,7 +1784,7 @@ L_9F25:
 L_9F3F:
 	ld (ix+009h),l		;9f3f   ; guarda la X del objeto
 L_9F42:
-	ld a,(ix+01dh)		;9f42   ; lee la accion del objeto
+	ld a,(ix+01dh)		;9f42   ; lee la variable 0x1D del objeto (en los jefes, la accion)
 	and 003h		;9f45
 	call 040abh		;9f47   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
@@ -1816,7 +1816,7 @@ L_9F5F:
 	ld a,(ix+01bh)		;9f5f   ; lee la cuenta del objeto
 	cp 008h		;9f62
 	jr nc,L_9F6D		;9f64
-	inc (ix+01dh)		;9f66   ; sube la accion del objeto
+	inc (ix+01dh)		;9f66   ; sube la variable 0x1D del objeto (en los jefes, la accion)
 	ld (ix+003h),008h		;9f69   ; la velocidad Y del objeto (alta) = 0x08
 L_9F6D:
 	ld a,(ix+00ah)		;9f6d   ; lee el fotograma del objeto
@@ -1829,17 +1829,17 @@ L_9F77:
 	call 06023h		;9f7a   ; sonido_10: pide el sonido 0x10
 	ret			;9f7d
 L_9F7E:
-	ld a,(ix+01dh)		;9f7e   ; lee la accion del objeto
+	ld a,(ix+01dh)		;9f7e   ; lee la variable 0x1D del objeto (en los jefes, la accion)
 	cp 003h		;9f81
 	jr nz,L_9F88		;9f83
 	call 06028h		;9f85   ; sonido_11: pide el sonido 0x11
 L_9F88:
-	ld a,r		;9f88
+	ld a,r		;9f88   ; la accion: dos bits al azar
 	rra			;9f8a
 	and 003h		;9f8b
-	cp 003h		;9f8d
+	cp 003h		;9f8d   ; si sale 3
 	jr nz,L_9F9D		;9f8f
-	ld a,(0e003h)		;9f91   ; lee la cuenta de cuadros
+	ld a,(0e003h)		;9f91   ; otros dos de la cuenta de cuadros
 	and 00ch		;9f94
 	rra			;9f96
 	rra			;9f97
@@ -1847,10 +1847,10 @@ L_9F88:
 	jr nz,L_9F9D		;9f9a
 	dec a			;9f9c
 L_9F9D:
-	ld (ix+01dh),a		;9f9d   ; guarda la accion del objeto
+	ld (ix+01dh),a		;9f9d   ; guarda la variable 0x1D del objeto (en los jefes, la accion)
 	add a,a			;9fa0
 	add a,a			;9fa1
-	add a,(ix+01dh)		;9fa2   ; le suma la accion del objeto
+	add a,(ix+01dh)		;9fa2   ; le suma la variable 0x1D del objeto (en los jefes, la accion)
 	ld hl,09fc4h		;9fa5
 	call 040a1h		;9fa8   ; hl_mas_a: HL = HL + A
 	ld e,(hl)			;9fab
@@ -1882,17 +1882,17 @@ DATA_resto_9FC4:
 ; ======================================================================
 
 
-L_9FD3:
-	ld l,(ix+01eh)		;9fd3   ; lee la posicion del dibujo del objeto (bajo)
-	ld h,(ix+01fh)		;9fd6   ; lee la posicion del dibujo del objeto (alto)
+borra_dibujo_del_jefe_7:		; borra sus fichas de donde estaba
+	ld l,(ix+01eh)		;9fd3   ; lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+	ld h,(ix+01fh)		;9fd6   ; lee la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 	ld b,000h		;9fd9
 	jr L_9FEE		;9fdb
-L_9FDD:
+pinta_dibujo_del_jefe_7:		; sus fichas en su posicion
 	ld l,(ix+007h)		;9fdd   ; lee la Y del objeto
 	ld h,(ix+009h)		;9fe0   ; lee la X del objeto
 	call 04509h		;9fe3   ; mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
-	ld (ix+01eh),l		;9fe6   ; guarda la posicion del dibujo del objeto (bajo)
-	ld (ix+01fh),h		;9fe9   ; guarda la posicion del dibujo del objeto (alto)
+	ld (ix+01eh),l		;9fe6   ; guarda la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+	ld (ix+01fh),h		;9fe9   ; guarda la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 	ld b,0ffh		;9fec
 L_9FEE:
 	push hl			;9fee

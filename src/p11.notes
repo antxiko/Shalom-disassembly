@@ -1,5 +1,77 @@
 # Notas del banco 11
 
+# --- A MANO: comentarios, nombres y bloques ---
+C 0xA000 una ficha del dibujo, con la mascara B
+C 0xA009 la siguiente fila
+C 0xA27E el byte
+C 0xA280 0xFF: acaba
+C 0xA28C borrando?
+C 0xA292 la pieza que toca
+C 0xA29A el objeto de 0xEA40 en el paso 2
+C 0xA2A5 tiene la pieza que toca?
+C 0xA2AB y parpadea
+C 0xA2E7 la ficha
+C 0xA2ED la siguiente fila
+C 0xA747 los cuadros sin dano tras un golpe
+C 0xA74E cuentan
+C 0xA9F1 la siguiente vez en 0x18 cuadros
+C 0xA9F3 al azar, un lado u otro
+C 0xA9F7 la posicion del primer lado
+C 0xAA04 la del segundo
+C 0xAA9F los dos actores sueltos (0xE401, 0xE402)
+C 0xAAA4 si ya estan los dos, nada
+C 0xAAA7 quedan por soltar?
+C 0xAAAC cada 64 cuadros
+C 0xAAB4 cual sale
+C 0xAABA en la X 0x68
+C 0xAAC8 o en la 0x90
+C 0xAB5D la cuenta
+C 0xAB62 cada 64 cuadros
+C 0xAB68 clase 0x0A en (0x50, 0xC0)
+C 0xAB9A el siguiente hueco
+C 0xABA2 sin hueco: sin acarreo
+C 0xAC0E HL = la ficha
+C 0xAC14 a cero
+C 0xAC16 los 0x20 bytes
+C 0xAC47 el siguiente objeto
+C 0xAC50 los sprites que sobran
+C 0xAC51 escondidos
+C 0xAC6B la Y de la pieza
+C 0xAC72 la X de la pieza
+C 0xAC79 el patron
+C 0xAC7D el color
+C 0xAE13 la X / 16
+C 0xAE19 menos 3: la columna
+C 0xAE1C desde el bit 0
+C 0xBA56 cada 4 cuadros
+C 0xBA5D el color sube con la cuenta
+C 0xBA64 desde el color del sprite 12
+C 0xBA6A 20 sprites
+C 0xBAEC el color de fondo
+C 0xBAEF el 6 pasa a 8
+C 0xBAF5 el 8 pasa a 9
+C 0xBB0E el color de la VRAM
+C 0xBB12 el de fondo (nibble bajo)
+C 0xBB14 el 4 pasa a 6
+C 0xBB1A el 5 pasa a 8
+C 0xBB20 el 0x0F pasa a 0x0A
+C 0xBB27 el de tinta (nibble alto)
+C 0xBB2A el 4 pasa a 6
+C 0xBB30 el 5 pasa a 8
+C 0xBB36 el 0x0F pasa a 0x0A
+C 0xBB4F el color de la VRAM
+C 0xBB53 el de fondo (nibble bajo)
+C 0xBB55 el 0 pasa a 4
+C 0xBB59 el 4 pasa a 5
+C 0xBB5F el 5 pasa a 7
+C 0xBB66 el de tinta (nibble alto)
+C 0xBB69 el 0 pasa a 4
+C 0xBB6D el 4 pasa a 5
+C 0xBB73 el 5 pasa a 7
+C 0xBD01 el guion de la demo
+C 0xBD04 mas C
+C 0xBD09 A = el byte
+
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xA012 0xA0CC resto_A012  lo apuntan con el banco puesto p10:9FF3 (0xA012); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p10:9FF3 (186 bytes)
 F 0xA012 16
@@ -108,6 +180,13 @@ L 0xA819 choque_con_los_proyectiles mira los 3 proyectiles de 0xEC30 contra el o
 L 0xA82F choque_con_un_proyectil si el proyectil DE toca al objeto (medidas p11:A96F): su rutina (p11:A867)
 L 0xA99B lanza_objetos si el personaje no esta tocado, lo que lanza la escena (p11:A9A8)
 L 0xA9A8 lanza_objetos_de_la_escena la rutina de la escena 0xE3A1 - 2 (tabla p11:A9B1)
+L 0xAA65 lanza_objeto_11 si no hay proyectil ni objeto en 0xEA60, crea alli uno de clase 0x11
+L 0xAADF lanza_objeto_0f un objeto de clase 0x0F en (0x40, 0x78)
+L 0xAAE8 lanza_objeto_12 un objeto de clase 0x12 en (0x10, 0x60)
+L 0xAAF5 lanza_objeto_17 un objeto de clase 0x17 en (0x20, 0x78)
+L 0xAB02 lanza_objeto_18 un objeto de clase 0x18 en (0xF0, 0xF0)
+L 0xAB0F lanza_objeto_19 un objeto de clase 0x19 en (0x60, 0xF0)
+L 0xAB5D lanza_objeto_0a cada 64 cuadros, sonido y un objeto de clase 0x0A en 0xEA80
 L 0xAB76 crea_objeto un objeto de clase C en (E, D) en el primer hueco de los 7 de 0xEA20; acarreo si lo crea
 L 0xAB7D crea_objeto_en como p11:AB76 desde IX y B huecos
 L 0xABA4 invierte_vy_del_objeto (ix+2/3) = -(ix+2/3)
@@ -119,25 +198,49 @@ L 0xABEF velocidades_del_objeto velocidad X = DE y velocidad Y = HL
 L 0xABF3 vy_del_objeto velocidad Y = DE
 L 0xABFA vx_del_objeto velocidad X = DE
 L 0xAC01 objeto_quieto las dos velocidades a cero
+L 0xAC04 vy_del_objeto_a_cero la velocidad Y a cero
+L 0xAC09 vx_del_objeto_a_cero la velocidad X a cero
 L 0xAC0E borra_objeto los 0x20 bytes de la ficha IX a cero
 L 0xAC1C sprites_de_objetos los sprites de los 7 objetos de 0xEA20 en 0xF020 (fotogramas p11:AC85) y el resto escondidos
 L 0xAC5A sprites_de_un_objeto las piezas del fotograma (ix+0x0A): [n] y n x [dy][dx][patron][color]
 L 0xAD9B objeto_en_fichas el objeto pintado con 3 fichas en la VRAM (p11:ADD4)
 L 0xADCC ficha_a_vram A a la VRAM HL
+L 0xADE0 objeto_en_fichas_pasos los pasos del objeto en fichas: aparece, cuenta y cae
 L 0xAE13 bit_de_columna A = 1 << (X / 16 - 3)
 L 0xAE5E borra_objeto_en_fichas borra sus 3 fichas
 L 0xAE7D objeto_10 la rutina de la clase 10 de los objetos de 0xEA00 (p10:8CCD)
 L 0xAEF6 objeto_11 la rutina de la clase 11 de los objetos de 0xEA00 (p10:8CCD)
+L 0xAF36 fotograma_parpadeo_12 fotograma 0x12 o 0x13 segun el bit 1 de A
 L 0xAFC7 objeto_13 la rutina de la clase 13 de los objetos de 0xEA00 (p10:8CCD)
+L 0xAFDD objeto_siguiente_paso (ix+1) + 1
+L 0xB031 fotograma_parpadeo_4 fotograma 4 o 5 segun el bit 3 de A
 L 0xB195 objeto_14 la rutina de la clase 14 de los objetos de 0xEA00 (p10:8CCD)
 L 0xB226 objeto_15 la rutina de la clase 15 de los objetos de 0xEA00 (p10:8CCD)
+L 0xB3F7 cerca_del_personaje si esta abajo, mira la distancia en X al personaje
+L 0xB40B mira_los_proyectiles dos proyectiles desde 0xEC39
+L 0xB460 distancia_y A = la distancia en Y entre (HL) y el objeto
 L 0xB488 objeto_16 la rutina de la clase 16 de los objetos de 0xEA00 (p10:8CCD)
 L 0xB536 objeto_17 la rutina de la clase 17 de los objetos de 0xEA00 (p10:8CCD)
+L 0xB5B5 alterna_fotograma cada 4 cuadros, el fotograma XOR 1
 L 0xB5C4 objeto_18 la rutina de la clase 18 de los objetos de 0xEA00 (p10:8CCD)
+L 0xB5FF ficha_bajo_el_objeto A = la ficha del bloque en el centro del objeto
+L 0xB621 paso_x_1 H = +16 o -16 segun el bit 0 de A
+L 0xB63A paso_x_4 H = +16 o -16 segun el bit 2 de A
+L 0xB690 objeto_con_cursores con los cursores, la velocidad del objeto de p11:B6CE y p11:B6DE
+L 0xB6BF velocidad_de_tabla DE = la velocidad de p11:B6DE
 L 0xB79D objeto_23 la rutina de la clase 23 de los objetos de 0xEA00 (p10:8CCD)
+L 0xB800 fotograma_parpadeo_18 fotograma 0x18 o 0x19 cada 4 cuadros
+L 0xBA56 parpadeo_de_sprites cada 4 cuadros, el color de 20 sprites desde 0xF033
+L 0xBA71 baja_sprites cada (ix+0x1F) cuadros esconde los sprites de 0xF030 y avanza (ix+0x1E)
+L 0xBAD3 zona_888 HL = 0x0888 y BC = 0x0470
+L 0xBB08 zona_888_b HL = 0x0888 y BC = 0x0470
+L 0xBB49 zona_888_c HL = 0x0888 y BC = 0x0470
+L 0xBB86 zona_7f8 HL = 0x07F8
+L 0xBB89 color_doble 8 bytes de color E en los dos nibbles desde la VRAM HL
 L 0xBC5C demo_empieza la demo: sala de partida 2 (0xE338), guion desde el principio (0xE00B) y el personaje en (0x50, 0x60)
 L 0xBC86 demo_cuadro un cuadro de la demo (p11:BC92); al acabar el guion, sonido 0x85 y 0xE340 = 0
 L 0xBC92 demo_guion el guion p11:BD12: anda hacia cada [Y X] pulsando la tecla, 0xFE n espera, 0xFF acaba; NZ mientras sigue
+L 0xBCC3 demo_pulsa la tecla de la demo como si se pulsara (p01:70BE)
 L 0xBCFD demo_byte A = el byte 0xE00B del guion
 L 0xBD01 demo_byte_c A = el byte C del guion
 L 0xBD0B nibble_por_16 A = (A AND 0x0F) * 16
@@ -156,7 +259,7 @@ C 0xA103 guarda la velocidad X del objeto (alta)
 C 0xA106 la cuenta del objeto = 0x03
 C 0xA10A el fotograma del objeto = 0x15
 C 0xA10E los choques del objeto (bit 0 con el personaje, bit 1 con los proyectiles) = 0x01
-C 0xA112 la accion del objeto = 0x00
+C 0xA112 la variable 0x1D del objeto (en los jefes, la accion) = 0x00
 C 0xA116 la velocidad Y del objeto = 0x00
 C 0xA11A la velocidad X del objeto = 0x80
 C 0xA11E la velocidad Y del objeto (alta) = 0xFE
@@ -176,13 +279,15 @@ C 0xA15B lee la Y del objeto
 C 0xA162 borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xA166 los choques del objeto (bit 0 con el personaje, bit 1 con los proyectiles) = 0x02
 C 0xA16A el fotograma del objeto = 0x01
-C 0xA16E guarda la accion del objeto
+C 0xA16E guarda la variable 0x1D del objeto (en los jefes, la accion)
 C 0xA171 guarda la velocidad Y del objeto
 C 0xA174 guarda la velocidad Y del objeto (alta)
 C 0xA177 guarda la velocidad X del objeto
 C 0xA17A la velocidad X del objeto (alta) = 0xF8
 C 0xA17F lee el paso del objeto
 C 0xA182 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xA197 lanza_objeto_17: un objeto de clase 0x17 en (0x20, 0x78)
+C 0xA1A1 apunta a las piezas del jefe o la fila de fichas que entra
 C 0xA1A9 dibujo_de_15_filas: 15 filas de p11:A352 a 0xED00: [salto] y bytes hasta 0xFF
 C 0xA1AC piezas_del_jefe: las 10 piezas de 0xEC60 (dibujos p11:A2F6) en la pantalla, o borradas
 C 0xA1AF sube el paso del objeto
@@ -191,6 +296,7 @@ C 0xA1B8 lee el texto en marcha
 C 0xA1BD lee la espera del texto (1 tecla, 2 tecla y fin)
 C 0xA1C2 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
 C 0xA1C5 sube el paso del objeto
+C 0xA1C9 lanza_objeto_12: un objeto de clase 0x12 en (0x10, 0x60)
 C 0xA1CC sube el paso del objeto
 C 0xA1EA piezas_del_jefe: las 10 piezas de 0xEC60 (dibujos p11:A2F6) en la pantalla, o borradas
 C 0xA1F1 piezas_del_jefe: las 10 piezas de 0xEC60 (dibujos p11:A2F6) en la pantalla, o borradas
@@ -201,6 +307,7 @@ C 0xA214 lee el texto en marcha
 C 0xA219 lee la espera del texto (1 tecla, 2 tecla y fin)
 C 0xA21E borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
 C 0xA221 sube el paso del objeto
+C 0xA225 lee los 7 objetos lanzados (0x20 bytes cada uno)
 C 0xA22A sube el paso del objeto
 C 0xA230 texto_y_9_10_11: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E); vuelve con 9-10-11
 C 0xA233 lee el texto en marcha
@@ -218,7 +325,7 @@ C 0xA267 apunta a los nombres de la pantalla (32 x 24)
 C 0xA26F de_mas_a: DE = DE + A
 C 0xA272 copia_hasta_ff: copia de HL a DE hasta 0xFF
 C 0xA278 de_mas_a: DE = DE + A
-C 0xA2AB lee la cuenta de cuadros del objeto
+C 0xA287 apunta a las piezas del jefe o la fila de fichas que entra
 C 0xA2BE palabra_de_tabla: DE = la palabra A de la tabla DE
 C 0xA2C4 pieza: un dibujo [alto][ancho] y sus fichas a DE (o ceros con (ix+0x10))
 C 0xA2D0 vuelca_nombres_sin_ventana: 0x1E0 de 0xED00 a 0x3800
@@ -227,13 +334,18 @@ C 0xA47A parpadeo_de_cinco_sprites: el color de los 5 sprites de 0xF060 segun el
 C 0xA47D lee el paso del objeto
 C 0xA480 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xA4B9 sube el paso del objeto
+C 0xA4BD apunta a los sprites de los proyectiles (desde el 24)
+C 0xA4D4 apunta a los sprites de los proyectiles (desde el 24)
+C 0xA4E6 apunta a los sprites de los proyectiles (desde el 24)
 C 0xA503 lee el paso del objeto
 C 0xA509 lee la cuenta de cuadros
 C 0xA511 hl_mas_a: HL = HL + A
 C 0xA52A pon_cinco_sprites: los 5 sprites de p11:A4EF en 0xF060
 C 0xA530 apunta a los nombres de la pantalla (32 x 24)
 C 0xA538 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0xA53E guarda el nombre de quien habla (5 bytes) y el byte siguiente (16 bits)
 C 0xA54F guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0xA553 guarda el paso comun de la escena de accion
 C 0xA556 sube el paso del objeto
 C 0xA55C texto_y_9_10_11: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E); vuelve con 9-10-11
 C 0xA55F lee el texto en marcha
@@ -242,24 +354,31 @@ C 0xA569 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0x
 C 0xA570 sube el paso del objeto
 C 0xA574 vuelca_nombres_sin_ventana: 0x1E0 de 0xED00 a 0x3800
 C 0xA577 sube el paso del objeto
+C 0xA57B lanza_objeto_18: un objeto de clase 0x18 en (0xF0, 0xF0)
+C 0xA584 guarda el paso comun de la escena de accion
 C 0xA587 sube el paso del objeto
+C 0xA58B lee el paso comun de la escena de accion
+C 0xA595 apunta a los 7 objetos lanzados (0x20 bytes cada uno)
 C 0xA59A lee la clase del objeto (tabla p10:8CCD; 0: libre)
 C 0xA59E borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xA5B1 texto_y_9_10_11: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E); vuelve con 9-10-11
 C 0xA5B4 lee el texto en marcha
 C 0xA5B9 lee la espera del texto (1 tecla, 2 tecla y fin)
 C 0xA5BE borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0xA5C1 lanza_objeto_19: un objeto de clase 0x19 en (0x60, 0xF0)
 C 0xA5C4 sube el paso del objeto
+C 0xA5C8 lee el paso comun de la escena de accion
 C 0xA5CE sube el paso del objeto
 C 0xA5D1 sonido_5a: pide el sonido 0x5A
 C 0xA5D5 destello: el color del borde alterna 0x0F y 0x00 (VDP R#7)
 C 0xA5DA texto_y_9_10_11: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E); vuelve con 9-10-11
 C 0xA5DD lee el texto en marcha
 C 0xA5E2 sube el paso del objeto
-C 0xA5E5 la posicion del dibujo del objeto (alto) = 0x3C
+C 0xA5E5 la variable 0x1F del objeto (en los jefes, donde va su dibujo) = 0x3C
 C 0xA5EA destello: el color del borde alterna 0x0F y 0x00 (VDP R#7)
-C 0xA5ED baja la posicion del dibujo del objeto (alto)
+C 0xA5ED baja la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0xA5F1 borde_negro: el color del borde a 0xE0
+C 0xA5F6 guarda el paso comun de la escena de accion
 C 0xA5F9 apunta a los nombres de la pantalla (32 x 24)
 C 0xA606 vuelca_nombres_sin_ventana: 0x1E0 de 0xED00 a 0x3800
 C 0xA609 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
@@ -267,8 +386,10 @@ C 0xA60C sube el paso del objeto
 C 0xA610 lee la cuenta de cuadros
 C 0xA61B color_de_borde: VDP R#7 = B
 C 0xA61E sprites_que_bajan: los 5 sprites de 0xF060 bajan uno; NZ si queda alguno
+C 0xA622 lee el paso comun de la escena de accion
 C 0xA628 esconde_cinco_sprites: los 5 sprites de 0xF060 escondidos
 C 0xA62E guarda el tipo del personaje de enfrente
+C 0xA631 apunta a el rival de la escena (objeto 0, 0x20 bytes)
 C 0xA634 guarda la ficha del personaje de enfrente
 C 0xA639 guarda el modo dentro de la sala (tabla p00:5A83)
 C 0xA63D guarda el actor de enfrente (0xFF: ninguno)
@@ -306,8 +427,11 @@ C 0xA6F3 lee la X del objeto
 C 0xA6F9 la X del objeto = 0x88
 C 0xA6FD sube el paso del objeto
 C 0xA700 sonido_44: pide el sonido 0x44
+C 0xA704 lee el paso del rival
 C 0xA70E el fotograma del objeto = 0x1C
 C 0xA713 el fotograma del objeto = 0x1A
+C 0xA718 lee los choques de la escena estan en marcha
+C 0xA71D apunta a el rival de la escena (objeto 0, 0x20 bytes)
 C 0xA724 lee la clase del objeto (tabla p10:8CCD; 0: libre)
 C 0xA72A mira el bit 0 de los choques del objeto (bit 0 con el personaje, bit 1 con los proyectiles)
 C 0xA72E choque_con_el_personaje: si el objeto toca al personaje (medidas p11:A7ED): su rutina (p11:A785); tras un golpe, 0x40 o 0x20 cuadros sin dano
@@ -330,8 +454,10 @@ C 0xA7CD sonido_23: pide el sonido 0x23
 C 0xA7D0 lee el objeto 10 (bit 0: se lleva)
 C 0xA7DD apunta a la vida en la escena de accion
 C 0xA7E5 sonido_23: pide el sonido 0x23
+C 0xA819 apunta a los 3 proyectiles (16 bytes cada uno)
 C 0xA822 choque_con_un_proyectil: si el proyectil DE toca al objeto (medidas p11:A96F): su rutina (p11:A867)
 C 0xA828 de_mas_a: DE = DE + A
+C 0xA82F guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xA833 lee la clase del objeto (tabla p10:8CCD; 0: libre)
 C 0xA83B hl_mas_a: HL = HL + A
 C 0xA843 de_mas_a: DE = DE + A
@@ -341,29 +467,33 @@ C 0xA860 lee la clase del objeto (tabla p10:8CCD; 0: libre)
 C 0xA864 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xA893 sonido_12: pide el sonido 0x12
 C 0xA897 sonido_12: pide el sonido 0x12
+C 0xA89A lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xA8A0 el paso del objeto = 0x04
 C 0xA8A4 baja la vida del objeto
 C 0xA8A8 el paso del objeto = 0x05
 C 0xA8AE guarda la espera del estado, en cuadros
 C 0xA8B1 sonido_53: pide el sonido 0x53
 C 0xA8B5 sonido_12: pide el sonido 0x12
+C 0xA8B8 lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xA8BE baja la vida del objeto
 C 0xA8C2 el paso del objeto = 0x02
 C 0xA8C8 guarda la espera del estado, en cuadros
 C 0xA8CB sonido_53: pide el sonido 0x53
 C 0xA8CF sonido_12: pide el sonido 0x12
-C 0xA8D8 sube la segunda cuenta del objeto
-C 0xA8DB lee la segunda cuenta del objeto
+C 0xA8D2 lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0xA8D8 sube la variable 0x1C del objeto (cada clase la usa a su manera)
+C 0xA8DB lee la variable 0x1C del objeto (cada clase la usa a su manera)
 C 0xA8E0 baja la vida del objeto
 C 0xA8E4 el paso del objeto = 0x04
 C 0xA8EA guarda la espera del estado, en cuadros
 C 0xA8ED sonido_53: pide el sonido 0x53
 C 0xA8F1 sonido_12: pide el sonido 0x12
 C 0xA8F5 sonido_12: pide el sonido 0x12
+C 0xA8F8 lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xA8FE lee la Y del objeto
 C 0xA90D le resta la Y del objeto
 C 0xA91C guarda la cuenta del objeto
-C 0xA91F guarda la accion del objeto
+C 0xA91F guarda la variable 0x1D del objeto (en los jefes, la accion)
 C 0xA922 guarda la velocidad Y del objeto
 C 0xA925 guarda la velocidad Y del objeto (alta)
 C 0xA928 la velocidad X del objeto = 0x00
@@ -373,13 +503,15 @@ C 0xA934 el paso del objeto = 0x02
 C 0xA93A guarda la espera del estado, en cuadros
 C 0xA93D sonido_53: pide el sonido 0x53
 C 0xA941 sonido_12: pide el sonido 0x12
-C 0xA94A sube la segunda cuenta del objeto
-C 0xA94D lee la segunda cuenta del objeto
+C 0xA944 lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0xA94A sube la variable 0x1C del objeto (cada clase la usa a su manera)
+C 0xA94D lee la variable 0x1C del objeto (cada clase la usa a su manera)
 C 0xA952 baja la vida del objeto
 C 0xA956 el paso del objeto = 0x02
 C 0xA95C guarda la espera del estado, en cuadros
 C 0xA95F sonido_53: pide el sonido 0x53
 C 0xA963 sonido_12: pide el sonido 0x12
+C 0xA967 lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xA99B lee tocado en la escena de accion (parpadea)
 C 0xA9A2 lanza_objetos_de_la_escena: la rutina de la escena 0xE3A1 - 2 (tabla p11:A9B1)
 C 0xA9A8 lee la escena de accion (1-9)
@@ -390,26 +522,40 @@ C 0xA9CD lee la X del objeto
 C 0xA9D3 crea_objeto: un objeto de clase C en (E, D) en el primer hueco de los 7 de 0xEA20; acarreo si lo crea
 C 0xA9DA crea_objeto: un objeto de clase C en (E, D) en el primer hueco de los 7 de 0xEA20; acarreo si lo crea
 C 0xA9E0 crea_objeto: un objeto de clase C en (E, D) en el primer hueco de los 7 de 0xEA20; acarreo si lo crea
+C 0xA9E4 apunta a la cuenta de lanzamientos de la escena
+C 0xA9E9 lee los 7 objetos lanzados (0x20 bytes cada uno)
 C 0xAA11 de_mas_a: DE = DE + A
+C 0xAA18 apunta a los 7 objetos lanzados (0x20 bytes cada uno)
 C 0xAA1C la clase del objeto (tabla p10:8CCD; 0: libre) = 0x0B
 C 0xAA20 el paso del objeto = 0x00
 C 0xAA24 la Y del objeto (fraccion) = 0x00
 C 0xAA28 guarda la Y del objeto
 C 0xAA2B la X del objeto (fraccion) = 0x00
 C 0xAA2F guarda la X del objeto
-C 0xAA32 guarda la posicion del dibujo del objeto (alto)
+C 0xAA32 guarda la variable 0x1F del objeto (en los jefes, donde va su dibujo)
+C 0xAA42 lanza_objeto_11: si no hay proyectil ni objeto en 0xEA60, crea alli uno de clase 0x11
+C 0xAA45 apunta a la cuenta de lanzamientos de la escena
+C 0xAA5C apunta a los 7 objetos lanzados (0x20 bytes cada uno)
 C 0xAA62 crea_objeto_en: como p11:AB76 desde IX y B huecos
+C 0xAA65 lee los 3 proyectiles (16 bytes cada uno)
 C 0xAA7C crea_objeto_en: como p11:AB76 desde IX y B huecos
+C 0xAA7F apunta a la cuenta de lanzamientos de la escena
+C 0xAA96 apunta a los 7 objetos lanzados (0x20 bytes cada uno)
 C 0xAA9C crea_objeto_en: como p11:AB76 desde IX y B huecos
 C 0xAACE crea_objeto: un objeto de clase C en (E, D) en el primer hueco de los 7 de 0xEA20; acarreo si lo crea
+C 0xAAD9 lanza_objeto_0f: un objeto de clase 0x0F en (0x40, 0x78)
 C 0xAAE5 crea_objeto: un objeto de clase C en (E, D) en el primer hueco de los 7 de 0xEA20; acarreo si lo crea
 C 0xAAEF crea_objeto: un objeto de clase C en (E, D) en el primer hueco de los 7 de 0xEA20; acarreo si lo crea
 C 0xAAFC crea_objeto: un objeto de clase C en (E, D) en el primer hueco de los 7 de 0xEA20; acarreo si lo crea
 C 0xAB09 crea_objeto: un objeto de clase C en (E, D) en el primer hueco de los 7 de 0xEA20; acarreo si lo crea
+C 0xAB13 apunta a los sprites de los proyectiles (desde el 24)
 C 0xAB16 crea_objeto: un objeto de clase C en (E, D) en el primer hueco de los 7 de 0xEA20; acarreo si lo crea
+C 0xAB1C lanza_objeto_0a: cada 64 cuadros, sonido y un objeto de clase 0x0A en 0xEA80
 C 0xAB27 aleatorio: A = el registro R revuelto con la cuenta de cuadros
 C 0xAB37 bit_de_columna: A = 1 << (X / 16 - 3)
+C 0xAB47 apunta a los 7 objetos lanzados (0x20 bytes cada uno)
 C 0xAB65 sonido_0e: pide el sonido 0x0E
+C 0xAB77 apunta a los 7 objetos lanzados (0x20 bytes cada uno)
 C 0xAB7D lee la clase del objeto (tabla p10:8CCD; 0: libre)
 C 0xAB84 guarda el paso del objeto
 C 0xAB87 guarda la clase del objeto (tabla p10:8CCD; 0: libre)
@@ -445,6 +591,11 @@ C 0xABF3 guarda la velocidad Y del objeto (alta)
 C 0xABF6 guarda la velocidad Y del objeto
 C 0xABFA guarda la velocidad X del objeto (alta)
 C 0xABFD guarda la velocidad X del objeto
+C 0xAC01 vx_del_objeto_a_cero: la velocidad X a cero
+C 0xAC1C lee el rival de la escena (objeto 0, 0x20 bytes)
+C 0xAC26 lee el paso del rival
+C 0xAC2C apunta a los 7 objetos lanzados (0x20 bytes cada uno)
+C 0xAC30 apunta a los sprites de los actores (desde el 8)
 C 0xAC39 lee la clase del objeto (tabla p10:8CCD; 0: libre)
 C 0xAC3F lee si el objeto no lleva sprites (bit 0)
 C 0xAC43 sprites_de_un_objeto: las piezas del fotograma (ix+0x0A): [n] y n x [dy][dx][patron][color]
@@ -452,6 +603,7 @@ C 0xAC5A lee el fotograma del objeto
 C 0xAC61 hl_mas_a: HL = HL + A
 C 0xAC6C le suma la Y del objeto
 C 0xAC73 le suma la X del objeto
+C 0xAD9B objeto_en_fichas_pasos: los pasos del objeto en fichas: aparece, cuenta y cae
 C 0xAD9E lee la clase del objeto (tabla p10:8CCD; 0: libre)
 C 0xADA3 lee la Y del objeto
 C 0xADA6 lee la X del objeto
@@ -463,7 +615,7 @@ C 0xADCC escribe_en_vram: SETWRT en HL y C' = el puerto de datos del VDP
 C 0xADE0 lee el paso del objeto
 C 0xADE9 lee la X del objeto
 C 0xADEC bit_de_columna: A = 1 << (X / 16 - 3)
-C 0xADEF guarda la segunda cuenta del objeto
+C 0xADEF guarda la variable 0x1C del objeto (cada clase la usa a su manera)
 C 0xADFB guarda el fotograma del objeto
 C 0xADFE guarda la cuenta del objeto
 C 0xAE02 guarda el paso del objeto
@@ -479,7 +631,7 @@ C 0xAE3B lee la cuenta de cuadros
 C 0xAE41 lee la Y del objeto
 C 0xAE46 guarda la Y del objeto
 C 0xAE50 borra_objeto: los 0x20 bytes de la ficha IX a cero
-C 0xAE53 lee la segunda cuenta del objeto
+C 0xAE53 lee la variable 0x1C del objeto (cada clase la usa a su manera)
 C 0xAE5E lee la Y del objeto
 C 0xAE61 lee la X del objeto
 C 0xAE64 mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
@@ -493,7 +645,7 @@ C 0xAE8C guarda la vida del objeto
 C 0xAE92 los choques del objeto (bit 0 con el personaje, bit 1 con los proyectiles) = 0x03
 C 0xAE96 si el objeto no lleva sprites (bit 0) = 0x00
 C 0xAE9A aleatorio: A = el registro R revuelto con la cuenta de cuadros
-C 0xAEA9 guarda la segunda cuenta del objeto
+C 0xAEA9 guarda la variable 0x1C del objeto (cada clase la usa a su manera)
 C 0xAEAC guarda la cuenta del objeto
 C 0xAEB1 vy_del_objeto: velocidad Y = DE
 C 0xAEB4 lee la cuenta de cuadros
@@ -504,7 +656,7 @@ C 0xAEC7 guarda la X del objeto
 C 0xAECC borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xAECF lee la velocidad Y del objeto (alta)
 C 0xAED2 lee la velocidad Y del objeto
-C 0xAED7 lee la segunda cuenta del objeto
+C 0xAED7 lee la variable 0x1C del objeto (cada clase la usa a su manera)
 C 0xAEDB guarda la velocidad Y del objeto (alta)
 C 0xAEDE guarda la velocidad Y del objeto
 C 0xAEE1 objeto_avanza_y: (ix+6/7) += (ix+2/3)
@@ -529,9 +681,10 @@ C 0xAF4E guarda la velocidad Y del objeto
 C 0xAF51 guarda la velocidad Y del objeto (alta)
 C 0xAF57 guarda la velocidad X del objeto
 C 0xAF5A guarda la velocidad X del objeto (alta)
-C 0xAF5D lee la posicion del dibujo del objeto (alto)
+C 0xAF5D lee la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0xAF74 sonido_0b: pide el sonido 0x0B
 C 0xAF7A apunta a la espera del estado, en cuadros
+C 0xAF7F fotograma_parpadeo_12: fotograma 0x12 o 0x13 segun el bit 1 de A
 C 0xAF82 lee la Y del objeto (fraccion)
 C 0xAF85 lee la Y del objeto
 C 0xAF88 lee la velocidad Y del objeto
@@ -552,7 +705,7 @@ C 0xAFC7 lee el paso del objeto
 C 0xAFCA despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xAFDD sube el paso del objeto
 C 0xAFE1 apunta a la cuenta de cuadros
-C 0xAFEB guarda la posicion del dibujo del objeto (alto)
+C 0xAFEB guarda la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0xAFF0 velocidad_por_angulo: DE = p09:60AC[A] * B y HL = p09:60A4[A] * B
 C 0xAFF3 guarda la velocidad Y del objeto
 C 0xAFF6 guarda la velocidad Y del objeto (alta)
@@ -562,12 +715,14 @@ C 0xAFFF el fotograma del objeto = 0x02
 C 0xB003 la vida del objeto = 0x01
 C 0xB00B los choques del objeto (bit 0 con el personaje, bit 1 con los proyectiles) = 0x01
 C 0xB00F si el objeto no lleva sprites (bit 0) = 0x00
-C 0xB013 la posicion del dibujo del objeto (bajo) = 0x00
+C 0xB013 la variable 0x1E del objeto (en los jefes, donde va su dibujo) = 0x00
 C 0xB019 guarda la espera del estado, en cuadros
 C 0xB01E apunta a la espera del estado, en cuadros
 C 0xB038 guarda el fotograma del objeto
 C 0xB03C sonido_0d: pide el sonido 0x0D
+C 0xB03F objeto_siguiente_paso: (ix+1) + 1
 C 0xB042 apunta a la espera del estado, en cuadros
+C 0xB047 fotograma_parpadeo_4: fotograma 4 o 5 segun el bit 3 de A
 C 0xB04A lee la Y del objeto (fraccion)
 C 0xB04D lee la Y del objeto
 C 0xB050 lee la velocidad Y del objeto
@@ -586,44 +741,54 @@ C 0xB080 compara con la X del objeto
 C 0xB087 compara con la X del objeto
 C 0xB08B guarda la X del objeto
 C 0xB090 guarda la Y del objeto
-C 0xB093 lee la posicion del dibujo del objeto (alto)
+C 0xB093 lee la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0xB099 hl_mas_a: HL = HL + A
 C 0xB09D le suma el paso del objeto
 C 0xB0A0 guarda el paso del objeto
+C 0xB0A3 objeto_siguiente_paso: (ix+1) + 1
 C 0xB0B6 apunta a la espera del estado, en cuadros
+C 0xB0BB fotograma_parpadeo_4: fotograma 4 o 5 segun el bit 3 de A
 C 0xB0BE lee la Y del objeto
 C 0xB0C3 guarda la Y del objeto
 C 0xB0C9 la Y del objeto = 0x08
-C 0xB0CD sube la posicion del dibujo del objeto (bajo)
-C 0xB0D0 lee la posicion del dibujo del objeto (bajo)
+C 0xB0CD sube la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0xB0D0 lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
 C 0xB0D7 el paso del objeto = 0x07
 C 0xB0DC lee la X del objeto
+C 0xB0E1 objeto_siguiente_paso: (ix+1) + 1
+C 0xB0E4 objeto_siguiente_paso: (ix+1) + 1
+C 0xB0E7 objeto_siguiente_paso: (ix+1) + 1
 C 0xB0EA apunta a la espera del estado, en cuadros
+C 0xB0EF fotograma_parpadeo_4: fotograma 4 o 5 segun el bit 3 de A
 C 0xB0F2 lee la Y del objeto
 C 0xB0F7 guarda la Y del objeto
 C 0xB0FD la Y del objeto = 0x68
-C 0xB101 sube la posicion del dibujo del objeto (bajo)
-C 0xB104 lee la posicion del dibujo del objeto (bajo)
+C 0xB101 sube la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0xB104 lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
 C 0xB10B el paso del objeto = 0x07
 C 0xB110 lee la X del objeto
+C 0xB115 objeto_siguiente_paso: (ix+1) + 1
+C 0xB118 objeto_siguiente_paso: (ix+1) + 1
 C 0xB11B apunta a la espera del estado, en cuadros
+C 0xB120 fotograma_parpadeo_4: fotograma 4 o 5 segun el bit 3 de A
 C 0xB123 lee la X del objeto
 C 0xB128 guarda la X del objeto
 C 0xB12B lee la X del objeto
 C 0xB131 la X del objeto = 0x20
-C 0xB135 sube la posicion del dibujo del objeto (bajo)
-C 0xB138 lee la posicion del dibujo del objeto (bajo)
+C 0xB135 sube la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0xB138 lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
 C 0xB13F el paso del objeto = 0x07
 C 0xB144 lee la Y del objeto
 C 0xB14B baja el paso del objeto
 C 0xB14E baja el paso del objeto
 C 0xB152 apunta a la espera del estado, en cuadros
+C 0xB157 fotograma_parpadeo_4: fotograma 4 o 5 segun el bit 3 de A
 C 0xB15A lee la X del objeto
 C 0xB15F guarda la X del objeto
 C 0xB162 lee la X del objeto
 C 0xB168 la X del objeto = 0xD0
-C 0xB16C sube la posicion del dibujo del objeto (bajo)
-C 0xB16F lee la posicion del dibujo del objeto (bajo)
+C 0xB16C sube la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0xB16F lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
 C 0xB176 el paso del objeto = 0x07
 C 0xB17B lee la Y del objeto
 C 0xB182 baja el paso del objeto
@@ -654,17 +819,18 @@ C 0xB1F5 lee la X del personaje en la escena de accion
 C 0xB1F8 guarda la X del objeto
 C 0xB1FB el fotograma del objeto = 0x07
 C 0xB207 sube el paso del objeto
-C 0xB210 la segunda cuenta del objeto = 0x10
+C 0xB210 la variable 0x1C del objeto (cada clase la usa a su manera) = 0x10
 C 0xB214 el fotograma del objeto = 0x08
 C 0xB218 sube el paso del objeto
 C 0xB21B sonido_17: pide el sonido 0x17
-C 0xB21F baja la segunda cuenta del objeto
+C 0xB21F baja la variable 0x1C del objeto (cada clase la usa a su manera)
 C 0xB223 borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xB226 lee el paso del objeto
 C 0xB22C lee el paso del objeto
+C 0xB233 mira_los_proyectiles: dos proyectiles desde 0xEC39
 C 0xB236 lee la cuenta de cuadros
-C 0xB23D lee la segunda cuenta del objeto
-C 0xB243 guarda la segunda cuenta del objeto
+C 0xB23D lee la variable 0x1C del objeto (cada clase la usa a su manera)
+C 0xB243 guarda la variable 0x1C del objeto (cada clase la usa a su manera)
 C 0xB249 hl_mas_a: HL = HL + A
 C 0xB24D guarda el fotograma del objeto
 C 0xB250 lee el paso del objeto
@@ -674,12 +840,13 @@ C 0xB273 el fotograma del objeto = 0x09
 C 0xB277 guarda la vida del objeto
 C 0xB27D los choques del objeto (bit 0 con el personaje, bit 1 con los proyectiles) = 0x00
 C 0xB281 si el objeto no lleva sprites (bit 0) = 0x00
-C 0xB285 la segunda cuenta del objeto = 0x00
+C 0xB285 la variable 0x1C del objeto (cada clase la usa a su manera) = 0x00
 C 0xB28C vy_del_objeto: velocidad Y = DE
 C 0xB28F lee la Y del objeto
 C 0xB294 objeto_avanza_y: (ix+6/7) += (ix+2/3)
 C 0xB297 la Y del objeto = 0x50
 C 0xB2A6 vx_del_objeto: velocidad X = DE
+C 0xB2A9 vy_del_objeto_a_cero: la velocidad Y a cero
 C 0xB2AC sube el paso del objeto
 C 0xB2B0 lee la velocidad X del objeto (alta)
 C 0xB2B4 lee la X del objeto
@@ -727,34 +894,40 @@ C 0xB380 guarda la X del objeto
 C 0xB383 la X del objeto (fraccion) = 0x00
 C 0xB38A vy_del_objeto: velocidad Y = DE
 C 0xB38D sube el paso del objeto
+C 0xB391 cerca_del_personaje: si esta abajo, mira la distancia en X al personaje
 C 0xB397 lee la Y del objeto
 C 0xB39C objeto_avanza_y: (ix+6/7) += (ix+2/3)
 C 0xB39F borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xB3A2 lee la Y del objeto
 C 0xB3A7 borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xB3AA objeto_avanza_y: (ix+6/7) += (ix+2/3)
+C 0xB3AD cerca_del_personaje: si esta abajo, mira la distancia en X al personaje
 C 0xB3B1 sonido_1d: pide el sonido 0x1D
-C 0xB3B4 lee la posicion del dibujo del objeto (bajo)
+C 0xB3B4 lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0xB3BD lee las bolas que quedan en la escena
 C 0xB3C2 borra_objeto: los 0x20 bytes de la ficha IX a cero
+C 0xB3C5 apunta a las bolas que quedan en la escena
 C 0xB3CE borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xB3D8 borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xB3E0 borra_objeto: los 0x20 bytes de la ficha IX a cero
-C 0xB3E3 baja la accion del objeto
+C 0xB3E3 baja la variable 0x1D del objeto (en los jefes, la accion)
 C 0xB3E6 borra_objeto: los 0x20 bytes de la ficha IX a cero
-C 0xB3E9 lee la accion del objeto
+C 0xB3E9 lee la variable 0x1D del objeto (en los jefes, la accion)
 C 0xB3F3 guarda el fotograma del objeto
 C 0xB3F7 lee la Y del objeto
 C 0xB3FD lee la X del personaje en la escena de accion
 C 0xB400 le resta la X del objeto
+C 0xB411 distancia_y: A = la distancia en Y entre (HL) y el objeto
+C 0xB41E lee las bolas que quedan en la escena
 C 0xB42F hl_mas_a: HL = HL + A
-C 0xB436 guarda la posicion del dibujo del objeto (bajo)
+C 0xB436 guarda la variable 0x1E del objeto (en los jefes, donde va su dibujo)
 C 0xB443 guarda el fotograma del objeto
 C 0xB446 el paso del objeto = 0x08
 C 0xB44D vy_del_objeto: velocidad Y = DE
 C 0xB450 sonido_1c: pide el sonido 0x1C
 C 0xB453 el paso del objeto = 0x09
 C 0xB457 el fotograma del objeto = 0x20
-C 0xB45B la accion del objeto = 0x40
+C 0xB45B la variable 0x1D del objeto (en los jefes, la accion) = 0x40
 C 0xB461 le resta la Y del objeto
 C 0xB46E le resta la X del objeto
 C 0xB488 lee el paso del objeto
@@ -799,9 +972,11 @@ C 0xB556 si el objeto no lleva sprites (bit 0) = 0x00
 C 0xB55A aleatorio: A = el registro R revuelto con la cuenta de cuadros
 C 0xB56E velocidades_del_objeto: velocidad X = DE y velocidad Y = HL
 C 0xB573 guarda la cuenta del objeto
+C 0xB577 alterna_fotograma: cada 4 cuadros, el fotograma XOR 1
 C 0xB57A lee la X del objeto
 C 0xB57F objeto_avanza_xy: X y luego Y con su velocidad
 C 0xB582 sube el paso del objeto
+C 0xB586 alterna_fotograma: cada 4 cuadros, el fotograma XOR 1
 C 0xB589 lee la X del objeto
 C 0xB58E borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xB591 lee la velocidad Y del objeto (alta)
@@ -817,18 +992,22 @@ C 0xB5B1 guarda la X del objeto
 C 0xB5B5 lee la cuenta de cuadros
 C 0xB5BB lee el fotograma del objeto
 C 0xB5C0 guarda el fotograma del objeto
+C 0xB5C4 lee el paso del rival
 C 0xB5CA lee el paso del objeto
 C 0xB5CD despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xB5DC sube el paso del objeto
 C 0xB5DF el fotograma del objeto = 0x16
-C 0xB5E4 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xB5E4 lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 C 0xB5EB lee las teclas que hay
+C 0xB5F3 ficha_bajo_el_objeto: A = la ficha del bloque en el centro del objeto
 C 0xB5FB sube el paso del objeto
 C 0xB5FF lee la X del objeto
 C 0xB605 lee la Y del objeto
 C 0xB60B mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
-C 0xB610 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
-C 0xB618 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xB610 lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
+C 0xB615 paso_x_1: H = +16 o -16 segun el bit 0 de A
+C 0xB618 lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
+C 0xB61D paso_x_4: H = +16 o -16 segun el bit 2 de A
 C 0xB629 lee la Y del objeto
 C 0xB633 guarda la Y del objeto
 C 0xB636 sonido_47: pide el sonido 0x47
@@ -836,13 +1015,17 @@ C 0xB642 lee la X del objeto
 C 0xB64C guarda la X del objeto
 C 0xB64F sonido_47: pide el sonido 0x47
 C 0xB653 lee las teclas que hay
-C 0xB65A lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xB65A lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
+C 0xB660 ficha_bajo_el_objeto: A = la ficha del bloque en el centro del objeto
+C 0xB669 apunta a las piezas del jefe o la fila de fichas que entra
 C 0xB66C hl_mas_a: HL = HL + A
+C 0xB674 objeto_con_cursores: con los cursores, la velocidad del objeto de p11:B6CE y p11:B6DE
 C 0xB681 sonido_48: pide el sonido 0x48
 C 0xB68C baja el paso del objeto
-C 0xB690 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xB690 lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 C 0xB698 hl_mas_a: HL = HL + A
 C 0xB69F guarda la velocidad Y del objeto (alta)
+C 0xB6A2 velocidad_de_tabla: DE = la velocidad de p11:B6DE
 C 0xB6AE lee la clase del objeto (tabla p10:8CCD; 0: libre)
 C 0xB6B1 lee el paso del objeto
 C 0xB6BF lee la velocidad Y del objeto
@@ -854,6 +1037,7 @@ C 0xB74C guarda la X del objeto
 C 0xB74F lee la Y del objeto
 C 0xB753 guarda la Y del objeto
 C 0xB75D palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0xB766 apunta a las piezas del jefe o la fila de fichas que entra
 C 0xB769 hl_mas_a: HL = HL + A
 C 0xB798 el paso del objeto = 0x00
 C 0xB79D lee el paso del objeto
@@ -863,36 +1047,43 @@ C 0xB7B3 sube el paso del objeto
 C 0xB7BA apunta a los nombres de la pantalla (32 x 24)
 C 0xB7C8 guarda la X del objeto
 C 0xB7D3 guarda la Y del objeto
+C 0xB7D6 lee el paso del rival
 C 0xB7DC sonido_14: pide el sonido 0x14
 C 0xB7DF sube el paso del objeto
 C 0xB7E3 sube la Y del objeto
 C 0xB7E6 lee la Y del objeto
 C 0xB7EC sube el paso del objeto
+C 0xB7F0 fotograma_parpadeo_18: fotograma 0x18 o 0x19 cada 4 cuadros
 C 0xB7F3 sube la X del objeto
 C 0xB7F6 lee la X del objeto
 C 0xB7FC sube el paso del objeto
 C 0xB800 lee la cuenta de cuadros
 C 0xB80A guarda el fotograma del objeto
+C 0xB80E lee el paso del rival
 C 0xB814 sube el paso del objeto
+C 0xB818 fotograma_parpadeo_18: fotograma 0x18 o 0x19 cada 4 cuadros
 C 0xB81B sube la X del objeto
 C 0xB81E lee la X del objeto
 C 0xB824 borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xB827 graficos_14_a: patrones y colores p14:A7EF-B37B y 0x1E0 nombres de p20:A84E
+C 0xB845 apunta a los 7 objetos lanzados (0x20 bytes cada uno)
 C 0xB849 borra_objeto: los 0x20 bytes de la ficha IX a cero
 C 0xB84E esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
-C 0xB872 lee la accion del objeto
+C 0xB872 lee la variable 0x1D del objeto (en los jefes, la accion)
 C 0xB879 texto_y_9_10_11: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E); vuelve con 9-10-11
 C 0xB87C lee el texto en marcha
-C 0xB884 OR con la accion del objeto
-C 0xB887 guarda la accion del objeto
-C 0xB890 lee la segunda cuenta del objeto
-C 0xB896 baja la segunda cuenta del objeto
+C 0xB884 OR con la variable 0x1D del objeto (en los jefes, la accion)
+C 0xB887 guarda la variable 0x1D del objeto (en los jefes, la accion)
+C 0xB88A parpadeo_de_sprites: cada 4 cuadros, el color de 20 sprites desde 0xF033
+C 0xB88D baja_sprites: cada (ix+0x1F) cuadros esconde los sprites de 0xF030 y avanza (ix+0x1E)
+C 0xB890 lee la variable 0x1C del objeto (cada clase la usa a su manera)
+C 0xB896 baja la variable 0x1C del objeto (cada clase la usa a su manera)
 C 0xB89A sonido_4f: pide el sonido 0x4F
-C 0xB89D lee la accion del objeto
+C 0xB89D lee la variable 0x1D del objeto (en los jefes, la accion)
 C 0xB8A6 lee la cuenta de cuadros
 C 0xB8B7 de_mas_a: DE = DE + A
-C 0xB8D5 OR con la accion del objeto
-C 0xB8D8 guarda la accion del objeto
+C 0xB8D5 OR con la variable 0x1D del objeto (en los jefes, la accion)
+C 0xB8D8 guarda la variable 0x1D del objeto (en los jefes, la accion)
 C 0xB8E1 guarda la lista del efecto
 C 0xB8F7 guarda el tipo del personaje de enfrente
 C 0xB8FB guarda el actor de enfrente (0xFF: ninguno)
@@ -903,14 +1094,25 @@ C 0xB90D guarda la lista de opciones del menu
 C 0xB916 lee la cuenta de cuadros
 C 0xB91C a_desaparece_por_tercios: con 12-13-14, p00:4C04 (efecto de borrar en tres pasos (0xE348) sobre la lista de 0xE34C); vuelve con 9-10-11
 C 0xB91F lee el efecto en marcha
+C 0xB92F zona_888_b: HL = 0x0888 y BC = 0x0470
 C 0xB936 sube el paso del objeto
+C 0xB940 zona_7f8: HL = 0x07F8
+C 0xB948 color_doble: 8 bytes de color E en los dos nibbles desde la VRAM HL
+C 0xB94B zona_888_c: HL = 0x0888 y BC = 0x0470
+C 0xB95A zona_7f8: HL = 0x07F8
+C 0xB962 color_doble: 8 bytes de color E en los dos nibbles desde la VRAM HL
+C 0xB965 zona_888_c: HL = 0x0888 y BC = 0x0470
+C 0xB974 zona_7f8: HL = 0x07F8
+C 0xB97C color_doble: 8 bytes de color E en los dos nibbles desde la VRAM HL
+C 0xB97F zona_888_c: HL = 0x0888 y BC = 0x0470
+C 0xB98D zona_888: HL = 0x0888 y BC = 0x0470
 C 0xB990 sonido_80: pide el sonido 0x80
 C 0xB993 sonido_55: pide el sonido 0x55
 C 0xB996 graficos_14_b: patrones y colores p14:B636-B924 y 0x100 nombres de p20:AA2E
 C 0xB99E texto_y_9_10_11: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E); vuelve con 9-10-11
 C 0xB9A1 lee el texto en marcha
 C 0xB9A6 apunta a las banderas de la historia, byte 0x30 (se graban con la partida)
-C 0xB9AB la posicion del dibujo del objeto (alto) = 0x40
+C 0xB9AB la variable 0x1F del objeto (en los jefes, donde va su dibujo) = 0x40
 C 0xB9B1 guarda el paso del menu (tabla p00:5231)
 C 0xB9B5 guarda el modo dentro de la sala (tabla p00:5A83)
 C 0xB9B9 guarda la lista de opciones del menu
@@ -919,22 +1121,22 @@ C 0xB9C3 graficos_14_c: patrones p14:B96F y colores p14:BA17 en el tercio centra
 C 0xB9D9 texto_y_9_10_11: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E); vuelve con 9-10-11
 C 0xB9DC lee el texto en marcha
 C 0xB9E1 lee la espera del texto (1 tecla, 2 tecla y fin)
-C 0xB9E6 la posicion del dibujo del objeto (alto) = 0x40
+C 0xB9E6 la variable 0x1F del objeto (en los jefes, donde va su dibujo) = 0x40
 C 0xB9EA sonido_3e: pide el sonido 0x3E
 C 0xB9F0 destello: el color del borde alterna 0x0F y 0x00 (VDP R#7)
-C 0xB9F3 baja la posicion del dibujo del objeto (alto)
+C 0xB9F3 baja la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0xB9F9 color_de_borde: VDP R#7 = B
 C 0xBA01 texto_y_9_10_11: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E); vuelve con 9-10-11
 C 0xBA04 lee el texto en marcha
 C 0xBA09 lee la espera del texto (1 tecla, 2 tecla y fin)
-C 0xBA0E la posicion del dibujo del objeto (alto) = 0x40
+C 0xBA0E la variable 0x1F del objeto (en los jefes, donde va su dibujo) = 0x40
 C 0xBA12 sonido_51: pide el sonido 0x51
 C 0xBA18 destello: el color del borde alterna 0x0F y 0x00 (VDP R#7)
-C 0xBA1B baja la posicion del dibujo del objeto (alto)
+C 0xBA1B baja la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0xBA21 color_de_borde: VDP R#7 = B
 C 0xBA26 guarda se acaba la partida
 C 0xBA2A destello: el color del borde alterna 0x0F y 0x00 (VDP R#7)
-C 0xBA2D baja la posicion del dibujo del objeto (alto)
+C 0xBA2D baja la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0xBA33 color_de_borde: VDP R#7 = B
 C 0xBA3B texto_y_9_10_11: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E); vuelve con 9-10-11
 C 0xBA3E lee el texto en marcha
@@ -942,17 +1144,21 @@ C 0xBA43 lee la espera del texto (1 tecla, 2 tecla y fin)
 C 0xBA49 guarda el dibujo de p12:733E que se ve (0: ninguno)
 C 0xBA4D guarda el modo dentro de la sala (tabla p00:5A83)
 C 0xBA52 guarda la sala de partida (indice de p01:67E3)
-C 0xBA56 lee la cuenta de cuadros
-C 0xBA71 baja la posicion del dibujo del objeto (alto)
-C 0xBA82 la posicion del dibujo del objeto (alto) = 0x10
-C 0xBA86 sube la posicion del dibujo del objeto (bajo)
-C 0xBA89 lee la posicion del dibujo del objeto (bajo)
+C 0xBA71 baja la variable 0x1F del objeto (en los jefes, donde va su dibujo)
+C 0xBA82 la variable 0x1F del objeto (en los jefes, donde va su dibujo) = 0x10
+C 0xBA86 sube la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0xBA89 lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
 C 0xBA97 sonido_52: pide el sonido 0x52
 C 0xBA9E hl_mas_a: HL = HL + A
+C 0xBAA6 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xBAB2 hl_mas_a: HL = HL + A
+C 0xBAC1 lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0xBAC7 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xBC5D guarda las teclas que hay
+C 0xBC60 guarda el puntero del guion de la demo
 C 0xBC64 guarda en partida (bit 7: la demo acaba)
 C 0xBC68 guarda la sala de partida (indice de p01:67E3)
+C 0xBC6E guarda la espera del guion de la demo y el byte siguiente (16 bits)
 C 0xBC71 lee las banderas de la historia, byte 0x18 (se graban con la partida)
 C 0xBC76 guarda las banderas de la historia, byte 0x18 (se graban con la partida)
 C 0xBC79 borra_nombres: borra los nombres 0xED00 (0x300) y los vuelca
@@ -961,16 +1167,25 @@ C 0xBC82 guarda la Y del personaje y el byte siguiente (16 bits)
 C 0xBC86 demo_guion: el guion p11:BD12: anda hacia cada [Y X] pulsando la tecla, 0xFE n espera, 0xFF acaba; NZ mientras sigue
 C 0xBC8A sonido_85: pide el sonido 0x85
 C 0xBC8E guarda en partida (bit 7: la demo acaba)
+C 0xBC92 apunta a la espera del guion de la demo
 C 0xBC9F demo_byte: A = el byte 0xE00B del guion
 C 0xBCA6 nibble_por_16: A = (A AND 0x0F) * 16
 C 0xBCA9 apunta a la Y del personaje
 C 0xBCAF demo_byte: A = el byte 0xE00B del guion
 C 0xBCB2 nibble_por_16: A = (A AND 0x0F) * 16
 C 0xBCB5 apunta a la X del personaje
+C 0xBCBB apunta a el puntero del guion de la demo
 C 0xBCC0 demo_byte_c: A = el byte C del guion
 C 0xBCC3 apunta a las teclas que hay
 C 0xBCC6 a_teclas_nuevas: con 1-2-3, p01:70BE (guarda A en (HL) y deja en (HL-1) lo que no estaba); vuelve con 9-10-11
 C 0xBCC9 a_cuadro_de_la_sala: con 1-2-3, p00:5A6E (un cuadro dentro de la sala: sprites, actores (p07:800A), musica y el modo 0xE360 (tabla p00:5A83)); vuelve con 9-10-11
 C 0xBCCF demo_byte: A = el byte 0xE00B del guion
+C 0xBCD2 demo_pulsa: la tecla de la demo como si se pulsara (p01:70BE)
+C 0xBCD5 apunta a el puntero del guion de la demo
+C 0xBCDA apunta a el puntero del guion de la demo
 C 0xBCDF demo_byte: A = el byte 0xE00B del guion
+C 0xBCEB guarda la espera del guion de la demo
+C 0xBCEE apunta a el puntero del guion de la demo
+C 0xBCF8 guarda la espera del guion de la demo
+C 0xBCFD apunta a el puntero del guion de la demo
 # --- fin de las anotaciones de anota.py ---

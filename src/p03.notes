@@ -1,5 +1,1455 @@
 # Notas del banco 03
 
+# --- A MANO: comentarios, nombres y bloques ---
+C 0xA000 A = la respuesta
+C 0xA001 compara la respuesta con la 0x05
+C 0xA005 la respuesta pasa a ser la 0x04
+C 0xA007 vuelve con la respuesta en C
+C 0xA008 la respuesta pasa a ser la 0x06
+C 0xA00A vuelve con la respuesta en C
+C 0xA00E mira la bandera 7 de la historia (0xEB62)
+C 0xA011 A = la respuesta
+C 0xA012 compara la respuesta con la 0x06
+C 0xA016 la respuesta pasa a ser la 0x07
+C 0xA018 vuelve con la respuesta en C
+C 0xA019 la respuesta pasa a ser la 0x03
+C 0xA01B vuelve con la respuesta en C
+C 0xA01F mira la bandera 6 de la historia (0xEB62)
+C 0xA023 A = la respuesta
+C 0xA024 compara la respuesta con la 0x06
+C 0xA026 vuelve si lo es
+C 0xA027 mira si es la respuesta 0x01
+C 0xA02A mira la bandera 5 de la historia (0xEB62)
+C 0xA02E la respuesta pasa a ser la 0x02
+C 0xA030 vuelve con la respuesta en C
+C 0xA033 vuelve con la respuesta en C
+C 0xA034 la respuesta pasa a ser la 0x08
+C 0xA036 vuelve con la respuesta en C
+C 0xA037 A = la respuesta
+C 0xA038 compara la respuesta con la 0x06
+C 0xA03C la respuesta pasa a ser la 0x07
+C 0xA03E vuelve con la respuesta en C
+C 0xA043 la respuesta pasa a ser la 0x04
+C 0xA045 vuelve con la respuesta en C
+C 0xA057 la respuesta pasa a ser la 0x05
+C 0xA059 vuelve con la respuesta en C
+C 0xA05E la respuesta pasa a ser la 0x09
+C 0xA060 vuelve con la respuesta en C
+C 0xA064 A = la respuesta
+C 0xA065 mira si es la respuesta 0
+C 0xA068 mira la bandera 2 de la historia (0xEB63)
+C 0xA06C la respuesta pasa a ser la 0x01
+C 0xA06E vuelve con la respuesta en C
+C 0xA075 vuelve con la respuesta en C
+C 0xA078 la respuesta pasa a ser la 0x01
+C 0xA080 vuelve con la respuesta en C
+C 0xA086 vuelve con la respuesta en C
+C 0xA08D vuelve con la respuesta en C
+C 0xA094 vuelve con la respuesta en C
+C 0xA09C vuelve con la respuesta en C
+C 0xA0A0 A = la respuesta
+C 0xA0A1 compara la respuesta con la 0x03
+C 0xA0A3 vuelve si no lo es
+C 0xA0A6 vuelve con la respuesta en C
+C 0xA0AA A = la respuesta
+C 0xA0AB mira si es la respuesta 0
+C 0xA0AE mira la bandera 7 de la historia (0xEB65)
+C 0xA0B2 pone la bandera 7 de la historia (0xEB65)
+C 0xA0B4 vuelve con la respuesta en C
+C 0xA0B5 la respuesta pasa a ser la 0x01
+C 0xA0B7 vuelve con la respuesta en C
+C 0xA0C0 la respuesta pasa a ser la 0x08
+C 0xA0C2 vuelve con la respuesta en C
+C 0xA0C5 vuelve con la respuesta en C
+C 0xA0CB vuelve con la respuesta en C
+C 0xA0CF A = la respuesta
+C 0xA0D0 compara la respuesta con la 0x03
+C 0xA0D4 mira la bandera 6 de la historia (0xEB65)
+C 0xA0D8 la respuesta pasa a ser la 0x07
+C 0xA0DA vuelve con la respuesta en C
+C 0xA0DD vuelve con la respuesta en C
+C 0xA0E6 la respuesta pasa a ser la 0x08
+C 0xA0E8 vuelve con la respuesta en C
+C 0xA0EE pone la bandera 0 de el objeto 9 (0xE9E2)
+C 0xA0F0 vuelve con la respuesta en C
+C 0xA0F9 la respuesta pasa a ser la 0x08
+C 0xA0FB vuelve con la respuesta en C
+C 0xA0FE vuelve con la respuesta en C
+C 0xA104 vuelve con la respuesta en C
+C 0xA108 mira la bandera 3 de la historia (0xEB7D)
+C 0xA10F mira la bandera 7 de la historia (0xEB66)
+C 0xA112 pone la bandera 6 de la historia (0xEB66)
+C 0xA114 la respuesta pasa a ser la 0x02
+C 0xA116 vuelve con la respuesta en C
+C 0xA117 la respuesta pasa a ser la 0x03
+C 0xA119 vuelve con la respuesta en C
+C 0xA11D A = la respuesta
+C 0xA11E mira si es la respuesta 0
+C 0xA121 mira la bandera 6 de la historia (0xEB67)
+C 0xA125 la respuesta pasa a ser la 0x0C
+C 0xA127 vuelve con la respuesta en C
+C 0xA12A vuelve con la respuesta en C
+C 0xA130 vuelve con la respuesta en C
+C 0xA131 A = la respuesta
+C 0xA132 compara la respuesta con la 0x05
+C 0xA138 vuelve si no lo es
+C 0xA139 la respuesta pasa a ser la 0x0D
+C 0xA13B vuelve con la respuesta en C
+C 0xA141 vuelve con la respuesta en C
+C 0xA145 A = la respuesta
+C 0xA146 compara la respuesta con la 0x08
+C 0xA148 vuelve si no lo es
+C 0xA149 mira la bandera 5 de la historia (0xEB67)
+C 0xA14D la respuesta pasa a ser la 0x0C
+C 0xA14F vuelve con la respuesta en C
+C 0xA152 vuelve con la respuesta en C
+C 0xA156 mira la bandera 7 de la historia (0xEB68)
+C 0xA15A A = la respuesta
+C 0xA15B compara la respuesta con la 0x03
+C 0xA15F la respuesta pasa a ser la 0x0F
+C 0xA161 vuelve con la respuesta en C
+C 0xA166 la respuesta pasa a ser la 0x10
+C 0xA168 vuelve con la respuesta en C
+C 0xA16F pone la bandera 3 de la historia (0xEB67)
+C 0xA171 vuelve con la respuesta en C
+C 0xA172 A = la respuesta
+C 0xA173 compara la respuesta con la 0x03
+C 0xA179 vuelve con la respuesta en C
+C 0xA180 vuelve con la respuesta en C
+C 0xA187 la respuesta pasa a ser la 0x08
+C 0xA18B vuelve con la respuesta en C
+C 0xA190 la respuesta pasa a ser la 0x07
+C 0xA194 vuelve con la respuesta en C
+C 0xA195 la respuesta pasa a ser la 0x06
+C 0xA199 vuelve con la respuesta en C
+C 0xA1A0 vuelve con la respuesta en C
+C 0xA1A4 la respuesta pasa a ser la 0x09
+C 0xA1A8 vuelve con la respuesta en C
+C 0xA1B3 la respuesta pasa a ser la 0x03
+C 0xA1B5 pone la bandera 3 de la historia (0xEB6A)
+C 0xA1B7 vuelve con la respuesta en C
+C 0xA1BC la respuesta pasa a ser la 0x02
+C 0xA1C0 vuelve con la respuesta en C
+C 0xA1C3 vuelve con la respuesta en C
+C 0xA1C7 mira la bandera 7 de la historia (0xEB69)
+C 0xA1CA la respuesta pasa a ser la 0x02
+C 0xA1CC vuelve con la respuesta en C
+C 0xA1D0 mira la bandera 7 de la historia (0xEB6B)
+C 0xA1D4 pone la bandera 7 de la historia (0xEB6B)
+C 0xA1D6 vuelve con la respuesta en C
+C 0xA1D9 la respuesta pasa a ser la 0x01
+C 0xA1DD vuelve con la respuesta en C
+C 0xA1E1 mira la bandera 7 de la historia (0xEB69)
+C 0xA1E4 A = la respuesta
+C 0xA1E5 mira si es la respuesta 0
+C 0xA1E6 vuelve si no lo es
+C 0xA1E7 la respuesta pasa a ser la 0x01
+C 0xA1E9 vuelve con la respuesta en C
+C 0xA1ED mira la bandera 7 de la historia (0xEB69)
+C 0xA1F0 la respuesta pasa a ser la 0x01
+C 0xA1F2 vuelve con la respuesta en C
+C 0xA1F6 mira la bandera 7 de la historia (0xEB6C)
+C 0xA1FA A = la respuesta
+C 0xA1FB mira si es la respuesta 0
+C 0xA1FE pone la bandera 6 de la historia (0xEB6C)
+C 0xA200 vuelve con la respuesta en C
+C 0xA208 la respuesta pasa a ser la 0x0E
+C 0xA20A vuelve con la respuesta en C
+C 0xA20B la respuesta pasa a ser la 0x0D
+C 0xA20D vuelve con la respuesta en C
+C 0xA211 mira la bandera 7 de la historia (0xEB6D)
+C 0xA215 A = la respuesta
+C 0xA216 compara la respuesta con la 0x01
+C 0xA21C vuelve con la respuesta en C
+C 0xA223 vuelve con la respuesta en C
+C 0xA22A vuelve con la respuesta en C
+C 0xA231 vuelve con la respuesta en C
+C 0xA238 vuelve con la respuesta en C
+C 0xA23B la respuesta pasa a ser la 0x02
+C 0xA23F vuelve con la respuesta en C
+C 0xA240 A = la respuesta
+C 0xA241 mira si es la respuesta 0
+C 0xA244 compara la respuesta con la 0x01
+C 0xA248 la respuesta pasa a ser la 0x0D
+C 0xA24A vuelve con la respuesta en C
+C 0xA24E la respuesta pasa a ser la 0x0E
+C 0xA250 vuelve con la respuesta en C
+C 0xA254 mira la bandera 6 de la historia (0xEB6D)
+C 0xA258 la respuesta pasa a ser la 0x07
+C 0xA25A vuelve con la respuesta en C
+C 0xA25F la respuesta pasa a ser la 0x07
+C 0xA262 la respuesta pasa a ser la 0x08
+C 0xA264 vuelve con la respuesta en C
+C 0xA268 A = la respuesta
+C 0xA269 mira si es la respuesta 0
+C 0xA26F mira la bandera 5 de la historia (0xEB6D)
+C 0xA273 la respuesta pasa a ser la 0x0D
+C 0xA27A vuelve con la respuesta en C
+C 0xA27F la respuesta pasa a ser la 0x09
+C 0xA281 vuelve con la respuesta en C
+C 0xA286 la respuesta pasa a ser la 0x08
+C 0xA28A vuelve con la respuesta en C
+C 0xA28D vuelve con la respuesta en C
+C 0xA294 vuelve con la respuesta en C
+C 0xA29B vuelve con la respuesta en C
+C 0xA2A2 vuelve con la respuesta en C
+C 0xA2AB la respuesta pasa a ser la 0x05
+C 0xA2AD vuelve con la respuesta en C
+C 0xA2B0 vuelve con la respuesta en C
+C 0xA2BF la respuesta pasa a ser la 0x07
+C 0xA2C6 pone la bandera 3 de la historia (0xEB5A)
+C 0xA2C8 vuelve con la respuesta en C
+C 0xA2CB vuelve con la respuesta en C
+C 0xA2CC A = la respuesta
+C 0xA2D2 pone la bandera 2 de la historia (0xEB6A)
+C 0xA2D4 vuelve con la respuesta en C
+C 0xA2D8 mira la bandera 6 de la historia (0xEB59)
+C 0xA2DF A = la respuesta
+C 0xA2E0 compara la respuesta con la 0x01
+C 0xA2E2 vuelve si no lo es
+C 0xA2E3 mira la bandera 6 de la historia (0xEB6F)
+C 0xA2E7 mira la bandera 5 de la historia (0xEB6F)
+C 0xA2EB la respuesta pasa a ser la 0x03
+C 0xA2ED vuelve con la respuesta en C
+C 0xA2F0 vuelve con la respuesta en C
+C 0xA2F3 la respuesta pasa a ser la 0x02
+C 0xA2F5 vuelve con la respuesta en C
+C 0xA2F9 mira la bandera 7 de la historia (0xEB70)
+C 0xA300 A = la respuesta
+C 0xA301 compara la respuesta con la 0x01
+C 0xA305 mira la bandera 3 de la historia (0xEB6F)
+C 0xA309 la respuesta pasa a ser la 0x09
+C 0xA30B pone la bandera 3 de la historia (0xEB6F)
+C 0xA30D vuelve con la respuesta en C
+C 0xA30E la respuesta pasa a ser la 0x0A
+C 0xA310 vuelve con la respuesta en C
+C 0xA31B la respuesta pasa a ser la 0x08
+C 0xA31F vuelve con la respuesta en C
+C 0xA328 la respuesta pasa a ser la 0x0E
+C 0xA32A vuelve con la respuesta en C
+C 0xA32D vuelve con la respuesta en C
+C 0xA333 vuelve con la respuesta en C
+C 0xA334 A = la respuesta
+C 0xA335 compara la respuesta con la 0x01
+C 0xA33D la respuesta pasa a ser la 0x0B
+C 0xA341 vuelve con la respuesta en C
+C 0xA342 la respuesta pasa a ser la 0x0D
+C 0xA344 vuelve con la respuesta en C
+C 0xA34F vuelve con la respuesta en C
+C 0xA353 la respuesta pasa a ser la 0x0E
+C 0xA355 vuelve con la respuesta en C
+C 0xA359 mira la bandera 6 de la historia (0xEB59)
+C 0xA35D A = la respuesta
+C 0xA35E compara la respuesta con la 0x0B
+C 0xA365 pone la bandera 0 de la historia (0xEB62)
+C 0xA367 la respuesta pasa a ser la 0x0F
+C 0xA369 vuelve con la respuesta en C
+C 0xA371 mira la bandera 0 de la historia (0xEB62)
+C 0xA374 la respuesta pasa a ser la 0x10
+C 0xA376 vuelve con la respuesta en C
+C 0xA377 la respuesta pasa a ser la 0x0E
+C 0xA379 vuelve con la respuesta en C
+C 0xA37A A = la respuesta
+C 0xA37B compara la respuesta con la 0x0D
+C 0xA37D vuelve si no lo es
+C 0xA38B la respuesta pasa a ser la 0x0D
+C 0xA392 vuelve con la respuesta en C
+C 0xA39D A = la respuesta
+C 0xA39E compara la respuesta con la 0x06
+C 0xA3A0 vuelve si no lo es
+C 0xA3A1 pone la bandera 7 de la historia (0xEB71)
+C 0xA3A3 vuelve con la respuesta en C
+C 0xA3A4 A = la respuesta
+C 0xA3A5 compara la respuesta con la 0x02
+C 0xA3A9 compara la respuesta con la 0x06
+C 0xA3B9 la respuesta pasa a ser la 0x0C
+C 0xA3BB vuelve con la respuesta en C
+C 0xA3C8 pone la bandera 7 de la historia (0xEB70)
+C 0xA3CA vuelve con la respuesta en C
+C 0xA3DC mira la bandera 7 de la historia (0xEB72)
+C 0xA3E0 pone la bandera 7 de la historia (0xEB72)
+C 0xA3E2 la respuesta pasa a ser la 0x02
+C 0xA3E4 vuelve con la respuesta en C
+C 0xA3E5 la respuesta pasa a ser la 0x03
+C 0xA3E7 vuelve con la respuesta en C
+C 0xA3F9 la respuesta pasa a ser la 0x01
+C 0xA3FB vuelve con la respuesta en C
+C 0xA3FF A = la respuesta
+C 0xA400 compara la respuesta con la 0x02
+C 0xA404 pone la bandera 6 de la historia (0xEB72)
+C 0xA406 vuelve con la respuesta en C
+C 0xA40F la respuesta pasa a ser la 0x0D
+C 0xA411 vuelve con la respuesta en C
+C 0xA414 vuelve con la respuesta en C
+C 0xA41A vuelve con la respuesta en C
+C 0xA41E A = la respuesta
+C 0xA41F compara la respuesta con la 0x05
+C 0xA423 pone la bandera 3 de la historia (0xEB72)
+C 0xA425 vuelve con la respuesta en C
+C 0xA42E la respuesta pasa a ser la 0x0D
+C 0xA430 vuelve con la respuesta en C
+C 0xA433 vuelve con la respuesta en C
+C 0xA43A vuelve con la respuesta en C
+C 0xA440 vuelve con la respuesta en C
+C 0xA444 A = la respuesta
+C 0xA445 compara la respuesta con la 0x09
+C 0xA449 pone la bandera 7 de la historia (0xEB73)
+C 0xA44B vuelve con la respuesta en C
+C 0xA454 la respuesta pasa a ser la 0x0D
+C 0xA456 vuelve con la respuesta en C
+C 0xA459 vuelve con la respuesta en C
+C 0xA45F vuelve con la respuesta en C
+C 0xA463 A = la respuesta
+C 0xA464 compara la respuesta con la 0x02
+C 0xA468 mira la bandera 7 de la historia (0xEB74)
+C 0xA46C pone la bandera 7 de la historia (0xEB74)
+C 0xA46E vuelve con la respuesta en C
+C 0xA473 la respuesta pasa a ser la 0x03
+C 0xA477 vuelve con la respuesta en C
+C 0xA47C la respuesta pasa a ser la 0x08
+C 0xA47E vuelve con la respuesta en C
+C 0xA47F la respuesta pasa a ser la 0x0A
+C 0xA481 vuelve con la respuesta en C
+C 0xA487 vuelve con la respuesta en C
+C 0xA48B A = la respuesta
+C 0xA48C mira si es la respuesta 0
+C 0xA48F mira la bandera 4 de la historia (0xEB75)
+C 0xA493 mira la bandera 6 de la historia (0xEB75)
+C 0xA497 mira la bandera 7 de la historia (0xEB75)
+C 0xA49B pone la bandera 7 de la historia (0xEB75)
+C 0xA49D vuelve con la respuesta en C
+C 0xA4A0 la respuesta pasa a ser la 0x01
+C 0xA4A2 vuelve con la respuesta en C
+C 0xA4A3 la respuesta pasa a ser la 0x04
+C 0xA4A5 vuelve con la respuesta en C
+C 0xA4A6 la respuesta pasa a ser la 0x03
+C 0xA4A8 vuelve con la respuesta en C
+C 0xA4AF la respuesta pasa a ser la 0x02
+C 0xA4B6 vuelve con la respuesta en C
+C 0xA4B7 la respuesta pasa a ser la 0x05
+C 0xA4B9 vuelve con la respuesta en C
+C 0xA4BD mira la bandera 4 de la historia (0xEB76)
+C 0xA4C1 A = la respuesta
+C 0xA4C2 mira si es la respuesta 0
+C 0xA4C5 mira la bandera 5 de la historia (0xEB76)
+C 0xA4C9 pone la bandera 7 de la historia (0xEB76)
+C 0xA4CB vuelve con la respuesta en C
+C 0xA4CC la respuesta pasa a ser la 0x03
+C 0xA4CE vuelve con la respuesta en C
+C 0xA4D3 la respuesta pasa a ser la 0x0C
+C 0xA4D5 vuelve con la respuesta en C
+C 0xA4E0 vuelve con la respuesta en C
+C 0xA4E1 la respuesta pasa a ser la 0x0D
+C 0xA4E3 vuelve con la respuesta en C
+C 0xA4EE vuelve con la respuesta en C
+C 0xA4EF la respuesta pasa a ser la 0x0E
+C 0xA4F1 vuelve con la respuesta en C
+C 0xA4F2 A = la respuesta
+C 0xA4F3 mira si es la respuesta 0
+C 0xA4FE la respuesta pasa a ser la 0x03
+C 0xA500 vuelve con la respuesta en C
+C 0xA501 la respuesta pasa a ser la 0x07
+C 0xA503 vuelve con la respuesta en C
+C 0xA517 vuelve con la respuesta en C
+C 0xA518 la respuesta pasa a ser la 0x0C
+C 0xA51A vuelve con la respuesta en C
+C 0xA51F la respuesta pasa a ser la 0x0D
+C 0xA521 vuelve con la respuesta en C
+C 0xA526 la respuesta pasa a ser la 0x08
+C 0xA52E vuelve con la respuesta en C
+C 0xA52F la respuesta pasa a ser la 0x0F
+C 0xA531 vuelve con la respuesta en C
+C 0xA535 A = la respuesta
+C 0xA536 compara la respuesta con la 0x06
+C 0xA53A pone la bandera 2 de la historia (0xEB76)
+C 0xA53C vuelve con la respuesta en C
+C 0xA550 la respuesta pasa a ser la 0x09
+C 0xA552 vuelve con la respuesta en C
+C 0xA553 la respuesta pasa a ser la 0x10
+C 0xA555 vuelve con la respuesta en C
+C 0xA56A la respuesta pasa a ser la 0x0B
+C 0xA56C vuelve con la respuesta en C
+C 0xA56D la respuesta pasa a ser la 0x11
+C 0xA56F vuelve con la respuesta en C
+C 0xA573 mira la bandera 7 de la historia (0xEB78)
+C 0xA576 A = la respuesta
+C 0xA577 mira si es la respuesta 0
+C 0xA578 vuelve si no lo es
+C 0xA579 mira la bandera 6 de la historia (0xEB78)
+C 0xA57D la respuesta pasa a ser la 0x03
+C 0xA57F vuelve con la respuesta en C
+C 0xA580 la respuesta pasa a ser la 0x02
+C 0xA582 vuelve con la respuesta en C
+C 0xA586 A = la respuesta
+C 0xA587 compara la respuesta con la 0x02
+C 0xA58B pone la bandera 5 de la historia (0xEB79)
+C 0xA58D vuelve con la respuesta en C
+C 0xA595 la respuesta pasa a ser la 0x05
+C 0xA599 vuelve con la respuesta en C
+C 0xA59D mira la bandera 7 de la historia (0xEB7D)
+C 0xA5A1 la respuesta pasa a ser la 0x06
+C 0xA5A3 vuelve con la respuesta en C
+C 0xA5A8 la respuesta pasa a ser la 0x03
+C 0xA5AA vuelve con la respuesta en C
+C 0xA5B4 vuelve con la respuesta en C
+C 0xA5B7 la respuesta pasa a ser la 0x01
+C 0xA5C3 vuelve con la respuesta en C
+C 0xA5C7 A = la respuesta
+C 0xA5C8 compara la respuesta con la 0x0C
+C 0xA5D7 la respuesta pasa a ser la 0x0C
+C 0xA5D9 vuelve con la respuesta en C
+C 0xA5DE la respuesta pasa a ser la 0x0B
+C 0xA5E0 vuelve con la respuesta en C
+C 0xA5F1 la respuesta pasa a ser la 0x04
+C 0xA5F3 vuelve con la respuesta en C
+C 0xA5F4 A = la respuesta
+C 0xA5F5 compara la respuesta con la 0x03
+C 0xA5F7 vuelve si no lo es
+C 0xA603 la respuesta pasa a ser la 0x03
+C 0xA605 vuelve con la respuesta en C
+C 0xA609 A = la respuesta
+C 0xA60A compara la respuesta con la 0x07
+C 0xA60C vuelve si no lo es
+C 0xA611 mira la bandera 7 de la historia (0xEB7C)
+C 0xA615 la respuesta pasa a ser la 0x0C
+C 0xA617 vuelve con la respuesta en C
+C 0xA61C la respuesta pasa a ser la 0x06
+C 0xA61E vuelve con la respuesta en C
+C 0xA623 la respuesta pasa a ser la 0x03
+C 0xA625 vuelve con la respuesta en C
+C 0xA629 la respuesta pasa a ser la 0x0A
+C 0xA62B vuelve con la respuesta en C
+C 0xA62F A = la respuesta
+C 0xA630 compara la respuesta con la 0x01
+C 0xA634 mira la bandera 4 de la historia (0xEB58)
+C 0xA638 mira la bandera 5 de la historia (0xEB58)
+C 0xA63C pone la bandera 5 de la historia (0xEB58)
+C 0xA63E vuelve con la respuesta en C
+C 0xA64C la respuesta pasa a ser la 0x03
+C 0xA64E vuelve con la respuesta en C
+C 0xA64F la respuesta pasa a ser la 0x0C
+C 0xA651 vuelve con la respuesta en C
+C 0xA65B vuelve con la respuesta en C
+C 0xA665 vuelve con la respuesta en C
+C 0xA66F vuelve con la respuesta en C
+C 0xA679 vuelve con la respuesta en C
+C 0xA682 vuelve con la respuesta en C
+C 0xA686 A = la respuesta
+C 0xA687 compara la respuesta con la 0x04
+C 0xA696 la respuesta pasa a ser la 0x04
+C 0xA698 vuelve con la respuesta en C
+C 0xA6A0 la respuesta pasa a ser la 0x0A
+C 0xA6A2 vuelve con la respuesta en C
+C 0xA6A9 vuelve con la respuesta en C
+C 0xA6B8 la respuesta pasa a ser la 0x09
+C 0xA6BA vuelve con la respuesta en C
+C 0xA6C1 vuelve con la respuesta en C
+C 0xA6C7 vuelve con la respuesta en C
+C 0xA6CB A = la respuesta
+C 0xA6CC compara la respuesta con la 0x01
+C 0xA6D0 mira la bandera 5 de la historia (0xEB59)
+C 0xA6D2 vuelve si lo es
+C 0xA6D3 la respuesta pasa a ser la 0x02
+C 0xA6D5 vuelve con la respuesta en C
+C 0xA6D8 vuelve con la respuesta en C
+C 0xA6DC A = la respuesta
+C 0xA6DD compara la respuesta con la 0x01
+C 0xA6E1 compara la respuesta con la 0x03
+C 0xA6E5 mira la bandera 5 de la historia (0xEB59)
+C 0xA6E9 la respuesta pasa a ser la 0x02
+C 0xA6EB vuelve con la respuesta en C
+C 0xA6EE vuelve con la respuesta en C
+C 0xA6F1 vuelve con la respuesta en C
+C 0xA6F4 vuelve con la respuesta en C
+C 0xA6F8 A = la respuesta
+C 0xA6F9 mira si es la respuesta 0
+C 0xA6FA vuelve si no lo es
+C 0xA6FB mira la bandera 4 de la historia (0xEB59)
+C 0xA6FD vuelve si lo es
+C 0xA6FE la respuesta pasa a ser la 0x02
+C 0xA700 vuelve con la respuesta en C
+C 0xA704 A = la respuesta
+C 0xA705 compara la respuesta con la 0x01
+C 0xA707 vuelve si no lo es
+C 0xA70F mira la bandera 4 de la historia (0xEB59)
+C 0xA713 pone la bandera 4 de la historia (0xEB59)
+C 0xA715 vuelve con la respuesta en C
+C 0xA716 la respuesta pasa a ser la 0x07
+C 0xA718 vuelve con la respuesta en C
+C 0xA719 la respuesta pasa a ser la 0x06
+C 0xA71E quita la bandera 0 de la historia (0xEB5B)
+C 0xA720 vuelve con la respuesta en C
+C 0xA724 A = la respuesta
+C 0xA725 mira si es la respuesta 0
+C 0xA72B mira la bandera 7 de la historia (0xEB7D)
+C 0xA72F la respuesta pasa a ser la 0x10
+C 0xA731 vuelve con la respuesta en C
+C 0xA736 la respuesta pasa a ser la 0x0D
+C 0xA738 vuelve con la respuesta en C
+C 0xA73D la respuesta pasa a ser la 0x0B
+C 0xA73F vuelve con la respuesta en C
+C 0xA744 la respuesta pasa a ser la 0x0A
+C 0xA74B pone la bandera 4 de la historia (0xEB79)
+C 0xA74D vuelve con la respuesta en C
+C 0xA752 la respuesta pasa a ser la 0x02
+C 0xA754 vuelve con la respuesta en C
+C 0xA759 la respuesta pasa a ser la 0x01
+C 0xA75D vuelve con la respuesta en C
+C 0xA760 vuelve con la respuesta en C
+C 0xA768 mira la bandera 7 de la historia (0xEB7D)
+C 0xA76C la respuesta pasa a ser la 0x10
+C 0xA76E vuelve con la respuesta en C
+C 0xA77B vuelve con la respuesta en C
+C 0xA77C la respuesta pasa a ser la 0x12
+C 0xA77E vuelve con la respuesta en C
+C 0xA77F la respuesta pasa a ser la 0x08
+C 0xA781 vuelve con la respuesta en C
+C 0xA789 mira la bandera 7 de la historia (0xEB7D)
+C 0xA78D la respuesta pasa a ser la 0x10
+C 0xA78F vuelve con la respuesta en C
+C 0xA794 la respuesta pasa a ser la 0x04
+C 0xA796 vuelve con la respuesta en C
+C 0xA797 la respuesta pasa a ser la 0x13
+C 0xA799 vuelve con la respuesta en C
+C 0xA7A1 pone la bandera 1 de la historia (0xEB67)
+C 0xA7A3 vuelve con la respuesta en C
+C 0xA7AA mira la bandera 7 de la historia (0xEB7D)
+C 0xA7AE la respuesta pasa a ser la 0x10
+C 0xA7B0 vuelve con la respuesta en C
+C 0xA7B7 la respuesta pasa a ser la 0x0C
+C 0xA7BB vuelve con la respuesta en C
+C 0xA7BF la respuesta pasa a ser la 0x0B
+C 0xA7C1 vuelve con la respuesta en C
+C 0xA7C5 mira la bandera 1 de la historia (0xEB7D)
+C 0xA7C8 la respuesta pasa a ser la 0x01
+C 0xA7CA vuelve con la respuesta en C
+C 0xA7CE A = la respuesta
+C 0xA7CF compara la respuesta con la 0x01
+C 0xA7D3 mira la bandera 1 de la historia (0xEB59)
+C 0xA7D7 pone la bandera 1 de la historia (0xEB59)
+C 0xA7D9 vuelve con la respuesta en C
+C 0xA7DA la respuesta pasa a ser la 0x03
+C 0xA7DC vuelve con la respuesta en C
+C 0xA7EA vuelve con la respuesta en C
+C 0xA7EB la respuesta pasa a ser la 0x04
+C 0xA7ED vuelve con la respuesta en C
+C 0xA7F1 pone la bandera 1 de la historia (0xEB5A)
+C 0xA7F3 vuelve con la respuesta en C
+C 0xA7F7 mira la bandera 3 de la historia (0xEB5B)
+C 0xA7FE la respuesta pasa a ser la 0x03
+C 0xA802 vuelve con la respuesta en C
+C 0xA806 mira la bandera 3 de la historia (0xEB5B)
+C 0xA80E la respuesta pasa a ser la 0x03
+C 0xA812 vuelve con la respuesta en C
+C 0xA816 mira la bandera 0 de la historia (0xEB5A)
+C 0xA81A quita la bandera 0 de la historia (0xEB5A)
+C 0xA81C la respuesta pasa a ser la 0x02
+C 0xA821 pone la bandera 6 de la historia (0xEB5B)
+C 0xA823 quita la bandera 1 de la historia (0xEB5B)
+C 0xA825 vuelve con la respuesta en C
+C 0xA828 la respuesta pasa a ser la 0x01
+C 0xA82A vuelve con la respuesta en C
+C 0xA82E mira la bandera 3 de la historia (0xEB5B)
+C 0xA835 la respuesta pasa a ser la 0x02
+C 0xA839 vuelve con la respuesta en C
+C 0xA83D A = la respuesta
+C 0xA83E compara la respuesta con la 0x01
+C 0xA840 vuelve si no lo es
+C 0xA841 pone la bandera 3 de la historia (0xEB5B)
+C 0xA843 vuelve con la respuesta en C
+C 0xA847 A = la respuesta
+C 0xA848 mira si es la respuesta 0
+C 0xA84B mira la bandera 1 de la historia (0xEB5C)
+C 0xA84F la respuesta pasa a ser la 0x0A
+C 0xA851 vuelve con la respuesta en C
+C 0xA855 mira la bandera 5 de la historia (0xEB7D)
+C 0xA860 la respuesta pasa a ser la 0x09
+C 0xA864 vuelve con la respuesta en C
+C 0xA869 la respuesta pasa a ser la 0x04
+C 0xA86D vuelve con la respuesta en C
+C 0xA872 la respuesta pasa a ser la 0x03
+C 0xA876 vuelve con la respuesta en C
+C 0xA87D vuelve con la respuesta en C
+C 0xA87E la respuesta pasa a ser la 0x01
+C 0xA880 vuelve con la respuesta en C
+C 0xA886 vuelve con la respuesta en C
+C 0xA88A A = la respuesta
+C 0xA88B compara la respuesta con la 0x05
+C 0xA88F pone la bandera 3 de la historia (0xEB5C)
+C 0xA891 vuelve con la respuesta en C
+C 0xA899 la respuesta pasa a ser la 0x0B
+C 0xA89B vuelve con la respuesta en C
+C 0xA8A3 la respuesta pasa a ser la 0x0B
+C 0xA8A5 vuelve con la respuesta en C
+C 0xA8A8 vuelve con la respuesta en C
+C 0xA8AC A = la respuesta
+C 0xA8AD mira si es la respuesta 0
+C 0xA8B3 mira la bandera 3 de la historia (0xEB62)
+C 0xA8B7 la respuesta pasa a ser la 0x0D
+C 0xA8BC pone la bandera 2 de la historia (0xEB62)
+C 0xA8BE vuelve con la respuesta en C
+C 0xA8C5 la respuesta pasa a ser la 0x05
+C 0xA8C7 vuelve con la respuesta en C
+C 0xA8CE la respuesta pasa a ser la 0x01
+C 0xA8D0 vuelve con la respuesta en C
+C 0xA8D3 vuelve con la respuesta en C
+C 0xA8D9 vuelve con la respuesta en C
+C 0xA8DD A = la respuesta
+C 0xA8DE compara la respuesta con la 0x06
+C 0xA8E2 pone la bandera 2 de la historia (0xEB61)
+C 0xA8E4 vuelve con la respuesta en C
+C 0xA8EF vuelve con la respuesta en C
+C 0xA8F0 la respuesta pasa a ser la 0x0E
+C 0xA8F2 vuelve con la respuesta en C
+C 0xA8FD vuelve con la respuesta en C
+C 0xA8FE la respuesta pasa a ser la 0x0F
+C 0xA900 vuelve con la respuesta en C
+C 0xA907 mira la bandera 3 de la historia (0xEB62)
+C 0xA90B pone la bandera 3 de la historia (0xEB62)
+C 0xA90D vuelve con la respuesta en C
+C 0xA90E la respuesta pasa a ser la 0x0C
+C 0xA910 vuelve con la respuesta en C
+C 0xA914 A = la respuesta
+C 0xA915 compara la respuesta con la 0x01
+C 0xA925 la respuesta pasa a ser la 0x0B
+C 0xA92A pone la bandera 1 de la historia (0xEB5D)
+C 0xA92C vuelve con la respuesta en C
+C 0xA930 la respuesta pasa a ser la 0x04
+C 0xA934 vuelve con la respuesta en C
+C 0xA93D la respuesta pasa a ser la 0x05
+C 0xA941 vuelve con la respuesta en C
+C 0xA944 vuelve con la respuesta en C
+C 0xA94F vuelve con la respuesta en C
+C 0xA950 la respuesta pasa a ser la 0x0D
+C 0xA952 vuelve con la respuesta en C
+C 0xA95B la respuesta pasa a ser la 0x09
+C 0xA95D vuelve con la respuesta en C
+C 0xA960 vuelve con la respuesta en C
+C 0xA968 la respuesta pasa a ser la 0x0A
+C 0xA96A vuelve con la respuesta en C
+C 0xA96D vuelve con la respuesta en C
+C 0xA971 A = la respuesta
+C 0xA972 compara la respuesta con la 0x06
+C 0xA974 vuelve si no lo es
+C 0xA975 pone la bandera 3 de la historia (0xEB5F)
+C 0xA977 vuelve con la respuesta en C
+C 0xA97B A = la respuesta
+C 0xA97C compara la respuesta con la 0x05
+C 0xA980 mira la bandera 0 de la historia (0xEB78)
+C 0xA984 la respuesta pasa a ser la 0x16
+C 0xA986 vuelve con la respuesta en C
+C 0xA98B la respuesta pasa a ser la 0x06
+C 0xA98F vuelve con la respuesta en C
+C 0xA996 vuelve con la respuesta en C
+C 0xA99E la respuesta pasa a ser la 0x1D
+C 0xA9A0 vuelve con la respuesta en C
+C 0xA9AE vuelve con la respuesta en C
+C 0xA9AF la respuesta pasa a ser la 0x1E
+C 0xA9B1 vuelve con la respuesta en C
+C 0xA9B8 mira la bandera 2 de la historia (0xEB77)
+C 0xA9BC pone la bandera 1 de la historia (0xEB77)
+C 0xA9BE vuelve con la respuesta en C
+C 0xA9BF la respuesta pasa a ser la 0x1F
+C 0xA9C1 vuelve con la respuesta en C
+C 0xA9C5 A = la respuesta
+C 0xA9C6 compara la respuesta con la 0x07
+C 0xA9CA mira la bandera 1 de la historia (0xEB77)
+C 0xA9CC vuelve si lo es
+C 0xA9CD la respuesta pasa a ser la 0x1B
+C 0xA9CF vuelve con la respuesta en C
+C 0xA9D6 vuelve con la respuesta en C
+C 0xA9DE la respuesta pasa a ser la 0x1D
+C 0xA9E0 vuelve con la respuesta en C
+C 0xA9EA mira la bandera 1 de la historia (0xEB78)
+C 0xA9EE pone la bandera 0 de la historia (0xEB78)
+C 0xA9F0 vuelve con la respuesta en C
+C 0xA9F1 la respuesta pasa a ser la 0x20
+C 0xA9F3 vuelve con la respuesta en C
+C 0xA9F7 mira la bandera 4 de la historia (0xEB7D)
+C 0xA9FA la respuesta pasa a ser la 0x01
+C 0xA9FC vuelve con la respuesta en C
+C 0xAA00 A = la respuesta
+C 0xAA01 mira si es la respuesta 0
+C 0xAA04 pone la bandera 4 de la historia (0xEB5E)
+C 0xAA06 vuelve con la respuesta en C
+C 0xAA11 vuelve con la respuesta en C
+C 0xAA12 la respuesta pasa a ser la 0x03
+C 0xAA14 vuelve con la respuesta en C
+C 0xAA19 la respuesta pasa a ser la 0x04
+C 0xAA1B vuelve con la respuesta en C
+C 0xAA1F pone la bandera 1 de la historia (0xEB62)
+C 0xAA26 vuelve con la respuesta en C
+C 0xAA2A pone la bandera 2 de la historia (0xEB5E)
+C 0xAA2C quita la bandera 1 de la historia (0xEB5E)
+C 0xAA2E vuelve con la respuesta en C
+C 0xAA32 A = la respuesta
+C 0xAA33 compara la respuesta con la 0x04
+C 0xAA3E pone la bandera 4 de la historia (0xEB64)
+C 0xAA40 vuelve con la respuesta en C
+C 0xAA41 la respuesta pasa a ser la 0x08
+C 0xAA45 vuelve con la respuesta en C
+C 0xAA4C vuelve con la respuesta en C
+C 0xAA57 vuelve con la respuesta en C
+C 0xAA58 la respuesta pasa a ser la 0x15
+C 0xAA5A vuelve con la respuesta en C
+C 0xAA6B la respuesta pasa a ser la 0x07
+C 0xAA6D vuelve con la respuesta en C
+C 0xAA71 A = la respuesta
+C 0xAA72 compara la respuesta con la 0x0A
+C 0xAA76 mira la bandera 2 de la historia (0xEB70)
+C 0xAA7A la respuesta pasa a ser la 0x0E
+C 0xAA7C vuelve con la respuesta en C
+C 0xAA7F vuelve con la respuesta en C
+C 0xAA86 vuelve con la respuesta en C
+C 0xAA8F la respuesta pasa a ser la 0x10
+C 0xAA91 vuelve con la respuesta en C
+C 0xAA98 vuelve con la respuesta en C
+C 0xAA99 la respuesta pasa a ser la 0x16
+C 0xAA9B vuelve con la respuesta en C
+C 0xAAA2 mira la bandera 1 de el objeto 7 (0xE9DE)
+C 0xAAA6 la respuesta pasa a ser la 0x13
+C 0xAAA8 vuelve con la respuesta en C
+C 0xAAAC pone la bandera 0 de la historia (0xEB70)
+C 0xAAAE vuelve con la respuesta en C
+C 0xAAB2 mira la bandera 3 de la historia (0xEB5B)
+C 0xAAB9 la respuesta pasa a ser la 0x02
+C 0xAABD vuelve con la respuesta en C
+C 0xAB96 HL = la sala 0x089
+C 0xAB99 sin acarreo para la resta
+C 0xAB9A mira si es esa sala
+C 0xAB9E A = la respuesta
+C 0xAB9F mira si es la respuesta 0x01
+C 0xABA0 vuelve si no lo es
+C 0xABA4 pone la bandera 5 de la historia (0xEB5A)
+C 0xABA6 vuelve
+C 0xABA7 HL = la sala 0x079
+C 0xABAA sin acarreo para la resta
+C 0xABAB mira si es esa sala
+C 0xABB1 A = la respuesta
+C 0xABB2 mira si es la respuesta 0
+C 0xABB5 pone la bandera 6 de la historia (0xEB64)
+C 0xABB7 vuelve
+C 0xABBC vuelve
+C 0xABC1 HL = la sala 0x0AF
+C 0xABC4 sin acarreo para la resta
+C 0xABC5 mira si es esa sala
+C 0xABC9 A = la respuesta
+C 0xABCA compara la respuesta con la 0x04
+C 0xABCE compara la respuesta con la 0x08
+C 0xABD2 la respuesta pasa a ser la 0x02
+C 0xABD4 acarreo: la respuesta cambia
+C 0xABD5 vuelve con acarreo
+C 0xABD6 HL = la sala 0x08A
+C 0xABD9 sin acarreo para la resta
+C 0xABDA mira si es esa sala
+C 0xABDE A = la respuesta
+C 0xABDF compara la respuesta con la 0x04
+C 0xABE3 compara la respuesta con la 0x08
+C 0xABE7 la respuesta pasa a ser la 0x02
+C 0xABEC pone la bandera 7 de la historia (0xEB5A)
+C 0xABEE acarreo: la respuesta cambia
+C 0xABEF vuelve con acarreo
+C 0xABF0 HL = la sala 0x201
+C 0xABF3 sin acarreo para la resta
+C 0xABF4 mira si es esa sala
+C 0xABF8 A = la respuesta
+C 0xABF9 compara la respuesta con la 0x08
+C 0xABFD compara la respuesta con la 0x0C
+C 0xAC04 mira la bandera 7 de el objeto 1 (0xE9D2)
+C 0xAC06 vuelve si lo es
+C 0xAC07 la respuesta pasa a ser la 0x04
+C 0xAC09 acarreo: la respuesta cambia
+C 0xAC0A vuelve con acarreo
+C 0xAC16 mira la bandera 7 de el objeto 1 (0xE9D2)
+C 0xAC18 la respuesta pasa a ser la 0x01
+C 0xAC1C la respuesta pasa a ser la 0x03
+C 0xAC1E acarreo: la respuesta cambia
+C 0xAC1F vuelve con acarreo
+C 0xAC20 HL = la sala 0x0F3
+C 0xAC23 sin acarreo para la resta
+C 0xAC24 mira si es esa sala
+C 0xAC28 A = la respuesta
+C 0xAC29 compara la respuesta con la 0x04
+C 0xAC2D compara la respuesta con la 0x08
+C 0xAC31 la respuesta pasa a ser la 0x03
+C 0xAC36 pone la bandera 7 de la historia (0xEB5E)
+C 0xAC38 acarreo: la respuesta cambia
+C 0xAC39 vuelve con acarreo
+C 0xAC3A HL = la sala 0x118
+C 0xAC3D sin acarreo para la resta
+C 0xAC3E mira si es esa sala
+C 0xAC45 mira la bandera 7 de la historia (0xEB64)
+C 0xAC49 A = la respuesta
+C 0xAC4A compara la respuesta con la 0x04
+C 0xAC4E compara la respuesta con la 0x0C
+C 0xAC52 compara la respuesta con la 0x08
+C 0xAC56 la respuesta pasa a ser la 0x00
+C 0xAC58 acarreo: la respuesta cambia
+C 0xAC59 vuelve con acarreo
+C 0xAC5A la respuesta pasa a ser la 0x01
+C 0xAC5C acarreo: la respuesta cambia
+C 0xAC5D vuelve con acarreo
+C 0xAC5E HL = la sala 0x1C6
+C 0xAC61 sin acarreo para la resta
+C 0xAC62 mira si es esa sala
+C 0xAC66 A = la respuesta
+C 0xAC67 compara la respuesta con la 0x04
+C 0xAC6B compara la respuesta con la 0x08
+C 0xAC6F la respuesta pasa a ser la 0x00
+C 0xAC71 acarreo: la respuesta cambia
+C 0xAC72 vuelve con acarreo
+C 0xAC73 HL = la sala 0x063
+C 0xAC76 sin acarreo para la resta
+C 0xAC77 mira si es esa sala
+C 0xAC7B A = la respuesta
+C 0xAC7C compara la respuesta con la 0x04
+C 0xAC80 compara la respuesta con la 0x08
+C 0xAC84 compara la respuesta con la 0x0C
+C 0xAC88 la respuesta pasa a ser la 0x07
+C 0xAC8D pone la bandera 5 de la historia (0xEB67)
+C 0xAC8F acarreo: la respuesta cambia
+C 0xAC90 vuelve con acarreo
+C 0xAC91 la respuesta pasa a ser la 0x06
+C 0xAC93 acarreo: la respuesta cambia
+C 0xAC94 vuelve con acarreo
+C 0xAC95 HL = la sala 0x208
+C 0xAC98 sin acarreo para la resta
+C 0xAC99 mira si es esa sala
+C 0xACA0 A = la respuesta
+C 0xACA1 compara la respuesta con la 0x04
+C 0xACA5 compara la respuesta con la 0x0C
+C 0xACA9 compara la respuesta con la 0x08
+C 0xACAD la respuesta pasa a ser la 0x04
+C 0xACAF pone la bandera 5 de la historia (0xEB6A)
+C 0xACB1 acarreo: la respuesta cambia
+C 0xACB2 vuelve con acarreo
+C 0xACB9 la respuesta pasa a ser la 0x05
+C 0xACBD acarreo: la respuesta cambia
+C 0xACBE vuelve con acarreo
+C 0xACBF HL = la sala 0x202
+C 0xACC2 sin acarreo para la resta
+C 0xACC3 mira si es esa sala
+C 0xACC7 A = la respuesta
+C 0xACC8 compara la respuesta con la 0x04
+C 0xACCC compara la respuesta con la 0x0C
+C 0xACD0 compara la respuesta con la 0x08
+C 0xACD4 la respuesta pasa a ser la 0x00
+C 0xACD6 acarreo: la respuesta cambia
+C 0xACD7 vuelve con acarreo
+C 0xACD8 la respuesta pasa a ser la 0x01
+C 0xACDA acarreo: la respuesta cambia
+C 0xACDB vuelve con acarreo
+C 0xACDC HL = la sala 0x203
+C 0xACDF sin acarreo para la resta
+C 0xACE0 mira si es esa sala
+C 0xACE4 HL = la sala 0x204
+C 0xACE7 sin acarreo para la resta
+C 0xACE8 mira si es esa sala
+C 0xACEC HL = la sala 0x205
+C 0xACEF sin acarreo para la resta
+C 0xACF0 mira si es esa sala
+C 0xACF4 HL = la sala 0x206
+C 0xACF7 sin acarreo para la resta
+C 0xACF8 mira si es esa sala
+C 0xACFC HL = la sala 0x207
+C 0xACFF sin acarreo para la resta
+C 0xAD00 mira si es esa sala
+C 0xAD04 HL = la sala 0x209
+C 0xAD07 sin acarreo para la resta
+C 0xAD08 mira si es esa sala
+C 0xAD0C HL = la sala 0x20A
+C 0xAD0F sin acarreo para la resta
+C 0xAD10 mira si es esa sala
+C 0xAD14 HL = la sala 0x20B
+C 0xAD17 sin acarreo para la resta
+C 0xAD18 mira si es esa sala
+C 0xAD1C HL = la sala 0x1AA
+C 0xAD1F sin acarreo para la resta
+C 0xAD20 mira si es esa sala
+C 0xAD24 A = la respuesta
+C 0xAD25 compara la respuesta con la 0x04
+C 0xAD29 compara la respuesta con la 0x08
+C 0xAD30 mira la bandera 7 de la historia (0xEB6C)
+C 0xAD34 la respuesta pasa a ser la 0x09
+C 0xAD36 acarreo: la respuesta cambia
+C 0xAD37 vuelve con acarreo
+C 0xAD38 HL = la sala 0x107
+C 0xAD3B sin acarreo para la resta
+C 0xAD3C mira si es esa sala
+C 0xAD40 A = la respuesta
+C 0xAD41 compara la respuesta con la 0x04
+C 0xAD45 compara la respuesta con la 0x08
+C 0xAD4C mira la bandera 5 de la historia (0xEB6D)
+C 0xAD50 la respuesta pasa a ser la 0x0E
+C 0xAD52 acarreo: la respuesta cambia
+C 0xAD53 vuelve con acarreo
+C 0xAD54 HL = la sala 0x1D0
+C 0xAD57 sin acarreo para la resta
+C 0xAD58 mira si es esa sala
+C 0xAD5C A = la respuesta
+C 0xAD5D compara la respuesta con la 0x04
+C 0xAD61 compara la respuesta con la 0x08
+C 0xAD6E pone la bandera 7 de la historia (0xEB6F)
+C 0xAD70 la respuesta pasa a ser la 0x00
+C 0xAD72 acarreo: la respuesta cambia
+C 0xAD73 vuelve con acarreo
+C 0xAD74 HL = la sala 0x030
+C 0xAD77 sin acarreo para la resta
+C 0xAD78 mira si es esa sala
+C 0xAD7C A = la respuesta
+C 0xAD7D compara la respuesta con la 0x04
+C 0xAD81 compara la respuesta con la 0x08
+C 0xAD8E pone la bandera 4 de la historia (0xEB71)
+C 0xAD90 la respuesta pasa a ser la 0x00
+C 0xAD92 acarreo: la respuesta cambia
+C 0xAD93 vuelve con acarreo
+C 0xAD94 HL = la sala 0x20C
+C 0xAD97 sin acarreo para la resta
+C 0xAD98 mira si es esa sala
+C 0xAD9C A = la respuesta
+C 0xAD9D compara la respuesta con la 0x04
+C 0xADA1 compara la respuesta con la 0x08
+C 0xADA5 la respuesta pasa a ser la 0x01
+C 0xADA7 acarreo: la respuesta cambia
+C 0xADA8 vuelve con acarreo
+C 0xADA9 HL = la sala 0x0A7
+C 0xADAC sin acarreo para la resta
+C 0xADAD mira si es esa sala
+C 0xADB5 HL = la sala 0x059
+C 0xADB8 sin acarreo para la resta
+C 0xADB9 mira si es esa sala
+C 0xADBD HL = la sala 0x05A
+C 0xADC0 sin acarreo para la resta
+C 0xADC1 mira si es esa sala
+C 0xADC5 A = la respuesta
+C 0xADC6 compara la respuesta con la 0x10
+C 0xADCA compara la respuesta con la 0x14
+C 0xADCE la respuesta pasa a ser la 0x04
+C 0xADD0 acarreo: la respuesta cambia
+C 0xADD1 vuelve con acarreo
+C 0xADD6 la respuesta pasa a ser la 0x05
+C 0xADD8 acarreo: la respuesta cambia
+C 0xADD9 vuelve con acarreo
+C 0xADDE la respuesta pasa a ser la 0x06
+C 0xADE0 acarreo: la respuesta cambia
+C 0xADE1 vuelve con acarreo
+C 0xADE2 HL = la sala 0x05B
+C 0xADE5 sin acarreo para la resta
+C 0xADE6 mira si es esa sala
+C 0xADEA HL = la sala 0x05D
+C 0xADED sin acarreo para la resta
+C 0xADEE mira si es esa sala
+C 0xADF2 A = la respuesta
+C 0xADF3 compara la respuesta con la 0x04
+C 0xADF7 compara la respuesta con la 0x08
+C 0xADFB la respuesta pasa a ser la 0x08
+C 0xADFD acarreo: la respuesta cambia
+C 0xADFE vuelve con acarreo
+C 0xADFF HL = la sala 0x0E7
+C 0xAE02 sin acarreo para la resta
+C 0xAE03 mira si es esa sala
+C 0xAE07 HL = la sala 0x1D4
+C 0xAE0A sin acarreo para la resta
+C 0xAE0B mira si es esa sala
+C 0xAE12 mira la bandera 7 de la historia (0xEB77)
+C 0xAE19 mira la bandera 5 de la historia (0xEB76)
+C 0xAE1D A = la respuesta
+C 0xAE1E compara la respuesta con la 0x08
+C 0xAE22 compara la respuesta con la 0x0C
+C 0xAE26 la respuesta pasa a ser la 0x04
+C 0xAE28 pone la bandera 4 de la historia (0xEB76)
+C 0xAE2A acarreo: la respuesta cambia
+C 0xAE2B vuelve con acarreo
+C 0xAE2C HL = la sala 0x1D5
+C 0xAE2F sin acarreo para la resta
+C 0xAE30 mira si es esa sala
+C 0xAE34 A = la respuesta
+C 0xAE35 compara la respuesta con la 0x04
+C 0xAE39 compara la respuesta con la 0x08
+C 0xAE3D compara la respuesta con la 0x0C
+C 0xAE44 mira la bandera 0 de la historia (0xEB76)
+C 0xAE4B mira la bandera 6 de la historia (0xEB77)
+C 0xAE4F mira la bandera 5 de la historia (0xEB77)
+C 0xAE53 la respuesta pasa a ser la 0x02
+C 0xAE55 pone la bandera 7 de la historia (0xEB77)
+C 0xAE57 acarreo: la respuesta cambia
+C 0xAE58 vuelve con acarreo
+C 0xAE59 la respuesta pasa a ser la 0x01
+C 0xAE5D acarreo: la respuesta cambia
+C 0xAE5E vuelve con acarreo
+C 0xAE5F la respuesta pasa a ser la 0x00
+C 0xAE61 acarreo: la respuesta cambia
+C 0xAE62 vuelve con acarreo
+C 0xAE63 HL = la sala 0x1D7
+C 0xAE66 sin acarreo para la resta
+C 0xAE67 mira si es esa sala
+C 0xAE6B A = la respuesta
+C 0xAE6C compara la respuesta con la 0x04
+C 0xAE70 compara la respuesta con la 0x08
+C 0xAE74 compara la respuesta con la 0x0C
+C 0xAE78 la respuesta pasa a ser la 0x01
+C 0xAE7A acarreo: la respuesta cambia
+C 0xAE7B vuelve con acarreo
+C 0xAE7C la respuesta pasa a ser la 0x00
+C 0xAE7E acarreo: la respuesta cambia
+C 0xAE7F vuelve con acarreo
+C 0xAE80 HL = la sala 0x20F
+C 0xAE83 sin acarreo para la resta
+C 0xAE84 mira si es esa sala
+C 0xAE88 A = la respuesta
+C 0xAE89 compara la respuesta con la 0x04
+C 0xAE8D compara la respuesta con la 0x08
+C 0xAE91 la respuesta pasa a ser la 0x00
+C 0xAE93 acarreo: la respuesta cambia
+C 0xAE94 vuelve con acarreo
+C 0xAE95 HL = la sala 0x213
+C 0xAE98 sin acarreo para la resta
+C 0xAE99 mira si es esa sala
+C 0xAE9D A = la respuesta
+C 0xAE9E compara la respuesta con la 0x04
+C 0xAEA2 compara la respuesta con la 0x08
+C 0xAEA6 la respuesta pasa a ser la 0x00
+C 0xAEA8 acarreo: la respuesta cambia
+C 0xAEA9 vuelve con acarreo
+C 0xAEAA HL = la sala 0x214
+C 0xAEAD sin acarreo para la resta
+C 0xAEAE mira si es esa sala
+C 0xAEB2 HL = la sala 0x215
+C 0xAEB5 sin acarreo para la resta
+C 0xAEB6 mira si es esa sala
+C 0xAEBA HL = la sala 0x216
+C 0xAEBD sin acarreo para la resta
+C 0xAEBE mira si es esa sala
+C 0xAEC2 HL = la sala 0x217
+C 0xAEC5 sin acarreo para la resta
+C 0xAEC6 mira si es esa sala
+C 0xAECA HL = la sala 0x218
+C 0xAECD sin acarreo para la resta
+C 0xAECE mira si es esa sala
+C 0xAED2 HL = la sala 0x219
+C 0xAED5 sin acarreo para la resta
+C 0xAED6 mira si es esa sala
+C 0xAEDA HL = la sala 0x21A
+C 0xAEDD sin acarreo para la resta
+C 0xAEDE mira si es esa sala
+C 0xAEE2 HL = la sala 0x21B
+C 0xAEE5 sin acarreo para la resta
+C 0xAEE6 mira si es esa sala
+C 0xAEEA HL = la sala 0x21C
+C 0xAEED sin acarreo para la resta
+C 0xAEEE mira si es esa sala
+C 0xAEF2 HL = la sala 0x21D
+C 0xAEF5 sin acarreo para la resta
+C 0xAEF6 mira si es esa sala
+C 0xAEFA HL = la sala 0x21E
+C 0xAEFD sin acarreo para la resta
+C 0xAEFE mira si es esa sala
+C 0xAF02 A = la respuesta
+C 0xAF03 compara la respuesta con la 0x04
+C 0xAF07 compara la respuesta con la 0x08
+C 0xAF0B la respuesta pasa a ser la 0x00
+C 0xAF0D acarreo: la respuesta cambia
+C 0xAF0E vuelve con acarreo
+C 0xAF0F HL = la sala 0x0B3
+C 0xAF12 sin acarreo para la resta
+C 0xAF13 mira si es esa sala
+C 0xAF1A mira la bandera 0 de la historia (0xEB58)
+C 0xAF1E A = la respuesta
+C 0xAF1F compara la respuesta con la 0x04
+C 0xAF23 compara la respuesta con la 0x08
+C 0xAF2A mira la bandera 5 de la historia (0xEB59)
+C 0xAF2E la respuesta pasa a ser la 0x00
+C 0xAF30 acarreo: la respuesta cambia
+C 0xAF31 vuelve con acarreo
+C 0xAF32 HL = la sala 0x21F
+C 0xAF35 sin acarreo para la resta
+C 0xAF36 mira si es esa sala
+C 0xAF3A A = la respuesta
+C 0xAF3B compara la respuesta con la 0x04
+C 0xAF3F compara la respuesta con la 0x08
+C 0xAF43 la respuesta pasa a ser la 0x00
+C 0xAF45 acarreo: la respuesta cambia
+C 0xAF46 vuelve con acarreo
+C 0xAF47 HL = la sala 0x159
+C 0xAF4A sin acarreo para la resta
+C 0xAF4B mira si es esa sala
+C 0xAF4F A = la respuesta
+C 0xAF50 compara la respuesta con la 0x04
+C 0xAF57 mira la bandera 1 de la historia (0xEB5C)
+C 0xAF5B la respuesta pasa a ser la 0x0A
+C 0xAF5D acarreo: la respuesta cambia
+C 0xAF5E vuelve con acarreo
+C 0xAF5F HL = la sala 0x228
+C 0xAF62 sin acarreo para la resta
+C 0xAF63 mira si es esa sala
+C 0xAF6A mira la bandera 3 de la historia (0xEB5F)
+C 0xAF6E la respuesta pasa a ser la 0x04
+C 0xAF70 acarreo: la respuesta cambia
+C 0xAF71 vuelve con acarreo
+C 0xAF72 A = la respuesta
+C 0xAF73 compara la respuesta con la 0x04
+C 0xAF77 compara la respuesta con la 0x08
+C 0xAF7B compara la respuesta con la 0x0C
+C 0xAF83 la respuesta pasa a ser la 0x01
+C 0xAF87 acarreo: la respuesta cambia
+C 0xAF88 vuelve con acarreo
+C 0xAF91 la respuesta pasa a ser la 0x02
+C 0xAF95 acarreo: la respuesta cambia
+C 0xAF96 vuelve con acarreo
+C 0xAF97 la respuesta pasa a ser la 0x03
+C 0xAF99 acarreo: la respuesta cambia
+C 0xAF9A vuelve con acarreo
+C 0xAF9B la respuesta pasa a ser la 0x00
+C 0xAF9F acarreo: la respuesta cambia
+C 0xAFA0 vuelve con acarreo
+C 0xAFA1 HL = la sala 0x229
+C 0xAFA4 sin acarreo para la resta
+C 0xAFA5 mira si es esa sala
+C 0xAFA9 HL = la sala 0x22A
+C 0xAFAC sin acarreo para la resta
+C 0xAFAD mira si es esa sala
+C 0xAFB1 HL = la sala 0x22B
+C 0xAFB4 sin acarreo para la resta
+C 0xAFB5 mira si es esa sala
+C 0xAFB9 HL = la sala 0x22C
+C 0xAFBC sin acarreo para la resta
+C 0xAFBD mira si es esa sala
+C 0xAFC1 HL = la sala 0x22D
+C 0xAFC4 sin acarreo para la resta
+C 0xAFC5 mira si es esa sala
+C 0xAFC9 HL = la sala 0x0B0
+C 0xAFCC sin acarreo para la resta
+C 0xAFCD mira si es esa sala
+C 0xAFD4 mira la bandera 0 de la historia (0xEB5D)
+C 0xAFD8 A = la respuesta
+C 0xAFD9 compara la respuesta con la 0x04
+C 0xAFE0 mira la bandera 2 de la historia (0xEB78)
+C 0xAFE4 mira la bandera 0 de la historia (0xEB78)
+C 0xAFEB mira la bandera 4 de la historia (0xEB77)
+C 0xAFEF pone la bandera 4 de la historia (0xEB77)
+C 0xAFF1 la respuesta pasa a ser la 0x17
+C 0xAFF3 acarreo: la respuesta cambia
+C 0xAFF4 vuelve con acarreo
+C 0xAFF8 la respuesta pasa a ser la 0x13
+C 0xAFFA pone la bandera 2 de la historia (0xEB78)
+C 0xAFFC acarreo: la respuesta cambia
+C 0xAFFD vuelve con acarreo
+C 0xB002 la respuesta pasa a ser la 0x1C
+C 0xB004 acarreo: la respuesta cambia
+C 0xB005 vuelve con acarreo
+C 0xB00D mira la bandera 3 de la historia (0xEB77)
+C 0xB011 mira la bandera 4 de la historia (0xEB77)
+C 0xB015 pone la bandera 3 de la historia (0xEB77)
+C 0xB017 la respuesta pasa a ser la 0x18
+C 0xB019 acarreo: la respuesta cambia
+C 0xB01A vuelve con acarreo
+C 0xB01D la respuesta pasa a ser la 0x19
+C 0xB01F acarreo: la respuesta cambia
+C 0xB020 vuelve con acarreo
+C 0xB021 HL = la sala 0x1A1
+C 0xB024 sin acarreo para la resta
+C 0xB025 mira si es esa sala
+C 0xB02C mira la bandera 4 de la historia (0xEB62)
+C 0xB033 A = la respuesta
+C 0xB034 compara la respuesta con la 0x04
+C 0xB038 compara la respuesta con la 0x08
+C 0xB03C compara la respuesta con la 0x0C
+C 0xB040 compara la respuesta con la 0x1C
+C 0xB047 mira la bandera 3 de la historia (0xEB60)
+C 0xB04B la respuesta pasa a ser la 0x02
+C 0xB04D pone la bandera 2 de la historia (0xEB60)
+C 0xB04F acarreo: la respuesta cambia
+C 0xB050 vuelve con acarreo
+C 0xB055 la respuesta pasa a ser la 0x00
+C 0xB059 acarreo: la respuesta cambia
+C 0xB05A vuelve con acarreo
+C 0xB05F la respuesta pasa a ser la 0x01
+C 0xB063 acarreo: la respuesta cambia
+C 0xB064 vuelve con acarreo
+C 0xB068 mira la bandera 1 de la historia (0xEB5C)
+C 0xB06F mira la bandera 2 de la historia (0xEB60)
+C 0xB073 pone la bandera 1 de la historia (0xEB60)
+C 0xB075 la respuesta pasa a ser la 0x03
+C 0xB077 acarreo: la respuesta cambia
+C 0xB078 vuelve con acarreo
+C 0xB079 HL = la sala 0x1E0
+C 0xB07C sin acarreo para la resta
+C 0xB07D mira si es esa sala
+C 0xB081 A = la respuesta
+C 0xB082 compara la respuesta con la 0x04
+C 0xB086 la respuesta pasa a ser la 0x00
+C 0xB088 acarreo: la respuesta cambia
+C 0xB089 vuelve con acarreo
+C 0xB08B vuelve sin acarreo
+C 0xB090 HL = el tipo 0x022
+C 0xB093 sin acarreo para la resta
+C 0xB094 mira si es ese tipo
+C 0xB098 A = la opcion
+C 0xB099 mira si es la opcion 0
+C 0xB09F mira la bandera 7 de la historia (0xEB5A)
+C 0xB0A3 acarreo: la opcion no vale todavia
+C 0xB0A4 vuelve con acarreo
+C 0xB0A8 mira la bandera 6 de la historia (0xEB5A)
+C 0xB0AC acarreo: la opcion no vale todavia
+C 0xB0AD vuelve con acarreo
+C 0xB0AE HL = el tipo 0x028
+C 0xB0B1 sin acarreo para la resta
+C 0xB0B2 mira si es ese tipo
+C 0xB0B6 A = la opcion
+C 0xB0B7 mira si es la opcion 0
+C 0xB0C3 mira la bandera 6 de la historia (0xEB5F)
+C 0xB0C7 acarreo: la opcion no vale todavia
+C 0xB0C8 vuelve con acarreo
+C 0xB0C9 HL = el tipo 0x02B
+C 0xB0CC sin acarreo para la resta
+C 0xB0CD mira si es ese tipo
+C 0xB0D4 A = la opcion
+C 0xB0D5 mira si es la opcion 0
+C 0xB0D8 mira la bandera 7 de la historia (0xEB61)
+C 0xB0DC acarreo: la opcion no vale todavia
+C 0xB0DD vuelve con acarreo
+C 0xB0E6 acarreo: la opcion no vale todavia
+C 0xB0E7 vuelve con acarreo
+C 0xB0E8 HL = el tipo 0x02D
+C 0xB0EB sin acarreo para la resta
+C 0xB0EC mira si es ese tipo
+C 0xB0F3 mira la bandera 2 de la historia (0xEB63)
+C 0xB0FE acarreo: la opcion no vale todavia
+C 0xB0FF vuelve con acarreo
+C 0xB100 HL = el tipo 0x035
+C 0xB103 sin acarreo para la resta
+C 0xB104 mira si es ese tipo
+C 0xB111 acarreo: la opcion no vale todavia
+C 0xB112 vuelve con acarreo
+C 0xB113 HL = el tipo 0x036
+C 0xB116 sin acarreo para la resta
+C 0xB117 mira si es ese tipo
+C 0xB11E mira la bandera 4 de la historia (0xEB67)
+C 0xB122 acarreo: la opcion no vale todavia
+C 0xB123 vuelve con acarreo
+C 0xB124 HL = el tipo 0x037
+C 0xB127 sin acarreo para la resta
+C 0xB128 mira si es ese tipo
+C 0xB12F mira la bandera 2 de la historia (0xEB67)
+C 0xB13D acarreo: la opcion no vale todavia
+C 0xB13E vuelve con acarreo
+C 0xB13F HL = el tipo 0x038
+C 0xB142 sin acarreo para la resta
+C 0xB143 mira si es ese tipo
+C 0xB14A mira la bandera 7 de la historia (0xEB68)
+C 0xB14E acarreo: la opcion no vale todavia
+C 0xB14F vuelve con acarreo
+C 0xB150 HL = el tipo 0x04D
+C 0xB153 sin acarreo para la resta
+C 0xB154 mira si es ese tipo
+C 0xB15B mira la bandera 7 de la historia (0xEB6C)
+C 0xB162 mira la bandera 7 de la historia (0xEB6D)
+C 0xB166 acarreo: la opcion no vale todavia
+C 0xB167 vuelve con acarreo
+C 0xB168 HL = el tipo 0x050
+C 0xB16B sin acarreo para la resta
+C 0xB16C mira si es ese tipo
+C 0xB179 acarreo: la opcion no vale todavia
+C 0xB17A vuelve con acarreo
+C 0xB17B HL = el tipo 0x052
+C 0xB17E sin acarreo para la resta
+C 0xB17F mira si es ese tipo
+C 0xB186 A = la opcion
+C 0xB187 mira si es la opcion 0
+C 0xB18A mira si es la opcion 0x01
+C 0xB18D mira la bandera 6 de la historia (0xEB71)
+C 0xB191 acarreo: la opcion no vale todavia
+C 0xB192 vuelve con acarreo
+C 0xB19A acarreo: la opcion no vale todavia
+C 0xB19B vuelve con acarreo
+C 0xB1A0 acarreo: la opcion no vale todavia
+C 0xB1A1 vuelve con acarreo
+C 0xB1A6 acarreo: la opcion no vale todavia
+C 0xB1A7 vuelve con acarreo
+C 0xB1A8 HL = el tipo 0x056
+C 0xB1AB sin acarreo para la resta
+C 0xB1AC mira si es ese tipo
+C 0xB1B3 mira la bandera 5 de la historia (0xEB72)
+C 0xB1B7 acarreo: la opcion no vale todavia
+C 0xB1B8 vuelve con acarreo
+C 0xB1B9 HL = el tipo 0x057
+C 0xB1BC sin acarreo para la resta
+C 0xB1BD mira si es ese tipo
+C 0xB1CA acarreo: la opcion no vale todavia
+C 0xB1CB vuelve con acarreo
+C 0xB1CC HL = el tipo 0x058
+C 0xB1CF sin acarreo para la resta
+C 0xB1D0 mira si es ese tipo
+C 0xB1D7 mira la bandera 6 de la historia (0xEB73)
+C 0xB1DB acarreo: la opcion no vale todavia
+C 0xB1DC vuelve con acarreo
+C 0xB1DD HL = el tipo 0x040
+C 0xB1E0 sin acarreo para la resta
+C 0xB1E1 mira si es ese tipo
+C 0xB1E8 mira la bandera 3 de la historia (0xEB67)
+C 0xB1EF mira la bandera 6 de la historia (0xEB66)
+C 0xB1F6 mira la bandera 6 de la historia (0xEB6B)
+C 0xB1FA acarreo: la opcion no vale todavia
+C 0xB1FB vuelve con acarreo
+C 0xB1FC HL = el tipo 0x041
+C 0xB1FF sin acarreo para la resta
+C 0xB200 mira si es ese tipo
+C 0xB204 HL = el tipo 0x042
+C 0xB207 sin acarreo para la resta
+C 0xB208 mira si es ese tipo
+C 0xB20C HL = el tipo 0x045
+C 0xB20F sin acarreo para la resta
+C 0xB210 mira si es ese tipo
+C 0xB214 HL = el tipo 0x06C
+C 0xB217 sin acarreo para la resta
+C 0xB218 mira si es ese tipo
+C 0xB21F mira la bandera 7 de la historia (0xEB78)
+C 0xB223 acarreo: la opcion no vale todavia
+C 0xB224 vuelve con acarreo
+C 0xB225 HL = el tipo 0x077
+C 0xB228 sin acarreo para la resta
+C 0xB229 mira si es ese tipo
+C 0xB230 mira la bandera 7 de la historia (0xEB7D)
+C 0xB23B acarreo: la opcion no vale todavia
+C 0xB23C vuelve con acarreo
+C 0xB23D HL = el tipo 0x051
+C 0xB240 sin acarreo para la resta
+C 0xB241 mira si es ese tipo
+C 0xB248 mira la bandera 5 de la historia (0xEB6D)
+C 0xB24C acarreo: la opcion no vale todavia
+C 0xB24D vuelve con acarreo
+C 0xB24E HL = el tipo 0x083
+C 0xB251 sin acarreo para la resta
+C 0xB252 mira si es ese tipo
+C 0xB256 A = la opcion
+C 0xB257 mira si es la opcion 0
+C 0xB25A mira si es la opcion 0x01
+C 0xB260 mira la bandera 4 de la historia (0xEB58)
+C 0xB271 mira la bandera 4 de la historia (0xEB58)
+C 0xB276 acarreo: la opcion no vale todavia
+C 0xB277 vuelve con acarreo
+C 0xB278 HL = el tipo 0x089
+C 0xB27B sin acarreo para la resta
+C 0xB27C mira si es ese tipo
+C 0xB283 mira la bandera 2 de la historia (0xEB58)
+C 0xB287 acarreo: la opcion no vale todavia
+C 0xB288 vuelve con acarreo
+C 0xB289 HL = el tipo 0x0A3
+C 0xB28C sin acarreo para la resta
+C 0xB28D mira si es ese tipo
+C 0xB29E acarreo: la opcion no vale todavia
+C 0xB29F vuelve con acarreo
+C 0xB2A0 HL = el tipo 0x0A4
+C 0xB2A3 sin acarreo para la resta
+C 0xB2A4 mira si es ese tipo
+C 0xB2AB mira la bandera 4 de la historia (0xEB66)
+C 0xB2B5 acarreo: la opcion no vale todavia
+C 0xB2B6 vuelve con acarreo
+C 0xB2B7 HL = el tipo 0x033
+C 0xB2BA sin acarreo para la resta
+C 0xB2BB mira si es ese tipo
+C 0xB2BF A = la opcion
+C 0xB2C0 compara la opcion con la 0x03
+C 0xB2C7 mira la bandera 3 de la historia (0xEB65)
+C 0xB2D4 acarreo: la opcion no vale todavia
+C 0xB2D5 vuelve con acarreo
+C 0xB2D6 HL = el tipo 0x090
+C 0xB2D9 sin acarreo para la resta
+C 0xB2DA mira si es ese tipo
+C 0xB2DE A = la opcion
+C 0xB2DF compara la opcion con la 0x03
+C 0xB2E6 mira la bandera 2 de la historia (0xEB59)
+C 0xB2EA mira la bandera 3 de la historia (0xEB59)
+C 0xB2EE acarreo: la opcion no vale todavia
+C 0xB2EF vuelve con acarreo
+C 0xB2F0 HL = el tipo 0x0A7
+C 0xB2F3 sin acarreo para la resta
+C 0xB2F4 mira si es ese tipo
+C 0xB2FB mira la bandera 3 de la historia (0xEB5C)
+C 0xB2FF acarreo: la opcion no vale todavia
+C 0xB300 vuelve con acarreo
+C 0xB301 HL = el tipo 0x0CC
+C 0xB304 sin acarreo para la resta
+C 0xB305 mira si es ese tipo
+C 0xB30C mira la bandera 0 de la historia (0xEB61)
+C 0xB310 acarreo: la opcion no vale todavia
+C 0xB311 vuelve con acarreo
+C 0xB312 HL = el tipo 0x0CB
+C 0xB315 sin acarreo para la resta
+C 0xB316 mira si es ese tipo
+C 0xB31A A = la opcion
+C 0xB31B compara la opcion con la 0x02
+C 0xB322 mira la bandera 4 de la historia (0xEB61)
+C 0xB326 acarreo: la opcion no vale todavia
+C 0xB327 vuelve con acarreo
+C 0xB328 HL = el tipo 0x0F8
+C 0xB32B sin acarreo para la resta
+C 0xB32C mira si es ese tipo
+C 0xB330 A = la opcion
+C 0xB331 compara la opcion con la 0x03
+C 0xB338 mira la bandera 1 de la historia (0xEB78)
+C 0xB33C acarreo: la opcion no vale todavia
+C 0xB33D vuelve con acarreo
+C 0xB33E HL = el tipo 0x155
+C 0xB341 sin acarreo para la resta
+C 0xB342 mira si es ese tipo
+C 0xB349 mira la bandera 3 de la historia (0xEB64)
+C 0xB34D acarreo: la opcion no vale todavia
+C 0xB34E vuelve con acarreo
+C 0xB34F HL = el tipo 0x156
+C 0xB352 sin acarreo para la resta
+C 0xB353 mira si es ese tipo
+C 0xB357 A = la opcion
+C 0xB358 mira si es la opcion 0
+C 0xB35E mira la bandera 1 de la historia (0xEB70)
+C 0xB362 acarreo: la opcion no vale todavia
+C 0xB363 vuelve con acarreo
+C 0xB367 mira la bandera 2 de la historia (0xEB70)
+C 0xB36B mira la bandera 4 de la historia (0xEB70)
+C 0xB36F mira la bandera 3 de la historia (0xEB70)
+C 0xB373 acarreo: la opcion no vale todavia
+C 0xB374 vuelve con acarreo
+C 0xB376 vuelve sin acarreo
+C 0xB3E9 la Y (o 0xE0 para esconder)
+C 0xB3F0 patron 0xFC
+C 0xB3F3 color 0
+C 0xB4C4 el siguiente bit de 0xEB7D
+C 0xB4C8 bit a 0: la primera posicion
+C 0xB4CF salta la segunda
+C 0xB4D2 bit a 1: la segunda posicion
+C 0xB4DA el patron
+C 0xB4E0 y el color
+C 0xB4E4 los 8 sprites
+C 0xB52D la clase del proyectil
+C 0xB52F libre: ahi va
+C 0xB531 el siguiente
+C 0xB619 escondido
+C 0xB61C X, patron y color a cero
+C 0xB968 el bit de la X dentro de la ficha
+C 0xB96C contra el de la Y
+C 0xB971 rebota por el lado que toca antes
+C 0xB982 el bit de la Y dentro de la ficha
+C 0xB986 contra el de la X
+C 0xB99C los dos bits contrarios
+C 0xB9A5 rebota por el lado que toca antes
+C 0xBC2E el byte leido
+C 0xBC2F igual al de la partida?
+C 0xBC36 todos iguales: siguiente paso
+C 0xBD08 al byte 0x0C del FCB
+C 0xBD0C el bloque actual a cero
+C 0xBD10 registros de un byte
+C 0xBD16 al registro aleatorio
+C 0xBD1A 5 bytes a cero
+C 0xBDA0 un byte de cada lado
+C 0xBDA3 se cambian
+C 0xBDA9 uno menos
+C 0xBE5A el byte
+C 0xBE5C 0xFF: acaba
+C 0xBEAA la letra
+C 0xBEAC 0xFF: acaba
+C 0xBEAE 3: acento, a la fila de arriba
+C 0xBEB2 una fila arriba y una columna atras
+
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xAABE 0xAB92 resto_AABE  lo apuntan con el banco puesto p02:9CF3 (0xAABE); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p02:9CF3 (212 bytes)
 F 0xAABE 16
@@ -145,12 +1595,22 @@ L 0xB75E invierte_vx velocidad X = - velocidad X
 L 0xB76A proyectil_rebota_y por arriba rebota; por abajo se pierde (0xE3A8 - 1 y, al acabarse, 0xE3F6 - 1)
 L 0xB790 invierte_vy velocidad Y = - velocidad Y
 L 0xB79C proyectil_contra_el_personaje si llega a la altura del personaje y lo toca, rebota y cambia de angulo
+L 0xB7E0 angulo_contra_x refleja el angulo si va contra el sentido de su velocidad X
+L 0xB7F5 acelera_proyectil cada 8 golpes la rapidez sube (hasta 3)
+L 0xB80F efecto_del_personaje con izquierda o derecha pulsada, el proyectil se tuerce (0xE8F2 = 1)
+L 0xB845 angulo_por_el_borde segun donde toca al personaje (sus bordes) refleja el angulo
 L 0xB87B refleja_angulo el angulo (ix+0x0F) reflejado (p03:B889)
 L 0xB88F velocidad_por_angulo las velocidades del angulo y la rapidez (p03:B8C6, p03:B8BA)
 L 0xB8D2 proyectil_contra_bloques mira los cuatro puntos del proyectil contra los bloques (p03:B906)
 L 0xB928 choque_con_bloque si el punto HL da en un bloque, rebota por el lado que toca
 L 0xB9AA golpea_bloque acarreo si el punto no es duro; si lo es le quita un golpe y, al romperse, lo borra y suelta lo que guardaba
+L 0xB9F7 suelta_actor_0 0xE400 = 1
+L 0xB9FD suelta_actor_1 0xE401 = 1
+L 0xBA03 suelta_actor_2 0xE402 = 1
+L 0xBA11 pegado_al_personaje el proyectil en la Y del personaje y 16 puntos a su izquierda
 L 0xBA9B proyectil_quieto las dos velocidades a cero
+L 0xBA9E vy_a_cero la velocidad Y a cero
+L 0xBAA3 vx_a_cero la velocidad X a cero
 L 0xBAA8 pon_velocidades velocidad X = DE y velocidad Y = HL
 L 0xBAAC pon_vy la velocidad Y = DE
 L 0xBAB3 pon_vx la velocidad X = DE
@@ -202,11 +1662,13 @@ L 0xBE5A copia_hasta_ff copia de HL a DE hasta 0xFF
 L 0xBE63 guarda_objetos el bit 0 de cada objeto de 0xE9D0 a los bits de 0xEB53-0xEB55
 L 0xBE86 cinta_mal_al_grabar para el motor y 0xE38F = 2
 L 0xBE98 aviso_de_grabar el nombre y el aviso de p03:BEC5
+L 0xBEA1 borra_ventana_disco borra la ventana del texto
 L 0xBEA4 nombre_a_vram el nombre de 0xEB1B a la VRAM 0x3A21
 L 0xBEE1 comprueba_la_cinta un paso de la comprobacion de la cinta (tabla p03:BEE7)
 L 0xBEF9 cinta_compara lee la cinta y la compara con 0xEB40 y la suma
 L 0xBF43 cinta_busca_cabecera busca 10 x 0xEA y el nombre de p03:BE03
 L 0xBF71 aviso_de_comprobar el nombre y el aviso de p03:BF7D
+L 0xBF7A borra_ventana_cinta borra la ventana del texto
 C 0xA00B apunta a las banderas de la historia, byte 0x22 (se graban con la partida)
 C 0xA01C apunta a las banderas de la historia, byte 0x22 (se graban con la partida)
 C 0xA04E guarda el dibujo de p12:733E que se ve (0: ninguno)
@@ -431,23 +1893,45 @@ C 0xB35B apunta a las banderas de la historia, byte 0x30 (se graban con la parti
 C 0xB364 apunta a las banderas de la historia, byte 0x30 (se graban con la partida)
 C 0xB377 lee la ficha del personaje de enfrente
 C 0xB383 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0xB390 guarda el paso del efecto que sube
+C 0xB394 guarda el paso del efecto que sube
+C 0xB39D guarda la Y del efecto que sube
+C 0xB3A3 guarda la X del efecto que sube
+C 0xB3B6 lee el paso del efecto que sube
+C 0xB3CA lee la Y del efecto que sube
+C 0xB3CE guarda la Y del efecto que sube
+C 0xB3D9 guarda el paso del efecto que sube
+C 0xB3E0 lee la Y del efecto que sube
+C 0xB3EB lee la X del efecto que sube
+C 0xB3F9 lee la animacion del modo 4 (1 o 2)
 C 0xB3FF despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xB406 apunta a la espera del estado, en cuadros
 C 0xB415 sonido_06: pide el sonido 6
+C 0xB41E copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 C 0xB421 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB42A copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 C 0xB42D vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB436 copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 C 0xB439 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB43D guarda la animacion del modo 4 (1 o 2)
 C 0xB441 apunta a la espera del estado, en cuadros
 C 0xB450 sonido_06: pide el sonido 6
+C 0xB459 copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 C 0xB45C vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB465 copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 C 0xB468 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB471 copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 C 0xB474 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB478 guarda la animacion del modo 4 (1 o 2)
 C 0xB4B8 lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xB4BF apunta a los sprites de los proyectiles (desde el 24)
+C 0xB525 apunta a los 3 proyectiles (16 bytes cada uno)
 C 0xB545 lee hacia donde mira en la escena de accion (1-4)
 C 0xB54C hl_mas_a: HL = HL + A
 C 0xB54F lee la Y del personaje en la escena de accion
 C 0xB557 lee la X del personaje en la escena de accion
 C 0xB560 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xB578 apunta a los 3 proyectiles (16 bytes cada uno)
 C 0xB57F lee la clase del proyectil (0: libre)
 C 0xB585 rutina_del_proyectil: la rutina de la clase A del proyectil (tabla p03:B5CF)
 C 0xB588 avanza_proyectil: Y += velocidad Y y X += velocidad X en la ficha IX
@@ -467,17 +1951,23 @@ C 0xB5BA guarda la X del proyectil (fraccion)
 C 0xB5BE lee la X del proyectil
 C 0xB5C6 la clase del proyectil (0: libre) = 0x00
 C 0xB5CC despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xB5DA apunta a los 3 proyectiles (16 bytes cada uno)
+C 0xB5E8 lee el rival de la escena (objeto 0, 0x20 bytes)
+C 0xB5EE apunta a los 3 proyectiles (16 bytes cada uno)
+C 0xB5F2 apunta a los sprites de los proyectiles (desde el 24)
 C 0xB5F7 lee la clase del proyectil (0: libre)
 C 0xB5FD lee la Y del proyectil
 C 0xB602 lee la X del proyectil
 C 0xB607 lee el patron del proyectil
 C 0xB60C lee el color del proyectil
+C 0xB625 vy_a_cero: la velocidad Y a cero
 C 0xB62B pon_vx: la velocidad X = DE
 C 0xB62E el patron del proyectil = 0x80
 C 0xB632 el color del proyectil = 0x0F
 C 0xB636 sonido_15: pide el sonido 0x15
 C 0xB63B guarda la clase del proyectil (0: libre)
 C 0xB63F lee hacia donde mira en la escena de accion (1-4)
+C 0xB645 vx_a_cero: la velocidad X a cero
 C 0xB64B pon_vy: la velocidad Y = DE
 C 0xB64E el patron del proyectil = 0x88
 C 0xB652 el color del proyectil = 0x0F
@@ -503,6 +1993,7 @@ C 0xB6CE el color del proyectil = 0x0F
 C 0xB6D2 lee la Y del proyectil
 C 0xB6D7 guarda la Y del proyectil
 C 0xB6DB guarda la rapidez del proyectil
+C 0xB6E1 lee las bolas que quedan en la escena
 C 0xB6EE guarda la cuenta del proyectil
 C 0xB6F1 proyectil_quieto: las dos velocidades a cero
 C 0xB6F4 lee el paso del proyectil
@@ -510,10 +2001,11 @@ C 0xB6F7 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xB6FE lee la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 C 0xB701 guarda la X del proyectil (fraccion)
 C 0xB704 guarda la X del proyectil
-C 0xB70C lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xB70C lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 C 0xB712 sonido_18: pide el sonido 0x18
 C 0xB715 sube el paso del proyectil
 C 0xB721 guarda el angulo del proyectil
+C 0xB724 lee la cuenta de lanzamientos de la escena
 C 0xB72E guarda la rapidez del proyectil
 C 0xB731 velocidad_por_angulo: las velocidades del angulo y la rapidez (p03:B8C6, p03:B8BA)
 C 0xB734 proyectil_rebota_x: en las X 0x28 o 0xD0 rebota
@@ -532,6 +2024,7 @@ C 0xB767 pon_vx: la velocidad X = DE
 C 0xB76C lee la Y del proyectil
 C 0xB777 guarda la clase del proyectil (0: libre)
 C 0xB77A sonido_29: pide el sonido 0x29
+C 0xB77D apunta a las bolas que quedan en la escena
 C 0xB784 apunta a la vida en la escena de accion
 C 0xB789 guarda la Y del proyectil
 C 0xB78C la Y del proyectil (fraccion) = 0x00
@@ -546,6 +2039,11 @@ C 0xB7BE le resta la Y del proyectil
 C 0xB7C2 sonido_19: pide el sonido 0x19
 C 0xB7C6 la Y del proyectil = 0xA4
 C 0xB7CA guarda la Y del proyectil (fraccion)
+C 0xB7CD angulo_contra_x: refleja el angulo si va contra el sentido de su velocidad X
+C 0xB7D0 acelera_proyectil: cada 8 golpes la rapidez sube (hasta 3)
+C 0xB7D3 efecto_del_personaje: con izquierda o derecha pulsada, el proyectil se tuerce (0xE8F2 = 1)
+C 0xB7D6 lee la variable de trabajo 0xE8F2 (16 bits)
+C 0xB7DA angulo_por_el_borde: segun donde toca al personaje (sus bordes) refleja el angulo
 C 0xB7DD velocidad_por_angulo: las velocidades del angulo y la rapidez (p03:B8C6, p03:B8BA)
 C 0xB7E0 lee la velocidad X del proyectil (alta)
 C 0xB7E4 lee el angulo del proyectil
@@ -556,9 +2054,12 @@ C 0xB7F8 lee la cuenta del proyectil
 C 0xB7FD la cuenta del proyectil = 0x08
 C 0xB801 lee la rapidez del proyectil
 C 0xB80B guarda la rapidez del proyectil
+C 0xB810 guarda la variable de trabajo 0xE8F2 (16 bits)
 C 0xB813 lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
+C 0xB81F guarda la variable de trabajo 0xE8F2 (16 bits)
 C 0xB822 lee el angulo del proyectil
 C 0xB82D guarda el angulo del proyectil
+C 0xB833 guarda la variable de trabajo 0xE8F2 (16 bits)
 C 0xB836 lee el angulo del proyectil
 C 0xB84B lee la X del personaje en la escena de accion
 C 0xB850 compara con la X del proyectil
@@ -601,7 +2102,11 @@ C 0xB994 mira el bit 7 de la velocidad Y del proyectil (alta)
 C 0xB999 invierte_vy: velocidad Y = - velocidad Y
 C 0xB9AA mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
 C 0xB9BF sonido_1a: pide el sonido 0x1A
+C 0xB9C5 apunta a la cuenta de lanzamientos de la escena
 C 0xB9C9 sonido_1b: pide el sonido 0x1B
+C 0xB9D9 suelta_actor_0: 0xE400 = 1
+C 0xB9DE suelta_actor_1: 0xE401 = 1
+C 0xB9E3 suelta_actor_2: 0xE402 = 1
 C 0xB9F7 apunta a los 8 actores de la sala (0x80 bytes cada uno)
 C 0xBA09 el patron del proyectil = 0x90
 C 0xBA0D el color del proyectil = 0x08
@@ -610,9 +2115,11 @@ C 0xBA14 guarda la Y del proyectil
 C 0xBA17 lee la X del personaje en la escena de accion
 C 0xBA1C guarda la X del proyectil
 C 0xBA20 lee el paso del proyectil
+C 0xBA2C pegado_al_personaje: el proyectil en la Y del personaje y 16 puntos a su izquierda
 C 0xBA2F lee las teclas que hay
 C 0xBA35 sube el paso del proyectil
-C 0xBA3C lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xBA39 pegado_al_personaje: el proyectil en la Y del personaje y 16 puntos a su izquierda
+C 0xBA3C lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 C 0xBA42 sonido_20: pide el sonido 0x20
 C 0xBA45 sube el paso del proyectil
 C 0xBA48 lee las teclas que hay
@@ -625,6 +2132,7 @@ C 0xBA87 el patron del proyectil = 0x98
 C 0xBA8B la cuenta del proyectil = 0x10
 C 0xBA8F sube el paso del proyectil
 C 0xBA94 baja la cuenta del proyectil
+C 0xBA9B vx_a_cero: la velocidad X a cero
 C 0xBAA8 pon_vx: la velocidad X = DE
 C 0xBAAC guarda la velocidad Y del proyectil (alta)
 C 0xBAAF guarda la velocidad Y del proyectil
@@ -663,6 +2171,7 @@ C 0xBB41 graba_siguiente: 0xE38E + 1
 C 0xBB44 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBB47 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBB4C guarda el resultado de la carga (2: fallo)
+C 0xBB50 borra_ventana_disco: borra la ventana del texto
 C 0xBB53 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBB56 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBB5B guarda el resultado de la carga (2: fallo)
@@ -676,10 +2185,12 @@ C 0xBB79 otro_cartucho_graba: prepara la peticion en 0xE012 y llama al otro cart
 C 0xBB7C lee el resultado de la carga (2: fallo)
 C 0xBB83 graba_siguiente: 0xE38E + 1
 C 0xBB86 apunta a la sala (16 bits)
+C 0xBB89 apunta a la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera)
 C 0xBB96 graba_siguiente: 0xE38E + 1
 C 0xBB99 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBB9C musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBBA1 guarda el resultado de la carga (2: fallo)
+C 0xBBA5 borra_ventana_cinta: borra la ventana del texto
 C 0xBBA8 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBBAB musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBBB0 guarda el resultado de la carga (2: fallo)
@@ -696,6 +2207,7 @@ C 0xBBDA lee el resultado de la carga (2: fallo)
 C 0xBBE4 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBBE7 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBBEC guarda el resultado de la carga (2: fallo)
+C 0xBBF0 borra_ventana_disco: borra la ventana del texto
 C 0xBBF3 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBBF6 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBBFB guarda el resultado de la carga (2: fallo)
@@ -707,13 +2219,16 @@ C 0xBC13 sonido_01: pide el sonido 1
 C 0xBC19 disco_lee: BDOS: abre el fichero de p03:BC85 y lee los 0x3E bytes a 0xE03A
 C 0xBC1C lee el resultado de la carga (2: fallo)
 C 0xBC26 apunta a la sala (16 bits)
+C 0xBC29 apunta a la partida leida del disco o del otro cartucho
 C 0xBC39 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBC3C musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBC41 guarda el resultado de la carga (2: fallo)
+C 0xBC45 borra_ventana_cinta: borra la ventana del texto
 C 0xBC48 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBC4B musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBC50 guarda el resultado de la carga (2: fallo)
 C 0xBC57 guarda la copia del primer byte de H.KEYI
+C 0xBC5F guarda la pila guardada durante el disco
 C 0xBC63 cambia_ram_del_disco: cambia 0xC000-0xD0FF por la copia de 0xE280 y borra 0xF1C0
 C 0xBC69 apunta a el puntero de la peticion al otro cartucho
 C 0xBC6C prepara_fcb: el FCB en DE: unidad 0, el nombre de HL y ceros
@@ -724,6 +2239,7 @@ C 0xBC78 bdos_cierra: BDOS 0x10 (cerrar)
 C 0xBC7B espera_y_devuelve_ram: 256 llamadas a 0xCE7B y vuelve a cambiar la RAM
 C 0xBC7E lee la copia del primer byte de H.KEYI
 C 0xBC93 guarda la copia del primer byte de H.KEYI
+C 0xBC9B guarda la pila guardada durante el disco
 C 0xBC9F cambia_ram_del_disco: cambia 0xC000-0xD0FF por la copia de 0xE280 y borra 0xF1C0
 C 0xBCA5 apunta a el puntero de la peticion al otro cartucho
 C 0xBCA8 prepara_fcb: el FCB en DE: unidad 0, el nombre de HL y ceros
@@ -732,14 +2248,24 @@ C 0xBCAE fcb_registro: bloque actual 0, registro de 1 byte y registro aleatorio 
 C 0xBCB1 bdos_lee: DTA = 0xE03A y 0x3E bytes con BDOS 0x27
 C 0xBCB4 espera_y_devuelve_ram: 256 llamadas a 0xCE7B y vuelve a cambiar la RAM
 C 0xBCB7 lee la copia del primer byte de H.KEYI
+C 0xBCBE lee el puntero del FCB del disco y el byte siguiente (16 bits)
 C 0xBCCA disco_mal: error: recupera la pila y H.KEYI y 0xE38F = 2
+C 0xBCCE lee el puntero del FCB del disco y el byte siguiente (16 bits)
 C 0xBCDA disco_mal: error: recupera la pila y H.KEYI y 0xE38F = 2
+C 0xBCDE lee el puntero del FCB del disco y el byte siguiente (16 bits)
 C 0xBCEA disco_mal: error: recupera la pila y H.KEYI y 0xE38F = 2
+C 0xBCEE guarda el puntero del FCB del disco y el byte siguiente (16 bits)
+C 0xBD02 guarda el puntero del FCB del disco y el byte siguiente (16 bits)
+C 0xBD05 lee el puntero del FCB del disco y el byte siguiente (16 bits)
 C 0xBD2D bdos_escribe_bloque: BDOS 0x26 (escribir bloque); error 4
+C 0xBD30 apunta a la partida leida del disco o del otro cartucho
 C 0xBD3B bdos_lee_bloque: BDOS 0x27 (leer bloque); error 3
+C 0xBD3E lee el puntero del FCB del disco y el byte siguiente (16 bits)
 C 0xBD4A disco_mal: error: recupera la pila y H.KEYI y 0xE38F = 2
+C 0xBD4E lee el puntero del FCB del disco y el byte siguiente (16 bits)
 C 0xBD5A disco_mal: error: recupera la pila y H.KEYI y 0xE38F = 2
 C 0xBD6D espera_y_devuelve_ram: 256 llamadas a 0xCE7B y vuelve a cambiar la RAM
+C 0xBD70 lee la pila guardada durante el disco y el byte siguiente (16 bits)
 C 0xBD74 lee la copia del primer byte de H.KEYI
 C 0xBD7C guarda el resultado de la carga (2: fallo)
 C 0xBD80 intercambia_ram: intercambia 0x1100 bytes de 0xE280 con 0xC000
@@ -773,12 +2299,14 @@ C 0xBE57 apunta a el segundo nombre de la partida guardada
 C 0xBE63 apunta a los objetos (dos bytes cada uno; bit 0: se lleva)
 C 0xBE66 apunta a los objetos de la partida guardada (bits)
 C 0xBE7D lee el objeto 7 (bit 0: se lleva)
+C 0xBE89 borra_ventana_disco: borra la ventana del texto
 C 0xBE8C musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBE8F musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBE94 guarda el resultado de la carga (2: fallo)
 C 0xBE98 nombre_a_vram: el nombre de 0xEB1B a la VRAM 0x3A21
 C 0xBE9E bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
 C 0xBEA1 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0xBEA4 apunta a el nombre de quien habla (5 bytes)
 C 0xBEE1 lee el paso del menu de carga
 C 0xBEE4 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xBEED borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
@@ -792,6 +2320,7 @@ C 0xBF22 cinta_siguiente: 0xE38E + 1
 C 0xBF25 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBF28 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBF2D guarda el resultado de la carga (2: fallo)
+C 0xBF34 borra_ventana_cinta: borra la ventana del texto
 C 0xBF37 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
 C 0xBF3A musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
 C 0xBF3F guarda el resultado de la carga (2: fallo)

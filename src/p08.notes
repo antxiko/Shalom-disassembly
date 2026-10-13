@@ -1,5 +1,20 @@
 # Notas del banco 08
 
+# --- A MANO: comentarios, nombres y bloques ---
+C 0xA937 en la Y 0x10
+C 0xA93C no baja
+C 0xA959 en la X 0x90
+C 0xA95E no va a la izquierda
+C 0xADFD en las Y 0x30 y 0x50
+C 0xADFF la X 16 menos
+C 0xAE03 y la Y 16 menos
+C 0xB5B2 su fotograma
+C 0xB5B5 tiene al personaje al lado?
+C 0xB5BA cuenta las vueltas
+C 0xBE17 cuenta
+C 0xBE21 a 0x40 el fotograma 0x1E
+C 0xBE26 a 0x20 el 0x1F
+
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xA000 0xA00B opciones_9FF9_cola  [m1][m2], un puntero por bit de m2 (p00:5532) y, por cada bit de m1 que no esta en m2, [n] y n numeros de mensaje (p00:5466-547E) (sigue del banco 7); lo leen p00:5401 (11 bytes)
 F 0xA000 16
@@ -72,6 +87,8 @@ L 0xA303 actor_a5 la rutina del actor de tipo 0xA5 (p07:882D)
 L 0xA38A actor_01 la rutina de los actores de tipo 0x01, 0x02, 0x03, 0x05 (p07:882D)
 L 0xA3AB empieza_paseo_10 el siguiente paso, los fotogramas 0x10-0x16 y el de su direccion
 L 0xA3B4 empieza_paseo_08 el siguiente paso, los fotogramas 0x08-0x0E y el de su direccion
+L 0xA424 invierte_direccion_20 (ix+0x20) XOR 7: la direccion contraria
+L 0xA42D fotograma_22 el fotograma de la direccion (ix+0x22)
 L 0xA434 actor_0e la rutina del actor de tipo 0x0E (p07:882D)
 L 0xA438 actor_0f la rutina del actor de tipo 0x0F (p07:882D)
 L 0xA43C actor_04 la rutina de los actores de tipo 0x04, 0xF9 (p07:882D)
@@ -99,6 +116,7 @@ L 0xA80E actor_6d la rutina del actor de tipo 0x6D (p07:882D)
 L 0xA837 actor_10 la rutina de los actores de tipo 0x10, 0x11 (p07:882D)
 L 0xA83F actor_12 la rutina del actor de tipo 0x12 (p07:882D)
 L 0xA8C2 actor_13 la rutina del actor de tipo 0x13 (p07:882D)
+L 0xAAE0 busca_al_personaje si tiene al personaje al lado, se para y habla con el (texto 0)
 L 0xAB09 actor_14 la rutina del actor de tipo 0x14 (p07:882D)
 L 0xABEE actor_15 la rutina del actor de tipo 0x15 (p07:882D)
 L 0xAC4E actor_16 la rutina del actor de tipo 0x16 (p07:882D)
@@ -151,6 +169,7 @@ L 0xB6BA actor_a9 la rutina del actor de tipo 0xA9 (p07:882D)
 L 0xB6CB actor_aa la rutina del actor de tipo 0xAA (p07:882D)
 L 0xB714 actor_ad la rutina del actor de tipo 0xAD (p07:882D)
 L 0xB79C actor_ae la rutina del actor de tipo 0xAE (p07:882D)
+L 0xB7C2 mira_arriba_y_quieto siguiente paso, fotograma 8 mirando arriba
 L 0xB827 actor_c8 la rutina del actor de tipo 0xC8 (p07:882D)
 L 0xB847 actor_5b la rutina de los actores de tipo 0x5B, 0x5C, 0x5D, 0x5E (p07:882D)
 L 0xB84F actor_50 la rutina del actor de tipo 0x50 (p07:882D)
@@ -182,6 +201,8 @@ L 0xBBDD actor_d5 la rutina de los actores de tipo 0xD5, 0x11F, 0x122, 0x126, 0x
 L 0xBBE7 actor_cd la rutina de los actores de tipo 0xCD, 0xCE (p07:882D)
 L 0xBC20 actor_da la rutina del actor de tipo 0xDA (p07:882D)
 L 0xBC34 actor_dd la rutina del actor de tipo 0xDD (p07:882D)
+L 0xBC67 lleva_al_personaje el actor toma al personaje (modo 9) y se pone a su altura
+L 0xBC83 mira_a (ix+0x0B) = A
 L 0xBCF3 actor_11b la rutina del actor de tipo 0x11B (p07:882D)
 L 0xBD1B actor_70 la rutina de los actores de tipo 0x70, 0x71, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F (p07:882D)
 L 0xBD2B actor_73 la rutina de los actores de tipo 0x73, 0x74 (p07:882D)
@@ -213,6 +234,7 @@ L 0xBFB8 actor_fe la rutina del actor de tipo 0xFE (p07:882D)
 L 0xBFC2 actor_ff la rutina del actor de tipo 0xFF (p07:882D)
 C 0xA303 lee el paso del actor
 C 0xA30C apunta a las banderas de la historia, byte 0x2C (se graban con la partida)
+C 0xA313 guarda un actor lleva al personaje (no hay menu)
 C 0xA316 sube el paso del actor
 C 0xA319 la direccion a la que mira el actor = 0x02
 C 0xA31D el fotograma del actor (p07:97E8) = 0x10
@@ -233,6 +255,7 @@ C 0xA356 pon_bloque_de_enfrente: pone B en el bloque de delante
 C 0xA359 velocidad_por_direccion: (ix+6), (ix+7) = el paso de la direccion (ix+0x0A) (p07:8B36)
 C 0xA35C sonido_37: pide el sonido 0x37
 C 0xA363 sube el paso del actor
+C 0xA36C guarda un actor lleva al personaje (no hay menu)
 C 0xA36F guarda el modo del personaje (tabla p01:718E)
 C 0xA372 borra_actor: los 0x80 bytes de la ficha IX a cero
 C 0xA377 guarda el dibujo de p12:733E que se ve (0: ninguno)
@@ -258,12 +281,14 @@ C 0xA3E4 lee la X del actor
 C 0xA3E7 lee la Y del actor
 C 0xA3F9 lee la Y del actor
 C 0xA3FC lee la X del actor
+C 0xA402 invierte_direccion_20: (ix+0x20) XOR 7: la direccion contraria
 C 0xA405 guarda la direccion en la que anda el actor (0: quieto)
 C 0xA408 guarda la direccion a la que mira el actor
 C 0xA40B si el actor se mueve (bit 0; p07:87FA) = 0x01
 C 0xA415 lee la Y del actor
 C 0xA418 lee la X del actor
 C 0xA41B pon_bloque_de_enfrente: pone B en el bloque de delante
+C 0xA41E fotograma_22: el fotograma de la direccion (ix+0x22)
 C 0xA421 velocidad_por_direccion: (ix+6), (ix+7) = el paso de la direccion (ix+0x0A) (p07:8B36)
 C 0xA442 guarda el fotograma del actor (p07:97E8)
 C 0xA445 lee el paso del actor
@@ -348,6 +373,7 @@ C 0xA5EB guarda la direccion en la que anda el actor (0: quieto)
 C 0xA5EE el paso del actor = 0x02
 C 0xA5F6 lee la Y del actor
 C 0xA5F9 lee la X del actor
+C 0xA5FC guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xA602 fotograma_por_direccion: (ix+8) = el de su direccion (ix+0x0B) mas el bit 4 de la cuenta
 C 0xA60A fotograma_por_direccion: (ix+8) = el de su direccion (ix+0x0B) mas el bit 4 de la cuenta
 C 0xA60D si el actor se mueve (bit 0; p07:87FA) = 0x01
@@ -416,6 +442,7 @@ C 0xA749 fotogramas_00: los fotogramas de las cuatro direcciones: 0x00, 0x02, 0x
 C 0xA74E habla_con_1_2_3: datos del personaje, p03:AB92, el texto y modo 3
 C 0xA751 el fotograma del actor (p07:97E8) = 0x02
 C 0xA755 lee las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0xA75D guarda un actor lleva al personaje (no hay menu)
 C 0xA760 sube el paso del actor
 C 0xA765 guarda el modo del personaje (tabla p01:718E)
 C 0xA768 direccion_del_personaje: la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
@@ -444,6 +471,7 @@ C 0xA7CB lee la direccion en la que anda el actor (0: quieto)
 C 0xA7CF sigue_andando: su fotograma; al llegar al bloque se para y libera el que deja
 C 0xA7D2 lee la Y del actor
 C 0xA7D9 guarda el modo del personaje (tabla p01:718E)
+C 0xA7DC guarda un actor lleva al personaje (no hay menu)
 C 0xA7E3 pon_bloque_de_enfrente: pone B en el bloque de delante
 C 0xA7E6 borra_actor: los 0x80 bytes de la ficha IX a cero
 C 0xA7EB habla_con_1_2_3: datos del personaje, p03:AB92, el texto y modo 3
@@ -467,6 +495,7 @@ C 0xA82C lee la Y del actor
 C 0xA82F lee la X del actor
 C 0xA834 pon_bloque_de_enfrente: pone B en el bloque de delante
 C 0xA837 lee el paso del actor
+C 0xA841 guarda un actor lleva al personaje (no hay menu)
 C 0xA844 lee el paso del actor
 C 0xA84A lee la X del actor
 C 0xA850 la X del actor = 0xB0
@@ -486,6 +515,7 @@ C 0xA88F velocidad_por_direccion: (ix+6), (ix+7) = el paso de la direccion (ix+0
 C 0xA892 sube el paso del actor
 C 0xA895 lee el paso del actor
 C 0xA89C guarda el modo del personaje (tabla p01:718E)
+C 0xA89F guarda un actor lleva al personaje (no hay menu)
 C 0xA8A3 lee la X del actor
 C 0xA8A6 lee la Y del actor
 C 0xA8A9 pon_bloque_de_enfrente: pone B en el bloque de delante
@@ -519,6 +549,7 @@ C 0xA99A lee la Y del actor
 C 0xA9A2 lee la X del actor
 C 0xA9AC guarda la direccion en la que anda el actor (0: quieto)
 C 0xA9AF echa_a_andar: mira hacia A y, si el bloque de delante esta libre y no es el borde, se pone en marcha y lo reserva (4)
+C 0xA9B2 busca_al_personaje: si tiene al personaje al lado, se para y habla con el (texto 0)
 C 0xA9B5 lee el paso del actor
 C 0xA9E0 lee la Y del actor
 C 0xA9E8 lee la Y del personaje
@@ -535,6 +566,7 @@ C 0xAA3D echa_a_andar: mira hacia A y, si el bloque de delante esta libre y no e
 C 0xAA44 lee la direccion a la que mira el actor
 C 0xAA49 lee la X del personaje
 C 0xAA4C compara con la X del actor
+C 0xAA53 busca_al_personaje: si tiene al personaje al lado, se para y habla con el (texto 0)
 C 0xAA56 lee el paso del actor
 C 0xAA6A lee la Y del personaje
 C 0xAA6D compara con la Y del actor
@@ -579,6 +611,7 @@ C 0xAB47 apunta a el modo del personaje (tabla p01:718E)
 C 0xAB55 pon_bloque_de_enfrente: pone B en el bloque de delante
 C 0xAB59 guarda si el actor se mueve (bit 0; p07:87FA)
 C 0xAB5C guarda la direccion en la que anda el actor (0: quieto)
+C 0xAB63 guarda un actor lleva al personaje (no hay menu)
 C 0xAB66 direccion_del_personaje: la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
 C 0xAB69 guarda la direccion del paso en curso
 C 0xAB6C guarda la direccion a la que mira el actor
@@ -621,6 +654,7 @@ C 0xAC28 lee la X del actor
 C 0xAC31 guarda la direccion a la que mira el actor
 C 0xAC34 si el actor se mueve (bit 0; p07:87FA) = 0x01
 C 0xAC38 guarda la direccion en la que anda el actor (0: quieto)
+C 0xAC3E guarda un actor lleva al personaje (no hay menu)
 C 0xAC42 lee la X del actor
 C 0xAC45 lee la Y del actor
 C 0xAC48 pon_bloque_de_enfrente: pone B en el bloque de delante
@@ -679,6 +713,8 @@ C 0xAD2F sigue_andando: su fotograma; al llegar al bloque se para y libera el qu
 C 0xAD35 guarda la direccion a la que mira el actor
 C 0xAD38 lee la Y del actor
 C 0xAD3B lee la X del actor
+C 0xAD3E guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0xAD46 lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xAD49 lee la direccion a la que mira el actor
 C 0xAD52 guarda la direccion en la que anda el actor (0: quieto)
 C 0xAD55 si el actor se mueve (bit 0; p07:87FA) = 0x01
@@ -792,6 +828,7 @@ C 0xAF96 sube el paso del actor
 C 0xAFA2 crea_actor: en el primer hueco de 0xE400: el tipo BC en (E, D), direccion al azar, colores (p07:83B4) y nombre (p08:A063)
 C 0xAFA5 lee las banderas de la historia, byte 0x22 (se graban con la partida)
 C 0xAFAB sube el paso del actor
+C 0xAFB0 guarda un actor lleva al personaje (no hay menu)
 C 0xAFB3 direccion_del_personaje: la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
 C 0xAFBC guarda la direccion a la que mira el actor
 C 0xAFBF lee la direccion a la que mira el actor
@@ -806,6 +843,7 @@ C 0xAFDD lee la direccion en la que anda el actor (0: quieto)
 C 0xAFE1 sigue_andando: su fotograma; al llegar al bloque se para y libera el que deja
 C 0xAFE4 lee la X del actor
 C 0xAFEB guarda el modo del personaje (tabla p01:718E)
+C 0xAFEE guarda un actor lleva al personaje (no hay menu)
 C 0xAFF1 lee la Y del actor
 C 0xAFF7 pon_bloque_de_enfrente: pone B en el bloque de delante
 C 0xAFFA borra_actor: los 0x80 bytes de la ficha IX a cero
@@ -872,6 +910,7 @@ C 0xB102 lee las banderas de la historia, byte 0x28 (se graban con la partida)
 C 0xB108 lee la X del personaje
 C 0xB113 sube el paso del actor
 C 0xB118 guarda el modo del personaje (tabla p01:718E)
+C 0xB11D guarda un actor lleva al personaje (no hay menu)
 C 0xB121 el paso del actor = 0x04
 C 0xB133 guarda la direccion en la que anda el actor (0: quieto)
 C 0xB136 echa_a_andar: mira hacia A y, si el bloque de delante esta libre y no es el borde, se pone en marcha y lo reserva (4)
@@ -886,6 +925,7 @@ C 0xB15B lee la Y del actor
 C 0xB164 guarda la direccion en la que anda el actor (0: quieto)
 C 0xB167 echa_a_andar: mira hacia A y, si el bloque de delante esta libre y no es el borde, se pone en marcha y lo reserva (4)
 C 0xB16B guarda el modo del personaje (tabla p01:718E)
+C 0xB16E guarda un actor lleva al personaje (no hay menu)
 C 0xB173 lee la Y del actor
 C 0xB176 lee la X del actor
 C 0xB179 pon_bloque_de_enfrente: pone B en el bloque de delante
@@ -911,6 +951,7 @@ C 0xB1C2 direccion_al_azar: una direccion al azar, libre si hay al menos dos lib
 C 0xB1C5 guarda la direccion a la que mira el actor
 C 0xB1C8 lee la Y del actor
 C 0xB1CB lee la X del actor
+C 0xB1CE guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xB1DF si el actor se mueve (bit 0; p07:87FA) = 0x01
 C 0xB1E3 guarda la direccion en la que anda el actor (0: quieto)
 C 0xB1E8 lee la Y del actor
@@ -962,6 +1003,7 @@ C 0xB2BE guarda el modo dentro de la sala (tabla p00:5A83)
 C 0xB2C2 direccion_del_personaje: la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
 C 0xB2CA lee la Y del actor
 C 0xB2CD lee la X del actor
+C 0xB2D0 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xB2DB lee la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
 C 0xB2E1 guarda la direccion en la que anda el actor (0: quieto)
 C 0xB2E4 si el actor se mueve (bit 0; p07:87FA) = 0x01
@@ -999,8 +1041,10 @@ C 0xB399 habla_con_1_2_3: datos del personaje, p03:AB92, el texto y modo 3
 C 0xB39C lee las banderas de la historia, byte 0x2A (se graban con la partida)
 C 0xB3A2 sube el paso del actor
 C 0xB3A7 guarda el modo del personaje (tabla p01:718E)
+C 0xB3AC guarda un actor lleva al personaje (no hay menu)
 C 0xB3AF apunta a las banderas de la historia, byte 0x2A (se graban con la partida)
 C 0xB3B4 el fotograma del actor (p07:97E8) = 0x1A
+C 0xB3BE copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 C 0xB3C1 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 C 0xB3CA sube el paso del actor
 C 0xB3CF guarda la direccion en la que anda el actor (0: quieto)
@@ -1010,6 +1054,7 @@ C 0xB3DB lee la direccion en la que anda el actor (0: quieto)
 C 0xB3E1 sigue_andando: su fotograma; al llegar al bloque se para y libera el que deja
 C 0xB3E4 el fotograma del actor (p07:97E8) = 0x1A
 C 0xB3EA guarda el modo del personaje (tabla p01:718E)
+C 0xB3ED guarda un actor lleva al personaje (no hay menu)
 C 0xB3F2 lee la Y del actor
 C 0xB3F5 lee la X del actor
 C 0xB3F8 pon_bloque_de_enfrente: pone B en el bloque de delante
@@ -1088,11 +1133,11 @@ C 0xB586 compara con la Y del actor
 C 0xB58F guarda la direccion a la que mira el actor
 C 0xB592 lee la Y del actor
 C 0xB595 lee la X del actor
+C 0xB598 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xB5A5 si el actor se mueve (bit 0; p07:87FA) = 0x01
 C 0xB5A9 guarda la direccion en la que anda el actor (0: quieto)
 C 0xB5AC fotograma_por_direccion: (ix+8) = el de su direccion (ix+0x0B) mas el bit 4 de la cuenta
 C 0xB5AF velocidad_por_direccion: (ix+6), (ix+7) = el paso de la direccion (ix+0x0A) (p07:8B36)
-C 0xB5B5 direccion_del_personaje: la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
 C 0xB5CF el paso del actor = 0x04
 C 0xB5DC guarda la direccion a la que mira el actor
 C 0xB5DF el paso del actor = 0x03
@@ -1133,6 +1178,7 @@ C 0xB68F aleatorio: A = el registro R revuelto con la cuenta de cuadros
 C 0xB695 guarda la direccion a la que mira el actor
 C 0xB698 lee la Y del actor
 C 0xB69B lee la X del actor
+C 0xB69E guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xB6AD si el actor se mueve (bit 0; p07:87FA) = 0x01
 C 0xB6B1 guarda la direccion en la que anda el actor (0: quieto)
 C 0xB6B4 fotograma_por_direccion: (ix+8) = el de su direccion (ix+0x0B) mas el bit 4 de la cuenta
@@ -1185,6 +1231,7 @@ C 0xB796 apunta a las banderas de la historia, byte 0x3A (se graban con la parti
 C 0xB79C lee el paso del actor
 C 0xB7A1 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0xB7AA apunta a las banderas de la historia, byte 0x34 (se graban con la partida)
+C 0xB7AF mira_arriba_y_quieto: siguiente paso, fotograma 8 mirando arriba
 C 0xB7B2 lee la direccion a la que mira el actor
 C 0xB7B5 guarda la direccion en la que anda el actor (0: quieto)
 C 0xB7B8 si el actor se mueve (bit 0; p07:87FA) = 0x01
@@ -1232,10 +1279,12 @@ C 0xB875 el fotograma del actor (p07:97E8) = 0x25
 C 0xB879 un_solo_fotograma: las cuatro direcciones con el fotograma (ix+8)
 C 0xB87C el fotograma del actor (p07:97E8) = 0x16
 C 0xB880 lee el paso del actor
+C 0xB885 guarda un actor lleva al personaje (no hay menu)
 C 0xB888 empieza_paseo_10: el siguiente paso, los fotogramas 0x10-0x16 y el de su direccion
 C 0xB88D habla_con_1_2_3: datos del personaje, p03:AB92, el texto y modo 3
 C 0xB890 lee las banderas de la historia, byte 0x2D (se graban con la partida)
 C 0xB898 guarda la direccion a la que mira el actor
+C 0xB89B guarda un actor lleva al personaje (no hay menu)
 C 0xB8A0 guarda el modo del personaje (tabla p01:718E)
 C 0xB8A3 empieza_paseo_08: el siguiente paso, los fotogramas 0x08-0x0E y el de su direccion
 C 0xB8A6 lee la direccion en la que anda el actor (0: quieto)
@@ -1249,6 +1298,7 @@ C 0xB8C5 guarda la direccion en la que anda el actor (0: quieto)
 C 0xB8C8 si el actor se mueve (bit 0; p07:87FA) = 0x01
 C 0xB8CC fotograma_por_direccion: (ix+8) = el de su direccion (ix+0x0B) mas el bit 4 de la cuenta
 C 0xB8CF velocidad_por_direccion: (ix+6), (ix+7) = el paso de la direccion (ix+0x0A) (p07:8B36)
+C 0xB8D4 guarda un actor lleva al personaje (no hay menu)
 C 0xB8DB sube el paso del actor
 C 0xB8DE apunta a las banderas de la historia, byte 0x34 (se graban con la partida)
 C 0xB8E3 sonido_22: pide el sonido 0x22
@@ -1311,6 +1361,7 @@ C 0xB9CE direccion_al_azar: una direccion al azar, libre si hay al menos dos lib
 C 0xB9D1 guarda la direccion a la que mira el actor
 C 0xB9D4 lee la Y del actor
 C 0xB9D7 lee la X del actor
+C 0xB9DA guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0xB9E4 en_el_borde_de_ix: como p00:5D80 con los bordes de la ficha IX (+0x30-0x33)
 C 0xB9EB si el actor se mueve (bit 0; p07:87FA) = 0x01
 C 0xB9EF guarda la direccion en la que anda el actor (0: quieto)
@@ -1375,6 +1426,7 @@ C 0xBAE0 lee la Y del actor
 C 0xBAE3 lee la X del actor
 C 0xBAEB guarda el modo dentro de la sala (tabla p00:5A83)
 C 0xBAEE lee el tipo del actor (bajo)
+C 0xBAF9 guarda el paso del desplazamiento (tabla p21:600F)
 C 0xBB0A lee las banderas de la historia, byte 0x1C (se graban con la partida)
 C 0xBB0F borra_actor: los 0x80 bytes de la ficha IX a cero
 C 0xBB12 lee el paso del actor
@@ -1448,9 +1500,11 @@ C 0xBC44 apunta a las banderas de la historia, byte 0x1D (se graban con la parti
 C 0xBC49 borra_actor: los 0x80 bytes de la ficha IX a cero
 C 0xBC4F lee el personaje va de un bloque a otro
 C 0xBC54 lee la X del personaje
+C 0xBC5A lleva_al_personaje: el actor toma al personaje (modo 9) y se pone a su altura
 C 0xBC5D apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
 C 0xBC64 habla_con_1_2_3: datos del personaje, p03:AB92, el texto y modo 3
 C 0xBC69 guarda el modo del personaje (tabla p01:718E)
+C 0xBC6E guarda un actor lleva al personaje (no hay menu)
 C 0xBC71 el fotograma del actor (p07:97E8) = 0x04
 C 0xBC75 fotogramas_00: los fotogramas de las cuatro direcciones: 0x00, 0x02, 0x04, 0x06
 C 0xBC78 sube el paso del actor
@@ -1467,6 +1521,7 @@ C 0xBC9A sigue_andando: su fotograma; al llegar al bloque se para y libera el qu
 C 0xBC9D lee la X del actor
 C 0xBCA4 sube el paso del actor
 C 0xBCA7 lee la Y del actor
+C 0xBCB2 mira_a: (ix+0x0B) = A
 C 0xBCB5 el fotograma del actor (p07:97E8) = 0x04
 C 0xBCB9 apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
 C 0xBCC2 habla_con_1_2_3: datos del personaje, p03:AB92, el texto y modo 3
@@ -1478,6 +1533,7 @@ C 0xBCD5 lee la direccion en la que anda el actor (0: quieto)
 C 0xBCD9 sigue_andando: su fotograma; al llegar al bloque se para y libera el que deja
 C 0xBCDC lee la X del actor
 C 0xBCE2 guarda el modo del personaje (tabla p01:718E)
+C 0xBCE5 guarda un actor lleva al personaje (no hay menu)
 C 0xBCE8 lee la Y del actor
 C 0xBCED pon_bloque_de_enfrente: pone B en el bloque de delante
 C 0xBCF0 borra_actor: los 0x80 bytes de la ficha IX a cero

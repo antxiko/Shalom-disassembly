@@ -161,7 +161,7 @@ actor_a5:		; la rutina del actor de tipo 0xA5 (p07:882D)
 	ld hl,0eb6ch		;a30c   ; apunta a las banderas de la historia, byte 0x2C (se graban con la partida)
 	set 7,(hl)		;a30f
 	ld a,001h		;a311
-	ld (0e3a9h),a		;a313
+	ld (0e3a9h),a		;a313   ; guarda un actor lleva al personaje (no hay menu)
 	inc (ix+002h)		;a316   ; sube el paso del actor
 	ld (ix+00bh),002h		;a319   ; la direccion a la que mira el actor = 0x02
 	ld (ix+008h),010h		;a31d   ; el fotograma del actor (p07:97E8) = 0x10
@@ -198,7 +198,7 @@ L_A367:
 	dec (ix+01fh)		;a367
 	ret nz			;a36a
 	xor a			;a36b
-	ld (0e3a9h),a		;a36c
+	ld (0e3a9h),a		;a36c   ; guarda un actor lleva al personaje (no hay menu)
 	ld (0e3c0h),a		;a36f   ; guarda el modo del personaje (tabla p01:718E)
 	call 08bb4h		;a372   ; borra_actor: los 0x80 bytes de la ficha IX a cero
 	ld a,003h		;a375
@@ -243,13 +243,13 @@ L_A3BD:
 	jr z,L_A3E2		;a3cb
 	ld a,(ix+023h)		;a3cd
 	dec a			;a3d0
-	jr z,L_A42D		;a3d1
+	jr z,fotograma_22		;a3d1
 	ld (ix+023h),001h		;a3d3
 	call 043d0h		;a3d7   ; aleatorio: A = el registro R revuelto con la cuenta de cuadros
 	and 003h		;a3da
 	inc a			;a3dc
 	ld (ix+022h),a		;a3dd
-	jr L_A42D		;a3e0
+	jr fotograma_22		;a3e0
 L_A3E2:
 	ld a,003h		;a3e2
 L_A3E4:
@@ -258,7 +258,7 @@ L_A3E4:
 	call 05d6ah		;a3ea
 	jr z,L_A3F6		;a3ed
 	cp 004h		;a3ef
-	jr z,L_A42D		;a3f1
+	jr z,fotograma_22		;a3f1
 	inc a			;a3f3
 	jr L_A3E4		;a3f4
 L_A3F6:
@@ -266,7 +266,7 @@ L_A3F6:
 	ld l,(ix+003h)		;a3f9   ; lee la Y del actor
 	ld h,(ix+004h)		;a3fc   ; lee la X del actor
 	call 05d6ah		;a3ff
-	call nz,L_A424		;a402
+	call nz,invierte_direccion_20		;a402   ; invierte_direccion_20: (ix+0x20) XOR 7: la direccion contraria
 	ld (ix+00ah),a		;a405   ; guarda la direccion en la que anda el actor (0: quieto)
 	ld (ix+00bh),a		;a408   ; guarda la direccion a la que mira el actor
 	ld (ix+005h),001h		;a40b   ; si el actor se mueve (bit 0; p07:87FA) = 0x01
@@ -275,14 +275,14 @@ L_A3F6:
 	ld l,(ix+003h)		;a415   ; lee la Y del actor
 	ld h,(ix+004h)		;a418   ; lee la X del actor
 	call 05dd3h		;a41b   ; pon_bloque_de_enfrente: pone B en el bloque de delante
-	call L_A42D		;a41e
+	call fotograma_22		;a41e   ; fotograma_22: el fotograma de la direccion (ix+0x22)
 	jp 08b26h		;a421   ; velocidad_por_direccion: (ix+6), (ix+7) = el paso de la direccion (ix+0x0A) (p07:8B36)
-L_A424:
+invierte_direccion_20:		; (ix+0x20) XOR 7: la direccion contraria
 	ld a,(ix+020h)		;a424
 	xor 007h		;a427
 	ld (ix+020h),a		;a429
 	ret			;a42c
-L_A42D:
+fotograma_22:		; el fotograma de la direccion (ix+0x22)
 	ld a,(ix+022h)		;a42d
 	call 08b14h		;a430
 	ret			;a433
@@ -510,7 +510,7 @@ L_A5F3:
 	ld a,(ix+01bh)		;a5f3
 	ld l,(ix+003h)		;a5f6   ; lee la Y del actor
 	ld h,(ix+004h)		;a5f9   ; lee la X del actor
-	ld (0e8e0h),hl		;a5fc
+	ld (0e8e0h),hl		;a5fc   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	call 05d6ah		;a5ff
 	jp nz,08b11h		;a602   ; fotograma_por_direccion: (ix+8) = el de su direccion (ix+0x0B) mas el bit 4 de la cuenta
 	ld b,a			;a605
@@ -710,7 +710,7 @@ L_A751:
 	bit 3,a		;a758
 	ret z			;a75a
 	ld a,001h		;a75b
-	ld (0e3a9h),a		;a75d
+	ld (0e3a9h),a		;a75d   ; guarda un actor lleva al personaje (no hay menu)
 	inc (ix+002h)		;a760   ; sube el paso del actor
 	ld a,009h		;a763
 	ld (0e3c0h),a		;a765   ; guarda el modo del personaje (tabla p01:718E)
@@ -768,7 +768,7 @@ L_A7CB:
 	sub 070h		;a7d5
 	jr nz,L_A793		;a7d7
 	ld (0e3c0h),a		;a7d9   ; guarda el modo del personaje (tabla p01:718E)
-	ld (0e3a9h),a		;a7dc
+	ld (0e3a9h),a		;a7dc   ; guarda un actor lleva al personaje (no hay menu)
 	ld hl,05070h		;a7df
 	ld b,a			;a7e2
 	call 05dd3h		;a7e3   ; pon_bloque_de_enfrente: pone B en el bloque de delante
@@ -816,7 +816,7 @@ actor_10:		; la rutina de los actores de tipo 0x10, 0x11 (p07:882D)
 	jp L_A4E6		;a83c
 actor_12:		; la rutina del actor de tipo 0x12 (p07:882D)
 	ld a,001h		;a83f
-	ld (0e3a9h),a		;a841
+	ld (0e3a9h),a		;a841   ; guarda un actor lleva al personaje (no hay menu)
 	ld a,(ix+002h)		;a844   ; lee el paso del actor
 	or a			;a847
 	jr nz,L_A862		;a848
@@ -854,7 +854,7 @@ L_A892:
 	sub 003h		;a898
 	jr nz,L_A8AF		;a89a
 	ld (0e3c0h),a		;a89c   ; guarda el modo del personaje (tabla p01:718E)
-	ld (0e3a9h),a		;a89f
+	ld (0e3a9h),a		;a89f   ; guarda un actor lleva al personaje (no hay menu)
 	ld b,a			;a8a2
 	ld h,(ix+004h)		;a8a3   ; lee la X del actor
 	ld l,(ix+003h)		;a8a6   ; lee la Y del actor
@@ -938,10 +938,10 @@ L_A910:
 	ret z			;a934
 	jr L_A977		;a935
 L_A937:
-	cp 010h		;a937
+	cp 010h		;a937   ; en la Y 0x10
 	jr nz,L_A977		;a939
 	ld a,b			;a93b
-	cp 002h		;a93c
+	cp 002h		;a93c   ; no baja
 	ret z			;a93e
 	jr L_A977		;a93f
 L_A941:
@@ -959,10 +959,10 @@ L_A953:
 	ret z			;a956
 	jr L_A977		;a957
 L_A959:
-	cp 090h		;a959
+	cp 090h		;a959   ; en la X 0x90
 	jr nz,L_A977		;a95b
 	ld a,b			;a95d
-	cp 003h		;a95e
+	cp 003h		;a95e   ; no va a la izquierda
 	ret z			;a960
 	jr L_A977		;a961
 L_A963:
@@ -1007,7 +1007,7 @@ L_A99A:
 	ld (ix+00ah),a		;a9ac   ; guarda la direccion en la que anda el actor (0: quieto)
 	jp echa_a_andar		;a9af   ; echa_a_andar: mira hacia A y, si el bloque de delante esta libre y no es el borde, se pone en marcha y lo reserva (4)
 L_A9B2:
-	call L_AAE0		;a9b2
+	call busca_al_personaje		;a9b2   ; busca_al_personaje: si tiene al personaje al lado, se para y habla con el (texto 0)
 	ld a,(ix+002h)		;a9b5   ; lee el paso del actor
 	cp 005h		;a9b8
 	ret z			;a9ba
@@ -1080,7 +1080,7 @@ L_AA49:
 	jr z,L_AA40		;aa4f
 	jr L_AA35		;aa51
 L_AA53:
-	call L_AAE0		;aa53
+	call busca_al_personaje		;aa53   ; busca_al_personaje: si tiene al personaje al lado, se para y habla con el (texto 0)
 	ld a,(ix+002h)		;aa56   ; lee el paso del actor
 	cp 005h		;aa59
 	ret z			;aa5b
@@ -1151,7 +1151,7 @@ L_AAD8:
 L_AADA:
 	ld (ix+00ah),a		;aada   ; guarda la direccion en la que anda el actor (0: quieto)
 	jp echa_a_andar		;aadd   ; echa_a_andar: mira hacia A y, si el bloque de delante esta libre y no es el borde, se pone en marcha y lo reserva (4)
-L_AAE0:
+busca_al_personaje:		; si tiene al personaje al lado, se para y habla con el (texto 0)
 	ld a,001h		;aae0
 L_AAE2:
 	ld h,(ix+004h)		;aae2   ; lee la X del actor
@@ -1226,7 +1226,7 @@ L_AB3F:
 	ld (ix+00ah),a		;ab5c   ; guarda la direccion en la que anda el actor (0: quieto)
 	ld (ix+020h),a		;ab5f
 	inc a			;ab62
-	ld (0e3a9h),a		;ab63
+	ld (0e3a9h),a		;ab63   ; guarda un actor lleva al personaje (no hay menu)
 	call 08b47h		;ab66   ; direccion_del_personaje: la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
 	ld (0e3c5h),a		;ab69   ; guarda la direccion del paso en curso
 	ld (ix+00bh),a		;ab6c   ; guarda la direccion a la que mira el actor
@@ -1337,7 +1337,7 @@ L_AC21:
 	ld (ix+00ah),a		;ac38   ; guarda la direccion en la que anda el actor (0: quieto)
 	jp L_A881		;ac3b
 L_AC3E:
-	ld (0e3a9h),a		;ac3e
+	ld (0e3a9h),a		;ac3e   ; guarda un actor lleva al personaje (no hay menu)
 	ld b,a			;ac41
 	ld h,(ix+004h)		;ac42   ; lee la X del actor
 	ld l,(ix+003h)		;ac45   ; lee la Y del actor
@@ -1440,10 +1440,10 @@ L_AD2B:
 	ld (ix+00bh),a		;ad35   ; guarda la direccion a la que mira el actor
 	ld l,(ix+003h)		;ad38   ; lee la Y del actor
 	ld h,(ix+004h)		;ad3b   ; lee la X del actor
-	ld (0e8e0h),hl		;ad3e
+	ld (0e8e0h),hl		;ad3e   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	call 05d89h		;ad41
 	jr z,L_AD6A		;ad44
-	ld hl,(0e8e0h)		;ad46
+	ld hl,(0e8e0h)		;ad46   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld a,(ix+00bh)		;ad49   ; lee la direccion a la que mira el actor
 	call 05d6ah		;ad4c
 	jp nz,08b14h		;ad4f
@@ -1532,12 +1532,12 @@ L_ADCB:
 	cp 050h		;adf9
 	jr nz,L_AE05		;adfb
 L_ADFD:
-	ld b,a			;adfd
+	ld b,a			;adfd   ; en las Y 0x30 y 0x50
 	ld a,d			;adfe
-	sub 010h		;adff
+	sub 010h		;adff   ; la X 16 menos
 	ld d,a			;ae01
 	ld a,b			;ae02
-	sub 010h		;ae03
+	sub 010h		;ae03   ; y la Y 16 menos
 L_AE05:
 	ld e,a			;ae05
 	ld bc,00012h		;ae06
@@ -1762,7 +1762,7 @@ L_AFA5:
 	ret z			;afaa
 	inc (ix+002h)		;afab   ; sube el paso del actor
 	ld a,001h		;afae
-	ld (0e3a9h),a		;afb0
+	ld (0e3a9h),a		;afb0   ; guarda un actor lleva al personaje (no hay menu)
 	call 08b47h		;afb3   ; direccion_del_personaje: la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
 	dec a			;afb6
 	ld a,002h		;afb7
@@ -1791,7 +1791,7 @@ L_AFDD:
 	sub 0b0h		;afe7
 	jr nz,L_AFBF		;afe9
 	ld (0e3c0h),a		;afeb   ; guarda el modo del personaje (tabla p01:718E)
-	ld (0e3a9h),a		;afee
+	ld (0e3a9h),a		;afee   ; guarda un actor lleva al personaje (no hay menu)
 	ld l,(ix+003h)		;aff1   ; lee la Y del actor
 	ld h,0b0h		;aff4
 	ld b,a			;aff6
@@ -1937,7 +1937,7 @@ L_B116:
 	ld a,009h		;b116
 	ld (0e3c0h),a		;b118   ; guarda el modo del personaje (tabla p01:718E)
 	ld a,001h		;b11b
-	ld (0e3a9h),a		;b11d
+	ld (0e3a9h),a		;b11d   ; guarda un actor lleva al personaje (no hay menu)
 	ret			;b120
 L_B121:
 	ld (ix+002h),004h		;b121   ; el paso del actor = 0x04
@@ -1977,7 +1977,7 @@ L_B15B:
 L_B16A:
 	xor a			;b16a
 	ld (0e3c0h),a		;b16b   ; guarda el modo del personaje (tabla p01:718E)
-	ld (0e3a9h),a		;b16e
+	ld (0e3a9h),a		;b16e   ; guarda un actor lleva al personaje (no hay menu)
 	ld b,000h		;b171
 	ld l,(ix+003h)		;b173   ; lee la Y del actor
 	ld h,(ix+004h)		;b176   ; lee la X del actor
@@ -2021,7 +2021,7 @@ echa_a_andar:		; mira hacia A y, si el bloque de delante esta libre y no es el b
 	ld (ix+00bh),a		;b1c5   ; guarda la direccion a la que mira el actor
 	ld l,(ix+003h)		;b1c8   ; lee la Y del actor
 	ld h,(ix+004h)		;b1cb   ; lee la X del actor
-	ld (0e8e0h),hl		;b1ce
+	ld (0e8e0h),hl		;b1ce   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	call 05d6ah		;b1d1
 	jp nz,08b14h		;b1d4
 	ld b,a			;b1d7
@@ -2137,7 +2137,7 @@ L_B2C2:
 	inc a			;b2c9
 	ld l,(ix+003h)		;b2ca   ; lee la Y del actor
 	ld h,(ix+004h)		;b2cd   ; lee la X del actor
-	ld (0e8e0h),hl		;b2d0
+	ld (0e8e0h),hl		;b2d0   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	call 05d6ah		;b2d3
 	ret nz			;b2d6
 	call 05d89h		;b2d7
@@ -2245,13 +2245,13 @@ L_B39C:
 	ld a,009h		;b3a5
 	ld (0e3c0h),a		;b3a7   ; guarda el modo del personaje (tabla p01:718E)
 	ld a,001h		;b3aa
-	ld (0e3a9h),a		;b3ac
+	ld (0e3a9h),a		;b3ac   ; guarda un actor lleva al personaje (no hay menu)
 	ld hl,0eb6ah		;b3af   ; apunta a las banderas de la historia, byte 0x2A (se graban con la partida)
 	res 1,(hl)		;b3b2
 	ld (ix+008h),01ah		;b3b4   ; el fotograma del actor (p07:97E8) = 0x1A
 	ld de,05000h		;b3b8
 	ld hl,0b3c4h		;b3bb
-	call 044b8h		;b3be
+	call 044b8h		;b3be   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	jp 05e5fh		;b3c1   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 
 ; ----------------------------------------------------------------------
@@ -2284,7 +2284,7 @@ L_B3DB:
 L_B3E9:
 	xor a			;b3e9
 	ld (0e3c0h),a		;b3ea   ; guarda el modo del personaje (tabla p01:718E)
-	ld (0e3a9h),a		;b3ed
+	ld (0e3a9h),a		;b3ed   ; guarda un actor lleva al personaje (no hay menu)
 	ld b,000h		;b3f0
 	ld l,(ix+003h)		;b3f2   ; lee la Y del actor
 	ld h,(ix+004h)		;b3f5   ; lee la X del actor
@@ -2518,7 +2518,7 @@ L_B58F:
 	ld (ix+00bh),a		;b58f   ; guarda la direccion a la que mira el actor
 	ld l,(ix+003h)		;b592   ; lee la Y del actor
 	ld h,(ix+004h)		;b595   ; lee la X del actor
-	ld (0e8e0h),hl		;b598
+	ld (0e8e0h),hl		;b598   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	call 05d6ah		;b59b
 	jr z,L_B5B2		;b59e
 	ld a,(hl)			;b5a0
@@ -2529,10 +2529,10 @@ L_B58F:
 	call 08b11h		;b5ac   ; fotograma_por_direccion: (ix+8) = el de su direccion (ix+0x0B) mas el bit 4 de la cuenta
 	jp 08b26h		;b5af   ; velocidad_por_direccion: (ix+6), (ix+7) = el paso de la direccion (ix+0x0A) (p07:8B36)
 L_B5B2:
-	call 08b14h		;b5b2
-	call 08b47h		;b5b5   ; direccion_del_personaje: la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
+	call 08b14h		;b5b2   ; su fotograma
+	call 08b47h		;b5b5   ; tiene al personaje al lado?
 	jr c,L_B5DC		;b5b8
-	ld a,(ix+021h)		;b5ba
+	ld a,(ix+021h)		;b5ba   ; cuenta las vueltas
 	inc a			;b5bd
 	ld (ix+021h),a		;b5be
 	cp 002h		;b5c1
@@ -2641,7 +2641,7 @@ L_B688:
 	ld (ix+00bh),a		;b695   ; guarda la direccion a la que mira el actor
 	ld l,(ix+003h)		;b698   ; lee la Y del actor
 	ld h,(ix+004h)		;b69b   ; lee la X del actor
-	ld (0e8e0h),hl		;b69e
+	ld (0e8e0h),hl		;b69e   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	call 05d6ah		;b6a1
 	jp z,08b14h		;b6a4
 	ld a,(hl)			;b6a7
@@ -2783,14 +2783,14 @@ DATA_saltos_B7A4:
 L_B7AA:
 	ld hl,0eb74h		;b7aa   ; apunta a las banderas de la historia, byte 0x34 (se graban con la partida)
 	set 0,(hl)		;b7ad
-	call L_B7C2		;b7af
+	call mira_arriba_y_quieto		;b7af   ; mira_arriba_y_quieto: siguiente paso, fotograma 8 mirando arriba
 L_B7B2:
 	ld a,(ix+00bh)		;b7b2   ; lee la direccion a la que mira el actor
 	ld (ix+00ah),a		;b7b5   ; guarda la direccion en la que anda el actor (0: quieto)
 	ld (ix+005h),001h		;b7b8   ; si el actor se mueve (bit 0; p07:87FA) = 0x01
 	call 08b26h		;b7bc   ; velocidad_por_direccion: (ix+6), (ix+7) = el paso de la direccion (ix+0x0A) (p07:8B36)
 	jp 08b11h		;b7bf   ; fotograma_por_direccion: (ix+8) = el de su direccion (ix+0x0B) mas el bit 4 de la cuenta
-L_B7C2:
+mira_arriba_y_quieto:		; siguiente paso, fotograma 8 mirando arriba
 	inc (ix+002h)		;b7c2   ; sube el paso del actor
 	ld (ix+008h),008h		;b7c5   ; el fotograma del actor (p07:97E8) = 0x08
 	ld a,001h		;b7c9
@@ -2879,7 +2879,7 @@ actor_5f:		; la rutina del actor de tipo 0x5F (p07:882D)
 	ld a,(ix+002h)		;b880   ; lee el paso del actor
 	or a			;b883
 	ret nz			;b884
-	ld (0e3a9h),a		;b885
+	ld (0e3a9h),a		;b885   ; guarda un actor lleva al personaje (no hay menu)
 	call empieza_paseo_10		;b888   ; empieza_paseo_10: el siguiente paso, los fotogramas 0x10-0x16 y el de su direccion
 	ld c,000h		;b88b
 	jp 0561dh		;b88d   ; habla_con_1_2_3: datos del personaje, p03:AB92, el texto y modo 3
@@ -2889,7 +2889,7 @@ L_B890:
 	ret z			;b895
 	ld a,001h		;b896
 	ld (ix+00bh),a		;b898   ; guarda la direccion a la que mira el actor
-	ld (0e3a9h),a		;b89b
+	ld (0e3a9h),a		;b89b   ; guarda un actor lleva al personaje (no hay menu)
 	ld a,011h		;b89e
 	ld (0e3c0h),a		;b8a0   ; guarda el modo del personaje (tabla p01:718E)
 	jp empieza_paseo_08		;b8a3   ; empieza_paseo_08: el siguiente paso, los fotogramas 0x08-0x0E y el de su direccion
@@ -2914,7 +2914,7 @@ L_B8BB:
 	jp 08b26h		;b8cf   ; velocidad_por_direccion: (ix+6), (ix+7) = el paso de la direccion (ix+0x0A) (p07:8B36)
 L_B8D2:
 	ld a,001h		;b8d2
-	ld (0e3a9h),a		;b8d4
+	ld (0e3a9h),a		;b8d4   ; guarda un actor lleva al personaje (no hay menu)
 	ld (ix+020h),020h		;b8d7
 	inc (ix+002h)		;b8db   ; sube el paso del actor
 	ld hl,0eb74h		;b8de   ; apunta a las banderas de la historia, byte 0x34 (se graban con la partida)
@@ -3026,7 +3026,7 @@ pasea_en_su_zona:		; como p08:B1B4, sin salir de la zona (ix+0x30)-(ix+0x33) y c
 	ld (ix+00bh),a		;b9d1   ; guarda la direccion a la que mira el actor
 	ld l,(ix+003h)		;b9d4   ; lee la Y del actor
 	ld h,(ix+004h)		;b9d7   ; lee la X del actor
-	ld (0e8e0h),hl		;b9da
+	ld (0e8e0h),hl		;b9da   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	call 05d6ah		;b9dd
 	jp nz,08b14h		;b9e0
 	ld b,a			;b9e3
@@ -3151,7 +3151,7 @@ L_BADC:
 	jr z,L_BAF9		;baf5
 	ld a,003h		;baf7
 L_BAF9:
-	ld (0e387h),a		;baf9
+	ld (0e387h),a		;baf9   ; guarda el paso del desplazamiento (tabla p21:600F)
 	ld hl,0e440h		;bafc
 	ld de,0e441h		;baff
 	ld (hl),000h		;bb02
@@ -3322,23 +3322,23 @@ L_BC4F:
 	ld a,(0e3c2h)		;bc54   ; lee la X del personaje
 	cp 050h		;bc57
 	ret nz			;bc59
-	call L_BC67		;bc5a
+	call lleva_al_personaje		;bc5a   ; lleva_al_personaje: el actor toma al personaje (modo 9) y se pone a su altura
 	ld hl,0eb5dh		;bc5d   ; apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
 	set 3,(hl)		;bc60
 	ld c,000h		;bc62
 	jp 0561dh		;bc64   ; habla_con_1_2_3: datos del personaje, p03:AB92, el texto y modo 3
-L_BC67:
+lleva_al_personaje:		; el actor toma al personaje (modo 9) y se pone a su altura
 	ld a,009h		;bc67
 	ld (0e3c0h),a		;bc69   ; guarda el modo del personaje (tabla p01:718E)
 	ld a,001h		;bc6c
-	ld (0e3a9h),a		;bc6e
+	ld (0e3a9h),a		;bc6e   ; guarda un actor lleva al personaje (no hay menu)
 	ld (ix+008h),004h		;bc71   ; el fotograma del actor (p07:97E8) = 0x04
 	call 08adeh		;bc75   ; fotogramas_00: los fotogramas de las cuatro direcciones: 0x00, 0x02, 0x04, 0x06
 	inc (ix+002h)		;bc78   ; sube el paso del actor
 	ld a,(0e3c1h)		;bc7b   ; lee la Y del personaje
 	ld (ix+003h),a		;bc7e   ; guarda la Y del actor
 	ld a,003h		;bc81
-L_BC83:
+mira_a:		; (ix+0x0B) = A
 	ld (ix+00bh),a		;bc83   ; guarda la direccion a la que mira el actor
 L_BC86:
 	ld a,(ix+00bh)		;bc86   ; lee la direccion a la que mira el actor
@@ -3360,7 +3360,7 @@ L_BC96:
 	jr z,L_BCB2		;bcae
 	ld a,001h		;bcb0
 L_BCB2:
-	call L_BC83		;bcb2
+	call mira_a		;bcb2   ; mira_a: (ix+0x0B) = A
 	ld (ix+008h),004h		;bcb5   ; el fotograma del actor (p07:97E8) = 0x04
 	ld hl,0eb5dh		;bcb9   ; apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
 	res 4,(hl)		;bcbc
@@ -3382,7 +3382,7 @@ L_BCD5:
 	or a			;bcdf
 	jr nz,L_BC86		;bce0
 	ld (0e3c0h),a		;bce2   ; guarda el modo del personaje (tabla p01:718E)
-	ld (0e3a9h),a		;bce5
+	ld (0e3a9h),a		;bce5   ; guarda un actor lleva al personaje (no hay menu)
 	ld l,(ix+003h)		;bce8   ; lee la Y del actor
 	ld h,a			;bceb
 	ld b,a			;bcec
@@ -3532,14 +3532,14 @@ L_BDF5:
 	ld h,(ix+004h)		;be11   ; lee la X del actor
 	jp 05dd3h		;be14   ; pon_bloque_de_enfrente: pone B en el bloque de delante
 L_BE17:
-	dec (ix+01bh)		;be17
+	dec (ix+01bh)		;be17   ; cuenta
 	jr z,L_BE2D		;be1a
 	ld a,(ix+01bh)		;be1c
 	ld b,01eh		;be1f
-	cp 040h		;be21
+	cp 040h		;be21   ; a 0x40 el fotograma 0x1E
 	jr z,L_BE29		;be23
 	inc b			;be25
-	cp 020h		;be26
+	cp 020h		;be26   ; a 0x20 el 0x1F
 	ret nz			;be28
 L_BE29:
 	ld (ix+008h),b		;be29   ; guarda el fotograma del actor (p07:97E8)

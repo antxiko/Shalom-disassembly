@@ -66,13 +66,13 @@ L_4079:
 	inc (hl)			;4080
 	ei			;4081
 	call 070b8h		;4082   ; lee_los_mandos: 0xE009 = lo que hay, 0xE008 = lo nuevo
-	ld a,(0e008h)		;4085   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;4085   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 080h		;4088
 	jr z,L_4095		;408a
-	ld a,(0f0fah)		;408c   ; lee sin el sonido de las letras (cambia con la tecla del bit 7)
+	ld a,(0f0fah)		;408c   ; lee sin el sonido de las letras (cambia con F5)
 	cpl			;408f
 	and 001h		;4090
-	ld (0f0fah),a		;4092   ; guarda sin el sonido de las letras (cambia con la tecla del bit 7)
+	ld (0f0fah),a		;4092   ; guarda sin el sonido de las letras (cambia con F5)
 L_4095:
 	call 064c8h		;4095   ; cuadro: un cuadro del juego (lo llama la interrupcion): cuenta 0xE003 y despacha el estado 0xE000 (tabla p01:64DF)
 	xor a			;4098
@@ -104,22 +104,22 @@ despacha:		; salta a la palabra A de la tabla pegada detras del `call`
 	ex de,hl			;40b3
 	jp (hl)			;40b4
 despacha_hl:		; salta a la palabra HL de la tabla pegada detras del `call`
-	pop de			;40b5
-	add hl,hl			;40b6
+	pop de			;40b5   ; DE = la tabla, que va detras del `call`
+	add hl,hl			;40b6   ; dos bytes por entrada
 	add hl,de			;40b7
 	ld e,(hl)			;40b8
 	inc hl			;40b9
 	ld d,(hl)			;40ba
 	ex de,hl			;40bb
-	jp (hl)			;40bc
+	jp (hl)			;40bc   ; salta a la entrada HL
 cartucho_en_8000:		; pone en 0x8000 el slot del cartucho (ENASLT)
 	call 00138h		;40bd   ; BIOS RSLREG - Reads the primary slot register
 	rrca			;40c0
 	rrca			;40c1
-	and 003h		;40c2
+	and 003h		;40c2   ; el slot primario de la pagina 1 (0x4000)
 	ld c,a			;40c4
 	ld b,000h		;40c5
-	ld hl,0fcc1h		;40c7
+	ld hl,0fcc1h		;40c7   ; la tabla de slots expandidos
 	add hl,bc			;40ca
 	ld a,(hl)			;40cb
 	and 080h		;40cc
@@ -129,10 +129,10 @@ cartucho_en_8000:		; pone en 0x8000 el slot del cartucho (ENASLT)
 	inc hl			;40d1
 	inc hl			;40d2
 	inc hl			;40d3
-	ld a,(hl)			;40d4
+	ld a,(hl)			;40d4   ; el subslot de la pagina 1
 	and 00ch		;40d5
 	or c			;40d7
-	ld h,080h		;40d8
+	ld h,080h		;40d8   ; y lo pone en la pagina 2 (0x8000)
 	jp 00024h		;40da   ; BIOS ENASLT - Switches to specified slot and page definitively
 slot_del_cartucho:		; A = el slot del cartucho (primario y secundario), copia en 0xF0F8
 	call 00138h		;40dd   ; BIOS RSLREG - Reads the primary slot register
@@ -504,11 +504,11 @@ a_mezcla_patrones:		; con 4-5-6, p04:6B2D (cada 4 cuadros mezcla los patrones de
 	call 06b2dh		;439e   ; mezcla_patrones: cada 4 cuadros mezcla los patrones de 0x2500 y 0x2600 con la mascara 0xE34A
 	jp bancos_9_10_11		;43a1   ; bancos_9_10_11: pone los bancos 9-10-11
 palabra_de_tabla:		; DE = la palabra A de la tabla DE
-	ld l,a			;43a4
+	ld l,a			;43a4   ; L = el indice
 	ld h,000h		;43a5
-	add hl,hl			;43a7
+	add hl,hl			;43a7   ; dos bytes por entrada
 	add hl,de			;43a8
-	ld e,(hl)			;43a9
+	ld e,(hl)			;43a9   ; DE = la palabra
 	inc hl			;43aa
 	ld d,(hl)			;43ab
 	ret			;43ac
@@ -518,23 +518,23 @@ de_negativo:		; DE = -DE
 	ex de,hl			;43b1
 	ret			;43b2
 hl_negativo:		; HL = -HL
-	xor a			;43b3
+	xor a			;43b3   ; 0 - L
 	sub l			;43b4
 	ld l,a			;43b5
 	ld a,000h		;43b6
-	sbc a,h			;43b8
+	sbc a,h			;43b8   ; 0 - H con el acarreo
 	ld h,a			;43b9
 	ret			;43ba
 nibble_de_la_sala:		; A = el nibble de la sala 0xEB40 en la tabla DE (par: el alto)
 	ld hl,(0eb40h)		;43bb   ; lee la sala
-	ld c,l			;43be
-	srl h		;43bf
+	ld c,l			;43be   ; C = la sala (su bit 0 dice que nibble)
+	srl h		;43bf   ; HL = la sala / 2: dos salas por byte
 	rr l		;43c1
 	add hl,de			;43c3
-	bit 0,c		;43c4
+	bit 0,c		;43c4   ; sala impar: el nibble bajo
 	ld a,(hl)			;43c6
 	jr nz,L_43CD		;43c7
-	rra			;43c9
+	rra			;43c9   ; sala par: el nibble alto
 	rra			;43ca
 	rra			;43cb
 	rra			;43cc
@@ -550,13 +550,13 @@ aleatorio:		; A = el registro R revuelto con la cuenta de cuadros
 	ld hl,0e003h		;43d6   ; apunta a la cuenta de cuadros
 	xor (hl)			;43d9
 	ret			;43da
-L_43DB:
+patrones_de_la_escena:		; los patrones de sprite de p18:627C[0xE3A1] a 0x1800 (sigue en p00:43F5)
 	call bancos_18_19_20		;43db   ; bancos_18_19_20: pone los bancos 18-19-20
 	ld a,(0e3a1h)		;43de   ; lee la escena de accion (1-9)
 	ld de,0627ch		;43e1
 	call palabra_de_tabla		;43e4   ; palabra_de_tabla: DE = la palabra A de la tabla DE
 	jr L_43F5		;43e7
-L_43E9:
+patrones_del_fotograma:		; los patrones de sprite de p18:6000[0xE3C3] a 0x1800 y la barra del marcador
 	call bancos_18_19_20		;43e9   ; bancos_18_19_20: pone los bancos 18-19-20
 	ld de,06000h		;43ec
 	ld a,(0e3c3h)		;43ef   ; lee el fotograma del personaje
@@ -565,7 +565,7 @@ L_43F5:
 	ld hl,01800h		;43f5
 	call rle		;43f8   ; rle: RLE de DE a la VRAM HL
 	call bancos_del_estado		;43fb   ; bancos_del_estado: pone el reparto que corresponde al estado 0xE000/0xE001
-	ld a,(0e3c9h)		;43fe
+	ld a,(0e3c9h)		;43fe   ; lee la cuenta de espera del personaje
 	or a			;4401
 	ret z			;4402
 	ld hl,01830h		;4403
@@ -592,10 +592,10 @@ borra_barra:		; borra con FILVRM la parte que sobra de una barra del marcador
 	sbc hl,bc		;4433
 	call 00056h		;4435   ; BIOS FILVRM - Fills VRAM with value
 L_4438:
-	ld a,(0e3c9h)		;4438
+	ld a,(0e3c9h)		;4438   ; lee la cuenta de espera del personaje
 	or a			;443b
 	ret			;443c
-L_443D:
+dibujo_del_marcador:		; el dibujo 0xE368 (p09:6713) en el marcador, o el marcador vacio
 	ld a,(0e368h)		;443d   ; lee el dibujo de p12:733E que se ve (0: ninguno)
 	inc a			;4440
 	ret z			;4441
@@ -608,33 +608,33 @@ L_443D:
 	call palabra_de_tabla		;444f   ; palabra_de_tabla: DE = la palabra A de la tabla DE
 	ex de,hl			;4452
 	ld de,0c848h		;4453
-	call L_44B8		;4456
+	call copia_bloques		;4456   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call bancos_1_2_3		;4459   ; bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
-	call L_448A		;445c
+	call marco_del_marcador		;445c   ; marco_del_marcador: el marco del marcador en 0xEE18 (5, 1..1, 6 y los lados 2 y 0x0B)
 	jp vuelca_marcador		;445f   ; vuelca_marcador: 7 filas x 8 de 0xEE18 a 0x3918
 L_4462:
-	call L_443D		;4462
+	call dibujo_del_marcador		;4462   ; dibujo_del_marcador: el dibujo 0xE368 (p09:6713) en el marcador, o el marcador vacio
 	jp bancos_4_5_6		;4465   ; bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
 L_4468:
-	call L_443D		;4468
+	call dibujo_del_marcador		;4468   ; dibujo_del_marcador: el dibujo 0xE368 (p09:6713) en el marcador, o el marcador vacio
 	jp bancos_9_10_11		;446b   ; bancos_9_10_11: pone los bancos 9-10-11
 L_446E:
 	call bancos_1_2_3		;446e   ; bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
 	ld hl,0ee18h		;4471   ; apunta a el marcador (8 x 7)
 	ld a,007h		;4474
 L_4476:
-	ld e,l			;4476
+	ld e,l			;4476   ; una fila de 8 a cero
 	ld d,h			;4477
 	inc de			;4478
 	ld (hl),000h		;4479
 	ld bc,00007h		;447b
 	ldir		;447e
-	ld de,00019h		;4480
+	ld de,00019h		;4480   ; la siguiente fila (0x20 por fila)
 	add hl,de			;4483
 	dec a			;4484
 	jr nz,L_4476		;4485
 	jp vuelca_marcador		;4487   ; vuelca_marcador: 7 filas x 8 de 0xEE18 a 0x3918
-L_448A:
+marco_del_marcador:		; el marco del marcador en 0xEE18 (5, 1..1, 6 y los lados 2 y 0x0B)
 	ld hl,0ee18h		;448a   ; apunta a el marcador (8 x 7)
 	ld (hl),005h		;448d
 	inc hl			;448f
@@ -646,10 +646,10 @@ L_448A:
 	ld (hl),006h		;449b
 	ld hl,0ee38h		;449d
 	ld a,002h		;44a0
-	call L_44AA		;44a2
+	call columna_del_marco		;44a2   ; columna_del_marco: 6 veces A en HL, bajando una fila cada vez
 	ld hl,0ee3fh		;44a5
 	ld a,00bh		;44a8
-L_44AA:
+columna_del_marco:		; 6 veces A en HL, bajando una fila cada vez
 	ld b,006h		;44aa
 	ld de,00020h		;44ac
 L_44AF:
@@ -662,7 +662,7 @@ L_44B4:
 	inc hl			;44b5
 	ld d,(hl)			;44b6
 	inc hl			;44b7
-L_44B8:
+copia_bloques:		; BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	ld c,(hl)			;44b8
 	inc hl			;44b9
 	ld b,(hl)			;44ba
@@ -724,26 +724,26 @@ L_4503:
 	call 0b3b6h		;4503   ; efecto_que_sube_cuadro: un cuadro del efecto: la Y sube cada 16 cuadros y al acabar se esconde
 	jp a_sprites_de_actores		;4506   ; a_sprites_de_actores: con 7-8, p07:865C (dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas); vuelve con 1-2-3
 mapa_de_bloques:		; HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
-	ld a,l			;4509
+	ld a,l			;4509   ; L = Y: la fila es Y / 8
 	rra			;450a
 	rra			;450b
 	rra			;450c
 	rra			;450d
-	rr h		;450e
+	rr h		;450e   ; y la columna, X / 8, en H: HL = 0xED00 + fila * 32 + columna
 	rra			;4510
 	rr h		;4511
 	rra			;4513
 	rr h		;4514
 	ld l,h			;4516
 	and 003h		;4517
-	add a,0edh		;4519
+	add a,0edh		;4519   ; desde 0xED00
 	ld h,a			;451b
 	ret			;451c
 bloque_de_la_sala:		; HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala en la posicion L = Y, H = X
-	ld a,l			;451d
+	ld a,l			;451d   ; la fila (Y / 16) por 16
 	and 0f0h		;451e
 	ld l,a			;4520
-	ld a,h			;4521
+	ld a,h			;4521   ; mas la columna (X / 16)
 	rra			;4522
 	rra			;4523
 	rra			;4524
@@ -751,15 +751,15 @@ bloque_de_la_sala:		; HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala
 	and 00fh		;4526
 	add a,l			;4528
 	ld l,a			;4529
-	ld h,0e8h		;452a
+	ld h,0e8h		;452a   ; desde 0xE800
 	ret			;452c
 L_452D:
 	ld de,0454ah		;452d
 	call bytes_a_vram		;4530   ; bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
 	ld hl,03a1fh		;4533
-	call L_453C		;4536
+	call siete_fichas_1b		;4536   ; siete_fichas_1b: 7 fichas 0x1B en columna desde la VRAM HL
 	ld hl,03a18h		;4539
-L_453C:
+siete_fichas_1b:		; 7 fichas 0x1B en columna desde la VRAM HL
 	ld b,007h		;453c
 L_453E:
 	ld a,01bh		;453e
@@ -997,9 +997,9 @@ fichas_de_la_sala:		; el juego de fichas de la sala (nibble p12:6000, lista p12:
 	ld (0e361h),a		;47d6   ; guarda la primera ficha dura de la sala
 	inc de			;47d9
 	ld hl,02080h		;47da
-	ld (0e8e0h),hl		;47dd
+	ld (0e8e0h),hl		;47dd   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld hl,00080h		;47e0
-	ld (0e8e2h),hl		;47e3
+	ld (0e8e2h),hl		;47e3   ; guarda la variable de trabajo 0xE8E2 (16 bits) y el byte siguiente (16 bits)
 	ld b,040h		;47e6
 L_47E8:
 	push bc			;47e8
@@ -1011,28 +1011,28 @@ L_47E8:
 	add hl,hl			;47ef
 	add hl,hl			;47f0
 	add hl,hl			;47f1
-	ld (0e8e4h),hl		;47f2
+	ld (0e8e4h),hl		;47f2   ; guarda la variable de trabajo 0xE8E4 y el byte siguiente (16 bits)
 	ld de,064ceh		;47f5
 	add hl,de			;47f8
 	ex de,hl			;47f9
-	ld hl,(0e8e0h)		;47fa
+	ld hl,(0e8e0h)		;47fa   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld bc,00008h		;47fd
 	call copia_a_dos_tercios		;4800   ; copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
-	ld hl,(0e8e0h)		;4803
+	ld hl,(0e8e0h)		;4803   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld de,00008h		;4806
 	add hl,de			;4809
-	ld (0e8e0h),hl		;480a
+	ld (0e8e0h),hl		;480a   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld de,06c06h		;480d
-	ld hl,(0e8e4h)		;4810
+	ld hl,(0e8e4h)		;4810   ; lee la variable de trabajo 0xE8E4 y el byte siguiente (16 bits)
 	add hl,de			;4813
 	ex de,hl			;4814
-	ld hl,(0e8e2h)		;4815
+	ld hl,(0e8e2h)		;4815   ; lee la variable de trabajo 0xE8E2 (16 bits) y el byte siguiente (16 bits)
 	ld bc,00008h		;4818
 	call copia_a_dos_tercios		;481b   ; copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
-	ld hl,(0e8e2h)		;481e
+	ld hl,(0e8e2h)		;481e   ; lee la variable de trabajo 0xE8E2 (16 bits) y el byte siguiente (16 bits)
 	ld de,00008h		;4821
 	add hl,de			;4824
-	ld (0e8e2h),hl		;4825
+	ld (0e8e2h),hl		;4825   ; guarda la variable de trabajo 0xE8E2 (16 bits) y el byte siguiente (16 bits)
 	pop de			;4828
 	pop bc			;4829
 	djnz L_47E8		;482a
@@ -1086,9 +1086,9 @@ pantalla_de_27:		; nombres p27:9B8B, fichas p27:9ECB/9ED4 y lo que toque segun 0
 	call bancos_27_28		;4893   ; bancos_27_28: pone los bancos 27-28 en 0x8000 y 0xA000
 	ld de,09b8bh		;4896
 	call rle_con_destino		;4899   ; rle_con_destino: RLE de DE con su direccion de VRAM delante
-	call L_48A2		;489c
+	call graficos_de_la_escena_27		;489c   ; graficos_de_la_escena_27: los RLE p27:9ECB y p27:9ED4 y lo de la escena 0xE3A1 (tabla p00:48BE)
 	jp bancos_9_10_11		;489f   ; bancos_9_10_11: pone los bancos 9-10-11
-L_48A2:
+graficos_de_la_escena_27:		; los RLE p27:9ECB y p27:9ED4 y lo de la escena 0xE3A1 (tabla p00:48BE)
 	ld de,09ecbh		;48a2
 	ld hl,02048h		;48a5
 	call rle_a_dos_tercios		;48a8   ; rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
@@ -1341,14 +1341,14 @@ L_4AD7:
 	ld c,a			;4ae8
 	jp voltea_sprites		;4ae9   ; voltea_sprites: C sprites de 16x16 de la VRAM HL volteados a DE
 patron_de_sprite:		; HL = 0x1800 + 8 * el byte siguiente de DE
-	inc de			;4aec
+	inc de			;4aec   ; el numero de patron
 	ld a,(de)			;4aed
 	ld l,a			;4aee
 	ld h,000h		;4aef
-	add hl,hl			;4af1
+	add hl,hl			;4af1   ; ocho bytes por patron
 	add hl,hl			;4af2
 	add hl,hl			;4af3
-	ld bc,01800h		;4af4
+	ld bc,01800h		;4af4   ; desde 0x1800
 	add hl,bc			;4af7
 	ret			;4af8
 patrones_del_personaje:		; los patrones de p18:65DC[0xEB74 o 0xE3C3] a 0x1860
@@ -1433,18 +1433,18 @@ L_4B76:
 	add ix,de		;4b99
 	jr L_4B76		;4b9b
 rle_con_mascara:		; un RLE de la lista a la VRAM con la mascara C
-	ld l,(ix+003h)		;4b9d
+	ld l,(ix+003h)		;4b9d   ; la ficha de la lista
 	ld h,000h		;4ba0
-	add hl,hl			;4ba2
+	add hl,hl			;4ba2   ; ocho bytes por ficha
 	add hl,hl			;4ba3
 	add hl,hl			;4ba4
 	add hl,de			;4ba5
 	ld a,(0e349h)		;4ba6   ; lee la tabla del efecto (0: colores, 1: patrones) o la cuenta
 	dec a			;4ba9
 	jr z,L_4BB9		;4baa
-	ld de,02000h		;4bac
+	ld de,02000h		;4bac   ; en la tabla de patrones (0x2000)
 	add hl,de			;4baf
-	ld e,(ix+001h)		;4bb0
+	ld e,(ix+001h)		;4bb0   ; el RLE de los patrones
 	ld d,(ix+002h)		;4bb3
 	jp L_4BC6		;4bb6
 L_4BB9:
@@ -1456,26 +1456,26 @@ L_4BB9:
 L_4BC6:
 	call escribe_en_vram		;4bc6   ; escribe_en_vram: SETWRT en HL y C' = el puerto de datos del VDP
 L_4BC9:
-	ld a,(de)			;4bc9
+	ld a,(de)			;4bc9   ; el byte del RLE
 	and a			;4bca
-	ret z			;4bcb
+	ret z			;4bcb   ; 0: acaba
 	inc de			;4bcc
 	ld b,a			;4bcd
-	and 07fh		;4bce
+	and 07fh		;4bce   ; bit 7: repetir
 	cp b			;4bd0
 	jr z,L_4BEB		;4bd1
 	ld b,a			;4bd3
 L_4BD4:
-	ld a,(de)			;4bd4
+	ld a,(de)			;4bd4   ; un byte con la mascara
 	and c			;4bd5
 	inc de			;4bd6
 	exx			;4bd7
-	out (c),a		;4bd8
+	out (c),a		;4bd8   ; al VDP
 	exx			;4bda
 	ld a,(0e349h)		;4bdb   ; lee la tabla del efecto (0: colores, 1: patrones) o la cuenta
 	and a			;4bde
 	jr nz,L_4BE7		;4bdf
-	rrc c		;4be1
+	rrc c		;4be1   ; en los colores, la mascara gira tres bits
 	rrc c		;4be3
 	rrc c		;4be5
 L_4BE7:
@@ -1485,15 +1485,15 @@ L_4BEB:
 	ld a,(de)			;4beb
 	inc de			;4bec
 L_4BED:
-	push af			;4bed
+	push af			;4bed   ; el mismo byte con la mascara
 	and c			;4bee
 	exx			;4bef
-	out (c),a		;4bf0
+	out (c),a		;4bf0   ; al VDP
 	exx			;4bf2
 	ld a,(0e349h)		;4bf3   ; lee la tabla del efecto (0: colores, 1: patrones) o la cuenta
 	and a			;4bf6
 	jr nz,L_4BFF		;4bf7
-	rrc c		;4bf9
+	rrc c		;4bf9   ; en los colores, la mascara gira tres bits
 	rrc c		;4bfb
 	rrc c		;4bfd
 L_4BFF:
@@ -1567,9 +1567,9 @@ L_4C61:
 	add ix,de		;4c84
 	jr L_4C61		;4c86
 vram_con_mascara:		; AND de DE bytes de la VRAM con C
-	ld l,(ix+001h)		;4c88
+	ld l,(ix+001h)		;4c88   ; la ficha de la lista
 	ld h,000h		;4c8b
-	add hl,hl			;4c8d
+	add hl,hl			;4c8d   ; ocho bytes por ficha
 	add hl,hl			;4c8e
 	add hl,hl			;4c8f
 	add hl,de			;4c90
@@ -1577,7 +1577,7 @@ vram_con_mascara:		; AND de DE bytes de la VRAM con C
 	dec a			;4c94
 	ld de,00000h		;4c95
 	jr z,L_4C9D		;4c98
-	ld de,02000h		;4c9a
+	ld de,02000h		;4c9a   ; en la tabla de patrones (0x2000)
 L_4C9D:
 	add hl,de			;4c9d
 	ld e,(ix+002h)		;4c9e
@@ -1597,8 +1597,8 @@ L_4CA4:
 	rrc c		;4cb8
 L_4CBA:
 	pop hl			;4cba
-	inc hl			;4cbb
-	dec de			;4cbc
+	inc hl			;4cbb   ; el siguiente byte
+	dec de			;4cbc   ; uno menos
 	ld a,e			;4cbd
 	or d			;4cbe
 	jr nz,L_4CA4		;4cbf
@@ -1633,27 +1633,27 @@ L_4CEA:
 L_4CEF:
 	ld hl,0e349h		;4cef   ; apunta a la tabla del efecto (0: colores, 1: patrones) o la cuenta
 	ld a,(hl)			;4cf2
-	inc (hl)			;4cf3
-	cp 040h		;4cf4
+	inc (hl)			;4cf3   ; la cuenta sube
+	cp 040h		;4cf4   ; 64 pasos
 	jr z,L_4CEA		;4cf6
 	ld e,a			;4cf8
-	and 0f8h		;4cf9
+	and 0f8h		;4cf9   ; la fila del paso (de 8 en 8) por 64
 	ld l,a			;4cfb
 	ld h,000h		;4cfc
 	add hl,hl			;4cfe
 	add hl,hl			;4cff
 	add hl,hl			;4d00
 	ld a,e			;4d01
-	and 007h		;4d02
+	and 007h		;4d02   ; y el byte dentro de la ficha
 	add a,l			;4d04
 	ld l,a			;4d05
 	push hl			;4d06
-	ld e,(ix+000h)		;4d07
+	ld e,(ix+000h)		;4d07   ; mas el origen de la lista
 	ld d,(ix+001h)		;4d0a
 	add hl,de			;4d0d
 	ex de,hl			;4d0e
 	pop hl			;4d0f
-	ld c,(ix+002h)		;4d10
+	ld c,(ix+002h)		;4d10   ; y el destino
 	ld b,(ix+003h)		;4d13
 	add hl,bc			;4d16
 	jp L_4D22		;4d17
@@ -1676,11 +1676,11 @@ cortinilla_12:		; como p00:4CD4 con filas de 12
 L_4D38:
 	ld hl,0e349h		;4d38   ; apunta a la tabla del efecto (0: colores, 1: patrones) o la cuenta
 	ld a,(hl)			;4d3b
-	inc (hl)			;4d3c
-	cp 040h		;4d3d
+	inc (hl)			;4d3c   ; la cuenta sube
+	cp 040h		;4d3d   ; 64 pasos
 	jr z,L_4CEA		;4d3f
 	ld b,a			;4d41
-	and 0f8h		;4d42
+	and 0f8h		;4d42   ; la fila del paso (de 8 en 8) por 96
 	ld l,a			;4d44
 	ld h,000h		;4d45
 	add hl,hl			;4d47
@@ -1690,16 +1690,16 @@ L_4D38:
 	add hl,hl			;4d4b
 	add hl,de			;4d4c
 	ld a,b			;4d4d
-	and 007h		;4d4e
+	and 007h		;4d4e   ; y el byte dentro de la ficha
 	add a,l			;4d50
 	ld l,a			;4d51
 	push hl			;4d52
-	ld e,(ix+000h)		;4d53
+	ld e,(ix+000h)		;4d53   ; mas el origen de la lista
 	ld d,(ix+001h)		;4d56
 	add hl,de			;4d59
 	ex de,hl			;4d5a
 	pop hl			;4d5b
-	ld c,(ix+002h)		;4d5c
+	ld c,(ix+002h)		;4d5c   ; y el destino
 	ld b,(ix+003h)		;4d5f
 	add hl,bc			;4d62
 	jp L_4D66		;4d63
@@ -1902,49 +1902,49 @@ L_4EB0:
 	ret			;4ebf
 escribe_texto:		; un caracter del texto: codigos FF fin, FE linea, FD espera, FC-F7 nombres y avisos
 	ld a,(0e887h)		;4ec0   ; lee la espera del texto (1 tecla, 2 tecla y fin)
-	rra			;4ec3
+	rra			;4ec3   ; bit 0: esperando tecla
 	jp c,espera_tecla		;4ec4   ; espera_tecla: espera a que se pulse una tecla (0xE887 = 1) con el cursor parpadeando en 0xEFF7
-	rra			;4ec7
+	rra			;4ec7   ; bit 1: esperando tecla para acabar
 	jp c,espera_y_acaba		;4ec8   ; espera_y_acaba: espera tecla y acaba el texto (0xE887 = 2)
 	ld a,(0e003h)		;4ecb   ; lee la cuenta de cuadros
-	and 001h		;4ece
+	and 001h		;4ece   ; una letra cada dos cuadros
 	ret nz			;4ed0
 	ld a,(0e884h)		;4ed1   ; lee las lineas que quedan por subir
-	and a			;4ed4
+	and a			;4ed4   ; quedan lineas por subir?
 	jp nz,sube_el_texto		;4ed5   ; sube_el_texto: sube la ventana del texto 0xEF00 una linea
-L_4ED8:
+caracter_del_texto:		; el siguiente caracter del texto (DE = el puntero, HL = el cursor)
 	ld de,(0e882h)		;4ed8   ; lee el puntero del texto
 	ld hl,(0e346h)		;4edc   ; lee el cursor del texto
 L_4EDF:
-	ld a,(de)			;4edf
-	inc a			;4ee0
+	ld a,(de)			;4edf   ; el caracter
+	inc a			;4ee0   ; 0xFF: fin del texto
 	jp z,acaba_texto		;4ee1   ; acaba_texto: vuelca la ventana y acaba el texto
-	inc a			;4ee4
+	inc a			;4ee4   ; 0xFE: salto de linea
 	jp z,salto_de_linea		;4ee5   ; salto_de_linea: salta de linea en la ventana del texto (0x40 bytes = dos filas)
-	inc a			;4ee8
+	inc a			;4ee8   ; 0xFD: espera tecla
 	jr z,espera_tecla		;4ee9
-	inc a			;4eeb
+	inc a			;4eeb   ; 0xFC: el nombre de 0xEAFF
 	jp z,nombre_del_personaje		;4eec   ; nombre_del_personaje: escribe el nombre de 0xEAFF (codigo FC)
-	inc a			;4eef
+	inc a			;4eef   ; 0xFB: el nombre de 0xEB11
 	jp z,nombre_11		;4ef0   ; nombre_11: escribe el nombre de 0xEB11
-	inc a			;4ef3
+	inc a			;4ef3   ; 0xFA: espera tecla y acaba
 	jp z,espera_y_acaba		;4ef4   ; espera_y_acaba: espera tecla y acaba el texto (0xE887 = 2)
-	inc a			;4ef7
+	inc a			;4ef7   ; 0xF9: el nombre de 0xEB08
 	jp z,nombre_08		;4ef8   ; nombre_08: escribe el nombre de 0xEB08
-	inc a			;4efb
+	inc a			;4efb   ; 0xF8: el nombre de 0xEB1A
 	jp z,nombre_1a		;4efc   ; nombre_1a: escribe el nombre de 0xEB1A
-	inc a			;4eff
+	inc a			;4eff   ; 0xF7: el nombre que sigue va dentro del texto (no es quien habla)
 	jp z,L_4FA2		;4f00
-	inc a			;4f03
+	inc a			;4f03   ; 0xF6: cuatro caracteres seguidos
 	jp z,cuatro_caracteres		;4f04   ; cuatro_caracteres: escribe cuatro caracteres del texto seguidos
-	ld a,(de)			;4f07
-	cp 03ch		;4f08
+	ld a,(de)			;4f07   ; un caracter normal
+	cp 03ch		;4f08   ; 0x3C: sin sonido y quita el gris
 	ld a,000h		;4f0a
 	jr nz,L_4F0F		;4f0c
 	inc a			;4f0e
 L_4F0F:
-	ld (0e8e0h),a		;4f0f
-	ld a,(de)			;4f12
+	ld (0e8e0h),a		;4f0f   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera)
+	ld a,(de)			;4f12   ; 3 y 4 son los acentos (dakuten)
 	cp 003h		;4f13
 	jr z,L_4F1B		;4f15
 	cp 004h		;4f17
@@ -1955,16 +1955,16 @@ L_4F1B:
 	and a			;4f1f
 	ld a,c			;4f20
 	jr nz,L_4F50		;4f21
-	ld bc,0ffdfh		;4f23
+	ld bc,0ffdfh		;4f23   ; van en la fila de arriba (-0x21)
 	add hl,bc			;4f26
 	ld (hl),a			;4f27
 	jr L_4F50		;4f28
 L_4F2A:
 	ld a,l			;4f2a
-	and 01fh		;4f2b
-	cp 017h		;4f2d
+	and 01fh		;4f2b   ; la columna del cursor
+	cp 017h		;4f2d   ; en la 23 se mira si cabe
 	jp z,fin_de_linea		;4f2f   ; fin_de_linea: al llegar a la columna 23: si el caracter no puede ir, salta de linea
-L_4F32:
+caracter_normal:		; un caracter: 0x3C quita el gris; en gris se escribe 0x0A
 	ld a,(de)			;4f32
 	cp 03ch		;4f33
 	jr nz,L_4F3D		;4f35
@@ -1980,37 +1980,37 @@ L_4F3D:
 	jr z,L_4F4B		;4f43
 	cp 03bh		;4f45
 	jr z,L_4F4B		;4f47
-	ld a,00ah		;4f49
+	ld a,00ah		;4f49   ; en gris: ficha 0x0A
 L_4F4B:
-	ld (hl),a			;4f4b
+	ld (hl),a			;4f4b   ; el caracter a la ventana
 	inc hl			;4f4c
-	ld (0e346h),hl		;4f4d   ; guarda el cursor del texto
+	ld (0e346h),hl		;4f4d   ; el cursor avanza
 L_4F50:
-	inc de			;4f50
+	inc de			;4f50   ; el texto avanza
 	ld (0e882h),de		;4f51   ; guarda el puntero del texto
-	ld a,(0e8e0h)		;4f55
+	ld a,(0e8e0h)		;4f55   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera)
 	dec a			;4f58
 	ret z			;4f59
-	jp sonido_de_letra		;4f5a   ; sonido_de_letra: el sonido de cada letra (2-4 segun 0xE3B0) salvo en ciertas salas
+	jp sonido_de_letra		;4f5a   ; y su sonido
 espera_tecla:		; espera a que se pulse una tecla (0xE887 = 1) con el cursor parpadeando en 0xEFF7
 	ld a,001h		;4f5d
 	ld (0e887h),a		;4f5f   ; guarda la espera del texto (1 tecla, 2 tecla y fin)
 cursor_de_espera:		; parpadea el cursor del texto y, con tecla, sigue (p00:5087)
-	ld a,(0e008h)		;4f62   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
-	and 050h		;4f65
+	ld a,(0e008h)		;4f62   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
+	and 050h		;4f65   ; disparo o RETURN?
 	jr nz,L_4F76		;4f67
 	ld a,(0e003h)		;4f69   ; lee la cuenta de cuadros
-	and 004h		;4f6c
+	and 004h		;4f6c   ; parpadea cada 4 cuadros
 	jr z,L_4F72		;4f6e
-	ld a,01fh		;4f70
+	ld a,01fh		;4f70   ; la ficha del cursor
 L_4F72:
-	ld (0eff7h),a		;4f72
+	ld (0eff7h),a		;4f72   ; guarda el cursor del texto en la ventana
 	ret			;4f75
 L_4F76:
 	xor a			;4f76
-	ld (0eff7h),a		;4f77
+	ld (0eff7h),a		;4f77   ; guarda el cursor del texto en la ventana
 	ld de,(0e882h)		;4f7a   ; lee el puntero del texto
-	call salto_de_linea		;4f7e   ; salto_de_linea: salta de linea en la ventana del texto (0x40 bytes = dos filas)
+	call salto_de_linea		;4f7e   ; salta de linea
 	xor a			;4f81
 	ld (0e887h),a		;4f82   ; guarda la espera del texto (1 tecla, 2 tecla y fin)
 	ret			;4f85
@@ -2031,7 +2031,7 @@ espera_y_acaba:		; espera tecla y acaba el texto (0xE887 = 2)
 L_4FA2:
 	inc de			;4fa2
 	ld a,001h		;4fa3
-	ld (0e888h),a		;4fa5   ; guarda el nombre va entre parentesis
+	ld (0e888h),a		;4fa5   ; guarda el nombre que sigue va dentro del texto (no es quien habla)
 	jp L_4EDF		;4fa8
 nombre_del_personaje:		; escribe el nombre de 0xEAFF (codigo FC)
 	ld ix,0eaffh		;4fab
@@ -2039,13 +2039,13 @@ nombre_del_personaje:		; escribe el nombre de 0xEAFF (codigo FC)
 escribe_nombre:		; escribe el nombre de IX hasta 0xFF
 	ld a,l			;4fb1
 	and 01fh		;4fb2
-	cp 017h		;4fb4
+	cp 017h		;4fb4   ; en la columna 23 salta antes
 	jp z,L_508C		;4fb6
-	ld a,(0e888h)		;4fb9   ; lee el nombre va entre parentesis
+	ld a,(0e888h)		;4fb9   ; lee el nombre que sigue va dentro del texto (no es quien habla)
 	and a			;4fbc
 	jr nz,L_4FC5		;4fbd
 	ld a,c			;4fbf
-	ld (0e3b0h),a		;4fc0   ; guarda quien habla (sonido de las letras)
+	ld (0e3b0h),a		;4fc0   ; quien habla (la voz de las letras)
 	jr L_4FD0		;4fc3
 L_4FC5:
 	push hl			;4fc5
@@ -2062,15 +2062,15 @@ L_4FD0:
 	inc de			;4fd3
 	ld (0e882h),de		;4fd4   ; guarda el puntero del texto
 	xor a			;4fd8
-	ld (0e888h),a		;4fd9   ; guarda el nombre va entre parentesis
+	ld (0e888h),a		;4fd9   ; guarda el nombre que sigue va dentro del texto (no es quien habla)
 	dec hl			;4fdc
 	dec hl			;4fdd
 	dec hl			;4fde
 	dec hl			;4fdf
 L_4FE0:
 	inc ix		;4fe0
-	ld a,(ix+000h)		;4fe2
-	inc a			;4fe5
+	ld a,(ix+000h)		;4fe2   ; la letra del nombre
+	inc a			;4fe5   ; 0xFF: fin del nombre
 	ret z			;4fe6
 	dec a			;4fe7
 	ld c,a			;4fe8
@@ -2097,13 +2097,13 @@ L_5001:
 	jr z,L_500A		;5006
 	ld a,00ah		;5008
 L_500A:
-	ld (hl),a			;500a
+	ld (hl),a			;500a   ; la letra a la ventana
 	inc hl			;500b
 	jr L_4FE0		;500c
 nombre_11:		; escribe el nombre de 0xEB11
 	xor a			;500e
 	ld (0e88dh),a		;500f   ; guarda escribir en gris (0x0A)
-	ld a,(0e888h)		;5012   ; lee el nombre va entre parentesis
+	ld a,(0e888h)		;5012   ; lee el nombre que sigue va dentro del texto (no es quien habla)
 	and a			;5015
 	ld a,000h		;5016
 	jr nz,L_501B		;5018
@@ -2129,7 +2129,7 @@ nombre_08:		; escribe el nombre de 0xEB08
 	ld c,001h		;503e
 	jp escribe_nombre		;5040   ; escribe_nombre: escribe el nombre de IX hasta 0xFF
 nombre_1a:		; escribe el nombre de 0xEB1A
-	ld a,(0eb25h)		;5043
+	ld a,(0eb25h)		;5043   ; lee la voz de quien habla
 	ld c,a			;5046
 	ld ix,0eb1ah		;5047
 	jp escribe_nombre		;504b   ; escribe_nombre: escribe el nombre de IX hasta 0xFF
@@ -2141,24 +2141,24 @@ cuatro_caracteres:		; escribe cuatro caracteres del texto seguidos
 	inc de			;5052
 	ld (0e346h),hl		;5053   ; guarda el cursor del texto
 	ld (0e882h),de		;5056   ; guarda el puntero del texto
-	call L_4ED8		;505a
-	call L_4ED8		;505d
-	call L_4ED8		;5060
-	jp L_4ED8		;5063
+	call caracter_del_texto		;505a   ; caracter_del_texto: el siguiente caracter del texto (DE = el puntero, HL = el cursor)
+	call caracter_del_texto		;505d   ; caracter_del_texto: el siguiente caracter del texto (DE = el puntero, HL = el cursor)
+	call caracter_del_texto		;5060   ; caracter_del_texto: el siguiente caracter del texto (DE = el puntero, HL = el cursor)
+	jp caracter_del_texto		;5063   ; caracter_del_texto: el siguiente caracter del texto (DE = el puntero, HL = el cursor)
 fin_de_linea:		; al llegar a la columna 23: si el caracter no puede ir, salta de linea
-	ld a,(de)			;5066
-	cp 005h		;5067
+	ld a,(de)			;5066   ; el caracter que toca
+	cp 005h		;5067   ; por debajo de 5: salta de linea
 	jr c,L_508C		;5069
-	cp 009h		;506b
+	cp 009h		;506b   ; 5-8 y 0x3C pueden ir en la columna 23
 	jr c,L_507B		;506d
 	cp 03ch		;506f
 	jr z,L_507B		;5071
-	cp 09eh		;5073
+	cp 09eh		;5073   ; 0x9E-0xAF tambien
 	jr c,L_508C		;5075
 	cp 0b0h		;5077
-	jr nc,L_508C		;5079
+	jr nc,L_508C		;5079   ; el resto salta de linea
 L_507B:
-	call L_4F32		;507b
+	call caracter_normal		;507b   ; caracter_normal: un caracter: 0x3C quita el gris; en gris se escribe 0x0A
 	ld hl,(0e882h)		;507e   ; lee el puntero del texto
 	ld a,(hl)			;5081
 	inc a			;5082
@@ -2168,17 +2168,17 @@ salto_de_linea:		; salta de linea en la ventana del texto (0x40 bytes = dos fila
 	inc de			;5087
 	ld (0e882h),de		;5088   ; guarda el puntero del texto
 L_508C:
-	ld hl,(0e344h)		;508c   ; lee el principio de la linea del texto
-	ld de,00040h		;508f
+	ld hl,(0e344h)		;508c   ; el principio de la linea
+	ld de,00040h		;508f   ; dos filas mas abajo
 	add hl,de			;5092
 	ld de,(0e344h)		;5093   ; lee el principio de la linea del texto
 	ld (0e344h),hl		;5097   ; guarda el principio de la linea del texto
 	ld (0e346h),hl		;509a   ; guarda el cursor del texto
-	ld bc,0f000h		;509d   ; apunta a los atributos de los 32 sprites
+	ld bc,0f000h		;509d   ; se sale de la ventana?
 	and a			;50a0
 	sbc hl,bc		;50a1
 	ret c			;50a3
-	ld a,002h		;50a4
+	ld a,002h		;50a4   ; si: hay que subir dos lineas
 	ld (0e884h),a		;50a6   ; guarda las lineas que quedan por subir
 	ex de,hl			;50a9
 	ld (0e344h),hl		;50aa   ; guarda el principio de la linea del texto
@@ -2186,13 +2186,13 @@ L_508C:
 sube_el_texto:		; sube la ventana del texto 0xEF00 una linea
 	ld hl,0e884h		;50b0   ; apunta a las lineas que quedan por subir
 	dec (hl)			;50b3
-	ld hl,0ef20h		;50b4
-	ld de,0ef00h		;50b7   ; apunta a la ventana del texto (32 x 8)
-	ld c,018h		;50ba
+	ld hl,0ef20h		;50b4   ; de la fila 1
+	ld de,0ef00h		;50b7   ; a la fila 0
+	ld c,018h		;50ba   ; 24 columnas
 L_50BC:
 	push hl			;50bc
 	push de			;50bd
-	ld b,008h		;50be
+	ld b,008h		;50be   ; 8 filas
 L_50C0:
 	ld a,(hl)			;50c0
 	ld (de),a			;50c1
@@ -2207,8 +2207,8 @@ L_50C0:
 	inc hl			;50d1
 	dec c			;50d2
 	jr nz,L_50BC		;50d3
-	ld hl,0efe0h		;50d5
-	ld de,0efe1h		;50d8
+	ld hl,0efe0h		;50d5   ; la ultima fila
+	ld de,0efe1h		;50d8   ; vacia
 	ld (hl),000h		;50db
 	ld bc,00017h		;50dd
 	ldir		;50e0
@@ -2239,7 +2239,7 @@ sonido_de_letra:		; el sonido de cada letra (2-4 segun 0xE3B0) salvo en ciertas 
 	jr nz,L_511A		;510e
 	push bc			;5110
 	ld c,a			;5111
-	ld a,(0e350h)		;5112
+	ld a,(0e350h)		;5112   ; en la sala 0x236 solo con 0xE350 < 0x1C
 	cp 01ch		;5115
 	ld a,c			;5117
 	pop bc			;5118
@@ -2256,16 +2256,16 @@ L_511A:
 	jr nz,L_5133		;5127
 	push bc			;5129
 	ld c,a			;512a
-	ld a,(0ea01h)		;512b
+	ld a,(0ea01h)		;512b   ; en la sala 0x235 solo con 0xEA01 < 0x16
 	cp 016h		;512e
 	ld a,c			;5130
 	pop bc			;5131
 	ret nc			;5132
 L_5133:
-	ld a,(0f0fah)		;5133   ; lee sin el sonido de las letras (cambia con la tecla del bit 7)
+	ld a,(0f0fah)		;5133   ; sin sonido de letras
 	and a			;5136
 	ret nz			;5137
-	ld a,(0e3b0h)		;5138   ; lee quien habla (sonido de las letras)
+	ld a,(0e3b0h)		;5138   ; quien habla: 0 da el sonido 4, 1 el 3 y los demas el 2
 	and a			;513b
 	ld c,004h		;513c
 	jr z,L_5147		;513e
@@ -2278,40 +2278,40 @@ L_5147:
 	jp efecto		;5148   ; efecto: pide el sonido A si 0xE002 lleva el bit 6
 mapa_de_la_sala:		; la sala 0xEB40 (12 x 8 bloques a nibbles, p15:6000 o p20:B606) a los nombres 0xED00 y la dureza 0xE800
 	xor a			;514b
-	ld (0e8e7h),a		;514c
-	ld hl,0e800h		;514f   ; apunta a la dureza de los bloques de la sala (16 por fila)
+	ld (0e8e7h),a		;514c   ; guarda la sala 0x208 con el bit 3 de 0xEB7D (cambia la ficha 0x0B)
+	ld hl,0e800h		;514f   ; la dureza de la sala a cero
 	ld de,0e801h		;5152
 	ld bc,0007fh		;5155
 	ld (hl),000h		;5158
 	ldir		;515a
-	call bancos_18_19_20		;515c   ; bancos_18_19_20: pone los bancos 18-19-20
+	call bancos_18_19_20		;515c   ; las salas 0x200 o mas en 18-19-20
 	ld hl,(0eb40h)		;515f   ; lee la sala
 	ld bc,00200h		;5162
 	and a			;5165
 	sbc hl,bc		;5166
-	ld de,0b606h		;5168
+	ld de,0b606h		;5168   ; p20:B606
 	jr nc,L_5176		;516b
-	call bancos_15_16_17		;516d   ; bancos_15_16_17: pone los bancos 15-16-17
+	call bancos_15_16_17		;516d   ; las otras en 15-16-17
 	ld hl,(0eb40h)		;5170   ; lee la sala
-	ld de,06000h		;5173
+	ld de,06000h		;5173   ; p15:6000
 L_5176:
-	ld a,(0eb7dh)		;5176   ; lee las banderas de la historia, byte 0x3D (se graban con la partida)
+	ld a,(0eb7dh)		;5176   ; con el bit 3 de 0xEB7D
 	bit 3,a		;5179
 	jr z,L_5191		;517b
 	push de			;517d
 	push hl			;517e
 	ld hl,(0eb40h)		;517f   ; lee la sala
-	ld de,00208h		;5182
+	ld de,00208h		;5182   ; la sala 0x208 cambia
 	and a			;5185
 	sbc hl,de		;5186
 	jr nz,L_518F		;5188
 	ld a,001h		;518a
-	ld (0e8e7h),a		;518c
+	ld (0e8e7h),a		;518c   ; guarda la sala 0x208 con el bit 3 de 0xEB7D (cambia la ficha 0x0B)
 L_518F:
 	pop hl			;518f
 	pop de			;5190
 L_5191:
-	add hl,hl			;5191
+	add hl,hl			;5191   ; 48 bytes por sala
 	add hl,hl			;5192
 	add hl,hl			;5193
 	add hl,hl			;5194
@@ -2320,79 +2320,79 @@ L_5191:
 	add hl,hl			;5197
 	add hl,bc			;5198
 	add hl,de			;5199
-	ld (0e8e0h),hl		;519a
-	ld hl,0ed00h		;519d   ; apunta a los nombres de la pantalla (32 x 24)
-	ld (0e8e2h),hl		;51a0
-	ld hl,0e800h		;51a3   ; apunta a la dureza de los bloques de la sala (16 por fila)
-	ld (0e8e5h),hl		;51a6
+	ld (0e8e0h),hl		;519a   ; el puntero de la sala
+	ld hl,0ed00h		;519d   ; los nombres desde 0xED00
+	ld (0e8e2h),hl		;51a0   ; guarda la variable de trabajo 0xE8E2 (16 bits) y el byte siguiente (16 bits)
+	ld hl,0e800h		;51a3   ; la dureza desde 0xE800
+	ld (0e8e5h),hl		;51a6   ; guarda la variable de trabajo 0xE8E5 (16 bits) y el byte siguiente (16 bits)
 	xor a			;51a9
-	ld (0e8e4h),a		;51aa
-	ld c,008h		;51ad
+	ld (0e8e4h),a		;51aa   ; nibble alto o bajo
+	ld c,008h		;51ad   ; 8 filas
 L_51AF:
 	push bc			;51af
-	ld b,00ch		;51b0
+	ld b,00ch		;51b0   ; de 12 bloques
 L_51B2:
 	push bc			;51b2
-	ld hl,(0e8e0h)		;51b3
-	ld d,(hl)			;51b6
-	ld a,(0e8e4h)		;51b7
+	ld hl,(0e8e0h)		;51b3   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+	ld d,(hl)			;51b6   ; el byte con dos bloques
+	ld a,(0e8e4h)		;51b7   ; lee la variable de trabajo 0xE8E4
 	rra			;51ba
 	ld a,d			;51bb
-	jr nc,L_51C4		;51bc
+	jr nc,L_51C4		;51bc   ; par: el nibble alto (p00:51C4); impar: el bajo, y el byte siguiente
 	inc hl			;51be
-	ld (0e8e0h),hl		;51bf
+	ld (0e8e0h),hl		;51bf   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	jr L_51C8		;51c2
 L_51C4:
-	rra			;51c4
+	rra			;51c4   ; el nibble alto
 	rra			;51c5
 	rra			;51c6
 	rra			;51c7
 L_51C8:
-	and 00fh		;51c8
+	and 00fh		;51c8   ; el bloque (0-15)
 	ld c,a			;51ca
-	ld a,(0e8e7h)		;51cb
+	ld a,(0e8e7h)		;51cb   ; lee la sala 0x208 con el bit 3 de 0xEB7D (cambia la ficha 0x0B)
 	and a			;51ce
 	ld a,c			;51cf
 	jr z,L_51D8		;51d0
-	cp 00bh		;51d2
+	cp 00bh		;51d2   ; en la sala 0x208 el 0x0B es el 2
 	jr nz,L_51D8		;51d4
 	ld a,002h		;51d6
 L_51D8:
-	add a,a			;51d8
+	add a,a			;51d8   ; cuatro fichas por bloque
 	add a,a			;51d9
-	add a,010h		;51da
+	add a,010h		;51da   ; desde la ficha 0x10
 	ld b,a			;51dc
-	ld hl,(0e8e2h)		;51dd
-	ld de,(0e8e5h)		;51e0
-	ld (hl),b			;51e4
-	call es_duro		;51e5   ; es_duro: A = 1 si la ficha B es >= la primera dura (0xE361)
+	ld hl,(0e8e2h)		;51dd   ; lee la variable de trabajo 0xE8E2 (16 bits) y el byte siguiente (16 bits)
+	ld de,(0e8e5h)		;51e0   ; lee la variable de trabajo 0xE8E5 (16 bits) y el byte siguiente (16 bits)
+	ld (hl),b			;51e4   ; arriba a la izquierda
+	call es_duro		;51e5   ; duro o no
 	ld (de),a			;51e8
 	inc b			;51e9
 	inc hl			;51ea
-	ld (hl),b			;51eb
+	ld (hl),b			;51eb   ; arriba a la derecha
 	inc b			;51ec
 	inc hl			;51ed
 	inc de			;51ee
-	ld (0e8e2h),hl		;51ef
-	ld (0e8e5h),de		;51f2
-	ld a,01eh		;51f6
+	ld (0e8e2h),hl		;51ef   ; guarda la variable de trabajo 0xE8E2 (16 bits) y el byte siguiente (16 bits)
+	ld (0e8e5h),de		;51f2   ; guarda la variable de trabajo 0xE8E5 (16 bits) y el byte siguiente (16 bits)
+	ld a,01eh		;51f6   ; la fila de abajo
 	call hl_mas_a		;51f8   ; hl_mas_a: HL = HL + A
-	ld (hl),b			;51fb
+	ld (hl),b			;51fb   ; abajo a la izquierda
 	inc b			;51fc
 	inc hl			;51fd
-	ld (hl),b			;51fe
-	ld hl,0e8e4h		;51ff
+	ld (hl),b			;51fe   ; abajo a la derecha
+	ld hl,0e8e4h		;51ff   ; apunta a la variable de trabajo 0xE8E4
 	inc (hl)			;5202
 	pop bc			;5203
 	djnz L_51B2		;5204
-	ld hl,(0e8e2h)		;5206
-	ld bc,00028h		;5209
+	ld hl,(0e8e2h)		;5206   ; la siguiente fila de bloques
+	ld bc,00028h		;5209   ; dos filas de fichas mas abajo
 	add hl,bc			;520c
-	ld (0e8e2h),hl		;520d
-	ld hl,(0e8e5h)		;5210
-	ld bc,00004h		;5213
+	ld (0e8e2h),hl		;520d   ; guarda la variable de trabajo 0xE8E2 (16 bits) y el byte siguiente (16 bits)
+	ld hl,(0e8e5h)		;5210   ; y la de la dureza
+	ld bc,00004h		;5213   ; 16 por fila
 	add hl,bc			;5216
-	ld (0e8e5h),hl		;5217
+	ld (0e8e5h),hl		;5217   ; guarda la variable de trabajo 0xE8E5 (16 bits) y el byte siguiente (16 bits)
 	pop bc			;521a
 	dec c			;521b
 	jr nz,L_51AF		;521c
@@ -2473,29 +2473,29 @@ menu_siguiente:		; pasa al siguiente paso del menu (0xE8A0 + 1)
 	inc (hl)			;5296
 	ret			;5297
 datos_del_personaje:		; copia de la ficha IX los nombres (0xEB1B-0xEB1F) y 0xEB25
-	ld e,(ix+015h)		;5298
+	ld e,(ix+015h)		;5298   ; el nombre de la ficha del actor
 	ld d,(ix+016h)		;529b
 	ld l,(ix+017h)		;529e
 	ld h,(ix+018h)		;52a1
 	ld a,(ix+019h)		;52a4
-	ld (0eb1bh),de		;52a7
+	ld (0eb1bh),de		;52a7   ; guarda el nombre de quien habla (5 bytes) y el byte siguiente (16 bits)
 	ld (0eb1dh),hl		;52ab
 	ld (0eb1fh),a		;52ae
-	ld a,(ix+000h)		;52b1
+	ld a,(ix+000h)		;52b1   ; los tipos 0x59 y 0x5A hablan con la voz 2
 	cp 059h		;52b4
 	jr z,L_52C9		;52b6
 	cp 05ah		;52b8
 	jr z,L_52C9		;52ba
-	ld a,(ix+01ah)		;52bc
+	ld a,(ix+01ah)		;52bc   ; la voz del actor
 	cp 002h		;52bf
 	jr nz,L_52C5		;52c1
-	sub 002h		;52c3
+	sub 002h		;52c3   ; la 2 pasa a ser la 0
 L_52C5:
-	ld (0eb25h),a		;52c5
+	ld (0eb25h),a		;52c5   ; guarda la voz de quien habla
 	ret			;52c8
 L_52C9:
 	ld a,002h		;52c9
-	ld (0eb25h),a		;52cb
+	ld (0eb25h),a		;52cb   ; guarda la voz de quien habla
 	ret			;52ce
 L_52CF:
 	ld hl,0e8d0h		;52cf   ; apunta a las veces que se ha elegido cada opcion
@@ -2518,7 +2518,7 @@ menu_opciones:		; elige la lista de opciones del menu
 	jr z,L_5358		;52f6
 	cp 017h		;52f8
 	jr nz,L_5336		;52fa
-	ld de,(0e8ach)		;52fc
+	ld de,(0e8ach)		;52fc   ; lee el puntero de las opciones del menu (16 bits) y el byte siguiente (16 bits)
 	ld a,(0eb7ch)		;5300   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 0f0h		;5303
 	jr z,L_5310		;5305
@@ -2527,22 +2527,22 @@ menu_opciones:		; elige la lista de opciones del menu
 	ld a,02bh		;530c
 	jr L_532D		;530e
 L_5310:
-	ld a,(0ffa7h)		;5310
+	ld a,(0ffa7h)		;5310   ; 0xC9 en H.PHYD: no hay disco
 	cp 0c9h		;5313
-	ld h,017h		;5315
+	ld h,017h		;5315   ; sin disco: la lista 0x17
 	jr nz,L_531E		;5317
-	inc de			;5319
+	inc de			;5319   ; con disco, la opcion mas
 	inc de			;531a
 	inc de			;531b
 	inc de			;531c
 	inc h			;531d
 L_531E:
-	ld a,(0f0f9h)		;531e   ; lee hay otro cartucho
+	ld a,(0f0f9h)		;531e   ; hay otro cartucho?
 	and a			;5321
 	ld a,h			;5322
 	jr z,L_532D		;5323
-	add a,008h		;5325
-	inc de			;5327
+	add a,008h		;5325   ; con el, la lista 8 mas adelante
+	inc de			;5327   ; y seis opciones mas
 	inc de			;5328
 	inc de			;5329
 	inc de			;532a
@@ -2550,7 +2550,7 @@ L_531E:
 	inc de			;532c
 L_532D:
 	ld (0e8a3h),a		;532d   ; guarda la lista de opciones del menu
-	ld (0e8ach),de		;5330
+	ld (0e8ach),de		;5330   ; guarda el puntero de las opciones del menu (16 bits) y el byte siguiente (16 bits)
 	jr L_534A		;5334
 L_5336:
 	cp 01dh		;5336
@@ -2594,13 +2594,13 @@ L_5380:
 	jp L_54D0		;538d
 menu_elige:		; mueve el cursor del menu y, con disparo, elige
 	xor a			;5390
-	ld (0e8afh),a		;5391
+	ld (0e8afh),a		;5391   ; guarda el cursor llega al borde (1 abajo, 2 arriba)
 	call cursor_vertical		;5394   ; cursor_vertical: arriba/abajo con repeticion (0xE8B0) en 0xE8A4
-	ld a,(0e8afh)		;5397
+	ld a,(0e8afh)		;5397   ; lee el cursor llega al borde (1 abajo, 2 arriba)
 	and a			;539a
 	jr nz,L_53BC		;539b
 	call pinta_cursor		;539d   ; pinta_cursor: el cursor parpadeante en la columna de opciones
-	ld a,(0e008h)		;53a0   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;53a0   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 010h		;53a3
 	ret z			;53a5
 	ld a,(0e8a7h)		;53a6   ; lee la clase del menu (1 hablar, 2 opciones, 3 objetos)
@@ -2619,7 +2619,7 @@ L_53BC:
 	cpl			;53c4
 	and 001h		;53c5
 	ld (0e8a2h),a		;53c7   ; guarda la columna del menu
-	ld a,(0e8afh)		;53ca
+	ld a,(0e8afh)		;53ca   ; lee el cursor llega al borde (1 abajo, 2 arriba)
 	dec a			;53cd
 	jr z,L_53D2		;53ce
 	ld a,003h		;53d0
@@ -2670,14 +2670,14 @@ menu_responde:		; la respuesta a la opcion elegida (p07:988E)
 	jr z,L_542F		;542b
 	add a,004h		;542d
 L_542F:
-	and a			;542f
-	ld b,a			;5430
+	and a			;542f   ; con la opcion 0 no se cuenta
+	ld b,a			;5430   ; B = la opcion
 	ld c,000h		;5431
-	ld a,(de)			;5433
+	ld a,(de)			;5433   ; los bits de las opciones abiertas
 	inc de			;5434
 	ld l,e			;5435
 	ld h,d			;5436
-	ld l,(hl)			;5437
+	ld l,(hl)			;5437   ; L = los bits de las que tienen sub-opciones
 	ld h,000h		;5438
 	jr z,L_5447		;543a
 L_543C:
@@ -2691,11 +2691,11 @@ L_5441:
 L_5445:
 	djnz L_543C		;5445
 L_5447:
-	rra			;5447
+	rra			;5447   ; la opcion esta abierta?
 	jp nc,L_54E4		;5448
-	bit 0,l		;544b
+	bit 0,l		;544b   ; tiene sub-opciones?
 	jp nz,L_5532		;544d
-	ld l,000h		;5450
+	ld l,000h		;5450   ; cuenta las opciones
 	ld a,(de)			;5452
 	ld b,008h		;5453
 L_5455:
@@ -2762,7 +2762,7 @@ L_54A8:
 	jp borra_cursor		;54c0   ; borra_cursor: borra el cursor de la columna de opciones
 L_54C3:
 	ld a,014h		;54c3
-	ld (0ea01h),a		;54c5
+	ld (0ea01h),a		;54c5   ; guarda el paso del rival
 	ld a,008h		;54c8
 	ld (0e360h),a		;54ca   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	jp borra_cursor		;54cd   ; borra_cursor: borra el cursor de la columna de opciones
@@ -2845,7 +2845,7 @@ L_5532:
 	ld (0e8a3h),a		;5550   ; guarda la lista de opciones del menu
 	inc hl			;5553
 	inc hl			;5554
-	ld (0e8ach),hl		;5555
+	ld (0e8ach),hl		;5555   ; guarda el puntero de las opciones del menu (16 bits) y el byte siguiente (16 bits)
 	xor a			;5558
 	ld (0e8a2h),a		;5559   ; guarda la columna del menu
 	ld a,(0e8a4h)		;555c   ; lee la opcion del cursor
@@ -2854,7 +2854,7 @@ L_5532:
 	jp menu_paso		;5564   ; menu_paso: 0xE8A0 = A
 L_5567:
 	ld a,(0e8a4h)		;5567   ; lee la opcion del cursor
-	ld hl,(0e8ach)		;556a
+	ld hl,(0e8ach)		;556a   ; lee el puntero de las opciones del menu (16 bits) y el byte siguiente (16 bits)
 	call hl_mas_a		;556d   ; hl_mas_a: HL = HL + A
 	ld c,(hl)			;5570
 	jp L_5480		;5571
@@ -2863,7 +2863,7 @@ L_5574:
 	ld hl,0e8b8h		;5577   ; apunta a las opciones del menu (0xFF acaba)
 	call hl_mas_a		;557a   ; hl_mas_a: HL = HL + A
 	ld c,(hl)			;557d
-	ld hl,(0e8ach)		;557e
+	ld hl,(0e8ach)		;557e   ; lee el puntero de las opciones del menu (16 bits) y el byte siguiente (16 bits)
 	dec hl			;5581
 	ld a,(hl)			;5582
 	and a			;5583
@@ -2889,7 +2889,7 @@ L_5592:
 	ld c,013h		;55a4
 	jp L_549B		;55a6
 L_55A9:
-	ld hl,(0e8ach)		;55a9
+	ld hl,(0e8ach)		;55a9   ; lee el puntero de las opciones del menu (16 bits) y el byte siguiente (16 bits)
 	dec hl			;55ac
 	ld a,(hl)			;55ad
 	inc hl			;55ae
@@ -2923,7 +2923,7 @@ L_55D8:
 menu_cursor:		; mueve el cursor de la cuadricula y, con disparo, pasa al paso 4
 	call cursor_cuadricula		;55e5   ; cursor_cuadricula: mueve el cursor de la cuadricula de 3 columnas
 	call pinta_cursor_cuadricula		;55e8   ; pinta_cursor_cuadricula: el cursor parpadeante en la cuadricula de objetos
-	ld a,(0e008h)		;55eb   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;55eb   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 010h		;55ee
 	ret z			;55f0
 	ld a,004h		;55f1
@@ -2945,9 +2945,9 @@ L_5605:
 	pop af			;560c
 	ret			;560d
 ficha_de_actor:		; HL = 0xE400 + A * 0x80: la ficha del actor A
-	ld l,a			;560e
+	ld l,a			;560e   ; el numero de actor
 	ld h,000h		;560f
-	add hl,hl			;5611
+	add hl,hl			;5611   ; 0x80 bytes por actor
 	add hl,hl			;5612
 	add hl,hl			;5613
 	add hl,hl			;5614
@@ -3056,17 +3056,17 @@ L_56C0:
 	ld (de),a			;56c5
 	inc de			;56c6
 L_56C7:
-	inc hl			;56c7
+	inc hl			;56c7   ; dos bytes por objeto
 	inc hl			;56c8
-	inc c			;56c9
+	inc c			;56c9   ; el numero de objeto
 	djnz L_56C0		;56ca
-	ld a,0ffh		;56cc
+	ld a,0ffh		;56cc   ; acaba la lista con 0xFF
 	ld (de),a			;56ce
 	ld hl,0e8b8h		;56cf   ; apunta a las opciones del menu (0xFF acaba)
 	and a			;56d2
-	sbc hl,de		;56d3
+	sbc hl,de		;56d3   ; lista vacia?
 	jr nz,L_56D9		;56d5
-	scf			;56d7
+	scf			;56d7   ; si: acarreo
 	ret			;56d8
 L_56D9:
 	and a			;56d9
@@ -3075,7 +3075,7 @@ pinta_opciones:		; las opciones de 0xE8B8 (textos p04:7A15) en columna desde 0x3
 	call bancos_4_5_6		;56db   ; bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
 	call marco_del_menu		;56de   ; marco_del_menu: el marco del menu (p00:454A) y su interior a cero
 	ld hl,03a1ah		;56e1
-	ld (0e8e0h),hl		;56e4
+	ld (0e8e0h),hl		;56e4   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld a,(0e8a2h)		;56e7   ; lee la columna del menu
 	and a			;56ea
 	ld de,0e8b8h		;56eb   ; apunta a las opciones del menu (0xFF acaba)
@@ -3098,12 +3098,12 @@ L_56F6:
 	ld e,(hl)			;5705
 	inc hl			;5706
 	ld d,(hl)			;5707
-	ld hl,(0e8e0h)		;5708
+	ld hl,(0e8e0h)		;5708   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	call texto_a_vram		;570b   ; texto_a_vram: texto de DE a la VRAM HL hasta 0xFF; 3 y 4 (dakuten) van a la fila de arriba
-	ld hl,(0e8e0h)		;570e
+	ld hl,(0e8e0h)		;570e   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld de,00040h		;5711
 	add hl,de			;5714
-	ld (0e8e0h),hl		;5715
+	ld (0e8e0h),hl		;5715   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	pop de			;5718
 	pop bc			;5719
 	inc de			;571a
@@ -3119,7 +3119,7 @@ pinta_objetos:		; los objetos de 0xE8B8 en cuadricula desde 0x3A24
 	call bancos_4_5_6		;5728   ; bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
 	call borra_ventana		;572b   ; borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
 	ld hl,03a24h		;572e
-	ld (0e8e0h),hl		;5731
+	ld (0e8e0h),hl		;5731   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld de,0e8b8h		;5734   ; apunta a las opciones del menu (0xFF acaba)
 L_5737:
 	ld a,(de)			;5737
@@ -3136,9 +3136,9 @@ L_5737:
 	ld e,(hl)			;5746
 	inc hl			;5747
 	ld d,(hl)			;5748
-	ld hl,(0e8e0h)		;5749
+	ld hl,(0e8e0h)		;5749   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	call texto_a_vram		;574c   ; texto_a_vram: texto de DE a la VRAM HL hasta 0xFF; 3 y 4 (dakuten) van a la fila de arriba
-	ld hl,(0e8e0h)		;574f
+	ld hl,(0e8e0h)		;574f   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld a,l			;5752
 	and 00ch		;5753
 	jr z,L_575E		;5755
@@ -3149,7 +3149,7 @@ L_575E:
 	ld a,032h		;575e
 	call hl_mas_a		;5760   ; hl_mas_a: HL = HL + A
 L_5763:
-	ld (0e8e0h),hl		;5763
+	ld (0e8e0h),hl		;5763   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	pop de			;5766
 	pop bc			;5767
 	inc de			;5768
@@ -3162,7 +3162,7 @@ L_576C:
 	jp bancos_del_estado		;5771   ; bancos_del_estado: pone el reparto que corresponde al estado 0xE000/0xE001
 cursor_vertical:		; arriba/abajo con repeticion (0xE8B0) en 0xE8A4
 	ld hl,0e8b0h		;5774   ; apunta a la repeticion del cursor
-	ld a,(0e008h)		;5777   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;5777   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 003h		;577a
 	jr nz,L_5786		;577c
 	ld a,(0e009h)		;577e   ; lee las teclas que hay
@@ -3183,7 +3183,7 @@ L_5786:
 	ret			;5798
 L_5799:
 	ld a,001h		;5799
-	ld (0e8afh),a		;579b
+	ld (0e8afh),a		;579b   ; guarda el cursor llega al borde (1 abajo, 2 arriba)
 	ret			;579e
 L_579F:
 	ld a,(hl)			;579f
@@ -3194,7 +3194,7 @@ L_579F:
 	ret			;57a7
 L_57A8:
 	ld a,002h		;57a8
-	ld (0e8afh),a		;57aa
+	ld (0e8afh),a		;57aa   ; guarda el cursor llega al borde (1 abajo, 2 arriba)
 	ret			;57ad
 pinta_cursor:		; el cursor parpadeante en la columna de opciones
 	call borra_cursor		;57ae   ; borra_cursor: borra el cursor de la columna de opciones
@@ -3248,7 +3248,7 @@ L_57ED:
 L_5803:
 	jp 0004dh		;5803   ; BIOS WRTVRM - Writes data in VRAM
 cursor_cuadricula:		; mueve el cursor de la cuadricula de 3 columnas
-	ld a,(0e008h)		;5806   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;5806   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 00fh		;5809
 	ret z			;580b
 	ld hl,0e8a4h		;580c   ; apunta a la opcion del cursor
@@ -3297,16 +3297,16 @@ L_5847:
 	call sonido_05		;5847   ; sonido_05: pide el sonido 5: el del cursor de los menus
 	ret			;584a
 L_584B:
-	ld a,(hl)			;584b
+	ld a,(hl)			;584b   ; la opcion del cursor
 	and a			;584c
-	ret z			;584d
+	ret z			;584d   ; en la primera columna no se mueve
 	cp 003h		;584e
 	ret z			;5850
 	cp 006h		;5851
 	ret z			;5853
 	cp 009h		;5854
 	ret z			;5856
-	dec (hl)			;5857
+	dec (hl)			;5857   ; una a la izquierda
 	call sonido_05		;5858   ; sonido_05: pide el sonido 5: el del cursor de los menus
 	ret			;585b
 borra_cursor:		; borra el cursor de la columna de opciones
@@ -3452,11 +3452,11 @@ copia_a_tres_tercios:		; LDIRVM en los tres tercios
 	exx			;594a
 	ld b,003h		;594b
 L_594D:
-	exx			;594d
+	exx			;594d   ; el siguiente tercio
 	push bc			;594e
 	push de			;594f
 	call copia_a_vram		;5950   ; copia_a_vram: LDIRVM de DE a la VRAM HL
-	ld de,00800h		;5953
+	ld de,00800h		;5953   ; 0x800 por tercio
 	add hl,de			;5956
 	pop de			;5957
 	pop bc			;5958
@@ -3530,21 +3530,21 @@ borra_fichas_del_juego:		; 0x300 de patrones y colores desde la ficha 0x10, en d
 bytes_a_vram:		; lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
 	ld c,0ffh		;59c2
 L_59C4:
-	ex de,hl			;59c4
+	ex de,hl			;59c4   ; HL = la direccion de VRAM de la lista
 	ld e,(hl)			;59c5
 	inc hl			;59c6
 	ld d,(hl)			;59c7
 	ex de,hl			;59c8
-	inc de			;59c9
+	inc de			;59c9   ; los bytes empiezan detras
 L_59CA:
-	ld a,(de)			;59ca
+	ld a,(de)			;59ca   ; el byte
 	inc de			;59cb
 	ld b,a			;59cc
-	inc b			;59cd
+	inc b			;59cd   ; 0xFF: acaba
 	ret z			;59ce
-	inc b			;59cf
+	inc b			;59cf   ; 0xFE: otra direccion
 	jr z,L_59C4		;59d0
-	and c			;59d2
+	and c			;59d2   ; con la mascara C
 	call 0004dh		;59d3   ; BIOS WRTVRM - Writes data in VRAM
 	inc hl			;59d6
 	jr L_59CA		;59d7
@@ -3552,12 +3552,12 @@ bytes_a_vram_a_cero:		; como p00:59C2 escribiendo ceros
 	ld c,000h		;59d9
 	jr L_59C4		;59db
 texto_a_vram:		; texto de DE a la VRAM HL hasta 0xFF; 3 y 4 (dakuten) van a la fila de arriba
-	ld a,(de)			;59dd
+	ld a,(de)			;59dd   ; el caracter
 	inc de			;59de
-	inc a			;59df
+	inc a			;59df   ; 0xFF: acaba
 	ret z			;59e0
 	dec a			;59e1
-	cp 003h		;59e2
+	cp 003h		;59e2   ; 3 y 4: acentos, a la fila de arriba
 	jr z,L_59EA		;59e4
 	cp 004h		;59e6
 	jr nz,L_59F5		;59e8
@@ -3575,26 +3575,26 @@ L_59F5:
 rle_con_destino:		; RLE de DE con su direccion de VRAM delante
 	ld c,000h		;59fb
 L_59FD:
-	ex de,hl			;59fd
+	ex de,hl			;59fd   ; HL = la direccion de VRAM del RLE
 	ld e,(hl)			;59fe
 	inc hl			;59ff
 	ld d,(hl)			;5a00
 	ex de,hl			;5a01
-	inc de			;5a02
+	inc de			;5a02   ; el RLE empieza detras
 rle_a_vram:		; RLE de DE a la VRAM HL: 0 acaba, bit 7 = repite, si no copia n; C bit 0 = volteado
 	call escribe_en_vram		;5a03   ; escribe_en_vram: SETWRT en HL y C' = el puerto de datos del VDP
 L_5A06:
-	ld a,(de)			;5a06
+	ld a,(de)			;5a06   ; el byte del RLE
 	and a			;5a07
-	ret z			;5a08
+	ret z			;5a08   ; 0: acaba
 	inc de			;5a09
 	ld b,a			;5a0a
-	and 07fh		;5a0b
+	and 07fh		;5a0b   ; bit 7: repetir el byte siguiente
 	cp b			;5a0d
 	jr z,L_5A1F		;5a0e
-	and a			;5a10
+	and a			;5a10   ; 0x80: otra direccion
 	jr z,rle_con_destino		;5a11
-	ld b,a			;5a13
+	ld b,a			;5a13   ; B = cuantos se copian
 L_5A14:
 	call byte_del_rle		;5a14   ; byte_del_rle: A = el byte de DE, al reves si C bit 0
 	exx			;5a17
@@ -3701,7 +3701,7 @@ modo_0:		; modo 0: la tecla de menu, p01:7162, los sprites y los actores; cambia
 	jr nz,L_5AA9		;5aa4
 	call 07162h		;5aa6   ; mueve_personaje: un cuadro del personaje: el modo 0xE3C0 (tabla p01:718E)
 L_5AA9:
-	call L_43E9		;5aa9
+	call patrones_del_fotograma		;5aa9   ; patrones_del_fotograma: los patrones de sprite de p18:6000[0xE3C3] a 0x1800 y la barra del marcador
 	call patrones_del_personaje		;5aac   ; patrones_del_personaje: los patrones de p18:65DC[0xEB74 o 0xE3C3] a 0x1860
 	call bancos_7_8		;5aaf   ; bancos_7_8: pone los bancos 7-8 en 0x8000 y 0xA000
 	call 087ech		;5ab2   ; mueve_actores: un cuadro de los 8 actores: su rutina y, si se mueven, su paso
@@ -3725,7 +3725,7 @@ L_5AD3:
 	ret			;5ad8
 modo_1:		; modo 1 (p07:844F): sale de la sala
 	call 0844fh		;5ad9   ; cambia_de_sala: modo 1: la sala nueva por el borde (vecinas: sala - 0x20, + 0x20, - 1, + 1 de p02:858C), las salas 0x201-0x228 a mano o el salto de 0xE36A
-	ld a,(0e378h)		;5adc
+	ld a,(0e378h)		;5adc   ; lee la animacion del modo 4 (1 o 2)
 	and a			;5adf
 	jr z,L_5AE9		;5ae0
 	ld a,040h		;5ae2
@@ -3747,7 +3747,7 @@ modo_menu:		; modo 2: el menu de la sala
 	cp 008h		;5b02
 	ret z			;5b04
 	call menu		;5b05   ; menu: un paso del menu de la sala (0xE8A0, tabla p00:5231)
-	call L_443D		;5b08
+	call dibujo_del_marcador		;5b08   ; dibujo_del_marcador: el dibujo 0xE368 (p09:6713) en el marcador, o el marcador vacio
 	ld a,(0e8a0h)		;5b0b   ; lee el paso del menu (tabla p00:5231)
 	cp 003h		;5b0e
 	ret nc			;5b10
@@ -3784,7 +3784,7 @@ modo_texto:		; modo 3: el texto del personaje y lo que pasa despues en las salas
 	call 0771fh		;5b4a
 	call a_sprites_de_actores		;5b4d   ; a_sprites_de_actores: con 7-8, p07:865C (dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas); vuelve con 1-2-3
 	ld a,(0e880h)		;5b50   ; lee el numero del texto
-	ld (0e88ch),a		;5b53
+	ld (0e88ch),a		;5b53   ; guarda el texto que acaba de salir
 	call texto		;5b56   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
 	ld a,(0e886h)		;5b59   ; lee el texto en marcha
 	and a			;5b5c
@@ -3809,7 +3809,7 @@ modo_texto:		; modo 3: el texto del personaje y lo que pasa despues en las salas
 	xor a			;5b82
 	jr L_5BA8		;5b83
 L_5B85:
-	ld a,(0e88ch)		;5b85
+	ld a,(0e88ch)		;5b85   ; lee el texto que acaba de salir
 	and a			;5b88
 	jr nz,L_5B90		;5b89
 	ld a,00ch		;5b8b
@@ -3818,7 +3818,7 @@ L_5B90:
 	xor a			;5b90
 	jr L_5BA8		;5b91
 L_5B93:
-	ld a,(0e88ch)		;5b93
+	ld a,(0e88ch)		;5b93   ; lee el texto que acaba de salir
 	cp 001h		;5b96
 	jr nz,L_5BA1		;5b98
 	ld a,006h		;5b9a
@@ -3832,7 +3832,7 @@ L_5BA8:
 	ld (0e360h),a		;5ba8   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	ret			;5bab
 L_5BAC:
-	ld a,(0e88ch)		;5bac
+	ld a,(0e88ch)		;5bac   ; lee el texto que acaba de salir
 	cp 00ah		;5baf
 	jr z,L_5BA1		;5bb1
 	cp 00bh		;5bb3
@@ -3845,7 +3845,7 @@ modo_4:		; modo 4 (p08:B3F9) hasta que 0xE378 = 0
 	call 0771fh		;5bc0
 	call a_sprites_de_actores		;5bc3   ; a_sprites_de_actores: con 7-8, p07:865C (dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas); vuelve con 1-2-3
 	call 0b3f9h		;5bc6   ; modo_4_anima: modo 4: la animacion 0xE378 (1 o 2; tabla p03:B402)
-	ld a,(0e378h)		;5bc9
+	ld a,(0e378h)		;5bc9   ; lee la animacion del modo 4 (1 o 2)
 	and a			;5bcc
 	ret nz			;5bcd
 	xor a			;5bce
@@ -3857,7 +3857,7 @@ modo_6:		; modo 6 (p04:6019 y p04:603F segun 0xE379) y el texto 0 o 1
 	call bancos_4_5_6		;5bd4   ; bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
 	call 06019h		;5bd7   ; comprueba_cuatro_actores: 0xE379 = 1 si el byte 0x1B de los actores 1-4 vale 3, 1, 2 y 4; si no, 2
 	call bancos_1_2_3		;5bda   ; bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
-	ld a,(0e379h)		;5bdd
+	ld a,(0e379h)		;5bdd   ; lee el resultado de los cuatro actores (1 bien, 2 mal)
 	dec a			;5be0
 	jr z,L_5BE8		;5be1
 	ld c,001h		;5be3
@@ -3870,12 +3870,12 @@ L_5BE8:
 	jp habla_con_1_2_3_y_1_2_3		;5bf3   ; habla_con_1_2_3_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 3; vuelve con 1-2-3
 modo_7:		; modo 7 (p21:6000)
 	xor a			;5bf6
-	ld (0e386h),a		;5bf7
+	ld (0e386h),a		;5bf7   ; guarda el final del desplazamiento (1 abajo, 2 arriba)
 	call bancos_21_22_23		;5bfa   ; bancos_21_22_23: pone los bancos 21-22-23
 	call 06000h		;5bfd   ; desplazamiento: un paso del modo 7 (0xE387, tabla p21:600F)
 	call bancos_1_2_3		;5c00   ; bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
 	call 0771fh		;5c03   ; sprites_del_personaje: los tres sprites del personaje en 0xF000
-	ld a,(0e386h)		;5c06
+	ld a,(0e386h)		;5c06   ; lee el final del desplazamiento (1 abajo, 2 arriba)
 	and a			;5c09
 	ret z			;5c0a
 	ld a,001h		;5c0b
@@ -3886,7 +3886,7 @@ modo_8:		; modo 8: una ronda de rutinas de los bancos 1-3 y 9-11
 	ld a,(0e360h)		;5c14   ; lee el modo dentro de la sala (tabla p00:5A83)
 	cp 002h		;5c17
 	ret z			;5c19
-	call L_43DB		;5c1a
+	call patrones_de_la_escena		;5c1a   ; patrones_de_la_escena: los patrones de sprite de p18:627C[0xE3A1] a 0x1800 (sigue en p00:43F5)
 	call bancos_9_10_11		;5c1d   ; bancos_9_10_11: pone los bancos 9-10-11
 	call 08c56h		;5c20   ; prepara_escena: un paso de la preparacion de la escena de accion (0xE39F, tabla p10:8C5C)
 	call 0ac1ch		;5c23   ; sprites_de_objetos: los sprites de los 7 objetos de 0xEA20 en 0xF020 (fotogramas p11:AC85) y el resto escondidos
@@ -3902,7 +3902,7 @@ modo_8:		; modo 8: una ronda de rutinas de los bancos 1-3 y 9-11
 modo_9:		; modo 9: escribe el texto y pasa al 8
 	call 08311h		;5c41   ; accion_sprites: los tres sprites del personaje de la escena de accion (0xE3E5, 0xE3E7) en 0xF000
 	ld a,(0e880h)		;5c44   ; lee el numero del texto
-	ld (0e88ch),a		;5c47
+	ld (0e88ch),a		;5c47   ; guarda el texto que acaba de salir
 	call texto		;5c4a   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
 	ld a,(0e886h)		;5c4d   ; lee el texto en marcha
 	and a			;5c50
@@ -3914,13 +3914,13 @@ tecla_de_menu:		; con la tecla de menu (0xE008 bit 5) espera a que no quede acto
 	ld a,(0e362h)		;5c58   ; lee el menu pedido
 	and a			;5c5b
 	jr nz,L_5C74		;5c5c
-	ld a,(0e3a9h)		;5c5e
+	ld a,(0e3a9h)		;5c5e   ; lee un actor lleva al personaje (no hay menu)
 	and a			;5c61
 	ret nz			;5c62
 	ld a,(0e3c4h)		;5c63   ; lee el personaje va de un bloque a otro
 	and a			;5c66
 	ret nz			;5c67
-	ld a,(0e008h)		;5c68   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;5c68   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 020h		;5c6b
 	ret z			;5c6d
 	ld a,001h		;5c6e
@@ -3949,7 +3949,7 @@ cierra_menu:		; con la tecla de menu se cierra el menu (o, en ciertas salas, otr
 	cp 008h		;5c96
 	ret c			;5c98
 L_5C99:
-	ld a,(0e008h)		;5c99   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;5c99   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 020h		;5c9c
 	ret z			;5c9e
 	ld de,(0eb40h)		;5c9f   ; lee la sala
@@ -3961,7 +3961,7 @@ L_5C99:
 	and a			;5caf
 	sbc hl,de		;5cb0
 	ret z			;5cb2
-	ld a,(0e372h)		;5cb3
+	ld a,(0e372h)		;5cb3   ; lee el paso del efecto que sube
 	dec a			;5cb6
 	ret z			;5cb7
 	ld de,(0eb40h)		;5cb8   ; lee la sala
@@ -3996,7 +3996,7 @@ L_5CEB:
 	call borra_cursor		;5cf2   ; borra_cursor: borra el cursor de la columna de opciones
 	xor a			;5cf5
 	ld (0e368h),a		;5cf6   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
-	jp L_443D		;5cf9
+	jp dibujo_del_marcador		;5cf9   ; dibujo_del_marcador: el dibujo 0xE368 (p09:6713) en el marcador, o el marcador vacio
 L_5CFC:
 	ld c,007h		;5cfc
 	jp habla_con_1_2_3_y_1_2_3		;5cfe   ; habla_con_1_2_3_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 3; vuelve con 1-2-3
@@ -4018,7 +4018,7 @@ L_5D1B:
 	ld (0e368h),a		;5d1c   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	inc a			;5d1f
 	ld (0eb7bh),a		;5d20   ; guarda las banderas de la historia, byte 0x3B (se graban con la partida)
-	call L_443D		;5d23
+	call dibujo_del_marcador		;5d23   ; dibujo_del_marcador: el dibujo 0xE368 (p09:6713) en el marcador, o el marcador vacio
 	ld c,00ch		;5d26
 	jp habla_con_1_2_3_y_1_2_3		;5d28   ; habla_con_1_2_3_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 3; vuelve con 1-2-3
 L_5D2B:
@@ -4026,7 +4026,7 @@ L_5D2B:
 	ld (0e360h),a		;5d2d   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	jp borra_cursor		;5d30   ; borra_cursor: borra el cursor de la columna de opciones
 menu_en_la_sala_211:		; en la sala 0x211, la tecla de menu abre el paso 9
-	ld a,(0e008h)		;5d33   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;5d33   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 020h		;5d36
 	ret z			;5d38
 	ld a,(0e3eah)		;5d39
@@ -4037,7 +4037,7 @@ menu_en_la_sala_211:		; en la sala 0x211, la tecla de menu abre el paso 9
 	and a			;5d45
 	sbc hl,de		;5d46
 	ret nz			;5d48
-	ld a,(0ea01h)		;5d49
+	ld a,(0ea01h)		;5d49   ; lee el paso del rival
 	cp 002h		;5d4c
 	ret z			;5d4e
 	cp 004h		;5d4f
@@ -4053,29 +4053,29 @@ L_5D59:
 	ld (0e8a0h),a		;5d60   ; guarda el paso del menu (tabla p00:5231)
 	ret			;5d63
 bloque_de_enfrente:		; A = el bloque que hay delante del personaje (0xE3C1 + p00:5DE7[0xE3C6])
-	ld hl,(0e3c1h)		;5d64   ; lee la Y del personaje y el byte siguiente (16 bits)
-	ld a,(0e3c6h)		;5d67   ; lee la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
+	ld hl,(0e3c1h)		;5d64   ; la posicion del personaje
+	ld a,(0e3c6h)		;5d67   ; y su direccion
 L_5D6A:
-	ld b,a			;5d6a
+	ld b,a			;5d6a   ; B = la direccion
 	add a,a			;5d6b
-	ld de,05de7h		;5d6c
+	ld de,05de7h		;5d6c   ; la tabla de pasos de 16
 	call de_mas_a		;5d6f   ; de_mas_a: DE = DE + A
-	ld a,(de)			;5d72
+	ld a,(de)			;5d72   ; Y + el paso
 	add a,l			;5d73
 	ld l,a			;5d74
 	inc de			;5d75
-	ld a,(de)			;5d76
+	ld a,(de)			;5d76   ; X + el paso
 	add a,h			;5d77
 	ld h,a			;5d78
-	call bloque_de_la_sala		;5d79   ; bloque_de_la_sala: HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala en la posicion L = Y, H = X
-	ld a,(hl)			;5d7c
+	call bloque_de_la_sala		;5d79   ; el bloque de esa posicion
+	ld a,(hl)			;5d7c   ; su dureza
 	or a			;5d7d
 	ld a,b			;5d7e
 	ret			;5d7f
 en_el_borde:		; Z/C segun si el personaje esta en el borde de su direccion
-	ld a,(0e3c6h)		;5d80   ; lee la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
-	ld hl,(0e3c1h)		;5d83   ; lee la Y del personaje y el byte siguiente (16 bits)
-	ld (0e8e0h),hl		;5d86
+	ld a,(0e3c6h)		;5d80   ; la direccion
+	ld hl,(0e3c1h)		;5d83   ; la posicion
+	ld (0e8e0h),hl		;5d86   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 L_5D89:
 	dec a			;5d89
 	call despacha		;5d8a   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
@@ -4096,19 +4096,19 @@ DATA_saltos_5D8D:
 
 
 L_5D95:
-	ld a,(0e8e0h)		;5d95
+	ld a,(0e8e0h)		;5d95   ; arriba: Y = 0?
 	or a			;5d98
 	ret			;5d99
 L_5D9A:
-	ld a,(0e8e0h)		;5d9a
+	ld a,(0e8e0h)		;5d9a   ; abajo: Y = 0x70?
 	cp 070h		;5d9d
 	ret			;5d9f
 L_5DA0:
-	ld a,(0e8e1h)		;5da0
+	ld a,(0e8e1h)		;5da0   ; izquierda: X = 0?
 	or a			;5da3
 	ret			;5da4
 L_5DA5:
-	ld a,(0e8e1h)		;5da5
+	ld a,(0e8e1h)		;5da5   ; derecha: X = 0xB0?
 	cp 0b0h		;5da8
 	ret			;5daa
 en_el_borde_de_ix:		; como p00:5D80 con los bordes de la ficha IX (+0x30-0x33)
@@ -4131,23 +4131,23 @@ DATA_saltos_5DAF:
 
 
 L_5DB7:
-	ld a,(0e8e0h)		;5db7
+	ld a,(0e8e0h)		;5db7   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera)
 	cp (ix+030h)		;5dba
 	ret			;5dbd
 L_5DBE:
-	ld a,(0e8e0h)		;5dbe
+	ld a,(0e8e0h)		;5dbe   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera)
 	cp (ix+031h)		;5dc1
 	ret			;5dc4
 L_5DC5:
-	ld a,(0e8e1h)		;5dc5
+	ld a,(0e8e1h)		;5dc5   ; lee la variable de trabajo 0xE8E1
 	cp (ix+032h)		;5dc8
 	ret			;5dcb
 L_5DCC:
-	ld a,(0e8e1h)		;5dcc
+	ld a,(0e8e1h)		;5dcc   ; lee la variable de trabajo 0xE8E1
 	cp (ix+033h)		;5dcf
 	ret			;5dd2
 pon_bloque_de_enfrente:		; pone B en el bloque de delante
-	add a,a			;5dd3
+	add a,a			;5dd3   ; dos bytes por direccion
 	ld de,05de7h		;5dd4
 	call de_mas_a		;5dd7   ; de_mas_a: DE = DE + A
 	ld a,(de)			;5dda
@@ -4158,7 +4158,7 @@ pon_bloque_de_enfrente:		; pone B en el bloque de delante
 	add a,h			;5ddf
 	ld h,a			;5de0
 	call bloque_de_la_sala		;5de1   ; bloque_de_la_sala: HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala en la posicion L = Y, H = X
-	ld (hl),b			;5de4
+	ld (hl),b			;5de4   ; B a la dureza de ese bloque
 	xor a			;5de5
 	ret			;5de6
 
@@ -4188,16 +4188,16 @@ L_5DFD:
 L_5E00:
 	ld b,008h		;5e00
 L_5E02:
-	ld (hl),a			;5e02
+	ld (hl),a			;5e02   ; la ficha
 	inc hl			;5e03
-	inc a			;5e04
+	inc a			;5e04   ; la siguiente
 	djnz L_5E02		;5e05
-	ld de,00018h		;5e07
+	ld de,00018h		;5e07   ; la siguiente fila (8 + 0x18 = 0x20)
 	add hl,de			;5e0a
 	dec c			;5e0b
 	jr nz,L_5E00		;5e0c
 	pop bc			;5e0e
-	ld de,000f8h		;5e0f
+	ld de,000f8h		;5e0f   ; vuelve arriba y 8 columnas a la derecha
 	and a			;5e12
 	sbc hl,de		;5e13
 	djnz L_5DFD		;5e15
@@ -4210,25 +4210,25 @@ nombres_del_marco:		; las fichas 0x10-0x6F en dos bloques de 16 x 6
 L_5E22:
 	ld b,010h		;5e22
 L_5E24:
-	ld (hl),a			;5e24
-	inc a			;5e25
+	ld (hl),a			;5e24   ; la ficha
+	inc a			;5e25   ; la siguiente
 	inc hl			;5e26
 	djnz L_5E24		;5e27
-	add hl,de			;5e29
+	add hl,de			;5e29   ; la siguiente fila
 	dec c			;5e2a
 	jr nz,L_5E22		;5e2b
-	ld hl,0ee04h		;5e2d
+	ld hl,0ee04h		;5e2d   ; el segundo bloque
 	ld de,00010h		;5e30
-	ld a,060h		;5e33
+	ld a,060h		;5e33   ; desde la ficha 0x60
 	ld c,006h		;5e35
 L_5E37:
 	ld b,010h		;5e37
 L_5E39:
-	ld (hl),a			;5e39
+	ld (hl),a			;5e39   ; la ficha
 	inc a			;5e3a
 	inc hl			;5e3b
 	djnz L_5E39		;5e3c
-	sub 020h		;5e3e
+	sub 020h		;5e3e   ; cada fila 0x20 fichas antes
 	add hl,de			;5e40
 	dec c			;5e41
 	jr nz,L_5E37		;5e42
@@ -4302,45 +4302,45 @@ L_5EB8:
 	jr nz,L_5EC1		;5ebe
 	ld a,(hl)			;5ec0
 L_5EC1:
-	inc hl			;5ec1
-	out (c),a		;5ec2
-	dec de			;5ec4
+	inc hl			;5ec1   ; el siguiente
+	out (c),a		;5ec2   ; al VDP
+	dec de			;5ec4   ; uno menos
 	ld a,d			;5ec5
 	or e			;5ec6
 	jr nz,L_5EB8		;5ec7
 	ret			;5ec9
 vuelca_sprites:		; los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
-	ld a,(0e007h)		;5eca   ; lee las banderas de sprites (bit 0: sin rotar)
+	ld a,(0e007h)		;5eca   ; sin rotar?
 	rra			;5ecd
 	jp c,L_5F15		;5ece
-	ld hl,03b00h		;5ed1
+	ld hl,03b00h		;5ed1   ; la tabla de atributos de la VRAM
 	call 00053h		;5ed4   ; BIOS SETWRT - Enables VDP to write
 	ld a,(00007h)		;5ed7
 	ld c,a			;5eda
-	ld hl,0e006h		;5edb   ; apunta a el desplazamiento de la rotacion de sprites
+	ld hl,0e006h		;5edb   ; el desplazamiento de la rotacion
 	ld a,(hl)			;5ede
-	add a,068h		;5edf
-	and 078h		;5ee1
+	add a,068h		;5edf   ; mas 0x68 (13 parejas)
+	and 078h		;5ee1   ; dentro de los 0x80 bytes, de pareja en pareja
 	ld (hl),a			;5ee3
-	ld e,(hl)			;5ee4
-	ld b,010h		;5ee5
-	ld h,0f0h		;5ee7
+	ld e,(hl)			;5ee4   ; E = el primero que se escribe
+	ld b,010h		;5ee5   ; 16 parejas de sprites
+	ld h,0f0h		;5ee7   ; desde 0xF000
 L_5EE9:
 	ld l,e			;5ee9
-	ld a,(hl)			;5eea
+	ld a,(hl)			;5eea   ; la Y
 	inc hl			;5eeb
-	dec a			;5eec
+	dec a			;5eec   ; menos 1 (el VDP pinta una linea mas abajo)
 	out (c),a		;5eed
-	ld a,(hl)			;5eef
+	ld a,(hl)			;5eef   ; la X
 	inc hl			;5ef0
 	out (c),a		;5ef1
-	ld a,(hl)			;5ef3
+	ld a,(hl)			;5ef3   ; el patron
 	inc hl			;5ef4
 	out (c),a		;5ef5
-	ld a,(hl)			;5ef7
+	ld a,(hl)			;5ef7   ; el color
 	inc hl			;5ef8
 	out (c),a		;5ef9
-	ld a,(hl)			;5efb
+	ld a,(hl)			;5efb   ; el segundo de la pareja: la Y
 	inc hl			;5efc
 	dec a			;5efd
 	out (c),a		;5efe
@@ -4353,14 +4353,14 @@ L_5EE9:
 	ld a,(hl)			;5f08
 	inc hl			;5f09
 	out (c),a		;5f0a
-	ld a,e			;5f0c
+	ld a,e			;5f0c   ; la siguiente pareja: 0x48 mas adelante (9 parejas)
 	add a,048h		;5f0d
 	and 078h		;5f0f
 	ld e,a			;5f11
 	djnz L_5EE9		;5f12
 	ret			;5f14
 L_5F15:
-	ld hl,03b00h		;5f15
+	ld hl,03b00h		;5f15   ; sin rotar, los 32 tal cual
 	ld de,0f000h		;5f18   ; apunta a los atributos de los 32 sprites
 	ld bc,00080h		;5f1b
 	jp copia_a_vram		;5f1e   ; copia_a_vram: LDIRVM de DE a la VRAM HL

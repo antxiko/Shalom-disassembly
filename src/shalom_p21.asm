@@ -15,15 +15,15 @@
 
 
 desplazamiento:		; un paso del modo 7 (0xE387, tabla p21:600F)
-	ld hl,0600fh		;6000
-	ld a,(0e387h)		;6003
+	ld hl,0600fh		;6000   ; la tabla de pasos
+	ld a,(0e387h)		;6003   ; el paso
 	add a,a			;6006
 	call hl_mas_a		;6007   ; hl_mas_a: HL = HL + A
-	ld e,(hl)			;600a
+	ld e,(hl)			;600a   ; DE = la rutina del paso
 	inc hl			;600b
 	ld d,(hl)			;600c
 	ex de,hl			;600d
-	jp (hl)			;600e
+	jp (hl)			;600e   ; salta a ella
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_600F: tabla de 5 palabras del despachador (call 0x408D en
@@ -44,102 +44,102 @@ DATA_saltos_600F:
 desplazamiento_empieza:		; borra la zona de juego, el fondo (p21:6357), el personaje en (0x50, 0x50) y 8 pasos de espera
 	call 0402eh		;6019   ; borra_zona_de_juego_y_21_22_23: borra 16 filas x 24 de 0xED00 y las vuelca; vuelve con 21-22-23
 	call 04034h		;601c   ; graficos_del_marcador_y_21_22_23: patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD; vuelve con 21-22-23
-	call fondo_de_bajada		;601f   ; fondo_de_bajada: 0xEC60 lleno de la ficha 0x10 y 6 filas de p21:62AF en 0xEE20
+	call fondo_de_bajada		;601f   ; el fondo
 	call 0403ah		;6022   ; vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
-	ld a,008h		;6025
-	ld (0e388h),a		;6027
-	ld a,001h		;602a
+	ld a,008h		;6025   ; 8 pasos de espera
+	ld (0e388h),a		;6027   ; guarda la espera del desplazamiento
+	ld a,001h		;602a   ; sprites sin rotar
 	ld (0e007h),a		;602c   ; guarda las banderas de sprites (bit 0: sin rotar)
-	ld hl,05050h		;602f
+	ld hl,05050h		;602f   ; el personaje en (0x50, 0x50)
 	ld (0e3c1h),hl		;6032   ; guarda la Y del personaje y el byte siguiente (16 bits)
-	ld a,058h		;6035
-	ld (0f020h),a		;6037
-	ld hl,0e387h		;603a
+	ld a,058h		;6035   ; y un sprite en la Y 0x58
+	ld (0f020h),a		;6037   ; guarda los sprites de los actores (desde el 8)
+	ld hl,0e387h		;603a   ; siguiente paso
 	inc (hl)			;603d
 	ret			;603e
 desplazamiento_entra:		; cada 16 cuadros el personaje sube un punto; al acabar, la musica y el guion p21:617B
-	ld a,(0e003h)		;603f   ; lee la cuenta de cuadros
+	ld a,(0e003h)		;603f   ; cada 16 cuadros
 	and 00fh		;6042
 	ret nz			;6044
-	ld hl,0e388h		;6045
+	ld hl,0e388h		;6045   ; un paso menos
 	dec (hl)			;6048
-	jr z,L_6054		;6049
-	ld hl,0e3c1h		;604b   ; apunta a la Y del personaje
+	jr z,L_6054		;6049   ; acabados: empieza a bajar
+	ld hl,0e3c1h		;604b   ; el personaje sube un punto
 	dec (hl)			;604e
-	ld hl,0f020h		;604f
+	ld hl,0f020h		;604f   ; y el sprite tambien
 	dec (hl)			;6052
 	ret			;6053
 L_6054:
-	ld a,006h		;6054
-	ld (0e389h),a		;6056
-	ld (0e388h),a		;6059
-	ld a,080h		;605c
-	ld (0e38ah),a		;605e
-	ld a,070h		;6061
-	ld (0e38dh),a		;6063
-	ld hl,0617bh		;6066
-	ld (0e38bh),hl		;6069
-	call 04040h		;606c   ; sonido_28_y_21_22_23: pide el sonido 0x28; vuelve con 21-22-23
-	ld hl,0e387h		;606f
+	ld a,006h		;6054   ; 6 cuadros entre fila y fila
+	ld (0e389h),a		;6056   ; guarda los cuadros entre fila y fila del desplazamiento
+	ld (0e388h),a		;6059   ; guarda la espera del desplazamiento
+	ld a,080h		;605c   ; 0x80 filas
+	ld (0e38ah),a		;605e   ; guarda la cuenta de filas del desplazamiento
+	ld a,070h		;6061   ; el primer dibujo en la fila 0x70
+	ld (0e38dh),a		;6063   ; guarda la cuenta del siguiente dibujo del desplazamiento
+	ld hl,0617bh		;6066   ; el guion de dibujos
+	ld (0e38bh),hl		;6069   ; guarda el guion de dibujos del desplazamiento (16 bits) y el byte siguiente (16 bits)
+	call 04040h		;606c   ; y su sonido
+	ld hl,0e387h		;606f   ; siguiente paso
 	inc (hl)			;6072
 	ret			;6073
 desplazamiento_baja:		; un cuadro: la pantalla baja (p21:60C2) y los dibujos del guion (p21:615E)
 	call 0403ah		;6074   ; vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
-	call pantalla_baja		;6077   ; pantalla_baja: cada 0xE389 cuadros baja 20 filas de 0xEEC0 una fila; al acabar, 0xE386 = 1
-	jp dibujo_del_guion_abajo		;607a   ; dibujo_del_guion_abajo: al llegar la cuenta 0xE38A a la de 0xE38D, el siguiente dibujo del guion (0xE38B) arriba
+	call pantalla_baja		;6077   ; baja la pantalla
+	jp dibujo_del_guion_abajo		;607a   ; y mete los dibujos que tocan
 desplazamiento_empieza_arriba:		; como p21:6019 con el fondo de p21:6389 y el guion p21:61BF
 	call 0402eh		;607d   ; borra_zona_de_juego_y_21_22_23: borra 16 filas x 24 de 0xED00 y las vuelca; vuelve con 21-22-23
 	call 04034h		;6080   ; graficos_del_marcador_y_21_22_23: patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD; vuelve con 21-22-23
-	call fondo_de_subida		;6083   ; fondo_de_subida: 21 filas de 0xED00 con la ficha 0x10
+	call fondo_de_subida		;6083   ; el otro fondo
 	call 0403ah		;6086   ; vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
-	ld a,001h		;6089
+	ld a,001h		;6089   ; sprites sin rotar
 	ld (0e007h),a		;608b   ; guarda las banderas de sprites (bit 0: sin rotar)
-	ld a,006h		;608e
-	ld (0e389h),a		;6090
-	ld (0e388h),a		;6093
-	ld a,080h		;6096
-	ld (0e38ah),a		;6098
-	ld a,070h		;609b
-	ld (0e38dh),a		;609d
-	ld hl,061bfh		;60a0
-	ld (0e38bh),hl		;60a3
-	ld hl,05050h		;60a6
+	ld a,006h		;608e   ; 6 cuadros entre fila y fila
+	ld (0e389h),a		;6090   ; guarda los cuadros entre fila y fila del desplazamiento
+	ld (0e388h),a		;6093   ; guarda la espera del desplazamiento
+	ld a,080h		;6096   ; 0x80 filas
+	ld (0e38ah),a		;6098   ; guarda la cuenta de filas del desplazamiento
+	ld a,070h		;609b   ; el primer dibujo en la fila 0x70
+	ld (0e38dh),a		;609d   ; guarda la cuenta del siguiente dibujo del desplazamiento
+	ld hl,061bfh		;60a0   ; el guion de subida
+	ld (0e38bh),hl		;60a3   ; guarda el guion de dibujos del desplazamiento (16 bits) y el byte siguiente (16 bits)
+	ld hl,05050h		;60a6   ; el personaje en (0x50, 0x50)
 	ld (0e3c1h),hl		;60a9   ; guarda la Y del personaje y el byte siguiente (16 bits)
-	ld a,058h		;60ac
-	ld (0f020h),a		;60ae
-	call 04040h		;60b1   ; sonido_28_y_21_22_23: pide el sonido 0x28; vuelve con 21-22-23
-	ld hl,0e387h		;60b4
+	ld a,058h		;60ac   ; y el sprite en la Y 0x58
+	ld (0f020h),a		;60ae   ; guarda los sprites de los actores (desde el 8)
+	call 04040h		;60b1   ; su sonido
+	ld hl,0e387h		;60b4   ; apunta a el paso del desplazamiento (tabla p21:600F)
 	inc (hl)			;60b7
 	ret			;60b8
 desplazamiento_sube:		; un cuadro: la pantalla sube (p21:6112) y los dibujos del guion (p21:61A2)
 	call 0403ah		;60b9   ; vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
-	call pantalla_sube		;60bc   ; pantalla_sube: cada 0xE389 cuadros sube 20 filas de 0xED20 una fila; al acabar, 0xE386 = 2
-	jp dibujo_del_guion_arriba		;60bf   ; dibujo_del_guion_arriba: al llegar la cuenta, el siguiente dibujo del guion abajo
+	call pantalla_sube		;60bc   ; sube la pantalla
+	jp dibujo_del_guion_arriba		;60bf   ; y mete los dibujos que tocan
 pantalla_baja:		; cada 0xE389 cuadros baja 20 filas de 0xEEC0 una fila; al acabar, 0xE386 = 1
-	ld hl,0e388h		;60c2
+	ld hl,0e388h		;60c2   ; cuenta los cuadros de esta fila
 	dec (hl)			;60c5
 	ret nz			;60c6
-	ld hl,0e38ah		;60c7
+	ld hl,0e38ah		;60c7   ; una fila menos
 	dec (hl)			;60ca
-	jr z,L_610C		;60cb
-	ld a,(hl)			;60cd
+	jr z,L_610C		;60cb   ; acabadas todas: fin
+	ld a,(hl)			;60cd   ; cada 8 filas
 	and 007h		;60ce
 	jr nz,L_60DA		;60d0
-	ld hl,0e389h		;60d2
-	ld a,(hl)			;60d5
+	ld hl,0e389h		;60d2   ; apunta a los cuadros entre fila y fila del desplazamiento
+	ld a,(hl)			;60d5   ; va mas deprisa (sin bajar de 1)
 	dec a			;60d6
 	jr z,L_60DA		;60d7
 	dec (hl)			;60d9
 L_60DA:
-	ld a,(0e389h)		;60da
-	ld (0e388h),a		;60dd
-	ld hl,0eec0h		;60e0
+	ld a,(0e389h)		;60da   ; los cuadros de la siguiente fila
+	ld (0e388h),a		;60dd   ; guarda la espera del desplazamiento
+	ld hl,0eec0h		;60e0   ; desde abajo
 	ld de,0eee0h		;60e3
-	ld b,014h		;60e6
+	ld b,014h		;60e6   ; 20 filas
 L_60E8:
 	push bc			;60e8
-	ld bc,00018h		;60e9
-	ldir		;60ec
+	ld bc,00018h		;60e9   ; 24 fichas por fila
+	ldir		;60ec   ; cada fila baja una
 	ld bc,00038h		;60ee
 	push bc			;60f1
 	and a			;60f2
@@ -151,41 +151,41 @@ L_60E8:
 	ex de,hl			;60fa
 	pop bc			;60fb
 	djnz L_60E8		;60fc
-	ld hl,0ec60h		;60fe
+	ld hl,0ec60h		;60fe   ; la fila de arriba con la ficha 0x10
 	ld de,0ec61h		;6101
 	ld bc,00017h		;6104
 	ld (hl),010h		;6107
 	ldir		;6109
 	ret			;610b
 L_610C:
-	ld a,001h		;610c
-	ld (0e386h),a		;610e
+	ld a,001h		;610c   ; bajada acabada
+	ld (0e386h),a		;610e   ; guarda el final del desplazamiento (1 abajo, 2 arriba)
 	ret			;6111
 pantalla_sube:		; cada 0xE389 cuadros sube 20 filas de 0xED20 una fila; al acabar, 0xE386 = 2
-	ld hl,0e388h		;6112
+	ld hl,0e388h		;6112   ; cuenta los cuadros de esta fila
 	dec (hl)			;6115
 	ret nz			;6116
-	ld hl,0e38ah		;6117
+	ld hl,0e38ah		;6117   ; una fila menos
 	dec (hl)			;611a
-	jr z,L_6158		;611b
-	ld a,(hl)			;611d
+	jr z,L_6158		;611b   ; acabadas todas: fin
+	ld a,(hl)			;611d   ; cada 8 filas
 	and 007h		;611e
 	jr nz,L_612A		;6120
-	ld hl,0e389h		;6122
-	ld a,(hl)			;6125
+	ld hl,0e389h		;6122   ; apunta a los cuadros entre fila y fila del desplazamiento
+	ld a,(hl)			;6125   ; va mas deprisa
 	dec a			;6126
 	jr z,L_612A		;6127
 	dec (hl)			;6129
 L_612A:
-	ld a,(0e389h)		;612a
-	ld (0e388h),a		;612d
-	ld hl,0ed20h		;6130
+	ld a,(0e389h)		;612a   ; los cuadros de la siguiente fila
+	ld (0e388h),a		;612d   ; guarda la espera del desplazamiento
+	ld hl,0ed20h		;6130   ; desde arriba
 	ld de,0ed00h		;6133   ; apunta a los nombres de la pantalla (32 x 24)
-	ld b,014h		;6136
+	ld b,014h		;6136   ; 20 filas
 L_6138:
 	push bc			;6138
-	ld bc,00018h		;6139
-	ldir		;613c
+	ld bc,00018h		;6139   ; 24 fichas por fila
+	ldir		;613c   ; cada fila sube una
 	ld bc,00008h		;613e
 	push bc			;6141
 	add hl,bc			;6142
@@ -195,32 +195,32 @@ L_6138:
 	ex de,hl			;6146
 	pop bc			;6147
 	djnz L_6138		;6148
-	ld hl,0ef80h		;614a
+	ld hl,0ef80h		;614a   ; la fila de abajo con la ficha 0x10
 	ld de,0ef81h		;614d
 	ld bc,00017h		;6150
 	ld (hl),010h		;6153
 	ldir		;6155
 	ret			;6157
 L_6158:
-	ld a,002h		;6158
-	ld (0e386h),a		;615a
+	ld a,002h		;6158   ; subida acabada
+	ld (0e386h),a		;615a   ; guarda el final del desplazamiento (1 abajo, 2 arriba)
 	ret			;615d
 dibujo_del_guion_abajo:		; al llegar la cuenta 0xE38A a la de 0xE38D, el siguiente dibujo del guion (0xE38B) arriba
-	ld a,(0e38ah)		;615e
-	ld hl,0e38dh		;6161
-	cp (hl)			;6164
+	ld a,(0e38ah)		;615e   ; la cuenta de filas
+	ld hl,0e38dh		;6161   ; apunta a la cuenta del siguiente dibujo del desplazamiento
+	cp (hl)			;6164   ; es la del siguiente dibujo?
 	ret nz			;6165
-	ld hl,(0e38bh)		;6166
-	ld c,(hl)			;6169
+	ld hl,(0e38bh)		;6166   ; el guion
+	ld c,(hl)			;6169   ; C = el dibujo
 	inc hl			;616a
-	ld b,(hl)			;616b
+	ld b,(hl)			;616b   ; B = la columna
 	inc hl			;616c
-	ld a,(hl)			;616d
-	ld (0e38dh),a		;616e
+	ld a,(hl)			;616d   ; la cuenta del siguiente
+	ld (0e38dh),a		;616e   ; guarda la cuenta del siguiente dibujo del desplazamiento
 	ld a,c			;6171
 	ld c,000h		;6172
 	inc hl			;6174
-	ld (0e38bh),hl		;6175
+	ld (0e38bh),hl		;6175   ; por donde sigue el guion
 	jr $+110		;6178
 
 ; ----------------------------------------------------------------------
@@ -239,21 +239,21 @@ DATA_resto_617A:
 
 
 dibujo_del_guion_arriba:		; al llegar la cuenta, el siguiente dibujo del guion abajo
-	ld a,(0e38ah)		;61a2
-	ld hl,0e38dh		;61a5
-	cp (hl)			;61a8
+	ld a,(0e38ah)		;61a2   ; la cuenta de filas
+	ld hl,0e38dh		;61a5   ; apunta a la cuenta del siguiente dibujo del desplazamiento
+	cp (hl)			;61a8   ; es la del siguiente dibujo?
 	ret nz			;61a9
-	ld hl,(0e38bh)		;61aa
+	ld hl,(0e38bh)		;61aa   ; el guion
 	ld c,(hl)			;61ad
 	inc hl			;61ae
 	ld b,(hl)			;61af
 	inc hl			;61b0
 	ld a,(hl)			;61b1
-	ld (0e38dh),a		;61b2
+	ld (0e38dh),a		;61b2   ; guarda la cuenta del siguiente dibujo del desplazamiento
 	ld a,c			;61b5
 	ld c,001h		;61b6
 	inc hl			;61b8
-	ld (0e38bh),hl		;61b9
+	ld (0e38bh),hl		;61b9   ; por donde sigue el guion
 	jr $+42		;61bc
 
 ; ----------------------------------------------------------------------
@@ -272,8 +272,8 @@ DATA_resto_61BE:
 
 
 dibujo_entrante:		; el dibujo A de p21:621D en la columna B de la fila que entra
-	dec a			;61e6
-	ld de,0621dh		;61e7
+	dec a			;61e6   ; el dibujo A
+	ld de,0621dh		;61e7   ; en la tabla de dibujos
 	ld l,a			;61ea
 	ld h,000h		;61eb
 	add hl,hl			;61ed
@@ -282,33 +282,33 @@ dibujo_entrante:		; el dibujo A de p21:621D en la columna B de la fila que entra
 	inc hl			;61f0
 	ld d,(hl)			;61f1
 	dec c			;61f2
-	ld hl,0ec60h		;61f3
+	ld hl,0ec60h		;61f3   ; bajando, en la fila de 0xEC60
 	jr nz,L_61FB		;61f6
-	ld hl,0ef00h		;61f8   ; apunta a la ventana del texto (32 x 8)
+	ld hl,0ef00h		;61f8   ; subiendo, en la de 0xEF00
 L_61FB:
-	ld a,b			;61fb
+	ld a,b			;61fb   ; la columna
 	and 0f8h		;61fc
 	rra			;61fe
 	rra			;61ff
 	rra			;6200
-	call hl_mas_a		;6201   ; hl_mas_a: HL = HL + A
-	ld a,(de)			;6204
+	call hl_mas_a		;6201   ; en esa fila
+	ld a,(de)			;6204   ; C = el alto
 	ld c,a			;6205
 	inc de			;6206
-	ld a,(de)			;6207
+	ld a,(de)			;6207   ; B = el ancho
 	ld b,a			;6208
 	inc de			;6209
 L_620A:
 	push bc			;620a
 	push hl			;620b
 L_620C:
-	ld a,(de)			;620c
+	ld a,(de)			;620c   ; copia una fila del dibujo
 	ld (hl),a			;620d
 	inc hl			;620e
 	inc de			;620f
 	djnz L_620C		;6210
 	pop hl			;6212
-	ld a,020h		;6213
+	ld a,020h		;6213   ; la siguiente fila
 	call hl_mas_a		;6215   ; hl_mas_a: HL = HL + A
 	pop bc			;6218
 	dec c			;6219
@@ -348,12 +348,12 @@ DATA_resto_621D:
 
 
 fondo_de_bajada:		; 0xEC60 lleno de la ficha 0x10 y 6 filas de p21:62AF en 0xEE20
-	ld hl,0ec60h		;6357
+	ld hl,0ec60h		;6357   ; 0xEC60 en adelante
 	ld de,00008h		;635a
-	ld a,010h		;635d
-	ld c,00eh		;635f
+	ld a,010h		;635d   ; con la ficha 0x10
+	ld c,00eh		;635f   ; 14 filas
 L_6361:
-	ld b,018h		;6361
+	ld b,018h		;6361   ; de 24 fichas
 L_6363:
 	ld (hl),a			;6363
 	inc hl			;6364
@@ -361,8 +361,8 @@ L_6363:
 	add hl,de			;6367
 	dec c			;6368
 	jr nz,L_6361		;6369
-	ld hl,0ee20h		;636b
-	ld de,062afh		;636e
+	ld hl,0ee20h		;636b   ; y 6 filas de dibujo
+	ld de,062afh		;636e   ; de p21:62AF
 	ld c,006h		;6371
 L_6373:
 	ld b,018h		;6373
@@ -384,17 +384,17 @@ hl_mas_a:		; HL = HL + A
 	inc h			;6387
 	ret			;6388
 fondo_de_subida:		; 21 filas de 0xED00 con la ficha 0x10
-	ld hl,0ed00h		;6389   ; apunta a los nombres de la pantalla (32 x 24)
+	ld hl,0ed00h		;6389   ; 0xED00 en adelante
 	ld de,00008h		;638c
-	ld a,010h		;638f
-	ld c,015h		;6391
+	ld a,010h		;638f   ; con la ficha 0x10
+	ld c,015h		;6391   ; 21 filas
 L_6393:
-	ld b,018h		;6393
+	ld b,018h		;6393   ; de 24 fichas
 L_6395:
-	ld (hl),a			;6395
+	ld (hl),a			;6395   ; la ficha 0x10
 	inc hl			;6396
 	djnz L_6395		;6397
-	add hl,de			;6399
+	add hl,de			;6399   ; la siguiente fila
 	dec c			;639a
 	jr nz,L_6393		;639b
 	ret			;639d

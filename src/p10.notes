@@ -1,5 +1,73 @@
 # Notas del banco 10
 
+# --- A MANO: comentarios, nombres y bloques ---
+C 0x8E31 [n]: cuantos bytes
+C 0x8E33 0xFF: acaba
+C 0x8E38 un byte del dibujo
+C 0x8E3E el salto hasta el siguiente tramo
+C 0x8E44 hasta 0xEEA0
+C 0x913A el destino
+C 0x913E HL = el destino
+C 0x9140 [n]: cuantos bytes
+C 0x9142 0xFF: acaba
+C 0x918F la espera
+C 0x9195 acabada: siguiente paso
+C 0x9198 cada dos cuadros
+C 0x919E el borde blanco o negro
+C 0x9408 la espera
+C 0x940E acabada: siguiente paso
+C 0x9411 cada dos cuadros
+C 0x9417 el borde blanco o negro
+C 0x9482 dos bits al azar
+C 0x9487 si sale 3
+C 0x948A otros dos de la cuenta de cuadros
+C 0x9494 y si vuelve a ser 3, 2
+C 0x94B3 el destino
+C 0x94B7 HL = el destino
+C 0x94B9 [n]: cuantos bytes
+C 0x94BB 0xFF: acaba
+C 0x94BF el byte con la mascara C
+C 0x94C6 el salto hasta el siguiente tramo
+C 0x94CD se salta
+C 0x96EC las fichas 0x10-0x13: un bloque de 2x2
+C 0x96F0 arriba a la izquierda
+C 0x96F3 arriba a la derecha
+C 0x96F6 la fila de abajo
+C 0x96F7 abajo a la izquierda
+C 0x96FA abajo a la derecha
+C 0x96FC el siguiente bloque, dos columnas mas alla
+C 0x9701 dos filas mas abajo
+C 0x9730 [n]: cuantos bytes
+C 0x9732 0xFF: acaba
+C 0x9752 la espera
+C 0x9758 acabada: siguiente paso
+C 0x975B cada dos cuadros
+C 0x9761 el borde blanco o negro
+C 0x990D la columna izquierda con la ficha 0x10
+C 0x9912 la derecha
+C 0x991A la ficha 0x10
+C 0x991F el interior con la 0x11
+C 0x993E [n]: cuantos bytes
+C 0x9940 0xFF: acaba
+C 0x9B37 [n]: cuantos bytes
+C 0x9B39 0xFF: acaba
+C 0x9B59 la espera
+C 0x9B5F acabada: siguiente paso
+C 0x9B62 cada dos cuadros
+C 0x9B68 el borde blanco o negro
+C 0x9C0D la accion: dos bits al azar
+C 0x9C12 si sale 3
+C 0x9C16 otros dos de la cuenta de cuadros
+C 0x9CAE una ficha del dibujo, con la mascara B
+C 0x9CB8 la siguiente fila (10 + 0x16 = 0x20)
+C 0x9EDB la espera
+C 0x9EE1 acabada: siguiente paso
+C 0x9EE4 cada dos cuadros
+C 0x9EEA el borde blanco o negro
+C 0x9F88 la accion: dos bits al azar
+C 0x9F8D si sale 3
+C 0x9F91 otros dos de la cuenta de cuadros
+
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0x8000 0x877B resto_8000  lo apuntan con el banco puesto p00:410D (0x8000), p00:4175 (0x8000), p10:9437 (0x8030), p10:999E (0x8030), p11:A25B (0x8030); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p00:410D, p00:4175, p10:9437, p10:999E, p11:A25B (1915 bytes)
 F 0x8000 16
@@ -83,7 +151,13 @@ L 0x93B0 objeto_03_0 la clase 3, paso 0
 L 0x93F0 objeto_03_1 la clase 3, paso 1
 L 0x9408 objeto_03_2 la clase 3, paso 2
 L 0x9420 jefe_3_vencido pone el bit 5 de 0xEB7D y salta a la sala 0x159
+L 0x9440 cambia_dibujo_1e cada 5 cuadros, si no esta tocado, un dibujo al azar en (ix+0x1E)
+L 0x9461 cambia_dibujo_1f cada 5 cuadros, si no esta tocado, un dibujo al azar en (ix+0x1F)
 L 0x9482 al_azar_0_2 A = 0-2 al azar
+L 0x9496 borra_dibujo_1e borra el dibujo de (ix+0x1E)
+L 0x949A pinta_dibujo_1e pinta el dibujo de (ix+0x1E)
+L 0x94A4 borra_dibujo_1f borra el dibujo de (ix+0x1F)
+L 0x94A8 pinta_dibujo_1f pinta el dibujo de (ix+0x1F)
 L 0x94B3 dibujo_con_mascara [destino] y el dibujo de DE, cada byte AND C
 L 0x968C objeto_04 la clase 4 de los objetos de 0xEA00 (p10:8CCD): un paso (ix+1) de la tabla p10:9692
 L 0x96A2 objeto_04_0 la clase 4, paso 0
@@ -104,6 +178,7 @@ L 0x9B37 dibujo_a_ram_c [n] n bytes [salto] hasta 0xFF
 L 0x9B4A objeto_06_1 la clase 6, paso 1
 L 0x9B59 objeto_06_2 la clase 6, paso 2
 L 0x9B71 jefe_6_vencido pone el bit 2 de 0xEB7D y salta a la sala 0x185
+L 0x9B94 mueve_jefe_6 cada 4 cuadros (o cada 2 en las acciones 2-4) avanza y hace su accion (tabla p10:9BC6)
 L 0x9C58 objeto_avanza Y (ix+6/7) += (ix+2/3) y X (ix+8/9) += (ix+4/5)
 L 0x9C7F borra_dibujo_del_objeto borra las fichas del objeto de donde estaba (ix+0x1E)
 L 0x9C89 pinta_dibujo_del_objeto las 6 x 10 fichas del objeto (p10:9D9B[ix+0x0A]) en su posicion
@@ -112,9 +187,14 @@ L 0x9EA5 objeto_07_0 la clase 7, paso 0
 L 0x9ECC objeto_07_1 la clase 7, paso 1
 L 0x9EDB objeto_07_2 la clase 7, paso 2
 L 0x9EF3 jefe_7_vencido pone el bit 1 de 0xEB7D y salta a la sala 0x109
+L 0x9F16 mueve_jefe_7 cada 4 cuadros (o cada 2 en las acciones 2-4) avanza y hace su accion (tabla p10:9F4A)
+L 0x9FD3 borra_dibujo_del_jefe_7 borra sus fichas de donde estaba
+L 0x9FDD pinta_dibujo_del_jefe_7 sus fichas en su posicion
+C 0x8C56 lee el paso de la preparacion de la escena de accion
 C 0x8C59 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0x8C60 apunta a los atributos de los 32 sprites
 C 0x8C6D vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
+C 0x8C70 apunta a los 3 proyectiles (16 bytes cada uno)
 C 0x8C7D lee la escena de accion (1-9)
 C 0x8C8D borra_nombres: borra los nombres 0xED00 (0x300) y los vuelca
 C 0x8C92 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
@@ -123,14 +203,20 @@ C 0x8C98 crea_rival: borra 0xE400-0xE7FF y 0xEA00-0xEAFF y pone en 0xEA00 el de 
 C 0x8C9B lee la escena de accion (1-9)
 C 0x8CA1 sonido_de_la_escena: pide el sonido de la escena de accion 0xE3A1 (p09:607C)
 C 0x8CA4 pantalla_de_27: nombres p27:9B8B, fichas p27:9ECB/9ED4 y lo que toque segun 0xE3A1 (tabla p00:48BE)
+C 0x8CA7 apunta a el paso de la preparacion de la escena de accion
+C 0x8CAC apunta a el rival de la escena (objeto 0, 0x20 bytes)
 C 0x8CB3 lee la clase del objeto (tabla p10:8CCD; 0: libre)
 C 0x8CB7 rutina_del_objeto: cuenta un cuadro y salta a la rutina de la clase (ix+0) (tabla p10:8CCD)
 C 0x8CCA despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0x8D00 apunta a los 8 actores de la sala (0x80 bytes cada uno)
+C 0x8D0D apunta a el rival de la escena (objeto 0, 0x20 bytes)
+C 0x8D10 apunta a el paso del rival
 C 0x8D1A lee la escena de accion (1-9)
 C 0x8D21 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x8D25 apunta a el rival de la escena (objeto 0, 0x20 bytes)
 C 0x8D29 lee la escena de accion (1-9)
 C 0x8D2C guarda la clase del objeto (tabla p10:8CCD; 0: libre)
+C 0x8D2F lee el paso con el que empieza el rival
 C 0x8D32 guarda el paso del objeto
 C 0x8D36 guarda la Y del objeto
 C 0x8D3B guarda la X del objeto
@@ -189,7 +275,6 @@ C 0x9167 baja la cuenta del objeto
 C 0x916C mira el bit 0 de la cuenta del objeto
 C 0x9171 lee la cuenta del objeto
 C 0x918A el paso del objeto = 0x03
-C 0x918F apunta a la espera del estado, en cuadros
 C 0x91A4 color_de_borde: VDP R#7 = B
 C 0x91AA dibujo_con_destino: [destino] y el dibujo de DE (p10:9140) y vuelca los nombres
 C 0x91B0 apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
@@ -199,15 +284,21 @@ C 0x93AC sube el paso del objeto
 C 0x93B5 dibujo_con_mascara: [destino] y el dibujo de DE, cada byte AND C
 C 0x93BB dibujo_con_mascara: [destino] y el dibujo de DE, cada byte AND C
 C 0x93C1 dibujo_con_mascara: [destino] y el dibujo de DE, cada byte AND C
-C 0x93D3 guarda la posicion del dibujo del objeto (bajo)
-C 0x93D6 guarda la posicion del dibujo del objeto (alto)
+C 0x93D3 guarda la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0x93D6 guarda la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0x93DA guarda los choques del objeto (bit 0 con el personaje, bit 1 con los proyectiles)
-C 0x93DF guarda la segunda cuenta del objeto
-C 0x93E2 guarda la accion del objeto
+C 0x93DF guarda la variable 0x1C del objeto (cada clase la usa a su manera)
+C 0x93E2 guarda la variable 0x1D del objeto (en los jefes, la accion)
+C 0x93E5 apunta a la cuenta de lanzamientos de la escena
 C 0x93EA vuelca_nombres: 0x300 de 0xED00 a 0x3800
+C 0x93F0 borra_dibujo_1e: borra el dibujo de (ix+0x1E)
+C 0x93F3 borra_dibujo_1f: borra el dibujo de (ix+0x1F)
+C 0x93F6 cambia_dibujo_1e: cada 5 cuadros, si no esta tocado, un dibujo al azar en (ix+0x1E)
+C 0x93F9 cambia_dibujo_1f: cada 5 cuadros, si no esta tocado, un dibujo al azar en (ix+0x1F)
+C 0x93FC pinta_dibujo_1e: pinta el dibujo de (ix+0x1E)
+C 0x93FF pinta_dibujo_1f: pinta el dibujo de (ix+0x1F)
 C 0x9402 lanza_objetos: si el personaje no esta tocado, lo que lanza la escena (p11:A9A8)
 C 0x9405 vuelca_nombres: 0x300 de 0xED00 a 0x3800
-C 0x9408 apunta a la espera del estado, en cuadros
 C 0x941D color_de_borde: VDP R#7 = B
 C 0x9420 apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
 C 0x9426 guarda el dibujo de p12:733E que se ve (0: ninguno)
@@ -216,19 +307,18 @@ C 0x942E guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A
 C 0x9434 guarda la sala a la que se salta y el byte siguiente (16 bits)
 C 0x943A guarda la Y del personaje y el byte siguiente (16 bits)
 C 0x943D borra_nombres_sin_ventana: borra 0x1E0 de 0xED00 y los vuelca
-C 0x9445 baja la segunda cuenta del objeto
-C 0x9449 la segunda cuenta del objeto = 0x05
+C 0x9445 baja la variable 0x1C del objeto (cada clase la usa a su manera)
+C 0x9449 la variable 0x1C del objeto (cada clase la usa a su manera) = 0x05
 C 0x944D al_azar_0_2: A = 0-2 al azar
-C 0x9451 lee la posicion del dibujo del objeto (bajo)
-C 0x945D guarda la posicion del dibujo del objeto (bajo)
-C 0x9466 baja la accion del objeto
-C 0x946A la accion del objeto = 0x05
+C 0x9451 lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0x945D guarda la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0x9466 baja la variable 0x1D del objeto (en los jefes, la accion)
+C 0x946A la variable 0x1D del objeto (en los jefes, la accion) = 0x05
 C 0x946E al_azar_0_2: A = 0-2 al azar
-C 0x9472 lee la posicion del dibujo del objeto (alto)
-C 0x947E guarda la posicion del dibujo del objeto (alto)
-C 0x948A lee la cuenta de cuadros
-C 0x949C lee la posicion del dibujo del objeto (bajo)
-C 0x94AA lee la posicion del dibujo del objeto (alto)
+C 0x9472 lee la variable 0x1F del objeto (en los jefes, donde va su dibujo)
+C 0x947E guarda la variable 0x1F del objeto (en los jefes, donde va su dibujo)
+C 0x949C lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0x94AA lee la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0x94B0 palabra_de_tabla: DE = la palabra A de la tabla DE
 C 0x968C lee el paso del objeto
 C 0x968F despacha: salta a la palabra A de la tabla pegada detras del `call`
@@ -250,7 +340,6 @@ C 0x973F hl_mas_a: HL = HL + A
 C 0x9744 vuelca_nombres_sin_ventana: 0x1E0 de 0xED00 a 0x3800
 C 0x9747 los choques del objeto (bit 0 con el personaje, bit 1 con los proyectiles) = 0x02
 C 0x974E lanza_objetos: si el personaje no esta tocado, lo que lanza la escena (p11:A9A8)
-C 0x9752 apunta a la espera del estado, en cuadros
 C 0x9767 color_de_borde: VDP R#7 = B
 C 0x976A apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
 C 0x9770 guarda el dibujo de p12:733E que se ve (0: ninguno)
@@ -290,10 +379,10 @@ C 0x9B2F pinta_dibujo_del_objeto: las 6 x 10 fichas del objeto (p10:9D9B[ix+0x0A
 C 0x9B32 vuelca_nombres: 0x300 de 0xED00 a 0x3800
 C 0x9B45 hl_mas_a: HL = HL + A
 C 0x9B4A borra_dibujo_del_objeto: borra las fichas del objeto de donde estaba (ix+0x1E)
+C 0x9B4D mueve_jefe_6: cada 4 cuadros (o cada 2 en las acciones 2-4) avanza y hace su accion (tabla p10:9BC6)
 C 0x9B50 pinta_dibujo_del_objeto: las 6 x 10 fichas del objeto (p10:9D9B[ix+0x0A]) en su posicion
 C 0x9B53 lanza_objetos: si el personaje no esta tocado, lo que lanza la escena (p11:A9A8)
 C 0x9B56 vuelca_nombres: 0x300 de 0xED00 a 0x3800
-C 0x9B59 apunta a la espera del estado, en cuadros
 C 0x9B6E color_de_borde: VDP R#7 = B
 C 0x9B71 apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
 C 0x9B77 guarda el dibujo de p12:733E que se ve (0: ninguno)
@@ -303,27 +392,26 @@ C 0x9B85 guarda la sala a la que se salta y el byte siguiente (16 bits)
 C 0x9B8B guarda la Y del personaje y el byte siguiente (16 bits)
 C 0x9B8E borra_nombres: borra los nombres 0xED00 (0x300) y los vuelca
 C 0x9B91 a_fuente_y_9_10_11: con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3; vuelve con 9-10-11
-C 0x9B96 lee la accion del objeto
+C 0x9B96 lee la variable 0x1D del objeto (en los jefes, la accion)
 C 0x9BA3 lee la cuenta de cuadros
 C 0x9BA8 baja la cuenta del objeto
 C 0x9BAD objeto_avanza: Y (ix+6/7) += (ix+2/3) y X (ix+8/9) += (ix+4/5)
 C 0x9BBD guarda la X del objeto
-C 0x9BC0 lee la accion del objeto
+C 0x9BC0 lee la variable 0x1D del objeto (en los jefes, la accion)
 C 0x9BC3 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0x9BD2 lee el fotograma del objeto
 C 0x9BDB guarda el fotograma del objeto
 C 0x9BDF lee la cuenta del objeto
-C 0x9BE6 sube la accion del objeto
+C 0x9BE6 sube la variable 0x1D del objeto (en los jefes, la accion)
 C 0x9BE9 la velocidad Y del objeto (alta) = 0x08
 C 0x9BED lee el fotograma del objeto
 C 0x9BF7 guarda el fotograma del objeto
 C 0x9BFA sonido_10: pide el sonido 0x10
 C 0x9BFE el fotograma del objeto = 0x04
-C 0x9C03 lee la accion del objeto
+C 0x9C03 lee la variable 0x1D del objeto (en los jefes, la accion)
 C 0x9C0A sonido_11: pide el sonido 0x11
-C 0x9C16 lee la cuenta de cuadros
-C 0x9C22 guarda la accion del objeto
-C 0x9C27 le suma la accion del objeto
+C 0x9C22 guarda la variable 0x1D del objeto (en los jefes, la accion)
+C 0x9C27 le suma la variable 0x1D del objeto (en los jefes, la accion)
 C 0x9C2D hl_mas_a: HL = HL + A
 C 0x9C39 guarda la velocidad Y del objeto
 C 0x9C3C guarda la velocidad Y del objeto (alta)
@@ -342,13 +430,13 @@ C 0x9C71 lee la velocidad X del objeto
 C 0x9C74 lee la velocidad X del objeto (alta)
 C 0x9C78 guarda la X del objeto (fraccion)
 C 0x9C7B guarda la X del objeto
-C 0x9C7F lee la posicion del dibujo del objeto (bajo)
-C 0x9C82 lee la posicion del dibujo del objeto (alto)
+C 0x9C7F lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0x9C82 lee la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0x9C89 lee la Y del objeto
 C 0x9C8C lee la X del objeto
 C 0x9C92 mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
-C 0x9C95 guarda la posicion del dibujo del objeto (bajo)
-C 0x9C98 guarda la posicion del dibujo del objeto (alto)
+C 0x9C95 guarda la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0x9C98 guarda la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0x9C9E lee el fotograma del objeto
 C 0x9CA5 palabra_de_tabla: DE = la palabra A de la tabla DE
 C 0x9CBA hl_mas_a: HL = HL + A
@@ -359,10 +447,13 @@ C 0x9EA5 objeto_parado: el objeto con fotograma 1, choques 2 y velocidad X -8
 C 0x9EA8 los choques del objeto (bit 0 con el personaje, bit 1 con los proyectiles) = 0x03
 C 0x9EAC la cuenta del objeto = 0x03
 C 0x9EB3 guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x9EC3 pinta_dibujo_del_jefe_7: sus fichas en su posicion
 C 0x9EC6 vuelca_nombres_sin_ventana: 0x1E0 de 0xED00 a 0x3800
+C 0x9ECC borra_dibujo_del_jefe_7: borra sus fichas de donde estaba
+C 0x9ECF mueve_jefe_7: cada 4 cuadros (o cada 2 en las acciones 2-4) avanza y hace su accion (tabla p10:9F4A)
+C 0x9ED2 pinta_dibujo_del_jefe_7: sus fichas en su posicion
 C 0x9ED5 lanza_objetos: si el personaje no esta tocado, lo que lanza la escena (p11:A9A8)
 C 0x9ED8 vuelca_nombres_sin_ventana: 0x1E0 de 0xED00 a 0x3800
-C 0x9EDB apunta a la espera del estado, en cuadros
 C 0x9EF0 color_de_borde: VDP R#7 = B
 C 0x9EF3 apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
 C 0x9EF9 guarda el dibujo de p12:733E que se ve (0: ninguno)
@@ -372,39 +463,38 @@ C 0x9F07 guarda la sala a la que se salta y el byte siguiente (16 bits)
 C 0x9F0D guarda la Y del personaje y el byte siguiente (16 bits)
 C 0x9F10 borra_nombres_sin_ventana: borra 0x1E0 de 0xED00 y los vuelca
 C 0x9F13 esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
-C 0x9F18 lee la accion del objeto
+C 0x9F18 lee la variable 0x1D del objeto (en los jefes, la accion)
 C 0x9F25 lee la cuenta de cuadros
 C 0x9F2A baja la cuenta del objeto
 C 0x9F2F objeto_avanza: Y (ix+6/7) += (ix+2/3) y X (ix+8/9) += (ix+4/5)
 C 0x9F3F guarda la X del objeto
-C 0x9F42 lee la accion del objeto
+C 0x9F42 lee la variable 0x1D del objeto (en los jefes, la accion)
 C 0x9F47 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0x9F52 lee el fotograma del objeto
 C 0x9F5B guarda el fotograma del objeto
 C 0x9F5F lee la cuenta del objeto
-C 0x9F66 sube la accion del objeto
+C 0x9F66 sube la variable 0x1D del objeto (en los jefes, la accion)
 C 0x9F69 la velocidad Y del objeto (alta) = 0x08
 C 0x9F6D lee el fotograma del objeto
 C 0x9F77 guarda el fotograma del objeto
 C 0x9F7A sonido_10: pide el sonido 0x10
-C 0x9F7E lee la accion del objeto
+C 0x9F7E lee la variable 0x1D del objeto (en los jefes, la accion)
 C 0x9F85 sonido_11: pide el sonido 0x11
-C 0x9F91 lee la cuenta de cuadros
-C 0x9F9D guarda la accion del objeto
-C 0x9FA2 le suma la accion del objeto
+C 0x9F9D guarda la variable 0x1D del objeto (en los jefes, la accion)
+C 0x9FA2 le suma la variable 0x1D del objeto (en los jefes, la accion)
 C 0x9FA8 hl_mas_a: HL = HL + A
 C 0x9FB4 guarda la velocidad Y del objeto
 C 0x9FB7 guarda la velocidad Y del objeto (alta)
 C 0x9FBA guarda la velocidad X del objeto
 C 0x9FBD guarda la velocidad X del objeto (alta)
 C 0x9FC0 guarda la cuenta del objeto
-C 0x9FD3 lee la posicion del dibujo del objeto (bajo)
-C 0x9FD6 lee la posicion del dibujo del objeto (alto)
+C 0x9FD3 lee la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0x9FD6 lee la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0x9FDD lee la Y del objeto
 C 0x9FE0 lee la X del objeto
 C 0x9FE3 mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
-C 0x9FE6 guarda la posicion del dibujo del objeto (bajo)
-C 0x9FE9 guarda la posicion del dibujo del objeto (alto)
+C 0x9FE6 guarda la variable 0x1E del objeto (en los jefes, donde va su dibujo)
+C 0x9FE9 guarda la variable 0x1F del objeto (en los jefes, donde va su dibujo)
 C 0x9FEF lee el fotograma del objeto
 C 0x9FF6 palabra_de_tabla: DE = la palabra A de la tabla DE
 # --- fin de las anotaciones de anota.py ---

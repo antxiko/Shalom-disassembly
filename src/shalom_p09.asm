@@ -141,7 +141,7 @@ dibujos_por_bandera:		; en las salas de p09:613C, los dibujos de p09:6162 cuya b
 	ld bc,(0eb40h)		;60cc   ; lee la sala
 	ld hl,0613ch		;60d0
 	ld de,00000h		;60d3
-	ld (0e8e0h),de		;60d6
+	ld (0e8e0h),de		;60d6   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 L_60DA:
 	ld e,(hl)			;60da
 	inc hl			;60db
@@ -158,15 +158,15 @@ L_60DA:
 	pop hl			;60eb
 	ret z			;60ec
 	inc hl			;60ed
-	ld de,(0e8e0h)		;60ee
+	ld de,(0e8e0h)		;60ee   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	inc de			;60f2
-	ld (0e8e0h),de		;60f3
+	ld (0e8e0h),de		;60f3   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	jr L_60DA		;60f7
 L_60F9:
 	pop hl			;60f9
 	ld hl,0e36dh		;60fa   ; apunta a el color de las fichas copiadas
 	ld (hl),001h		;60fd
-	ld hl,(0e8e0h)		;60ff
+	ld hl,(0e8e0h)		;60ff   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	add hl,hl			;6102
 	ld de,06162h		;6103
 	add hl,de			;6106
@@ -175,25 +175,25 @@ L_60F9:
 	ld d,(hl)			;6109
 	ex de,hl			;610a
 L_610B:
-	ld a,(hl)			;610b
+	ld a,(hl)			;610b   ; el color
 	inc a			;610c
-	ret z			;610d
+	ret z			;610d   ; 0xFF: acaba
 	dec a			;610e
 	ld (0e36dh),a		;610f   ; guarda el color de las fichas copiadas
 	inc hl			;6112
-	ld c,(hl)			;6113
+	ld c,(hl)			;6113   ; C = la mascara de la bandera
 	inc hl			;6114
-	ld e,(hl)			;6115
+	ld e,(hl)			;6115   ; DE = la bandera de la historia
 	inc hl			;6116
 	ld d,(hl)			;6117
 	inc hl			;6118
-	ld a,(de)			;6119
+	ld a,(de)			;6119   ; esta puesta?
 	and c			;611a
 	jr z,L_6137		;611b
-	ld a,(hl)			;611d
+	ld a,(hl)			;611d   ; la posicion: Y en el nibble alto
 	and 0f0h		;611e
 	ld e,a			;6120
-	ld a,(hl)			;6121
+	ld a,(hl)			;6121   ; y X en el bajo, por 16
 	and 00fh		;6122
 	rla			;6124
 	rla			;6125
@@ -201,18 +201,18 @@ L_610B:
 	rla			;6127
 	ld d,a			;6128
 	inc hl			;6129
-	ld c,(hl)			;612a
+	ld c,(hl)			;612a   ; el dibujo
 	inc hl			;612b
 	ld b,(hl)			;612c
 	inc hl			;612d
 	push hl			;612e
 	ld l,c			;612f
 	ld h,b			;6130
-	call 044b8h		;6131
+	call 044b8h		;6131   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	pop hl			;6134
 	jr L_610B		;6135
 L_6137:
-	inc hl			;6137
+	inc hl			;6137   ; no: el siguiente
 	inc hl			;6138
 	inc hl			;6139
 	jr L_610B		;613a
@@ -402,7 +402,7 @@ dibujos_de_la_sala:		; en las salas de p09:6291, los dibujos de p09:63A5 (0xFE c
 	ld bc,(0eb40h)		;622b   ; lee la sala
 	ld hl,06291h		;622f
 	ld de,00000h		;6232
-	ld (0e8e0h),de		;6235
+	ld (0e8e0h),de		;6235   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 L_6239:
 	ld e,(hl)			;6239
 	inc hl			;623a
@@ -419,15 +419,15 @@ L_6239:
 	pop hl			;624a
 	ret z			;624b
 	inc hl			;624c
-	ld de,(0e8e0h)		;624d
+	ld de,(0e8e0h)		;624d   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	inc de			;6251
-	ld (0e8e0h),de		;6252
+	ld (0e8e0h),de		;6252   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	jr L_6239		;6256
 L_6258:
 	pop hl			;6258
 	ld hl,0e36dh		;6259   ; apunta a el color de las fichas copiadas
 	ld (hl),001h		;625c
-	ld hl,(0e8e0h)		;625e
+	ld hl,(0e8e0h)		;625e   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	add hl,hl			;6261
 	ld de,063a5h		;6262
 	add hl,de			;6265
@@ -446,10 +446,10 @@ L_626A:
 	inc hl			;6274
 	jr L_626A		;6275
 L_6277:
-	ld a,e			;6277
+	ld a,e			;6277   ; la posicion: Y en el nibble alto
 	and 0f0h		;6278
 	ld e,a			;627a
-	ld a,(hl)			;627b
+	ld a,(hl)			;627b   ; y X en el bajo, por 16
 	and 00fh		;627c
 	rla			;627e
 	rla			;627f
@@ -457,14 +457,14 @@ L_6277:
 	rla			;6281
 	ld d,a			;6282
 	inc hl			;6283
-	ld c,(hl)			;6284
+	ld c,(hl)			;6284   ; el dibujo
 	inc hl			;6285
 	ld b,(hl)			;6286
 	inc hl			;6287
 	push hl			;6288
 	ld l,c			;6289
 	ld h,b			;628a
-	call 044b8h		;628b
+	call 044b8h		;628b   ; a la pantalla
 	pop hl			;628e
 	jr L_626A		;628f
 
@@ -1937,7 +1937,7 @@ L_6B5C:
 	ld c,000h		;6b5f
 	call columna_en_vram		;6b61   ; columna_en_vram: B veces C en la VRAM HL, subiendo una fila cada vez
 	ld hl,03981h		;6b64
-	ld a,(0e3b3h)		;6b67
+	ld a,(0e3b3h)		;6b67   ; lee la vida en casillas (vida / 2)
 	or a			;6b6a
 	ret z			;6b6b
 	ld b,a			;6b6c
@@ -1958,7 +1958,7 @@ barra_de_vida_en_ram:		; la barra de vida en 0xEE81
 	ld c,000h		;6b81
 	call columna_en_ram		;6b83   ; columna_en_ram: B veces C en HL, subiendo una fila cada vez
 	ld hl,0ee81h		;6b86
-	ld a,(0e3b3h)		;6b89
+	ld a,(0e3b3h)		;6b89   ; lee la vida en casillas (vida / 2)
 	or a			;6b8c
 	ret z			;6b8d
 	cp 00bh		;6b8e
@@ -2021,18 +2021,18 @@ DATA_saltos_6BCA:
 
 
 barra_del_rival_en_ram:		; la barra de 0xEA0B en 0xEE82
-	ld hl,0ee82h		;6bdc
-	ld b,00ah		;6bdf
+	ld hl,0ee82h		;6bdc   ; la columna en la RAM
+	ld b,00ah		;6bdf   ; 10 casillas vacias
 	ld c,000h		;6be1
 	call columna_en_ram		;6be3   ; columna_en_ram: B veces C en HL, subiendo una fila cada vez
 	ld hl,0ee82h		;6be6
-	ld a,(0ea0bh)		;6be9
+	ld a,(0ea0bh)		;6be9   ; la vida del rival
 	or a			;6bec
 	ret z			;6bed
 	cp 00bh		;6bee
 	ret nc			;6bf0
 	ld b,a			;6bf1
-	ld c,009h		;6bf2
+	ld c,009h		;6bf2   ; casillas llenas
 	jr $-96		;6bf4
 barra_del_rival:		; la barra de 0xEA0B (la mitad en la escena 4) en la VRAM 0x3982
 	ld hl,03982h		;6bf6
@@ -2056,10 +2056,10 @@ L_6C0F:
 vida_a_barra:		; 0xE3B3 = la vida 0xE3F6 / 2
 	ld a,(0e3f6h)		;6c1a   ; lee la vida en la escena de accion
 	srl a		;6c1d
-	ld (0e3b3h),a		;6c1f
+	ld (0e3b3h),a		;6c1f   ; guarda la vida en casillas (vida / 2)
 	ret			;6c22
 final:		; un paso del final del juego (0xE350, tabla p09:6C29)
-	ld a,(0e350h)		;6c23
+	ld a,(0e350h)		;6c23   ; lee el paso de la escena (inicial, historia, final)
 	call 040abh		;6c26   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
@@ -2120,8 +2120,8 @@ final_paso_00:		; el paso 0 del final del juego (0xE350, tabla p09:6C29)
 	call 0432fh		;6c87   ; a_marco_de_la_escena_y_9_10_11: con 4-5-6, p04:631F (los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818); vuelve con 1-2-3; vuelve con 9-10-11
 	call 04335h		;6c8a   ; a_fuente_y_9_10_11: con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3; vuelve con 9-10-11
 	xor a			;6c8d
-	ld (0e351h),a		;6c8e   ; guarda el paso de la pantalla de nombres
-	ld (0e352h),a		;6c91
+	ld (0e351h),a		;6c8e   ; guarda el paso de la pantalla de nombres, o la pagina de la historia
+	ld (0e352h),a		;6c91   ; guarda la cuenta de la escena (parpadeo, paso de las particulas)
 	ld (0e885h),a		;6c94   ; guarda el paso del texto (0 prepara, 1 escribe)
 	ld hl,0e8a0h		;6c97   ; apunta a el paso del menu (tabla p00:5231)
 	ld de,0e8a1h		;6c9a   ; apunta a el menu tiene dos columnas
@@ -2162,7 +2162,7 @@ final_paso_03:		; el paso 3 del final del juego (0xE350, tabla p09:6C29)
 	ld (0e34ah),a		;6ce0   ; guarda la mascara del efecto
 	ld a,001h		;6ce3
 	ld (0e34bh),a		;6ce5   ; guarda el efecto en marcha
-	ld hl,0e351h		;6ce8   ; apunta a el paso de la pantalla de nombres
+	ld hl,0e351h		;6ce8   ; apunta a el paso de la pantalla de nombres, o la pagina de la historia
 	inc (hl)			;6ceb
 	call 045c9h		;6cec   ; sonido_2b: pide el sonido 0x2B
 	jr L_6CD3		;6cef
@@ -2185,8 +2185,8 @@ final_paso_06:		; el paso 6 del final del juego (0xE350, tabla p09:6C29)
 	call 058d4h		;6d0c   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 	ld hl,00000h		;6d0f
 	ld a,h			;6d12
-	ld (0e352h),hl		;6d13
-	ld (0e354h),a		;6d16
+	ld (0e352h),hl		;6d13   ; guarda la cuenta de la escena (parpadeo, paso de las particulas) y el byte siguiente (16 bits)
+	ld (0e354h),a		;6d16   ; guarda el signo de la Y del rumbo, o la casilla del nombre
 	call 04335h		;6d19   ; a_fuente_y_9_10_11: con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3; vuelve con 9-10-11
 	call 04d6ch		;6d1c   ; graficos_04_a: patrones p04:7FFC a 0x2400 y 0x200 colores de p05:8EA9
 	ld de,072edh		;6d1f
@@ -2235,10 +2235,10 @@ DATA_resto_6D6B:
 final_paso_07:		; el paso 7 del final del juego (0xE350, tabla p09:6C29)
 	call 05774h		;6d6f   ; cursor_vertical: arriba/abajo con repeticion (0xE8B0) en 0xE8A4
 	call 057aeh		;6d72   ; pinta_cursor: el cursor parpadeante en la columna de opciones
-	ld a,(0e008h)		;6d75   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;6d75   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 010h		;6d78
 	ret z			;6d7a
-	ld a,(0e350h)		;6d7b
+	ld a,(0e350h)		;6d7b   ; lee el paso de la escena (inicial, historia, final)
 	cp 007h		;6d7e
 	jr nz,L_6D8E		;6d80
 	call tres_respuestas		;6d82   ; tres_respuestas: Z si alguna de 0xE352-0xE354 esta a cero
@@ -2251,14 +2251,14 @@ L_6D8E:
 	jr $-40		;6d91
 tres_respuestas:		; Z si alguna de 0xE352-0xE354 esta a cero
 	ld b,003h		;6d93
-	ld hl,0e352h		;6d95
+	ld hl,0e352h		;6d95   ; apunta a la cuenta de la escena (parpadeo, paso de las particulas)
 L_6D98:
-	ld a,(hl)			;6d98
+	ld a,(hl)			;6d98   ; la marca
 	or a			;6d99
-	ret z			;6d9a
+	ret z			;6d9a   ; alguna a cero: Z
 	inc hl			;6d9b
 	djnz L_6D98		;6d9c
-	or 0ffh		;6d9e
+	or 0ffh		;6d9e   ; todas puestas: NZ
 	ret			;6da0
 final_paso_14:		; el paso 14 del final del juego (0xE350, tabla p09:6C29)
 	ld c,008h		;6da1
@@ -2302,18 +2302,18 @@ L_6DCD:
 	ld a,(0e887h)		;6dde   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;6de1
 	ret nz			;6de2
-	ld a,(0e350h)		;6de3
+	ld a,(0e350h)		;6de3   ; lee el paso de la escena (inicial, historia, final)
 	cp 00dh		;6de6
 	call z,dibujo_de_la_opcion_2		;6de8   ; dibujo_de_la_opcion_2: con la opcion 2, el dibujo 0x11 (p00:486F, p00:4468)
 	push de			;6deb
 	call marca_respuesta		;6dec   ; marca_respuesta: pone a 1 la de 0xE352 que corresponde a la opcion
 	pop de			;6def
 	ld a,e			;6df0
-	ld (0e350h),a		;6df1
+	ld (0e350h),a		;6df1   ; guarda el paso de la escena (inicial, historia, final)
 	ret			;6df4
 marca_respuesta:		; pone a 1 la de 0xE352 que corresponde a la opcion
 	ld a,(0e8a4h)		;6df5   ; lee la opcion del cursor
-	ld hl,0e352h		;6df8
+	ld hl,0e352h		;6df8   ; apunta a la cuenta de la escena (parpadeo, paso de las particulas)
 	call 040a1h		;6dfb   ; hl_mas_a: HL = HL + A
 	ld (hl),001h		;6dfe
 	ret			;6e00
@@ -2374,7 +2374,7 @@ pantalla_del_final:		; pantalla vacia, el marco y la fuente
 final_paso_18:		; el paso 18 del final del juego (0xE350, tabla p09:6C29)
 	call 05774h		;6e64   ; cursor_vertical: arriba/abajo con repeticion (0xE8B0) en 0xE8A4
 	call 057aeh		;6e67   ; pinta_cursor: el cursor parpadeante en la columna de opciones
-	ld a,(0e008h)		;6e6a   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;6e6a   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 010h		;6e6d
 	ret z			;6e6f
 	ld a,(0e8a4h)		;6e70   ; lee la opcion del cursor
@@ -2413,7 +2413,7 @@ L_6EA4:
 	ld a,(0e887h)		;6eac   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;6eaf
 	ret nz			;6eb0
-	ld a,(0e350h)		;6eb1
+	ld a,(0e350h)		;6eb1   ; lee el paso de la escena (inicial, historia, final)
 	cp 013h		;6eb4
 	jr nz,L_6EC7		;6eb6
 	call 058d4h		;6eb8   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
@@ -2432,7 +2432,7 @@ final_paso_20:		; el paso 20 del final del juego (0xE350, tabla p09:6C29)
 	ld a,(0e887h)		;6ed3   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;6ed6
 	ret nz			;6ed7
-	ld hl,0e350h		;6ed8
+	ld hl,0e350h		;6ed8   ; apunta a el paso de la escena (inicial, historia, final)
 	dec (hl)			;6edb
 	dec (hl)			;6edc
 	ret			;6edd
@@ -2482,7 +2482,7 @@ final_paso_28:		; el paso 28 del final del juego (0xE350, tabla p09:6C29)
 	ld bc,00034h		;6f45
 	ldir		;6f48
 	ld a,00eh		;6f4a
-	ld (0e351h),a		;6f4c   ; guarda el paso de la pantalla de nombres
+	ld (0e351h),a		;6f4c   ; guarda el paso de la pantalla de nombres, o la pagina de la historia
 	ld a,036h		;6f4f
 	call 0415bh		;6f51   ; pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
 L_6F54:
@@ -2538,7 +2538,7 @@ DATA_resto_6FA2:
 
 
 final_paso_29:		; el paso 29 del final del juego (0xE350, tabla p09:6C29)
-	ld a,(0e351h)		;6fbe   ; lee el paso de la pantalla de nombres
+	ld a,(0e351h)		;6fbe   ; lee el paso de la pantalla de nombres, o la pagina de la historia
 	ld c,a			;6fc1
 	call 04dfdh		;6fc2   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
 	ld a,(0e886h)		;6fc5   ; lee el texto en marcha
@@ -2547,11 +2547,11 @@ final_paso_29:		; el paso 29 del final del juego (0xE350, tabla p09:6C29)
 	ld a,(0e887h)		;6fca   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;6fcd
 	ret nz			;6fce
-	ld a,(0e351h)		;6fcf   ; lee el paso de la pantalla de nombres
+	ld a,(0e351h)		;6fcf   ; lee el paso de la pantalla de nombres, o la pagina de la historia
 	inc a			;6fd2
 	cp 014h		;6fd3
 	jp z,L_6F54		;6fd5
-	ld (0e351h),a		;6fd8   ; guarda el paso de la pantalla de nombres
+	ld (0e351h),a		;6fd8   ; guarda el paso de la pantalla de nombres, o la pagina de la historia
 	ret			;6fdb
 final_paso_30:		; el paso 30 del final del juego (0xE350, tabla p09:6C29)
 	call 0591bh		;6fdc   ; pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
@@ -2601,7 +2601,7 @@ final_paso_32:		; el paso 32 del final del juego (0xE350, tabla p09:6C29)
 	cp 003h		;7031
 	ret c			;7033
 final_siguiente:		; 0xE350 + 1
-	ld hl,0e350h		;7034
+	ld hl,0e350h		;7034   ; apunta a el paso de la escena (inicial, historia, final)
 	inc (hl)			;7037
 	ret			;7038
 color_de_cuatro_sprites:		; el color de p09:7050[0xE348] en los cuatro primeros sprites
@@ -2632,7 +2632,7 @@ DATA_resto_7050:
 
 
 final_paso_33:		; el paso 33 del final del juego (0xE350, tabla p09:6C29)
-	ld a,(0e008h)		;7053   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;7053   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and a			;7056
 	ret z			;7057
 	call 045abh		;7058   ; sonido_85: pide el sonido 0x85
@@ -2647,8 +2647,8 @@ final_paso_33:		; el paso 33 del final del juego (0xE350, tabla p09:6C29)
 	ret			;706c
 particulas_del_final:		; un paso de las 16 particulas de 0xE400 (0xE352, tabla p09:7077)
 	xor a			;706d
-	ld (0e35bh),a		;706e
-	ld a,(0e352h)		;7071
+	ld (0e35bh),a		;706e   ; guarda las particulas se alejan del personaje
+	ld a,(0e352h)		;7071   ; lee la cuenta de la escena (parpadeo, paso de las particulas)
 	call 040abh		;7074   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
@@ -2675,7 +2675,7 @@ particulas_del_final_empiezan:		; sus patrones (p09:70AE a 0x1800), las 16 escon
 	ld ix,0e400h		;708e   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
 	ld de,00010h		;7092
 	ld a,088h		;7095
-	ld (0e35ah),a		;7097
+	ld (0e35ah),a		;7097   ; guarda la vida de las particulas, en cuadros
 	xor a			;709a
 L_709B:
 	ld (ix+000h),a		;709b   ; guarda si la particula esta viva
@@ -2684,7 +2684,7 @@ L_709B:
 	add ix,de		;70a4
 	djnz L_709B		;70a6
 	ld a,001h		;70a8
-	ld (0e352h),a		;70aa
+	ld (0e352h),a		;70aa   ; guarda la cuenta de la escena (parpadeo, paso de las particulas)
 	ret			;70ad
 
 ; ----------------------------------------------------------------------
@@ -2706,11 +2706,11 @@ DATA_resto_70AE:
 
 
 particulas_del_final_cuadro:		; salen al azar y se alejan del centro; sprites en 0xF000
-	ld a,(0e35ah)		;710e
+	ld a,(0e35ah)		;710e   ; lee la vida de las particulas, en cuadros
 	dec a			;7111
-	ld (0e35ah),a		;7112
+	ld (0e35ah),a		;7112   ; guarda la vida de las particulas, en cuadros
 	jr nz,L_711C		;7115
-	ld hl,0e352h		;7117
+	ld hl,0e352h		;7117   ; apunta a la cuenta de la escena (parpadeo, paso de las particulas)
 	inc (hl)			;711a
 	ret			;711b
 L_711C:
@@ -2721,7 +2721,7 @@ L_711C:
 	jp nc,L_71CD		;7123
 	and 003h		;7126
 	ld b,a			;7128
-	ld a,(0e35bh)		;7129
+	ld a,(0e35bh)		;7129   ; lee las particulas se alejan del personaje
 	or a			;712c
 	ld a,b			;712d
 	jr nz,$+13		;712e
@@ -2796,18 +2796,18 @@ L_717C:
 	jr nz,L_71CD		;717f
 	ld (ix+002h),l		;7181   ; guarda la Y de la particula
 	ld (ix+004h),h		;7184   ; guarda la X de la particula
-	ld a,(0e352h)		;7187
+	ld a,(0e352h)		;7187   ; lee la cuenta de la escena (parpadeo, paso de las particulas)
 	dec a			;718a
 	ld b,020h		;718b
 	jr z,L_71A0		;718d
-	ld a,(0e35ah)		;718f
+	ld a,(0e35ah)		;718f   ; lee la vida de las particulas, en cuadros
 	and 003h		;7192
 	jr z,L_71A0		;7194
 	ld b,050h		;7196
 	ld (ix+000h),001h		;7198   ; si la particula esta viva = 0x01
 	ld (ix+009h),008h		;719c   ; el patron de la particula = 0x08
 L_71A0:
-	ld a,(0e35ah)		;71a0
+	ld a,(0e35ah)		;71a0   ; lee la vida de las particulas, en cuadros
 	and 001h		;71a3
 	inc a			;71a5
 	rlca			;71a6
@@ -2815,7 +2815,7 @@ L_71A0:
 	rlca			;71a8
 	add a,b			;71a9
 	call 0435fh		;71aa   ; a_rumbo_desde_ix_y_9_10_11: con 1-2-3, p01:6312 (el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A); vuelve con 4-5-6; vuelve con 9-10-11
-	ld a,(0e35bh)		;71ad
+	ld a,(0e35bh)		;71ad   ; lee las particulas se alejan del personaje
 	or a			;71b0
 	jr nz,L_71B9		;71b1
 	call 043b3h		;71b3   ; hl_negativo: HL = -HL
@@ -2910,7 +2910,7 @@ L_726D:
 	jr nz,L_7278		;726e
 	dec c			;7270
 	jr nz,L_7278		;7271
-	ld hl,0e350h		;7273
+	ld hl,0e350h		;7273   ; apunta a el paso de la escena (inicial, historia, final)
 	inc (hl)			;7276
 	ret			;7277
 L_7278:

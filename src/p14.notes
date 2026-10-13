@@ -1,5 +1,162 @@
 # Notas del banco 14
 
+# --- A MANO: comentarios, nombres y bloques ---
+C 0xBA95 la tabla de pasos
+C 0xBA98 el paso
+C 0xBA9F DE = la rutina del paso
+C 0xBAA3 salta a ella
+C 0xBAAC la partida (0x3E bytes desde la sala)
+C 0xBAAF a 0xE8F1
+C 0xBAB5 la copia
+C 0xBAB7 su CRC en 0xE92F-0xE930
+C 0xBABA A = el byte bajo del CRC: la clave
+C 0xBABD la clave va delante (0xE8F0)
+C 0xBAC1 C = la clave
+C 0xBAC3 0x40 bytes: la partida y el CRC
+C 0xBAC6 cada byte mas la clave
+C 0xBACC la contrasena empieza en 0xE8F0
+C 0xBACF puntero de lo que queda por escribir
+C 0xBAD2 0x41 bytes, dos letras cada uno
+C 0xBAD7 la cuenta del cifrado empieza en 0
+C 0xBAE0 4 grupos por pagina
+C 0xBAE2 desde la fila de abajo de la ventana
+C 0xBAE5 DE = por donde va la contrasena
+C 0xBAEA 2 bytes por grupo
+C 0xBAEC el nibble alto
+C 0xBAF3 a letra
+C 0xBAF6 a la ventana
+C 0xBAF8 el nibble bajo
+C 0xBAF9 a letra
+C 0xBAFC a la ventana
+C 0xBB00 un byte menos
+C 0xBB03 se acabo la contrasena?
+C 0xBB0A un hueco entre grupos
+C 0xBB0F por donde sigue
+C 0xBB13 cursor y a pantalla
+C 0xBB1C el cursor en la esquina
+C 0xBB26 acabada: al paso 3
+C 0xBB2F espera disparo o RETURN
+C 0xBB37 contrasena dada
+C 0xBB3D el nibble
+C 0xBB40 mas 0x21 (la letra '0')
+C 0xBB43 la cuenta del cifrado
+C 0xBB46 mas 7
+C 0xBB48 en BCD
+C 0xBB49 la cifra baja (0-9)
+C 0xBB4E se suma a la letra
+C 0xBB54 parpadea cada 4 cuadros
+C 0xBB62 espera disparo o RETURN
+C 0xBB6A sin cursor
+C 0xBB6F vuelve al paso de escribir la pagina siguiente
+C 0xBB70 sube seis filas de la ventana
+C 0xBB79 24 letras por fila
+C 0xBB8B y deja dos filas vacias
+C 0xBBA0 la ventana a la VRAM
+C 0xBBAD el CRC de la partida
+C 0xBBB1 en 0xE92F
+C 0xBBB8 0x40 bytes: partida y CRC
+C 0xBBBD el CRC de todo es cero si cuadra
+C 0xBBC0 0x3E bytes: solo la partida
+C 0xBBC2 desde 0xE8F1
+C 0xBBC5 el CRC empieza en 0
+C 0xBBCA un byte
+C 0xBBD4 C = el byte
+C 0xBBD5 el polinomio 0xA001 (CRC-16)
+C 0xBBD8 8 bits
+C 0xBBDB el bit bajo del byte
+C 0xBBDE el CRC a la derecha
+C 0xBBE2 el bit que sale XOR el que entra
+C 0xBBE5 si es 1, XOR con el polinomio
+C 0xBBF0 la tabla de pasos
+C 0xBBF3 el paso
+C 0xBBFE salta a el
+C 0xBC07 el patron del cursor
+C 0xBC0A a la VRAM 0x1800
+C 0xBC13 el atributo del cursor (sprite 0)
+C 0xBC1F las letras tecleadas a cero
+C 0xBC2C la clave a 0xFFFF
+C 0xBC5B el cursor
+C 0xBC5E A = la tecla nueva
+C 0xBC61 se apunta
+C 0xBC64 ninguna: vuelve
+C 0xBC65 0x0C: retroceso
+C 0xBC69 0x12: adelante
+C 0xBC6D 0x15: una fila arriba
+C 0xBC71 0x04: una fila abajo
+C 0xBC75 0x0D: se acaba
+C 0xBC79 una letra: se guarda
+C 0xBC7C a la pantalla
+C 0xBC7F y el cursor
+C 0xBC82 la posicion
+C 0xBC86 sin pasar de 0x81
+C 0xBC89 avanza
+C 0xBC8B retroceso
+C 0xBC91 una menos
+C 0xBC93 adelante
+C 0xBC9C 16 menos
+C 0xBCA5 16 mas
+C 0xBCB0 esconde el cursor
+C 0xBCB9 la cuenta del cifrado a 0
+C 0xBCBC 0x41 bytes
+C 0xBCBE las letras tecleadas
+C 0xBCC1 a 0xE8F0
+C 0xBCC5 primera letra
+C 0xBCC7 a nibble
+C 0xBCCA al nibble alto
+C 0xBCCF segunda letra
+C 0xBCD1 a nibble
+C 0xBCD4 juntos
+C 0xBCD5 el byte
+C 0xBCDA el primero es la clave
+C 0xBCDF los otros 0x40
+C 0xBCE1 menos la clave
+C 0xBCE7 siguiente paso
+C 0xBCEA el CRC cuadra?
+C 0xBCEF si: la partida
+C 0xBCF2 a 0xEB40
+C 0xBCFA cargada
+C 0xBD00 no: mal
+C 0xBD06 C = la letra
+C 0xBD07 la cuenta del cifrado
+C 0xBD0A mas 7
+C 0xBD0C en BCD
+C 0xBD0D la cifra baja
+C 0xBD12 mas 0x41
+C 0xBD14 menos la letra
+C 0xBD15 y cambiado de signo: el nibble
+C 0xBD18 la posicion
+C 0xBD1B la fila
+C 0xBD1E la Y del sprite
+C 0xBD20 al atributo del cursor
+C 0xBD26 la columna
+C 0xBD2C con un hueco cada cuatro
+C 0xBD34 la X del sprite
+C 0xBD36 al atributo
+C 0xBD3C la posicion
+C 0xBD43 la fila en la VRAM desde 0x38C6
+C 0xBD58 la letra
+C 0xBD5B como ficha
+C 0xBD5D a la VRAM
+C 0xBD60 la posicion
+C 0xBD63 en 0xE931
+C 0xBD69 la letra
+C 0xBD6C guardada
+C 0xBD6E con el personaje en un modo negativo no se lee
+C 0xBD73 A = la tecla
+C 0xBD76 la del cuadro anterior
+C 0xBD7D Z si es la misma
+C 0xBD84 9 filas de la matriz
+C 0xBD86 desde la 0
+C 0xBD89 lee la fila
+C 0xBD8C pulsadas a 1
+C 0xBD8E alguna?
+C 0xBD90 la siguiente fila
+C 0xBD93 ninguna
+C 0xBD96 8 teclas por fila
+C 0xBD9A en la tabla de letras
+C 0xBDA1 busca el bit pulsado
+C 0xBDA7 A = la letra de esa tecla
+
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0xA000 0xA0D3 graficos_9F68_cola  graficos (L_5A2A): [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba: colores de la entrada 2 de 0x7990 (sigue del banco 13); lo leen p00:482F (211 bytes)
 F 0xA000 16
@@ -87,48 +244,34 @@ L 0xBD60 guarda_letra la letra tecleada en 0xE931 + la posicion
 L 0xBD6E tecla_nueva A = la tecla pulsada si no es la del cuadro anterior; Z si no hay
 L 0xBD7F hl_mas_a_b HL = HL + A
 L 0xBD84 lee_teclado A = la letra de la primera tecla pulsada en las filas 0-8 de la matriz (p14:BDA9); 0 si ninguna
-C 0xBA98 lee el paso del menu de carga
 C 0xBA9C hl_mas_a: HL = HL + A
-C 0xBAAC apunta a la sala (16 bits)
-C 0xBAB7 crc_de_la_partida: el CRC de los 0x3E bytes de 0xE8F1 en 0xE92F
+C 0xBAD4 guarda la variable de trabajo 0xE8E1
+C 0xBAD8 guarda la variable de trabajo 0xE8E2 (16 bits)
 C 0xBADB apunta a el paso del menu de carga
-C 0xBAF3 nibble_a_letra: la letra del nibble A: A + 0x21 + una cuenta que sube 7 en BCD con cada letra (0xE8E2)
-C 0xBAF9 nibble_a_letra: la letra del nibble A: A + 0x21 + una cuenta que sube 7 en BCD con cada letra (0xE8E2)
-C 0xBB13 cursor_y_vuelca: el cursor en 0xEFF7 y la ventana a la VRAM (p00:4046)
+C 0xBB19 apunta a el cursor del texto en la ventana
 C 0xBB1F vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
 C 0xBB23 cursor_y_vuelca: el cursor en 0xEFF7 y la ventana a la VRAM (p00:4046)
 C 0xBB28 guarda el paso del menu de carga
-C 0xBB2C lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xBB2C lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 C 0xBB32 vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
-C 0xBB37 guarda el resultado de la carga (2: fallo)
-C 0xBB54 lee la cuenta de cuadros
-C 0xBB5F lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xBB4B guarda la variable de trabajo 0xE8E2 (16 bits)
+C 0xBB51 apunta a el cursor del texto en la ventana
+C 0xBB5F lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 C 0xBB64 vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
+C 0xBB67 apunta a el cursor del texto en la ventana
 C 0xBB6C apunta a el paso del menu de carga
-C 0xBB70 apunta a la ventana del texto (32 x 8)
 C 0xBB80 hl_mas_a: HL = HL + A
 C 0xBB85 de_mas_a: DE = DE + A
 C 0xBB9A de_mas_a: DE = DE + A
-C 0xBBA0 vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
-C 0xBBAD crc_0x3e: HL = el CRC de los 0x3E bytes de 0xE8F1
 C 0xBBBA crc: HL = el CRC-16 (polinomio 0xA001, desde 0) de B bytes de 0xE8F1
 C 0xBBCB crc_un_byte: pasa el byte A por el CRC de HL
 C 0xBBF7 hl_mas_a_b: HL = HL + A
-C 0xBC5B cursor_de_la_contrasena: el sprite del cursor en la posicion 0xE8E2
-C 0xBC5E tecla_nueva: A = la tecla pulsada si no es la del cuadro anterior; Z si no hay
-C 0xBC79 guarda_letra: la letra tecleada en 0xE931 + la posicion
-C 0xBC7C letra_a_pantalla: la letra tecleada en la VRAM, en su posicion
-C 0xBC7F cursor_de_la_contrasena: el sprite del cursor en la posicion 0xE8E2
-C 0xBCC7 letra_a_nibble: el nibble de la letra A (lo contrario de p14:BB3D)
-C 0xBCD1 letra_a_nibble: el nibble de la letra A (lo contrario de p14:BB3D)
-C 0xBCE7 contrasena_siguiente: 0xE3B2 + 1
-C 0xBCEA crc_de_todo: HL = el CRC de los 0x40 bytes (partida y CRC); Z si es correcto
-C 0xBCF2 apunta a la sala (16 bits)
+C 0xBC22 apunta a la variable de trabajo 0xE8E1
+C 0xBC32 apunta a el paso de la entrada de la contrasena
 C 0xBCFC guarda el resultado de la carga (2: fallo)
 C 0xBD02 guarda el resultado de la carga (2: fallo)
+C 0xBD0F guarda la variable de trabajo 0xE8E1
 C 0xBD55 hl_mas_a_b: HL = HL + A
 C 0xBD66 hl_mas_a_b: HL = HL + A
-C 0xBD6E lee el modo del personaje (tabla p01:718E)
-C 0xBD73 lee_teclado: A = la letra de la primera tecla pulsada en las filas 0-8 de la matriz (p14:BDA9); 0 si ninguna
 C 0xBD9D hl_mas_a_b: HL = HL + A
 # --- fin de las anotaciones de anota.py ---

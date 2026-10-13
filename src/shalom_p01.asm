@@ -62,17 +62,17 @@ peticion_al_otro_cartucho:		; 0xE012: los 5 bytes de HL, 8 ceros, los 4 de BC, e
 	xor a			;6051
 	ld b,008h		;6052
 L_6054:
-	ld (de),a			;6054
+	ld (de),a			;6054   ; 8 ceros
 	inc de			;6055
 	djnz L_6054		;6056
 	pop hl			;6058
-	ld bc,00004h		;6059
+	ld bc,00004h		;6059   ; los 4 bytes de BC
 	ldir		;605c
 	ld a,(0f0f8h)		;605e   ; lee el slot del cartucho
-	ld (de),a			;6061
+	ld (de),a			;6061   ; el slot propio
 	inc de			;6062
 	xor a			;6063
-	ld b,014h		;6064
+	ld b,014h		;6064   ; y 20 ceros
 L_6066:
 	ld (de),a			;6066
 	inc de			;6067
@@ -203,18 +203,18 @@ es_el_otro_cartucho:		; acarreo si el slot C lleva YZ (p01:6146) en 0x4010
 compara_en_slot:		; compara B bytes de HL en el slot C con DE (RDSLT); acarreo si son iguales
 	push bc			;6131
 	push de			;6132
-	ld a,c			;6133
+	ld a,c			;6133   ; el slot
 	call 0000ch		;6134   ; BIOS RDSLT - Reads the value of an address in another slot
 	pop de			;6137
 	pop bc			;6138
-	ex de,hl			;6139
+	ex de,hl			;6139   ; compara con DE
 	cp (hl)			;613a
 	ex de,hl			;613b
 	jr nz,L_6144		;613c
 	inc hl			;613e
 	inc de			;613f
 	djnz compara_en_slot		;6140
-	scf			;6142
+	scf			;6142   ; todos iguales: acarreo
 	ret			;6143
 L_6144:
 	and a			;6144
@@ -235,9 +235,9 @@ DATA_resto_6146:
 
 graficos_27:		; con 27-28 puestos, el juego de graficos A de la tabla p01:6154
 	call 04149h		;6148   ; bancos_27_28: pone los bancos 27-28 en 0x8000 y 0xA000
-	call L_6151		;614b
+	call graficos_27_por_tabla		;614b   ; graficos_27_por_tabla: salta a la entrada A de la tabla p01:6154
 	jp 040f9h		;614e   ; bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
-L_6151:
+graficos_27_por_tabla:		; salta a la entrada A de la tabla p01:6154
 	call 040abh		;6151   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
@@ -427,23 +427,23 @@ L_62C1:
 	ld hl,00a90h		;6303
 	jp 05a2ah		;6306   ; rle: RLE de DE a la VRAM HL
 rumbo_al_personaje:		; el paso (HL, DE) hacia el personaje desde E, D con la velocidad A
-	ld (0e353h),a		;6309
+	ld (0e353h),a		;6309   ; guarda la velocidad del rumbo, o la letra del nombre
 	ld de,(0e3c1h)		;630c   ; lee la Y del personaje y el byte siguiente (16 bits)
 	jr L_631B		;6310
 rumbo_desde_ix:		; el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A
-	ld (0e353h),a		;6312
+	ld (0e353h),a		;6312   ; guarda la velocidad del rumbo, o la letra del nombre
 	ld e,(ix+002h)		;6315
 	ld d,(ix+004h)		;6318
 L_631B:
 	call angulo_al_centro		;631b   ; angulo_al_centro: 0xE359 = el angulo hacia (0x40, 0x58)
 	jr L_6330		;631e
 rumbo_al_rival:		; el paso hacia 0xE3E5/0xE3E7 con la velocidad A
-	ld (0e353h),a		;6320
+	ld (0e353h),a		;6320   ; guarda la velocidad del rumbo, o la letra del nombre
 	call angulo_al_rival		;6323   ; angulo_al_rival: 0xE359 = el angulo hacia 0xE3E5/0xE3E7
 	jr L_6330		;6326
 rumbo_al_personaje_80:		; el paso hacia el personaje con la velocidad 0x80
 	ld a,080h		;6328
-	ld (0e353h),a		;632a
+	ld (0e353h),a		;632a   ; guarda la velocidad del rumbo, o la letra del nombre
 	call angulo_al_personaje		;632d   ; angulo_al_personaje: 0xE359 = el angulo de la posicion D, E al personaje
 L_6330:
 	ld a,(0e359h)		;6330   ; lee el angulo calculado (0-0x3F)
@@ -460,26 +460,26 @@ L_6330:
 	ld e,a			;6342
 	add hl,de			;6343
 	ld a,(hl)			;6344
-	ld (0e358h),a		;6345
+	ld (0e358h),a		;6345   ; guarda el angulo del eje X del rumbo
 	ld e,c			;6348
 	call por_velocidad		;6349   ; por_velocidad: DE = E * 0xE353 / 32
-	ld a,(0e354h)		;634c
+	ld a,(0e354h)		;634c   ; lee el signo de la Y del rumbo, o la casilla del nombre
 	and a			;634f
 	call nz,043adh		;6350   ; de_negativo: DE = -DE
-	ld (0e356h),de		;6353
-	ld a,(0e358h)		;6357
+	ld (0e356h),de		;6353   ; guarda el paso Y del rumbo, o la X del cursor de las letras y el byte siguiente (16 bits)
+	ld a,(0e358h)		;6357   ; lee el angulo del eje X del rumbo
 	ld e,a			;635a
 	call por_velocidad		;635b   ; por_velocidad: DE = E * 0xE353 / 32
-	ld a,(0e355h)		;635e
+	ld a,(0e355h)		;635e   ; lee el signo de la X del rumbo, o el cursor de las letras (16 bits)
 	and a			;6361
 	call nz,043adh		;6362   ; de_negativo: DE = -DE
-	ld hl,(0e356h)		;6365
+	ld hl,(0e356h)		;6365   ; lee el paso Y del rumbo, o la X del cursor de las letras y el byte siguiente (16 bits)
 	ret			;6368
 angulo_al_personaje:		; 0xE359 = el angulo de la posicion D, E al personaje
 	ld a,(0e3c1h)		;6369   ; lee la Y del personaje
-	ld (0e8e0h),a		;636c
+	ld (0e8e0h),a		;636c   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera)
 	ld a,(0e3c2h)		;636f   ; lee la X del personaje
-	ld (0e8e1h),a		;6372
+	ld (0e8e1h),a		;6372   ; guarda la variable de trabajo 0xE8E1
 	jr angulo		;6375
 angulo_al_rival:		; 0xE359 = el angulo hacia 0xE3E5/0xE3E7
 	ld a,(0e3e5h)		;6377   ; lee la Y del personaje en la escena de accion
@@ -490,27 +490,27 @@ angulo_al_rival:		; 0xE359 = el angulo hacia 0xE3E5/0xE3E7
 angulo_al_centro:		; 0xE359 = el angulo hacia (0x40, 0x58)
 	ld hl,05840h		;6381
 L_6384:
-	ld (0e8e0h),hl		;6384
+	ld (0e8e0h),hl		;6384   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 angulo:		; 0xE359 = el angulo de 0xE8E0 - E, D (tabla p01:63D5); 0xE354/0xE355 = signos
-	ld hl,0e354h		;6387
+	ld hl,0e354h		;6387   ; apunta a el signo de la Y del rumbo, o la casilla del nombre
 	ld (hl),000h		;638a
-	ld a,(0e8e0h)		;638c
+	ld a,(0e8e0h)		;638c   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera)
 	sub e			;638f
 	jr nc,L_6395		;6390
 	neg		;6392
 	inc (hl)			;6394
 L_6395:
 	inc hl			;6395
-	ld (hl),000h		;6396
-	rra			;6398
+	ld (hl),000h		;6396   ; el signo de la X
+	rra			;6398   ; la distancia Y / 4, en octavos
 	rra			;6399
 	and 038h		;639a
 	ld e,a			;639c
-	ld a,(0e8e1h)		;639d
+	ld a,(0e8e1h)		;639d   ; la distancia X
 	sub d			;63a0
 	jr nc,L_63A6		;63a1
-	neg		;63a3
-	inc (hl)			;63a5
+	neg		;63a3   ; en valor absoluto
+	inc (hl)			;63a5   ; y negativa
 L_63A6:
 	rlca			;63a6
 	rlca			;63a7
@@ -523,7 +523,7 @@ L_63A6:
 	ld (0e359h),a		;63b3   ; guarda el angulo calculado (0-0x3F)
 	ret			;63b6
 por_velocidad:		; DE = E * 0xE353 / 32
-	ld a,(0e353h)		;63b7
+	ld a,(0e353h)		;63b7   ; lee la velocidad del rumbo, o la letra del nombre
 	ld h,a			;63ba
 	call multiplica		;63bb   ; multiplica: HL = H * E
 	xor a			;63be
@@ -576,10 +576,10 @@ DATA_resto_63D5:
 nombre_vacio:		; Z si los 8 bytes de HL son ceros hasta 0xFF
 	ld b,008h		;648a
 L_648C:
-	ld a,(hl)			;648c
-	cp 0ffh		;648d
+	ld a,(hl)			;648c   ; la letra
+	cp 0ffh		;648d   ; 0xFF: acaba, vacio
 	jr z,L_6496		;648f
-	or a			;6491
+	or a			;6491   ; una letra: no esta vacio
 	ret nz			;6492
 	inc hl			;6493
 	djnz L_648C		;6494
@@ -618,16 +618,16 @@ L_64B0:
 	ld (hl),0ffh		;64c5
 	ret			;64c7
 cuadro:		; un cuadro del juego (lo llama la interrupcion): cuenta 0xE003 y despacha el estado 0xE000 (tabla p01:64DF)
-	ld hl,0e003h		;64c8   ; apunta a la cuenta de cuadros
+	ld hl,0e003h		;64c8   ; la cuenta de cuadros
 	inc (hl)			;64cb
-	ld a,(0e000h)		;64cc   ; lee el estado del juego
-	cp 003h		;64cf
+	ld a,(0e000h)		;64cc   ; el estado del juego
+	cp 003h		;64cf   ; en los estados 0-2
 	jr nc,L_64D7		;64d1
-	ld hl,06634h		;64d3
+	ld hl,06634h		;64d3   ; se vuelve por p01:6634 (el titulo y la demo miran las teclas)
 	push hl			;64d6
 L_64D7:
-	ld bc,(0e000h)		;64d7   ; lee el estado del juego y el byte siguiente (16 bits)
-	ld a,c			;64db
+	ld bc,(0e000h)		;64d7   ; C = el estado y B = el paso
+	ld a,c			;64db   ; A = el estado
 	call 040abh		;64dc   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
@@ -651,8 +651,8 @@ DATA_saltos_64DF:
 
 
 estado_0:		; estado 0: el rotulo de Konami (p00:4242) y espera
-	djnz L_64FF		;64f1
-	ld a,(0e003h)		;64f3   ; lee la cuenta de cuadros
+	djnz L_64FF		;64f1   ; paso 1 (el 0 da la vuelta a B y acaba en p01:650D)
+	ld a,(0e003h)		;64f3   ; un cuadro si y otro no
 	rra			;64f6
 	ret nc			;64f7
 	call 04242h		;64f8   ; a_rotulo_konami_cuadro: con 4-5-6, p04:6555 (una columna del rotulo cada cuadro: carga la pantalla 0xE00F (p04:65B8) en 0xED00 y la va pintando (p04:65C4)); vuelve con 1-2-3
@@ -660,8 +660,8 @@ estado_0:		; estado 0: el rotulo de Konami (p00:4242) y espera
 	xor a			;64fc
 	jr L_655C		;64fd
 L_64FF:
-	djnz L_650D		;64ff
-	ld hl,0e004h		;6501   ; apunta a la espera del estado, en cuadros
+	djnz L_650D		;64ff   ; paso 2
+	ld hl,0e004h		;6501   ; espera
 	dec (hl)			;6504
 	ret nz			;6505
 	call 0424bh		;6506   ; a_titulo: con 4-5-6, p04:622B (monta el titulo (p04:6234) y el texto p04:606C); vuelve con 1-2-3
@@ -680,9 +680,9 @@ estado_1:		; estado 1: el titulo (p00:425D) con el cursor de 0xE335 hasta que se
 	dec (hl)			;6524
 	ret nz			;6525
 	xor a			;6526
-	ld (0e350h),a		;6527
+	ld (0e350h),a		;6527   ; guarda el paso de la escena (inicial, historia, final)
 	ld (0e333h),a		;652a   ; guarda el paso ha acabado
-	ld (0e351h),a		;652d   ; guarda el paso de la pantalla de nombres
+	ld (0e351h),a		;652d   ; guarda el paso de la pantalla de nombres, o la pagina de la historia
 	jp siguiente_estado		;6530   ; siguiente_estado: 0xE000 + 1 y el paso a cero
 estado_2:		; estado 2: la demo (p09:BC5C, p09:BD11, p09:BC86) hasta que 0xE340 = 0
 	djnz L_6540		;6533
@@ -741,7 +741,7 @@ L_658B:
 	ld (0e333h),a		;6594   ; guarda el paso ha acabado
 	ld l,a			;6597
 	ld h,a			;6598
-	ld (0e350h),hl		;6599
+	ld (0e350h),hl		;6599   ; guarda el paso de la escena (inicial, historia, final) y el byte siguiente (16 bits)
 	jp siguiente_paso		;659c   ; siguiente_paso: 0xE001 + 1
 L_659F:
 	djnz L_65B2		;659f
@@ -765,7 +765,7 @@ L_65BF:
 	call primera_sala		;65c4   ; primera_sala: la sala de partida (o la de 0xE338, p01:67E3) con sus banderas y la entrada
 	xor a			;65c7
 	ld (0e334h),a		;65c8   ; guarda la entrada en la primera sala (0 nueva partida)
-	ld (0e350h),a		;65cb
+	ld (0e350h),a		;65cb   ; guarda el paso de la escena (inicial, historia, final)
 siguiente_estado_con_espera:		; 0xE004 = A y el siguiente estado
 	ld (0e004h),a		;65ce   ; guarda la espera del estado, en cuadros
 siguiente_estado:		; 0xE000 + 1 y el paso a cero
@@ -807,7 +807,7 @@ estado_6:		; estado 6: p01:6487 (4-5-6) hasta 0xE340 bit 7
 	jp siguiente_estado		;6614   ; siguiente_estado: 0xE000 + 1 y el paso a cero
 L_6617:
 	xor a			;6617
-	ld (0e339h),a		;6618
+	ld (0e339h),a		;6618   ; guarda el paso del final del estado 6
 	ld (0e004h),a		;661b   ; guarda la espera del estado, en cuadros
 	jp siguiente_paso		;661e   ; siguiente_paso: 0xE001 + 1
 estado_7:		; estado 7: pantalla vacia, 0xE002 sin el bit 6 y al estado 0
@@ -839,40 +839,40 @@ DATA_resto_6634:
 
 
 borra_partida:		; 0xE340-0xF080 a cero, la sala 0x200, nombres y posicion de partida
-	ld hl,0e340h		;6677   ; apunta a en partida (bit 7: la demo acaba)
+	ld hl,0e340h		;6677   ; 0xE340-0xF080 a cero
 	ld de,0e341h		;667a
 	ld bc,00d40h		;667d
 	xor a			;6680
 	ld (hl),a			;6681
 	ldir		;6682
-	ld hl,00200h		;6684
+	ld hl,00200h		;6684   ; la primera sala: 0x200
 	ld (0eb40h),hl		;6687   ; guarda la sala
-	ld hl,0ef25h		;668a
+	ld hl,0ef25h		;668a   ; el cursor del texto
 	ld (0e344h),hl		;668d   ; guarda el principio de la linea del texto
-	ld hl,0038bh		;6690
+	ld hl,0038bh		;6690   ; el nombre de 0xEB11 por defecto (4 letras y 0xFF)
 	ld (0eb12h),hl		;6693
 	ld hl,0d67fh		;6696
 	ld (0eb14h),hl		;6699
 	ld a,0ffh		;669c
 	ld (0eb16h),a		;669e
-	ld a,(0e335h)		;66a1   ; lee la opcion del titulo (0 o 1)
+	ld a,(0e335h)		;66a1   ; la opcion del titulo
 	and a			;66a4
 	jr z,L_66A9		;66a5
-	add a,002h		;66a7
+	add a,002h		;66a7   ; la segunda opcion entra con 3
 L_66A9:
 	ld (0e334h),a		;66a9   ; guarda la entrada en la primera sala (0 nueva partida)
 	ret			;66ac
 cifras_a_vram:		; B cifras BCD de DE (hacia atras) a la VRAM HL, sin ceros a la izquierda
 	ld c,000h		;66ad
 L_66AF:
-	ld a,(de)			;66af
+	ld a,(de)			;66af   ; el nibble alto
 	rra			;66b0
 	rra			;66b1
 	rra			;66b2
 	rra			;66b3
 	and 00fh		;66b4
-	jr z,L_66BA		;66b6
-	ld c,0ffh		;66b8
+	jr z,L_66BA		;66b6   ; un cero a la izquierda no se escribe
+	ld c,0ffh		;66b8   ; a partir de la primera cifra, todas
 L_66BA:
 	dec b			;66ba
 	jr nz,L_66BF		;66bb
@@ -896,25 +896,25 @@ L_66CE:
 	djnz L_66AF		;66d6
 	ret			;66d8
 cursor_del_titulo:		; izquierda/derecha cambian 0xE335 y pintan la flecha
-	ld hl,0e335h		;66d9   ; apunta a la opcion del titulo (0 o 1)
-	ld a,(0e008h)		;66dc   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld hl,0e335h		;66d9   ; la opcion del titulo
+	ld a,(0e008h)		;66dc   ; izquierda o derecha?
 	and 003h		;66df
 	jr z,L_66E8		;66e1
-	inc (hl)			;66e3
+	inc (hl)			;66e3   ; cambia de opcion
 	ld a,(hl)			;66e4
 	and 001h		;66e5
 	ld (hl),a			;66e7
 L_66E8:
 	ld a,(0e335h)		;66e8   ; lee la opcion del titulo (0 o 1)
 	and a			;66eb
-	ld bc,03f00h		;66ec
+	ld bc,03f00h		;66ec   ; la flecha en una u otra
 	jr z,L_66F4		;66ef
 	ld bc,0003fh		;66f1
 L_66F4:
-	ld hl,03a8bh		;66f4
+	ld hl,03a8bh		;66f4   ; la flecha de la primera opcion
 	ld a,b			;66f7
 	call 0004dh		;66f8   ; BIOS WRTVRM - Writes data in VRAM
-	ld hl,03aabh		;66fb
+	ld hl,03aabh		;66fb   ; y la de la segunda
 	ld a,c			;66fe
 	jp 0004dh		;66ff   ; BIOS WRTVRM - Writes data in VRAM
 primera_sala:		; la sala de partida (o la de 0xE338, p01:67E3) con sus banderas y la entrada
@@ -961,13 +961,13 @@ L_6737:
 	set 1,(hl)		;675e
 entra_en_la_sala:		; pone el personaje (p01:7112) y monta la sala (p01:677F)
 	ld a,008h		;6760
-	ld (0e351h),a		;6762   ; guarda el paso de la pantalla de nombres
+	ld (0e351h),a		;6762   ; guarda el paso de la pantalla de nombres, o la pagina de la historia
 	xor a			;6765
 	ld (0e007h),a		;6766   ; guarda las banderas de sprites (bit 0: sin rotar)
 	ld (0e380h),a		;6769
 	ld (0e3afh),a		;676c   ; guarda la cuenta de vueltas por la sala 0x7E
 	call personaje_a_la_entrada		;676f   ; personaje_a_la_entrada: modo 0 o 7, todo a cero y la posicion de entrada
-	call 043e9h		;6772
+	call 043e9h		;6772   ; patrones_del_fotograma: los patrones de sprite de p18:6000[0xE3C3] a 0x1800 y la barra del marcador
 	call 042ach		;6775   ; a_fuente: con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3
 	xor a			;6778
 	ld (0e338h),a		;6779   ; guarda la sala de partida (indice de p01:67E3)
@@ -987,7 +987,7 @@ monta_la_sala:		; musica, fichas, mapa, sprites, actores, marcador y menu de la 
 	call 0514bh		;679e   ; mapa_de_la_sala: la sala 0xEB40 (12 x 8 bloques a nibbles, p15:6000 o p20:B606) a los nombres 0xED00 y la dureza 0xE800
 	call 042beh		;67a1   ; a_dibujos_de_la_sala: con 9-10-11, p09:622B (en las salas de p09:6291, los dibujos de p09:63A5 (0xFE cambia el color)); vuelve con 1-2-3
 	call 042c7h		;67a4   ; a_dibujos_por_bandera: con 9-10-11, p09:60CC (en las salas de p09:613C, los dibujos de p09:6162 cuya bandera de la historia esta puesta); vuelve con 1-2-3
-	call 0443dh		;67a7
+	call 0443dh		;67a7   ; dibujo_del_marcador: el dibujo 0xE368 (p09:6713) en el marcador, o el marcador vacio
 	call sprites_del_personaje		;67aa   ; sprites_del_personaje: los tres sprites del personaje en 0xF000
 	call 042d0h		;67ad   ; a_crea_actores_de_la_sala: con 7-8, p07:827A (borra los 8 actores y crea los de la lista p07:8BC2[sala] (o p07:9032/904C); luego el actor 0xC8 de 0xEB69/0xEB7A); vuelve con 1-2-3
 	call 042d9h		;67b0   ; a_sprites_de_actores: con 7-8, p07:865C (dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas); vuelve con 1-2-3
@@ -1024,7 +1024,7 @@ DATA_resto_67E3:
 
 
 pantalla_de_nombres:		; un paso de la pantalla de nombres (0xE351, tabla p01:67EF)
-	ld a,(0e351h)		;67e9   ; lee el paso de la pantalla de nombres
+	ld a,(0e351h)		;67e9   ; lee el paso de la pantalla de nombres, o la pagina de la historia
 	call 040abh		;67ec   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
@@ -1059,23 +1059,23 @@ nombres_primero:		; monta la pantalla de nombres para el primero
 	jp L_696F		;6817
 nombres_teclas:		; mueve el cursor por la tabla de letras y escribe o borra
 	ld hl,0ed56h		;681a
-	ld a,(0e353h)		;681d
+	ld a,(0e353h)		;681d   ; lee la velocidad del rumbo, o la letra del nombre
 	cp 004h		;6820
 	jr z,L_6834		;6822
 	ld e,a			;6824
 	ld d,000h		;6825
 	add hl,de			;6827
-	ld a,(0e352h)		;6828
+	ld a,(0e352h)		;6828   ; lee la cuenta de la escena (parpadeo, paso de las particulas)
 	inc a			;682b
-	ld (0e352h),a		;682c
+	ld (0e352h),a		;682c   ; guarda la cuenta de la escena (parpadeo, paso de las particulas)
 	and 008h		;682f
 	rlca			;6831
 	rlca			;6832
 	ld (hl),a			;6833
 L_6834:
-	ld a,(0e008h)		;6834   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;6834   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	or a			;6837
-	ld hl,0e357h		;6838
+	ld hl,0e357h		;6838   ; apunta a la repeticion del cursor de las letras
 	jr nz,L_6848		;683b
 	ld a,(0e009h)		;683d   ; lee las teclas que hay
 	and 00fh		;6840
@@ -1087,7 +1087,7 @@ L_6848:
 	bit 5,a		;684a
 	ld b,a			;684c
 	jr z,L_688F		;684d
-	ld a,(0e353h)		;684f
+	ld a,(0e353h)		;684f   ; lee la velocidad del rumbo, o la letra del nombre
 	or a			;6852
 	jr z,L_688E		;6853
 	ld hl,0ed56h		;6855
@@ -1097,7 +1097,7 @@ L_6848:
 	cp 004h		;685c
 	ccf			;685e
 	dec a			;685f
-	ld (0e353h),a		;6860
+	ld (0e353h),a		;6860   ; guarda la velocidad del rumbo, o la letra del nombre
 	ld bc,00020h		;6863
 	jr c,L_6869		;6866
 	ld (hl),c			;6868
@@ -1105,10 +1105,10 @@ L_6869:
 	inc c			;6869
 	or a			;686a
 	sbc hl,bc		;686b
-	ld a,(0e354h)		;686d
+	ld a,(0e354h)		;686d   ; lee el signo de la Y del rumbo, o la casilla del nombre
 	dec a			;6870
 	ld e,a			;6871
-	ld (0e354h),a		;6872
+	ld (0e354h),a		;6872   ; guarda el signo de la Y del rumbo, o la casilla del nombre
 	ld (hl),b			;6875
 	call letra_del_nombre		;6876   ; letra_del_nombre: HL = el nombre en curso (0xEB00 o 0xEB09) + E
 	ld a,(hl)			;6879
@@ -1116,9 +1116,9 @@ L_6869:
 	cp 002h		;687c
 	ld (hl),b			;687e
 	jp nc,vuelca_nombres_1		;687f   ; vuelca_nombres_1: 0x300 de 0xED00 a 0x3800
-	ld a,(0e354h)		;6882
+	ld a,(0e354h)		;6882   ; lee el signo de la Y del rumbo, o la casilla del nombre
 	dec a			;6885
-	ld (0e354h),a		;6886
+	ld (0e354h),a		;6886   ; guarda el signo de la Y del rumbo, o la casilla del nombre
 	dec hl			;6889
 	ld (hl),b			;688a
 	jp vuelca_nombres_1		;688b   ; vuelca_nombres_1: 0x300 de 0xED00 a 0x3800
@@ -1127,10 +1127,10 @@ L_688E:
 L_688F:
 	bit 4,a		;688f
 	jr z,L_68E6		;6891
-	ld hl,(0e355h)		;6893
+	ld hl,(0e355h)		;6893   ; lee el signo de la X del rumbo, o el cursor de las letras (16 bits) y el byte siguiente (16 bits)
 	inc h			;6896
 	call casilla_de_letras		;6897   ; casilla_de_letras: HL = 0xED00 + la casilla de la tabla de letras de HL
-	ld a,(0e353h)		;689a
+	ld a,(0e353h)		;689a   ; lee la velocidad del rumbo, o la letra del nombre
 	ld e,a			;689d
 	ld b,(hl)			;689e
 	inc hl			;689f
@@ -1141,46 +1141,46 @@ L_688F:
 	call 045bfh		;68a6   ; sonido_48: pide el sonido 0x48
 	jp L_6960		;68a9
 L_68AC:
-	ld a,e			;68ac
-	cp 004h		;68ad
+	ld a,e			;68ac   ; la casilla del nombre
+	cp 004h		;68ad   ; el nombre esta lleno?
 	jr z,L_68E6		;68af
 	inc a			;68b1
-	ld (0e353h),a		;68b2
-	ld a,b			;68b5
+	ld (0e353h),a		;68b2   ; guarda la velocidad del rumbo, o la letra del nombre
+	ld a,b			;68b5   ; B = la letra
 	dec hl			;68b6
 	ld bc,00020h		;68b7
 	or a			;68ba
 	sbc hl,bc		;68bb
 	ld b,a			;68bd
-	ld c,(hl)			;68be
-	ld hl,0ed56h		;68bf
+	ld c,(hl)			;68be   ; C = el acento de encima
+	ld hl,0ed56h		;68bf   ; la casilla del nombre en pantalla
 	add hl,de			;68c2
-	ld (hl),b			;68c3
+	ld (hl),b			;68c3   ; la letra
 	ld a,c			;68c4
 	ld bc,00020h		;68c5
 	or a			;68c8
 	sbc hl,bc		;68c9
-	ld (hl),a			;68cb
+	ld (hl),a			;68cb   ; y su acento encima
 	add hl,bc			;68cc
 	ld b,(hl)			;68cd
 	ld c,a			;68ce
-	ld a,(0e354h)		;68cf
+	ld a,(0e354h)		;68cf   ; lee el signo de la Y del rumbo, o la casilla del nombre
 	ld e,a			;68d2
 	call letra_del_nombre		;68d3   ; letra_del_nombre: HL = el nombre en curso (0xEB00 o 0xEB09) + E
-	ld (hl),b			;68d6
+	ld (hl),b			;68d6   ; la letra al nombre
 	ld a,c			;68d7
-	sub 003h		;68d8
+	sub 003h		;68d8   ; con acento (3 o 4)?
 	cp 002h		;68da
 	jr nc,L_68E1		;68dc
 	inc hl			;68de
-	ld (hl),c			;68df
+	ld (hl),c			;68df   ; el acento detras
 	inc e			;68e0
 L_68E1:
 	ld a,e			;68e1
 	inc a			;68e2
-	ld (0e354h),a		;68e3
+	ld (0e354h),a		;68e3   ; guarda el signo de la Y del rumbo, o la casilla del nombre
 L_68E6:
-	ld hl,(0e355h)		;68e6
+	ld hl,(0e355h)		;68e6   ; lee el signo de la X del rumbo, o el cursor de las letras (16 bits) y el byte siguiente (16 bits)
 	call casilla_de_letras		;68e9   ; casilla_de_letras: HL = 0xED00 + la casilla de la tabla de letras de HL
 	ld a,(0e009h)		;68ec   ; lee las teclas que hay
 	and 00fh		;68ef
@@ -1194,36 +1194,36 @@ L_68E6:
 	rra			;6900
 	jr c,L_692D		;6901
 	rra			;6903
-	ld a,(0e356h)		;6904
+	ld a,(0e356h)		;6904   ; lee el paso Y del rumbo, o la X del cursor de las letras
 	jr c,L_6914		;6907
 	cp 017h		;6909
 	jp z,L_693B		;690b
 	add a,b			;690e
-	ld (0e356h),a		;690f
+	ld (0e356h),a		;690f   ; guarda el paso Y del rumbo, o la X del cursor de las letras
 	jr L_6939		;6912
 L_6914:
 	cp 005h		;6914
 	jp z,L_693B		;6916
 	sub b			;6919
-	ld (0e356h),a		;691a
+	ld (0e356h),a		;691a   ; guarda el paso Y del rumbo, o la X del cursor de las letras
 	jr L_6939		;691d
 L_691F:
-	ld a,(0e355h)		;691f
+	ld a,(0e355h)		;691f   ; lee el signo de la X del rumbo, o el cursor de las letras (16 bits)
 	cp 006h		;6922
 	jp z,L_693B		;6924
 	sub b			;6927
-	ld (0e355h),a		;6928
+	ld (0e355h),a		;6928   ; guarda el signo de la X del rumbo, o el cursor de las letras (16 bits)
 	jr L_6939		;692b
 L_692D:
-	ld a,(0e355h)		;692d
+	ld a,(0e355h)		;692d   ; lee el signo de la X del rumbo, o el cursor de las letras (16 bits)
 	cp 014h		;6930
 	jp z,L_693B		;6932
 	add a,b			;6935
-	ld (0e355h),a		;6936
+	ld (0e355h),a		;6936   ; guarda el signo de la X del rumbo, o el cursor de las letras (16 bits)
 L_6939:
 	ld c,001h		;6939
 L_693B:
-	ld hl,(0e355h)		;693b
+	ld hl,(0e355h)		;693b   ; lee el signo de la X del rumbo, o el cursor de las letras (16 bits) y el byte siguiente (16 bits)
 	push bc			;693e
 	call casilla_de_letras		;693f   ; casilla_de_letras: HL = 0xED00 + la casilla de la tabla de letras de HL
 	pop bc			;6942
@@ -1231,9 +1231,9 @@ L_693B:
 	or a			;6944
 	jr z,L_6953		;6945
 	ld c,000h		;6947
-	ld a,(0e356h)		;6949
+	ld a,(0e356h)		;6949   ; lee el paso Y del rumbo, o la X del cursor de las letras
 	sub 002h		;694c
-	ld (0e356h),a		;694e
+	ld (0e356h),a		;694e   ; guarda el paso Y del rumbo, o la X del cursor de las letras
 	dec hl			;6951
 	dec hl			;6952
 L_6953:
@@ -1244,20 +1244,20 @@ L_6953:
 	call 04588h		;695a   ; sonido_05: pide el sonido 5: el del cursor de los menus
 	jp vuelca_nombres_1		;695d   ; vuelca_nombres_1: 0x300 de 0xED00 a 0x3800
 L_6960:
-	ld a,(0e354h)		;6960
+	ld a,(0e354h)		;6960   ; lee el signo de la Y del rumbo, o la casilla del nombre
 	ld e,a			;6963
 	ld b,0ffh		;6964
 	call letra_del_nombre		;6966   ; letra_del_nombre: HL = el nombre en curso (0xEB00 o 0xEB09) + E
 	ld (hl),b			;6969
 	ld a,01eh		;696a
-	ld (0e352h),a		;696c
+	ld (0e352h),a		;696c   ; guarda la cuenta de la escena (parpadeo, paso de las particulas)
 L_696F:
-	ld a,(0e351h)		;696f   ; lee el paso de la pantalla de nombres
+	ld a,(0e351h)		;696f   ; lee el paso de la pantalla de nombres, o la pagina de la historia
 	inc a			;6972
-	ld (0e351h),a		;6973   ; guarda el paso de la pantalla de nombres
+	ld (0e351h),a		;6973   ; guarda el paso de la pantalla de nombres, o la pagina de la historia
 	jp vuelca_nombres_1		;6976   ; vuelca_nombres_1: 0x300 de 0xED00 a 0x3800
 letra_del_nombre:		; HL = el nombre en curso (0xEB00 o 0xEB09) + E
-	ld a,(0e351h)		;6979   ; lee el paso de la pantalla de nombres
+	ld a,(0e351h)		;6979   ; lee el paso de la pantalla de nombres, o la pagina de la historia
 	cp 001h		;697c
 	ld hl,0eb00h		;697e   ; apunta a el primer nombre (8 letras y 0xFF)
 	jr z,L_6986		;6981
@@ -1266,9 +1266,9 @@ L_6986:
 	add hl,de			;6986
 	ret			;6987
 nombres_borra:		; espera y borra la pantalla
-	ld a,(0e352h)		;6988
+	ld a,(0e352h)		;6988   ; lee la cuenta de la escena (parpadeo, paso de las particulas)
 	dec a			;698b
-	ld (0e352h),a		;698c
+	ld (0e352h),a		;698c   ; guarda la cuenta de la escena (parpadeo, paso de las particulas)
 	ret nz			;698f
 	ld hl,0ed00h		;6990   ; apunta a los nombres de la pantalla (32 x 24)
 	ld (hl),a			;6993
@@ -1276,10 +1276,10 @@ nombres_borra:		; espera y borra la pantalla
 	ld bc,002ffh		;6997
 	ldir		;699a
 	ld a,01eh		;699c
-	ld (0e352h),a		;699e
+	ld (0e352h),a		;699e   ; guarda la cuenta de la escena (parpadeo, paso de las particulas)
 	jr L_696F		;69a1
 nombres_espera:		; espera 0xE352 cuadros
-	ld hl,0e352h		;69a3
+	ld hl,0e352h		;69a3   ; apunta a la cuenta de la escena (parpadeo, paso de las particulas)
 	dec (hl)			;69a6
 	ret nz			;69a7
 	jp L_696F		;69a8
@@ -1298,9 +1298,9 @@ nombres_hecho:		; 0xE333 = 1: acabado
 	ld (0e333h),a		;69c6   ; guarda el paso ha acabado
 	ret			;69c9
 casilla_de_letras:		; HL = 0xED00 + la casilla de la tabla de letras de HL
-	ld a,l			;69ca
+	ld a,l			;69ca   ; L = la Y, H = la X
 	ld l,h			;69cb
-	and 01fh		;69cc
+	and 01fh		;69cc   ; la fila
 	rrca			;69ce
 	rrca			;69cf
 	rrca			;69d0
@@ -1308,42 +1308,42 @@ casilla_de_letras:		; HL = 0xED00 + la casilla de la tabla de letras de HL
 	and 0f0h		;69d2
 	add a,l			;69d4
 	ld l,a			;69d5
-	ld a,h			;69d6
+	ld a,h			;69d6   ; la parte alta de la fila
 	and 00fh		;69d7
-	add a,0edh		;69d9
+	add a,0edh		;69d9   ; desde 0xED00
 	ld h,a			;69db
 	ret			;69dc
 tabla_de_letras:		; la tabla de letras y el marco de la pantalla de nombres en 0xED00
 	xor a			;69dd
-	ld (0e352h),a		;69de
+	ld (0e352h),a		;69de   ; guarda la cuenta de la escena (parpadeo, paso de las particulas)
 	ld hl,00000h		;69e1
-	ld (0e353h),hl		;69e4
+	ld (0e353h),hl		;69e4   ; guarda la velocidad del rumbo, o la letra del nombre y el byte siguiente (16 bits)
 	ld hl,00506h		;69e7
-	ld (0e355h),hl		;69ea
+	ld (0e355h),hl		;69ea   ; guarda el signo de la X del rumbo, o el cursor de las letras (16 bits) y el byte siguiente (16 bits)
 	ld a,00ah		;69ed
-	ld (0e357h),a		;69ef
+	ld (0e357h),a		;69ef   ; guarda la repeticion del cursor de las letras
 	ld hl,0edc6h		;69f2
 	ld a,040h		;69f5
 	ld c,024h		;69f7
 	call fila_seguida		;69f9   ; fila_seguida: C-1 letras seguidas desde A en HL, de dos en dos, filas de 10
 	ld a,066h		;69fc
 	ld c,006h		;69fe
-	call L_6AA4		;6a00
+	call fila_seguida_desde		;6a00   ; fila_seguida_desde: como p01:6AA2 sin fijar B
 	ld a,063h		;6a03
 	ld c,004h		;6a05
 	call fila_seguida		;6a07   ; fila_seguida: C-1 letras seguidas desde A en HL, de dos en dos, filas de 10
 	ld a,06bh		;6a0a
 	ld c,004h		;6a0c
-	call L_6AA4		;6a0e
+	call fila_seguida_desde		;6a0e   ; fila_seguida_desde: como p01:6AA2 sin fijar B
 	ld a,0a3h		;6a11
 	ld c,005h		;6a13
-	call L_6AA4		;6a15
+	call fila_seguida_desde		;6a15   ; fila_seguida_desde: como p01:6AA2 sin fijar B
 	ld a,045h		;6a18
 	ld c,010h		;6a1a
 	call fila_seguida		;6a1c   ; fila_seguida: C-1 letras seguidas desde A en HL, de dos en dos, filas de 10
 	ld a,059h		;6a1f
 	ld c,006h		;6a21
-	call L_6AA4		;6a23
+	call fila_seguida_desde		;6a23   ; fila_seguida_desde: como p01:6AA2 sin fijar B
 	ld a,059h		;6a26
 	ld c,006h		;6a28
 	call fila_seguida		;6a2a   ; fila_seguida: C-1 letras seguidas desde A en HL, de dos en dos, filas de 10
@@ -1373,24 +1373,24 @@ tabla_de_letras:		; la tabla de letras y el marco de la pantalla de nombres en 0
 	ld a,00fh		;6a64
 	ld b,015h		;6a66
 L_6A68:
-	ld (hl),a			;6a68
+	ld (hl),a			;6a68   ; la ficha del borde
 	inc hl			;6a69
-	ld (de),a			;6a6a
+	ld (de),a			;6a6a   ; arriba y abajo
 	inc de			;6a6b
 	djnz L_6A68		;6a6c
-	dec a			;6a6e
+	dec a			;6a6e   ; la esquina
 	ld (hl),a			;6a6f
-	ld a,00ch		;6a70
+	ld a,00ch		;6a70   ; y la otra esquina
 	ld (de),a			;6a72
-	ld hl,0eda4h		;6a73
-	ld a,01bh		;6a76
+	ld hl,0eda4h		;6a73   ; los lados
+	ld a,01bh		;6a76   ; con la ficha 0x1B
 	ld b,011h		;6a78
 L_6A7A:
-	ld (hl),a			;6a7a
+	ld (hl),a			;6a7a   ; el lado izquierdo
 	ld de,00016h		;6a7b
 	add hl,de			;6a7e
-	ld (hl),a			;6a7f
-	ld de,0000ah		;6a80
+	ld (hl),a			;6a7f   ; y el derecho
+	ld de,0000ah		;6a80   ; la fila siguiente
 	add hl,de			;6a83
 	djnz L_6A7A		;6a84
 	ret			;6a86
@@ -1402,26 +1402,26 @@ vuelca_nombres_1:		; 0x300 de 0xED00 a 0x3800
 fila_de_iguales:		; C-1 veces A en HL, de dos en dos, filas de 10
 	ld b,00ah		;6a93
 L_6A95:
-	dec c			;6a95
+	dec c			;6a95   ; una menos
 	ret z			;6a96
-	ld (hl),a			;6a97
-	inc hl			;6a98
+	ld (hl),a			;6a97   ; la letra
+	inc hl			;6a98   ; dos columnas mas alla
 	inc hl			;6a99
 	djnz L_6A95		;6a9a
-	ld de,0002ch		;6a9c
+	ld de,0002ch		;6a9c   ; la siguiente fila (dos filas mas abajo)
 	add hl,de			;6a9f
 	jr fila_de_iguales		;6aa0
 fila_seguida:		; C-1 letras seguidas desde A en HL, de dos en dos, filas de 10
 	ld b,00ah		;6aa2
-L_6AA4:
-	dec c			;6aa4
+fila_seguida_desde:		; como p01:6AA2 sin fijar B
+	dec c			;6aa4   ; una menos
 	ret z			;6aa5
-	ld (hl),a			;6aa6
-	inc a			;6aa7
+	ld (hl),a			;6aa6   ; la letra
+	inc a			;6aa7   ; la siguiente
 	inc hl			;6aa8
 	inc hl			;6aa9
-	djnz L_6AA4		;6aaa
-	ld de,0002ch		;6aac
+	djnz fila_seguida_desde		;6aaa
+	ld de,0002ch		;6aac   ; la siguiente fila
 	add hl,de			;6aaf
 	jr fila_seguida		;6ab0
 
@@ -1496,7 +1496,7 @@ L_6B12:
 	jp carga_siguiente		;6b21   ; carga_siguiente: 0xE38E + 1
 carga_elige:		; con disparo, la opcion elegida (p01:6B4D)
 	call carga_cursor		;6b24   ; carga_cursor: arriba/abajo por las opciones (0xE8A4) con sonido
-	ld a,(0e008h)		;6b27   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;6b27   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 010h		;6b2a
 	ret z			;6b2c
 	xor a			;6b2d
@@ -1562,7 +1562,7 @@ L_6B6A:
 	call 059c2h		;6b70   ; bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
 	jp carga_paso		;6b73   ; carga_paso: 0xE398 + 1
 L_6B76:
-	ld a,(0e008h)		;6b76   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;6b76   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 050h		;6b79
 	ret z			;6b7b
 	call 058bfh		;6b7c   ; borra_nombres: borra los nombres 0xED00 (0x300) y los vuelca
@@ -1680,7 +1680,7 @@ L_6C3B:
 	call 059c2h		;6c41   ; bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
 	jp carga_paso		;6c44   ; carga_paso: 0xE398 + 1
 L_6C47:
-	ld a,(0e008h)		;6c47   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;6c47   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 050h		;6c4a
 	ret z			;6c4c
 	call 058bfh		;6c4d   ; borra_nombres: borra los nombres 0xED00 (0x300) y los vuelca
@@ -1697,7 +1697,7 @@ L_6C60:
 	jr z,L_6C97		;6c68
 	jp carga_paso		;6c6a   ; carga_paso: 0xE398 + 1
 L_6C6D:
-	ld hl,0e03ah		;6c6d
+	ld hl,0e03ah		;6c6d   ; apunta a la partida leida del disco o del otro cartucho
 	ld de,0eb40h		;6c70   ; apunta a la sala (16 bits)
 	ld bc,0003eh		;6c73
 	ldir		;6c76
@@ -1758,7 +1758,7 @@ L_6CCB:
 	call 059c2h		;6cd1   ; bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
 	jp carga_paso		;6cd4   ; carga_paso: 0xE398 + 1
 L_6CD7:
-	ld a,(0e008h)		;6cd7   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;6cd7   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 050h		;6cda
 	ret z			;6cdc
 	call 058bfh		;6cdd   ; borra_nombres: borra los nombres 0xED00 (0x300) y los vuelca
@@ -1775,7 +1775,7 @@ L_6CF0:
 	jr z,L_6D27		;6cf8
 	jp carga_paso		;6cfa   ; carga_paso: 0xE398 + 1
 L_6CFD:
-	ld hl,0e8e0h		;6cfd
+	ld hl,0e8e0h		;6cfd   ; apunta a la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera)
 	ld de,0eb40h		;6d00   ; apunta a la sala (16 bits)
 	ld bc,0003eh		;6d03
 	ldir		;6d06
@@ -1835,7 +1835,7 @@ L_6D59:
 	call 059c2h		;6d5f   ; bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
 	xor a			;6d62
 	ld (0e38fh),a		;6d63   ; guarda el resultado de la carga (2: fallo)
-	ld (0e3b2h),a		;6d66
+	ld (0e3b2h),a		;6d66   ; guarda el paso de la entrada de la contrasena
 	jp carga_paso		;6d69   ; carga_paso: 0xE398 + 1
 L_6D6C:
 	call 04389h		;6d6c   ; a_pide_contrasena: con 12-13-14, p14:BBF0 (un paso de la entrada de la contrasena (0xE3B2, tabla p14:BBFF)); vuelve con 1-2-3
@@ -1880,7 +1880,7 @@ L_6DB1:
 	xor a			;6dc2
 	ld (0e38fh),a		;6dc3   ; guarda el resultado de la carga (2: fallo)
 	inc a			;6dc6
-	ld (0e3b2h),a		;6dc7
+	ld (0e3b2h),a		;6dc7   ; guarda el paso de la entrada de la contrasena
 	ld (0e398h),a		;6dca   ; guarda el paso de la carga
 	ret			;6dcd
 carga_hecha:		; 0xE333 = 1
@@ -1892,7 +1892,7 @@ carga_hecha:		; 0xE333 = 1
 	ret			;6ddb
 carga_cursor:		; arriba/abajo por las opciones (0xE8A4) con sonido
 	ld hl,0e8a4h		;6ddc   ; apunta a la opcion del cursor
-	ld a,(0e008h)		;6ddf   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;6ddf   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 003h		;6de2
 	ret z			;6de4
 	push af			;6de5
@@ -1957,19 +1957,19 @@ nombres_de_la_partida:		; copia los nombres de la partida cargada (0xEB42, 0xEB4
 copia_nombre:		; 8 bytes de DE a HL y 0xFF tras el ultimo que no es cero
 	ld b,008h		;6e45
 L_6E47:
-	ld a,(de)			;6e47
+	ld a,(de)			;6e47   ; una letra
 	ld (hl),a			;6e48
 	inc hl			;6e49
 	inc de			;6e4a
 	djnz L_6E47		;6e4b
-	ld b,008h		;6e4d
+	ld b,008h		;6e4d   ; desde el final
 L_6E4F:
-	dec hl			;6e4f
+	dec hl			;6e4f   ; hacia atras
 	ld a,(hl)			;6e50
-	and a			;6e51
+	and a			;6e51   ; hasta la ultima letra
 	jr nz,L_6E57		;6e52
 	djnz L_6E4F		;6e54
-	dec hl			;6e56
+	dec hl			;6e56   ; todo ceros: al principio
 L_6E57:
 	inc hl			;6e57
 	ld (hl),0ffh		;6e58
@@ -1987,15 +1987,15 @@ L_6E67:
 	jr nc,L_6E6C		;6e68
 	set 0,(hl)		;6e6a
 L_6E6C:
-	inc hl			;6e6c
+	inc hl			;6e6c   ; dos bytes por objeto
 	inc hl			;6e6d
 	djnz L_6E67		;6e6e
 	dec c			;6e70
 	jr nz,L_6E63		;6e71
-	ld a,(0eb56h)		;6e73
+	ld a,(0eb56h)		;6e73   ; los bits 1-3 de 0xEB56
 	and 00eh		;6e76
 	ld hl,0e9deh		;6e78   ; apunta a el objeto 7 (bit 0: se lleva)
-	or (hl)			;6e7b
+	or (hl)			;6e7b   ; al objeto 7
 	ld (hl),a			;6e7c
 	ret			;6e7d
 
@@ -2130,7 +2130,7 @@ enciende_la_maquina:		; PSG en silencio, VRAM a cero y los registros del VDP
 	call 00093h		;708b   ; BIOS WRTPSG - Writes data to PSG-register
 	call 0457eh		;708e   ; sonido_01: pide el sonido 1
 	xor a			;7091
-	ld (0f0fah),a		;7092   ; guarda sin el sonido de las letras (cambia con la tecla del bit 7)
+	ld (0f0fah),a		;7092   ; guarda sin el sonido de las letras (cambia con F5)
 	ld hl,00000h		;7095
 	ld bc,04000h		;7098
 	xor a			;709b
@@ -2162,70 +2162,70 @@ DATA_resto_70B0:
 
 
 lee_los_mandos:		; 0xE009 = lo que hay, 0xE008 = lo nuevo
-	call mandos		;70b8   ; mandos: joystick 1 y teclado en un byte: bits 0-3 cursores, 4 disparo, 5 menu
+	call mandos		;70b8   ; mandos: joystick 1 y teclado en un byte: bits 0-3 cursores, 4 disparo o espacio, 5 boton 2 o M, 6 RETURN, 7 F5
 	ld hl,0e009h		;70bb   ; apunta a las teclas que hay
 teclas_nuevas:		; guarda A en (HL) y deja en (HL-1) lo que no estaba
-	ld c,(hl)			;70be
-	ld (hl),a			;70bf
-	xor c			;70c0
-	and (hl)			;70c1
+	ld c,(hl)			;70be   ; C = lo que habia
+	ld (hl),a			;70bf   ; se guarda lo que hay
+	xor c			;70c0   ; lo que cambia
+	and (hl)			;70c1   ; y esta pulsado ahora: lo nuevo
 	dec hl			;70c2
 	ld (hl),a			;70c3
 	ret			;70c4
-mandos:		; joystick 1 y teclado en un byte: bits 0-3 cursores, 4 disparo, 5 menu
-	ld e,08fh		;70c5
+mandos:		; joystick 1 y teclado en un byte: bits 0-3 cursores, 4 disparo o espacio, 5 boton 2 o M, 6 RETURN, 7 F5
+	ld e,08fh		;70c5   ; registro 15 del PSG: el puerto del joystick 1
 	ld a,00fh		;70c7
 	call 00093h		;70c9   ; BIOS WRTPSG - Writes data to PSG-register
-	ld a,00eh		;70cc
+	ld a,00eh		;70cc   ; registro 14: lee el joystick
 	di			;70ce
 	call 00096h		;70cf   ; BIOS RDPSG - Reads value from PSG-register
 	ei			;70d2
-	cpl			;70d3
-	and 03fh		;70d4
+	cpl			;70d3   ; pulsado a 1
+	and 03fh		;70d4   ; cursores y los dos botones
 	push af			;70d6
-	ld a,004h		;70d7
+	ld a,004h		;70d7   ; fila 4 del teclado
 	call 00141h		;70d9   ; BIOS SNSMAT - Returns the value of the specified line from the keyboard matrix
 	cpl			;70dc
 	rlca			;70dd
 	rlca			;70de
 	rlca			;70df
-	and 020h		;70e0
+	and 020h		;70e0   ; la M al bit 5
 	ld e,a			;70e2
-	ld a,007h		;70e3
+	ld a,007h		;70e3   ; fila 7 del teclado
 	call 00141h		;70e5   ; BIOS SNSMAT - Returns the value of the specified line from the keyboard matrix
 	cpl			;70e8
 	rrca			;70e9
 	ld b,a			;70ea
-	and 040h		;70eb
+	and 040h		;70eb   ; RETURN al bit 6
 	or e			;70ed
 	ld e,a			;70ee
 	ld a,b			;70ef
 	rrca			;70f0
-	and 080h		;70f1
+	and 080h		;70f1   ; F5 al bit 7
 	or e			;70f3
 	ld e,a			;70f4
-	ld a,008h		;70f5
+	ld a,008h		;70f5   ; fila 8: espacio y cursores
 	call 00141h		;70f7   ; BIOS SNSMAT - Returns the value of the specified line from the keyboard matrix
 	cpl			;70fa
 	rrca			;70fb
 	rrca			;70fc
 	ld b,a			;70fd
-	and 004h		;70fe
+	and 004h		;70fe   ; cursor izquierda al bit 2
 	or e			;7100
 	ld e,a			;7101
 	ld a,b			;7102
 	rrca			;7103
 	rrca			;7104
 	ld b,a			;7105
-	and 018h		;7106
+	and 018h		;7106   ; cursor derecha al bit 3 y espacio al bit 4
 	or e			;7108
 	ld e,a			;7109
 	ld a,b			;710a
 	rrca			;710b
-	and 003h		;710c
+	and 003h		;710c   ; cursores arriba y abajo a los bits 0 y 1
 	or e			;710e
-	pop bc			;710f
-	or b			;7110
+	pop bc			;710f   ; con el joystick
+	or b			;7110   ; juntos
 	ret			;7111
 personaje_a_la_entrada:		; modo 0 o 7, todo a cero y la posicion de entrada
 	ld a,(0e3c0h)		;7112   ; lee el modo del personaje (tabla p01:718E)
@@ -2248,7 +2248,7 @@ L_712B:
 	ld (0e3c7h),a		;7135   ; guarda la cuenta de cuadros del personaje
 	ld (0e3c8h),a		;7138   ; guarda las teclas del cuadro anterior
 	ld (0e3cbh),a		;713b
-	ld (0e3cch),a		;713e
+	ld (0e3cch),a		;713e   ; guarda el personaje flota (modo 10)
 	ld (0e3ceh),a		;7141
 	ld (0e3d9h),a		;7144
 	inc a			;7147
@@ -2265,7 +2265,7 @@ L_715B:
 	ld (0e3c1h),hl		;715e   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;7161
 mueve_personaje:		; un cuadro del personaje: el modo 0xE3C0 (tabla p01:718E)
-	ld a,(0e3cch)		;7162
+	ld a,(0e3cch)		;7162   ; lee el personaje flota (modo 10)
 	or a			;7165
 	call nz,salida_especial		;7166   ; salida_especial: en la sala 0x18 o sin 0xEB5A bit 5: a los 16 cuadros sale de la sala
 	ld a,(0e340h)		;7169   ; lee en partida (bit 7: la demo acaba)
@@ -2319,26 +2319,26 @@ DATA_saltos_718E:
 
 
 personaje_anda:		; modos 0 y 1: anda por la cuadricula de 16 x 16 con los cursores
-	ld a,(0e3c4h)		;71b6   ; lee el personaje va de un bloque a otro
+	ld a,(0e3c4h)		;71b6   ; a medio camino entre dos bloques?
 	or a			;71b9
 	jp nz,L_722D		;71ba
-	ld a,(0e009h)		;71bd   ; lee las teclas que hay
+	ld a,(0e009h)		;71bd   ; los cursores que hay
 	and 00fh		;71c0
 	ld b,a			;71c2
-	ld hl,0e3c8h		;71c3   ; apunta a las teclas del cuadro anterior
+	ld hl,0e3c8h		;71c3   ; y los del cuadro anterior
 	ld a,(hl)			;71c6
 	ld c,a			;71c7
-	ld (hl),b			;71c8
-	jp z,L_772A		;71c9
-	cp b			;71cc
+	ld (hl),b			;71c8   ; se guardan para el siguiente
+	jp z,L_772A		;71c9   ; ninguno: quieto
+	cp b			;71cc   ; los mismos que antes: sigue igual
 	jp z,L_71E8		;71cd
-	or b			;71d0
+	or b			;71d0   ; si se suma uno nuevo, manda el nuevo
 	cp b			;71d1
 	ld a,b			;71d2
 	jr nz,L_71D6		;71d3
 	xor c			;71d5
 L_71D6:
-	rra			;71d6
+	rra			;71d6   ; el primer bit pulsado da la direccion
 	ld b,001h		;71d7
 	jr c,L_71E4		;71d9
 	rra			;71db
@@ -2349,12 +2349,12 @@ L_71D6:
 	jr c,L_71E4		;71e1
 	inc b			;71e3
 L_71E4:
-	ld a,b			;71e4
+	ld a,b			;71e4   ; la direccion nueva
 	ld (0e3c6h),a		;71e5   ; guarda la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
 L_71E8:
-	call 05d80h		;71e8   ; en_el_borde: Z/C segun si el personaje esta en el borde de su direccion
+	call 05d80h		;71e8   ; en el borde: sale de la sala
 	jp z,sale_de_la_sala		;71eb   ; sale_de_la_sala: al borde: 0xE337 = 1 (o 2 en la sala 0x20E)
-	call 05d64h		;71ee   ; bloque_de_enfrente: A = el bloque que hay delante del personaje (0xE3C1 + p00:5DE7[0xE3C6])
+	call 05d64h		;71ee   ; el bloque de delante
 	ld a,(0e3c0h)		;71f1   ; lee el modo del personaje (tabla p01:718E)
 	or a			;71f4
 	ld a,(hl)			;71f5
@@ -2362,10 +2362,10 @@ L_71E8:
 	cp 003h		;71f8
 	jr z,L_7204		;71fa
 L_71FC:
-	cp 005h		;71fc
+	cp 005h		;71fc   ; 5: se puede pasar
 	jr z,L_7204		;71fe
-	or a			;7200
-	jp nz,fotograma_del_personaje		;7201   ; fotograma_del_personaje: 0xE3C3 = 2 * (direccion - 1) + el bit 4 de 0xE3C7 y sus sprites
+	or a			;7200   ; libre?
+	jp nz,fotograma_del_personaje		;7201   ; duro: solo se gira
 L_7204:
 	ld a,(0e3c0h)		;7204   ; lee el modo del personaje (tabla p01:718E)
 	or a			;7207
@@ -2374,12 +2374,12 @@ L_7204:
 	ld (0e48ah),a		;720d
 	ld (0e48bh),a		;7210
 L_7213:
-	ld a,b			;7213
+	ld a,b			;7213   ; la direccion del paso
 	ld (0e3c5h),a		;7214   ; guarda la direccion del paso en curso
 	ld b,002h		;7217
-	ld hl,(0e3c1h)		;7219   ; lee la Y del personaje y el byte siguiente (16 bits)
+	ld hl,(0e3c1h)		;7219   ; marca el bloque de destino
 	call 05dd3h		;721c   ; pon_bloque_de_enfrente: pone B en el bloque de delante
-	ld a,001h		;721f
+	ld a,001h		;721f   ; a medio camino
 	ld (0e3c4h),a		;7221   ; guarda el personaje va de un bloque a otro
 	ld a,(0e3c0h)		;7224   ; lee el modo del personaje (tabla p01:718E)
 	or a			;7227
@@ -2387,26 +2387,26 @@ L_7213:
 	ld (0e485h),a		;722a
 L_722D:
 	call fotograma_del_personaje		;722d   ; fotograma_del_personaje: 0xE3C3 = 2 * (direccion - 1) + el bit 4 de 0xE3C7 y sus sprites
-	ld a,(0e3c5h)		;7230   ; lee la direccion del paso en curso
+	ld a,(0e3c5h)		;7230   ; el paso de la direccion
 	add a,a			;7233
 	ld hl,07277h		;7234
 	ld d,000h		;7237
 	ld e,a			;7239
 	add hl,de			;723a
-	ld a,(0e3c1h)		;723b   ; lee la Y del personaje
+	ld a,(0e3c1h)		;723b   ; Y + paso
 	add a,(hl)			;723e
 	ld (0e3c1h),a		;723f   ; guarda la Y del personaje
 	inc hl			;7242
-	ld a,(0e3c2h)		;7243   ; lee la X del personaje
+	ld a,(0e3c2h)		;7243   ; X + paso
 	add a,(hl)			;7246
 	ld (0e3c2h),a		;7247   ; guarda la X del personaje
-	ld hl,0e3c1h		;724a   ; apunta a la Y del personaje
+	ld hl,0e3c1h		;724a   ; llega a un bloque entero?
 	or (hl)			;724d
 	and 00fh		;724e
 	jp nz,L_772A		;7250
-	ld (0e3c4h),a		;7253   ; guarda el personaje va de un bloque a otro
+	ld (0e3c4h),a		;7253   ; si: ya no esta a medio camino
 	ld (0e37ah),a		;7256   ; guarda acaba de entrar en la sala
-	ld a,(0e3c5h)		;7259   ; lee la direccion del paso en curso
+	ld a,(0e3c5h)		;7259   ; la direccion contraria
 	dec a			;725c
 	xor 001h		;725d
 	inc a			;725f
@@ -2419,7 +2419,7 @@ L_722D:
 	jr c,L_726F		;726b
 	ld b,003h		;726d
 L_726F:
-	ld a,c			;726f
+	ld a,c			;726f   ; libera el bloque que deja
 	ld hl,(0e3c1h)		;7270   ; lee la Y del personaje y el byte siguiente (16 bits)
 	call 05dd3h		;7273   ; pon_bloque_de_enfrente: pone B en el bloque de delante
 	jp L_772A		;7276
@@ -2450,7 +2450,7 @@ personaje_modo_2:		; modo 2: la entrada por arriba
 	jr c,L_729F		;729d
 L_729F:
 	ld a,001h		;729f
-	ld (0e3a9h),a		;72a1
+	ld (0e3a9h),a		;72a1   ; guarda un actor lleva al personaje (no hay menu)
 	ld hl,0a010h		;72a4
 	ld (0e3c1h),hl		;72a7   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	inc a			;72aa
@@ -2468,18 +2468,18 @@ personaje_baja:		; modo 3: baja 2 puntos por cuadro hasta la Y 0x60
 	ld (0e3c1h),a		;72c2   ; guarda la Y del personaje
 	sub 060h		;72c5
 	jp nz,L_772A		;72c7
-	ld (0e3a9h),a		;72ca
+	ld (0e3a9h),a		;72ca   ; guarda un actor lleva al personaje (no hay menu)
 	ld (0e3c0h),a		;72cd   ; guarda el modo del personaje (tabla p01:718E)
 	ld c,a			;72d0
 	inc a			;72d1
-	ld (0e3cch),a		;72d2
+	ld (0e3cch),a		;72d2   ; guarda el personaje flota (modo 10)
 	call 042a0h		;72d5   ; habla_con_1_2_3_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 3; vuelve con 1-2-3
 	call 0babah		;72d8   ; sonido_08: pide el sonido 8
 	ret			;72db
 personaje_modo_4:		; modo 4: a (0x50, 0x30) mirando arriba, modo 5
 	xor a			;72dc
-	ld (0e3cch),a		;72dd
-	ld (0e3c9h),a		;72e0
+	ld (0e3cch),a		;72dd   ; guarda el personaje flota (modo 10)
+	ld (0e3c9h),a		;72e0   ; guarda la cuenta de espera del personaje
 	ld b,a			;72e3
 	ld hl,(0e3c1h)		;72e4   ; lee la Y del personaje y el byte siguiente (16 bits)
 	call 05dd3h		;72e7   ; pon_bloque_de_enfrente: pone B en el bloque de delante
@@ -2517,16 +2517,16 @@ personaje_modo_6:		; modo 6: anda empujando (bloques 0x50-0x53)
 	jr nz,L_732C		;7329
 	xor c			;732b
 L_732C:
-	rra			;732c
-	ld b,001h		;732d
+	rra			;732c   ; el primer bit pulsado
+	ld b,001h		;732d   ; arriba
 	jr c,L_733A		;732f
 	rra			;7331
-	inc b			;7332
+	inc b			;7332   ; abajo
 	jr c,L_733A		;7333
 	rra			;7335
-	inc b			;7336
+	inc b			;7336   ; izquierda
 	jr c,L_733A		;7337
-	inc b			;7339
+	inc b			;7339   ; derecha
 L_733A:
 	ld a,b			;733a
 	ld (0e3c6h),a		;733b   ; guarda la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
@@ -2789,8 +2789,8 @@ personaje_modo_8:		; modo 8
 	ld hl,05020h		;74f4
 	ld (0e3c1h),hl		;74f7   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	xor a			;74fa
-	ld (0e3cch),a		;74fb
-	ld (0e3c9h),a		;74fe
+	ld (0e3cch),a		;74fb   ; guarda el personaje flota (modo 10)
+	ld (0e3c9h),a		;74fe   ; guarda la cuenta de espera del personaje
 	ld a,002h		;7501
 	ld (0e3c3h),a		;7503   ; guarda el fotograma del personaje
 	ld a,0c0h		;7506
@@ -2804,7 +2804,7 @@ personaje_modo_10:		; modo 10: empieza a flotar hacia el personaje
 	ld (0e3cfh),a		;7517
 	ld (0e3d1h),a		;751a
 	inc a			;751d
-	ld (0e3cch),a		;751e
+	ld (0e3cch),a		;751e   ; guarda el personaje flota (modo 10)
 	ld (0e3c6h),a		;7521   ; guarda la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
 	xor a			;7524
 	ld b,a			;7525
@@ -2876,7 +2876,7 @@ personaje_modo_12:		; modo 12: vuelve a andar
 	ld hl,0e3c0h		;759e   ; apunta a el modo del personaje (tabla p01:718E)
 	xor a			;75a1
 	ld (hl),a			;75a2
-	ld (0e3c9h),a		;75a3
+	ld (0e3c9h),a		;75a3   ; guarda la cuenta de espera del personaje
 	ld hl,0e0e0h		;75a6
 	ld (0f00ch),hl		;75a9
 	ld (0f00eh),hl		;75ac
@@ -2962,16 +2962,16 @@ L_7632:
 busca_salida:		; la primera direccion con un bloque 4 delante; acarreo si la hay
 	xor a			;7641
 L_7642:
-	inc a			;7642
-	cp 005h		;7643
+	inc a			;7642   ; la siguiente direccion
+	cp 005h		;7643   ; las cuatro
 	ret nc			;7645
 	ld hl,(0e3c1h)		;7646   ; lee la Y del personaje y el byte siguiente (16 bits)
 	call 05d6ah		;7649
-	ld a,(hl)			;764c
-	cp 004h		;764d
+	ld a,(hl)			;764c   ; el bloque en esa direccion
+	cp 004h		;764d   ; 4: una salida
 	ld a,b			;764f
 	jr nz,L_7642		;7650
-	scf			;7652
+	scf			;7652   ; la hay: acarreo
 	ret			;7653
 pegado_al_actor:		; la posicion del actor 0 mas la de p01:766F[direccion]
 	ld a,(0e40bh)		;7654
@@ -3013,7 +3013,7 @@ salida_especial:		; en la sala 0x18 o sin 0xEB5A bit 5: a los 16 cuadros sale de
 	ld a,(0e3c7h)		;768f   ; lee la cuenta de cuadros del personaje
 	and a			;7692
 	ret nz			;7693
-	call L_76BE		;7694
+	call cuenta_de_espera		;7694   ; cuenta_de_espera: 0xE3C9 + 1; Z al llegar a 16
 	ret nz			;7697
 	ld (0e340h),a		;7698   ; guarda en partida (bit 7: la demo acaba)
 	ld (0e338h),a		;769b   ; guarda la sala de partida (indice de p01:67E3)
@@ -3022,10 +3022,10 @@ L_769F:
 	ld a,(0e3c7h)		;769f   ; lee la cuenta de cuadros del personaje
 	and 01fh		;76a2
 	ret nz			;76a4
-	call L_76BE		;76a5
+	call cuenta_de_espera		;76a5   ; cuenta_de_espera: 0xE3C9 + 1; Z al llegar a 16
 	ret nz			;76a8
 	ld (0e340h),a		;76a9   ; guarda en partida (bit 7: la demo acaba)
-	ld (0e3c9h),a		;76ac
+	ld (0e3c9h),a		;76ac   ; guarda la cuenta de espera del personaje
 	inc a			;76af
 	ld (0e338h),a		;76b0   ; guarda la sala de partida (indice de p01:67E3)
 	ld a,008h		;76b3
@@ -3033,10 +3033,10 @@ L_769F:
 	ld hl,0eb64h		;76b8   ; apunta a las banderas de la historia, byte 0x24 (se graban con la partida)
 	set 7,(hl)		;76bb
 	ret			;76bd
-L_76BE:
-	ld a,(0e3c9h)		;76be
+cuenta_de_espera:		; 0xE3C9 + 1; Z al llegar a 16
+	ld a,(0e3c9h)		;76be   ; lee la cuenta de espera del personaje
 	inc a			;76c1
-	ld (0e3c9h),a		;76c2
+	ld (0e3c9h),a		;76c2   ; guarda la cuenta de espera del personaje
 	sub 010h		;76c5
 	or a			;76c7
 	ret			;76c8
@@ -3092,17 +3092,17 @@ sprites_del_personaje:		; los tres sprites del personaje en 0xF000
 	cp 006h		;7726
 	jr z,sprites_empujando		;7728
 L_772A:
-	and a			;772a
+	and a			;772a   ; la sala 0x22C
 	ld de,0022ch		;772b
 	ld hl,(0eb40h)		;772e   ; lee la sala
 	sbc hl,de		;7731
-	ld d,004h		;7733
+	ld d,004h		;7733   ; color 4 en la 0x22C
 	jr z,L_773E		;7735
-	dec hl			;7737
+	dec hl			;7737   ; y en la 0x22D
 	ld a,h			;7738
 	or l			;7739
 	jr z,L_773E		;773a
-	ld d,001h		;773c
+	ld d,001h		;773c   ; color 1 en las demas
 L_773E:
 	ld h,d			;773e
 	ld de,(0e3c1h)		;773f   ; lee la Y del personaje y el byte siguiente (16 bits)
@@ -3123,21 +3123,21 @@ L_773E:
 	ld (0f00ah),hl		;7765
 	ret			;7768
 sprites_fijos:		; cuatro sprites fijos en (0x14, 0x64)
-	ld de,06414h		;7769
+	ld de,06414h		;7769   ; Y 0x14, X 0x64
 	ld (0f000h),de		;776c   ; guarda los atributos de los 32 sprites y el byte siguiente (16 bits)
-	ld hl,001ach		;7770
+	ld hl,001ach		;7770   ; patron 0xAC, color 1
 	ld (0f002h),hl		;7773
 	ld (0f004h),de		;7776
-	ld hl,00bb0h		;777a
+	ld hl,00bb0h		;777a   ; patron 0xB0, color 0x0B
 	ld (0f006h),hl		;777d
 	ld a,d			;7780
-	add a,00ch		;7781
+	add a,00ch		;7781   ; 12 puntos a la derecha
 	ld d,a			;7783
 	ld (0f008h),de		;7784
-	ld hl,001b4h		;7788
+	ld hl,001b4h		;7788   ; patron 0xB4, color 1
 	ld (0f00ah),hl		;778b
 	ld (0f00ch),de		;778e
-	ld hl,00bb8h		;7792
+	ld hl,00bb8h		;7792   ; patron 0xB8, color 0x0B
 	ld (0f00eh),hl		;7795
 	ret			;7798
 sprites_empujando:		; los sprites del personaje empujando
@@ -3198,11 +3198,11 @@ DATA_saltos_77E1:
 L_77FB:
 	ret			;77fb
 L_77FC:
-	ld hl,0e3f9h		;77fc
+	ld hl,0e3f9h		;77fc   ; la cuenta de 0xE3F9
 	dec (hl)			;77ff
 	ret nz			;7800
-	dec hl			;7801
-	ld (hl),000h		;7802
+	dec hl			;7801   ; al acabar
+	ld (hl),000h		;7802   ; 0xE3F8 a cero
 	ret			;7804
 L_7805:
 	djnz L_7825		;7805
@@ -3215,7 +3215,7 @@ L_7805:
 	call 083ddh		;7814   ; accion_sprites_extra: dos sprites en 0xF020
 	ld hl,0eb65h		;7817   ; apunta a las banderas de la historia, byte 0x25 (se graban con la partida)
 	set 1,(hl)		;781a
-	ld ix,0ea00h		;781c
+	ld ix,0ea00h		;781c   ; apunta a el rival de la escena (objeto 0, 0x20 bytes)
 	ld c,011h		;7820
 	jp 042a6h		;7822   ; habla_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 9; vuelve con 1-2-3
 L_7825:
@@ -3370,9 +3370,9 @@ L_7971:
 	djnz L_79B0		;7971
 	ld a,(0e3e7h)		;7973   ; lee la X del personaje en la escena de accion
 	cp 008h		;7976
-	call z,L_799D		;7978
+	call z,rebota_en_los_bordes		;7978   ; rebota_en_los_bordes: invierte las dos velocidades, suena y cuenta un rebote (0xE3F1)
 	cp 0e8h		;797b
-	call z,L_799D		;797d
+	call z,rebota_en_los_bordes		;797d   ; rebota_en_los_bordes: invierte las dos velocidades, suena y cuenta un rebote (0xE3F1)
 	ld a,(0e3e5h)		;7980   ; lee la Y del personaje en la escena de accion
 	cp 060h		;7983
 	jr nz,L_7990		;7985
@@ -3385,7 +3385,7 @@ L_7990:
 	call 081eeh		;7994   ; accion_rebota_y: 0xE3EC = -0xE3EC
 	call 0bac9h		;7997   ; sonido_21: pide el sonido 0x21
 	jp 081d3h		;799a   ; accion_avanza: suma las dos velocidades (p02:81E2 y p02:81D6)
-L_799D:
+rebota_en_los_bordes:		; invierte las dos velocidades, suena y cuenta un rebote (0xE3F1)
 	call 081f8h		;799d   ; accion_rebota_x: 0xE3EE = -0xE3EE
 	call 081eeh		;79a0   ; accion_rebota_y: 0xE3EC = -0xE3EC
 	call 0bac9h		;79a3   ; sonido_21: pide el sonido 0x21
@@ -3605,7 +3605,7 @@ L_7B2D:
 	pop hl			;7b46
 L_7B47:
 	ld (hl),000h		;7b47
-	ld ix,0ea00h		;7b49
+	ld ix,0ea00h		;7b49   ; apunta a el rival de la escena (objeto 0, 0x20 bytes)
 	jp 042a6h		;7b4d   ; habla_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 9; vuelve con 1-2-3
 L_7B50:
 	xor a			;7b50
@@ -3629,7 +3629,7 @@ L_7B6A:
 	bit 6,a		;7b74
 	jp nz,L_7C50		;7b76
 L_7B79:
-	ld a,(0e008h)		;7b79   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;7b79   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 010h		;7b7c
 	jr z,L_7B87		;7b7e
 	push bc			;7b80
@@ -3640,59 +3640,59 @@ L_7B87:
 	djnz L_7BC8		;7b87
 	call 08202h		;7b89   ; accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
 	ld hl,01099h		;7b8c
-	ld (0e8f0h),hl		;7b8f
+	ld (0e8f0h),hl		;7b8f   ; guarda la variable de trabajo 0xE8F0 (16 bits) y el byte siguiente (16 bits)
 	ld hl,00180h		;7b92
-	ld (0e8f2h),hl		;7b95
+	ld (0e8f2h),hl		;7b95   ; guarda la variable de trabajo 0xE8F2 (16 bits) y el byte siguiente (16 bits)
 L_7B98:
-	ld a,(0e008h)		;7b98   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;7b98   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 001h		;7b9b
 	jr z,L_7BB8		;7b9d
 	ld a,0ffh		;7b9f
-	ld (0e3f5h),a		;7ba1
+	ld (0e3f5h),a		;7ba1   ; guarda el paso del salto en la escena (tabla p01:7C13)
 	ld a,(0e3f3h)		;7ba4   ; lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
 	and 00ch		;7ba7
-	ld (0e3f4h),a		;7ba9
+	ld (0e3f4h),a		;7ba9   ; guarda la direccion del salto en la escena
 	ld a,001h		;7bac
-	ld (0e3ebh),a		;7bae
+	ld (0e3ebh),a		;7bae   ; guarda la fase del salto en la escena (1 sube, 2 baja)
 	inc a			;7bb1
 	ld (0e3e1h),a		;7bb2   ; guarda el paso de la escena de la escena de accion
 	call 0baech		;7bb5   ; sonido_0a: pide el sonido 0x0A
 L_7BB8:
 	call 08214h		;7bb8   ; accion_direccion: 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
 	and 00ch		;7bbb
-	ld bc,(0e8f0h)		;7bbd
-	ld de,(0e8f2h)		;7bc1
+	ld bc,(0e8f0h)		;7bbd   ; lee la variable de trabajo 0xE8F0 (16 bits) y el byte siguiente (16 bits)
+	ld de,(0e8f2h)		;7bc1   ; lee la variable de trabajo 0xE8F2 (16 bits) y el byte siguiente (16 bits)
 	jp 08254h		;7bc5   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
 L_7BC8:
 	djnz $+109		;7bc8
 	call 08202h		;7bca   ; accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
-	ld a,(0e3f4h)		;7bcd
+	ld a,(0e3f4h)		;7bcd   ; lee la direccion del salto en la escena
 	and 00ch		;7bd0
 	ld bc,01099h		;7bd2
 	ld de,00180h		;7bd5
 	call 08254h		;7bd8   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
-	ld a,(0e3ebh)		;7bdb
+	ld a,(0e3ebh)		;7bdb   ; lee la fase del salto en la escena (1 sube, 2 baja)
 	dec a			;7bde
 	jr nz,L_7BF0		;7bdf
-	ld hl,0e3f5h		;7be1
+	ld hl,0e3f5h		;7be1   ; apunta a el paso del salto en la escena (tabla p01:7C13)
 	inc (hl)			;7be4
 	ld a,(hl)			;7be5
 	cp 011h		;7be6
 	jr nz,L_7C06		;7be8
 	dec (hl)			;7bea
-	ld hl,0e3ebh		;7beb
+	ld hl,0e3ebh		;7beb   ; apunta a la fase del salto en la escena (1 sube, 2 baja)
 	inc (hl)			;7bee
 	ret			;7bef
 L_7BF0:
-	ld hl,0e3f5h		;7bf0
+	ld hl,0e3f5h		;7bf0   ; apunta a el paso del salto en la escena (tabla p01:7C13)
 	inc (hl)			;7bf3
 	ld a,(hl)			;7bf4
 	cp 022h		;7bf5
 	jr nz,L_7C06		;7bf7
 	xor a			;7bf9
 	ld (hl),a			;7bfa
-	ld (0e3ebh),a		;7bfb
-	ld (0e3f4h),a		;7bfe
+	ld (0e3ebh),a		;7bfb   ; guarda la fase del salto en la escena (1 sube, 2 baja)
+	ld (0e3f4h),a		;7bfe   ; guarda la direccion del salto en la escena
 	inc a			;7c01
 	ld (0e3e1h),a		;7c02   ; guarda el paso de la escena de la escena de accion
 	ret			;7c05
@@ -3724,7 +3724,7 @@ L_7C35:
 	ld a,014h		;7c35
 	ld (0e3f6h),a		;7c37   ; guarda la vida en la escena de accion
 	ld a,001h		;7c3a
-	ld (0e3fch),a		;7c3c
+	ld (0e3fch),a		;7c3c   ; guarda los choques de la escena estan en marcha
 	ld a,004h		;7c3f
 	ld (0e3e3h),a		;7c41   ; guarda hacia donde mira en la escena de accion (1-4)
 	ld hl,0e3e5h		;7c44   ; apunta a la Y del personaje en la escena de accion
@@ -3794,7 +3794,7 @@ L_7CBA:
 	ld (0e3ech),hl		;7cc5   ; guarda la velocidad Y en la escena de accion y el byte siguiente (16 bits)
 	jp 081ceh		;7cc8   ; accion_siguiente_paso: 0xE3E1 + 1
 L_7CCB:
-	ld a,(0e008h)		;7ccb   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;7ccb   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 010h		;7cce
 	jr z,L_7CD9		;7cd0
 	push bc			;7cd2
@@ -3805,39 +3805,39 @@ L_7CD9:
 	djnz L_7CED		;7cd9
 	call 08202h		;7cdb   ; accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
 	ld hl,010e1h		;7cde
-	ld (0e8f0h),hl		;7ce1
+	ld (0e8f0h),hl		;7ce1   ; guarda la variable de trabajo 0xE8F0 (16 bits) y el byte siguiente (16 bits)
 	ld hl,00300h		;7ce4
-	ld (0e8f2h),hl		;7ce7
+	ld (0e8f2h),hl		;7ce7   ; guarda la variable de trabajo 0xE8F2 (16 bits) y el byte siguiente (16 bits)
 	jp L_7B98		;7cea
 L_7CED:
 	djnz $+93		;7ced
 	call 08202h		;7cef   ; accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
-	ld a,(0e3f4h)		;7cf2
+	ld a,(0e3f4h)		;7cf2   ; lee la direccion del salto en la escena
 	ld bc,010e1h		;7cf5
 	ld de,00300h		;7cf8
 	call 08254h		;7cfb   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
-	ld a,(0e3ebh)		;7cfe
+	ld a,(0e3ebh)		;7cfe   ; lee la fase del salto en la escena (1 sube, 2 baja)
 	dec a			;7d01
 	jr nz,L_7D13		;7d02
-	ld hl,0e3f5h		;7d04
+	ld hl,0e3f5h		;7d04   ; apunta a el paso del salto en la escena (tabla p01:7C13)
 	inc (hl)			;7d07
 	ld a,(hl)			;7d08
 	cp 00ah		;7d09
 	jr nz,L_7D29		;7d0b
 	dec (hl)			;7d0d
-	ld hl,0e3ebh		;7d0e
+	ld hl,0e3ebh		;7d0e   ; apunta a la fase del salto en la escena (1 sube, 2 baja)
 	inc (hl)			;7d11
 	ret			;7d12
 L_7D13:
-	ld hl,0e3f5h		;7d13
+	ld hl,0e3f5h		;7d13   ; apunta a el paso del salto en la escena (tabla p01:7C13)
 	inc (hl)			;7d16
 	ld a,(hl)			;7d17
 	cp 014h		;7d18
 	jr nz,L_7D29		;7d1a
 	xor a			;7d1c
 	ld (hl),a			;7d1d
-	ld (0e3ebh),a		;7d1e
-	ld (0e3f4h),a		;7d21
+	ld (0e3ebh),a		;7d1e   ; guarda la fase del salto en la escena (1 sube, 2 baja)
+	ld (0e3f4h),a		;7d21   ; guarda la direccion del salto en la escena
 	inc a			;7d24
 	ld (0e3e1h),a		;7d25   ; guarda el paso de la escena de la escena de accion
 	ret			;7d28
@@ -3867,7 +3867,7 @@ DATA_resto_7D36:
 L_7D4A:
 	ld a,001h		;7d4a
 	ld (0e3e3h),a		;7d4c   ; guarda hacia donde mira en la escena de accion (1-4)
-	ld (0e3fch),a		;7d4f
+	ld (0e3fch),a		;7d4f   ; guarda los choques de la escena estan en marcha
 	ld a,014h		;7d52
 	ld (0e3f6h),a		;7d54   ; guarda la vida en la escena de accion
 	ld hl,0e3e5h		;7d57   ; apunta a la Y del personaje en la escena de accion
@@ -3890,30 +3890,30 @@ L_7D72:
 	ld (0e3eah),a		;7d74
 	jp 081ceh		;7d77   ; accion_siguiente_paso: 0xE3E1 + 1
 L_7D7A:
-	call L_7D80		;7d7a
+	call escena_9_pasos		;7d7a   ; escena_9_pasos: los pasos de la escena 9 segun B
 	jp 0840ch		;7d7d   ; accion_sprites_arriba: tres sprites en la Y 0xA0 alrededor de la X del personaje
-L_7D80:
+escena_9_pasos:		; los pasos de la escena 9 segun B
 	djnz L_7DBE		;7d80
 	call 08202h		;7d82   ; accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
 	ret z			;7d85
 	ld a,(0e400h)		;7d86   ; lee los 8 actores de la sala (0x80 bytes cada uno)
 	or a			;7d89
 	jr z,L_7D98		;7d8a
-	ld a,(0e3a6h)		;7d8c
+	ld a,(0e3a6h)		;7d8c   ; lee la cuenta de lanzamientos de la escena
 	or a			;7d8f
 	jr nz,L_7D98		;7d90
 	ld a,002h		;7d92
-	ld (0ea01h),a		;7d94
+	ld (0ea01h),a		;7d94   ; guarda el paso del rival
 	ret			;7d97
 L_7D98:
-	ld a,(0e3a8h)		;7d98
+	ld a,(0e3a8h)		;7d98   ; lee las bolas que quedan en la escena
 	or a			;7d9b
 	jp z,L_7E52		;7d9c
 	cp 082h		;7d9f
 	jr nz,L_7DAD		;7da1
 	ld c,003h		;7da3
 	call 0b525h		;7da5   ; crea_proyectil: en el primer hueco de 0xEC30 (3 de 16 bytes) un proyectil de clase C delante del personaje (p03:B56E)
-	ld hl,0e3a8h		;7da8
+	ld hl,0e3a8h		;7da8   ; apunta a las bolas que quedan en la escena
 	ld (hl),002h		;7dab
 L_7DAD:
 	call 08214h		;7dad   ; accion_direccion: 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
@@ -3927,7 +3927,7 @@ L_7DBE:
 	ld (0e3f6h),a		;7dc0   ; guarda la vida en la escena de accion
 	call 0b5dah		;7dc3   ; borra_proyectiles: los 3 proyectiles de 0xEC30 a cero
 	xor a			;7dc6
-	ld (0e3a6h),a		;7dc7
+	ld (0e3a6h),a		;7dc7   ; guarda la cuenta de lanzamientos de la escena
 	ld (0e3aah),a		;7dca
 	ld (0e3fah),a		;7dcd
 	ld (0e3fbh),a		;7dd0
@@ -3952,38 +3952,38 @@ L_7DBE:
 	ld de,0e44fh		;7dfe
 	ld b,005h		;7e01
 L_7E03:
-	push bc			;7e03
+	push bc			;7e03   ; 9 bytes con 2
 	ld bc,00009h		;7e04
 	ld (hl),002h		;7e07
 	ldir		;7e09
 	pop bc			;7e0b
-	ld a,017h		;7e0c
+	ld a,017h		;7e0c   ; cada 0x17 bytes
 	call 040a1h		;7e0e   ; hl_mas_a: HL = HL + A
 	ld d,h			;7e11
 	ld e,l			;7e12
 	inc de			;7e13
 	djnz L_7E03		;7e14
-	ld hl,0e4f1h		;7e16
+	ld hl,0e4f1h		;7e16   ; tres filas mas
 	ld de,0e4f2h		;7e19
 	ld b,003h		;7e1c
 L_7E1E:
-	push bc			;7e1e
+	push bc			;7e1e   ; 3 bytes con 0x82
 	ld (hl),082h		;7e1f
 	ld bc,00003h		;7e21
 	ldir		;7e24
 	pop bc			;7e26
-	ld a,01dh		;7e27
+	ld a,01dh		;7e27   ; cada 0x1D bytes
 	call 040a1h		;7e29   ; hl_mas_a: HL = HL + A
 	ld d,h			;7e2c
 	ld e,l			;7e2d
 	inc de			;7e2e
 	djnz L_7E1E		;7e2f
-	ld hl,0e4d0h		;7e31
+	ld hl,0e4d0h		;7e31   ; seis con 0x82 en 0xE4D0
 	ld de,0e4d1h		;7e34
 	ld (hl),082h		;7e37
 	ld bc,00005h		;7e39
 	ldir		;7e3c
-	ld a,084h		;7e3e
+	ld a,084h		;7e3e   ; y unos sueltos con 0x84, 0x42 y 0x22
 	ld hl,0e4f0h		;7e40
 	ld (hl),a			;7e43
 	ld hl,0e4f5h		;7e44
@@ -3998,7 +3998,7 @@ L_7E52:
 	inc a			;7e56
 	ld c,003h		;7e57
 	ld (0e3e3h),a		;7e59   ; guarda hacia donde mira en la escena de accion (1-4)
-	ld (0e3a8h),a		;7e5c
+	ld (0e3a8h),a		;7e5c   ; guarda las bolas que quedan en la escena
 	jp 0b525h		;7e5f   ; crea_proyectil: en el primer hueco de 0xEC30 (3 de 16 bytes) un proyectil de clase C delante del personaje (p03:B56E)
 L_7E62:
 	push bc			;7e62
@@ -4026,7 +4026,7 @@ L_7E86:
 	ld (hl),000h		;7e96
 	ldir		;7e98
 	ld c,005h		;7e9a
-	ld hl,0ec30h		;7e9c
+	ld hl,0ec30h		;7e9c   ; apunta a los 3 proyectiles (16 bytes cada uno)
 	call 0b535h		;7e9f
 L_7EA2:
 	pop ix		;7ea2
@@ -4047,7 +4047,7 @@ L_7EBD:
 	ld a,014h		;7ec2
 	ld (0e3f6h),a		;7ec4   ; guarda la vida en la escena de accion
 	ld a,001h		;7ec7
-	ld (0e3fch),a		;7ec9
+	ld (0e3fch),a		;7ec9   ; guarda los choques de la escena estan en marcha
 	ld hl,0e3e5h		;7ecc   ; apunta a la Y del personaje en la escena de accion
 	ld (hl),028h		;7ecf
 	inc l			;7ed1
@@ -4055,7 +4055,7 @@ L_7EBD:
 	ld (hl),0e0h		;7ed3
 	jp 081ceh		;7ed5   ; accion_siguiente_paso: 0xE3E1 + 1
 L_7ED8:
-	ld a,(0e3ebh)		;7ed8
+	ld a,(0e3ebh)		;7ed8   ; lee la fase del salto en la escena (1 sube, 2 baja)
 	or a			;7edb
 	jr nz,L_7F0A		;7edc
 	push bc			;7ede
@@ -4078,7 +4078,7 @@ L_7EF8:
 	ld a,e			;7ef8
 	ld (0e3e3h),a		;7ef9   ; guarda hacia donde mira en la escena de accion (1-4)
 L_7EFC:
-	ld a,(0e008h)		;7efc   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;7efc   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 010h		;7eff
 	jr z,L_7F0A		;7f01
 	push bc			;7f03
@@ -4088,18 +4088,18 @@ L_7EFC:
 L_7F0A:
 	djnz L_7F6A		;7f0a
 	call 08202h		;7f0c   ; accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
-	ld a,(0e008h)		;7f0f   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;7f0f   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 020h		;7f12
 	jr z,L_7F33		;7f14
 	xor a			;7f16
-	ld (0e3fch),a		;7f17
+	ld (0e3fch),a		;7f17   ; guarda los choques de la escena estan en marcha
 	ld a,0ffh		;7f1a
-	ld (0e3f5h),a		;7f1c
+	ld (0e3f5h),a		;7f1c   ; guarda el paso del salto en la escena (tabla p01:7C13)
 	ld a,(0e3f3h)		;7f1f   ; lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
 	and 00ch		;7f22
-	ld (0e3f4h),a		;7f24
+	ld (0e3f4h),a		;7f24   ; guarda la direccion del salto en la escena
 	ld a,001h		;7f27
-	ld (0e3ebh),a		;7f29
+	ld (0e3ebh),a		;7f29   ; guarda la fase del salto en la escena (1 sube, 2 baja)
 	inc a			;7f2c
 	ld (0e3e1h),a		;7f2d   ; guarda el paso de la escena de la escena de accion
 	call 0baech		;7f30   ; sonido_0a: pide el sonido 0x0A
@@ -4119,7 +4119,7 @@ L_7F40:
 	ld bc,020d1h		;7f48
 	ld de,00200h		;7f4b
 	jp 08254h		;7f4e   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
-L_7F51:
+no_hace_nada:		; `ret`
 	ret			;7f51
 L_7F52:
 	ld a,(0e3e7h)		;7f52   ; lee la X del personaje en la escena de accion
@@ -4138,32 +4138,32 @@ L_7F5E:
 L_7F6A:
 	djnz L_7FA7		;7f6a
 	call 08202h		;7f6c   ; accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
-	ld a,(0e3f4h)		;7f6f
-	call L_7F51		;7f72
-	ld a,(0e3ebh)		;7f75
+	ld a,(0e3f4h)		;7f6f   ; lee la direccion del salto en la escena
+	call no_hace_nada		;7f72   ; no_hace_nada: `ret`
+	ld a,(0e3ebh)		;7f75   ; lee la fase del salto en la escena (1 sube, 2 baja)
 	dec a			;7f78
 	jr nz,L_7F8B		;7f79
-	ld hl,0e3f5h		;7f7b
+	ld hl,0e3f5h		;7f7b   ; apunta a el paso del salto en la escena (tabla p01:7C13)
 	inc (hl)			;7f7e
 	ld a,(hl)			;7f7f
 	cp 00ah		;7f80
 	jp nz,L_7D29		;7f82
 	dec (hl)			;7f85
-	ld hl,0e3ebh		;7f86
+	ld hl,0e3ebh		;7f86   ; apunta a la fase del salto en la escena (1 sube, 2 baja)
 	inc (hl)			;7f89
 	ret			;7f8a
 L_7F8B:
 	ld a,001h		;7f8b
-	ld (0e3fch),a		;7f8d
-	ld hl,0e3f5h		;7f90
+	ld (0e3fch),a		;7f8d   ; guarda los choques de la escena estan en marcha
+	ld hl,0e3f5h		;7f90   ; apunta a el paso del salto en la escena (tabla p01:7C13)
 	inc (hl)			;7f93
 	ld a,(hl)			;7f94
 	cp 014h		;7f95
 	jp nz,L_7D29		;7f97
 	xor a			;7f9a
 	ld (hl),a			;7f9b
-	ld (0e3ebh),a		;7f9c
-	ld (0e3f4h),a		;7f9f
+	ld (0e3ebh),a		;7f9c   ; guarda la fase del salto en la escena (1 sube, 2 baja)
+	ld (0e3f4h),a		;7f9f   ; guarda la direccion del salto en la escena
 	inc a			;7fa2
 	ld (0e3e1h),a		;7fa3   ; guarda el paso de la escena de la escena de accion
 	ret			;7fa6
@@ -4173,7 +4173,7 @@ L_7FA7:
 	ld a,002h		;7fac
 	ld (0e3e3h),a		;7fae   ; guarda hacia donde mira en la escena de accion (1-4)
 	ld a,001h		;7fb1
-	ld (0e3fch),a		;7fb3
+	ld (0e3fch),a		;7fb3   ; guarda los choques de la escena estan en marcha
 	ld hl,0e3e5h		;7fb6   ; apunta a la Y del personaje en la escena de accion
 	ld (hl),008h		;7fb9
 	inc l			;7fbb
@@ -4192,7 +4192,7 @@ L_7FC2:
 	ld (hl),a			;7fd1
 	ret			;7fd2
 L_7FD3:
-	ld a,(0e008h)		;7fd3   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;7fd3   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 010h		;7fd6
 	jr z,L_7FE1		;7fd8
 	push bc			;7fda
@@ -4203,14 +4203,14 @@ L_7FE1:
 	djnz $+65		;7fe1
 	call 08202h		;7fe3   ; accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
 	ld hl,010a9h		;7fe6
-	ld (0e8f0h),hl		;7fe9
+	ld (0e8f0h),hl		;7fe9   ; guarda la variable de trabajo 0xE8F0 (16 bits) y el byte siguiente (16 bits)
 	ld hl,00180h		;7fec
-	ld (0e8f2h),hl		;7fef
-	ld a,(0e008h)		;7ff2   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld (0e8f2h),hl		;7fef   ; guarda la variable de trabajo 0xE8F2 (16 bits) y el byte siguiente (16 bits)
+	ld a,(0e008h)		;7ff2   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 001h		;7ff5
 	jr z,$+27		;7ff7
 	ld a,0ffh		;7ff9
-	ld (0e3f5h),a		;7ffb
+	ld (0e3f5h),a		;7ffb   ; guarda el paso del salto en la escena (tabla p01:7C13)
 
 ; ----------------------------------------------------------------------
 ; DATOS partida_7FFE: los dos primeros bytes de `ld a,(0xE3F3)` (3A F3 E3),

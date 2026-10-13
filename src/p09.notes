@@ -1,5 +1,27 @@
 # Notas del banco 09
 
+# --- A MANO: comentarios, nombres y bloques ---
+C 0x610B el color
+C 0x610D 0xFF: acaba
+C 0x6113 C = la mascara de la bandera
+C 0x6115 DE = la bandera de la historia
+C 0x6119 esta puesta?
+C 0x611D la posicion: Y en el nibble alto
+C 0x6121 y X en el bajo, por 16
+C 0x612A el dibujo
+C 0x6137 no: el siguiente
+C 0x6277 la posicion: Y en el nibble alto
+C 0x627B y X en el bajo, por 16
+C 0x6284 el dibujo
+C 0x628B a la pantalla
+C 0x6BDC la columna en la RAM
+C 0x6BDF 10 casillas vacias
+C 0x6BE9 la vida del rival
+C 0x6BF2 casillas llenas
+C 0x6D98 la marca
+C 0x6D9A alguna a cero: Z
+C 0x6D9E todas puestas: NZ
+
 # --- BLOQUES QUE LEE EL CODIGO (seccion que reescribe tools/bloques.py; no editar a mano) ---
 D 0x607C 0x6085 resto_607C  lo apuntan con el banco puesto p09:6072 (0x607C); el tamano es lo que hay hasta lo siguiente, no sale de recorrerlo; lo leen p09:6072 (9 bytes)
 F 0x607C 16
@@ -440,17 +462,28 @@ C 0x6079 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29
 C 0x6089 palabra_de_tabla: DE = la palabra A de la tabla DE
 C 0x6099 palabra_de_tabla: DE = la palabra A de la tabla DE
 C 0x60CC lee la sala
+C 0x60D6 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0x60EE lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0x60F3 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0x60FA apunta a el color de las fichas copiadas
+C 0x60FF lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0x610F guarda el color de las fichas copiadas
+C 0x6131 copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 C 0x622B lee la sala
+C 0x6235 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0x624D lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
+C 0x6252 guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0x6259 apunta a el color de las fichas copiadas
+C 0x625E lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 C 0x6271 guarda el color de las fichas copiadas
 C 0x6B35 vida_a_barra: 0xE3B3 = la vida 0xE3F6 / 2
 C 0x6B38 lee la escena de accion (1-9)
 C 0x6B3C despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0x6B51 lee la escena de accion (1-9)
 C 0x6B61 columna_en_vram: B veces C en la VRAM HL, subiendo una fila cada vez
+C 0x6B67 lee la vida en casillas (vida / 2)
 C 0x6B83 columna_en_ram: B veces C en HL, subiendo una fila cada vez
+C 0x6B89 lee la vida en casillas (vida / 2)
 C 0x6B9F mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
 C 0x6BAB columna_en_vram: B veces C en la VRAM HL, subiendo una fila cada vez
 C 0x6BAF lee la vida en la escena de accion
@@ -463,6 +496,8 @@ C 0x6BFD columna_en_vram: B veces C en la VRAM HL, subiendo una fila cada vez
 C 0x6C03 lee la escena de accion (1-9)
 C 0x6C17 columna_en_vram: B veces C en la VRAM HL, subiendo una fila cada vez
 C 0x6C1A lee la vida en la escena de accion
+C 0x6C1F guarda la vida en casillas (vida / 2)
+C 0x6C23 lee el paso de la escena (inicial, historia, final)
 C 0x6C26 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0x6C6D esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
 C 0x6C70 borra_patrones: 0x1000 de patrones y de colores a cero
@@ -472,7 +507,8 @@ C 0x6C7E borra_nombres: borra los nombres 0xED00 (0x300) y los vuelca
 C 0x6C84 a_dibujo_en_el_mapa: con 4-5-6, p04:693B (un dibujo [posicion][ancho][alto] y sus fichas a 0xED00); vuelve con 9-10-11
 C 0x6C87 a_marco_de_la_escena_y_9_10_11: con 4-5-6, p04:631F (los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818); vuelve con 1-2-3; vuelve con 9-10-11
 C 0x6C8A a_fuente_y_9_10_11: con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3; vuelve con 9-10-11
-C 0x6C8E guarda el paso de la pantalla de nombres
+C 0x6C8E guarda el paso de la pantalla de nombres, o la pagina de la historia
+C 0x6C91 guarda la cuenta de la escena (parpadeo, paso de las particulas)
 C 0x6C94 guarda el paso del texto (0 prepara, 1 escribe)
 C 0x6C97 apunta a el paso del menu (tabla p00:5231)
 C 0x6C9A apunta a el menu tiene dos columnas
@@ -491,7 +527,7 @@ C 0x6CD5 particulas_del_final: un paso de las 16 particulas de 0xE400 (0xE352, t
 C 0x6CDB guarda la lista del efecto
 C 0x6CE0 guarda la mascara del efecto
 C 0x6CE5 guarda el efecto en marcha
-C 0x6CE8 apunta a el paso de la pantalla de nombres
+C 0x6CE8 apunta a el paso de la pantalla de nombres, o la pagina de la historia
 C 0x6CEC sonido_2b: pide el sonido 0x2B
 C 0x6CF3 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
 C 0x6CF6 lee el texto en marcha
@@ -500,6 +536,8 @@ C 0x6D01 guarda la espera del estado, en cuadros
 C 0x6D06 borra_patrones: 0x1000 de patrones y de colores a cero
 C 0x6D09 pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
 C 0x6D0C borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x6D13 guarda la cuenta de la escena (parpadeo, paso de las particulas) y el byte siguiente (16 bits)
+C 0x6D16 guarda el signo de la Y del rumbo, o la casilla del nombre
 C 0x6D19 a_fuente_y_9_10_11: con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3; vuelve con 9-10-11
 C 0x6D1C graficos_04_a: patrones p04:7FFC a 0x2400 y 0x200 colores de p05:8EA9
 C 0x6D25 rle: RLE de DE a la VRAM HL
@@ -515,11 +553,13 @@ C 0x6D63 pinta_opciones: las opciones de 0xE8B8 (textos p04:7A15) en columna des
 C 0x6D66 pinta_cursor: el cursor parpadeante en la columna de opciones
 C 0x6D6F cursor_vertical: arriba/abajo con repeticion (0xE8B0) en 0xE8A4
 C 0x6D72 pinta_cursor: el cursor parpadeante en la columna de opciones
-C 0x6D75 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x6D75 lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
+C 0x6D7B lee el paso de la escena (inicial, historia, final)
 C 0x6D82 tres_respuestas: Z si alguna de 0xE352-0xE354 esta a cero
 C 0x6D87 lee la opcion del cursor
 C 0x6D8B final_siguiente: 0xE350 + 1
 C 0x6D8E borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6D95 apunta a la cuenta de la escena (parpadeo, paso de las particulas)
 C 0x6DA7 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
 C 0x6DAA lee el texto en marcha
 C 0x6DAF lee la espera del texto (1 tecla, 2 tecla y fin)
@@ -530,9 +570,12 @@ C 0x6DD0 palabra_de_tabla: DE = la palabra A de la tabla DE
 C 0x6DD5 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
 C 0x6DD9 lee el texto en marcha
 C 0x6DDE lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x6DE3 lee el paso de la escena (inicial, historia, final)
 C 0x6DE8 dibujo_de_la_opcion_2: con la opcion 2, el dibujo 0x11 (p00:486F, p00:4468)
 C 0x6DEC marca_respuesta: pone a 1 la de 0xE352 que corresponde a la opcion
+C 0x6DF1 guarda el paso de la escena (inicial, historia, final)
 C 0x6DF5 lee la opcion del cursor
+C 0x6DF8 apunta a la cuenta de la escena (parpadeo, paso de las particulas)
 C 0x6DFB hl_mas_a: HL = HL + A
 C 0x6E01 lee la opcion del cursor
 C 0x6E0A guarda el dibujo de p12:733E que se ve (0: ninguno)
@@ -553,7 +596,7 @@ C 0x6E5B vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 C 0x6E5E a_fuente_y_9_10_11: con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3; vuelve con 9-10-11
 C 0x6E64 cursor_vertical: arriba/abajo con repeticion (0xE8B0) en 0xE8A4
 C 0x6E67 pinta_cursor: el cursor parpadeante en la columna de opciones
-C 0x6E6A lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x6E6A lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 C 0x6E70 lee la opcion del cursor
 C 0x6E76 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 C 0x6E79 graficos_04_b: patrones p04:7CB8 a 0x2A00 y 0x200 colores de p05:8CA9
@@ -564,6 +607,7 @@ C 0x6E8D final_siguiente: 0xE350 + 1
 C 0x6EA4 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
 C 0x6EA7 lee el texto en marcha
 C 0x6EAC lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x6EB1 lee el paso de la escena (inicial, historia, final)
 C 0x6EB8 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 C 0x6EBB graficos_del_final: los RLE p10:877B y p10:8AA7 en 0x2A00 y 0x0A00
 C 0x6EC1 a_dibujo_en_el_mapa: con 4-5-6, p04:693B (un dibujo [posicion][ancho][alto] y sus fichas a 0xED00); vuelve con 9-10-11
@@ -571,6 +615,7 @@ C 0x6EC4 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 C 0x6ECB texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
 C 0x6ECE lee el texto en marcha
 C 0x6ED3 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x6ED8 apunta a el paso de la escena (inicial, historia, final)
 C 0x6EDE borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 C 0x6EE1 graficos_del_final: los RLE p10:877B y p10:8AA7 en 0x2A00 y 0x0A00
 C 0x6EE7 a_dibujo_en_el_mapa: con 4-5-6, p04:693B (un dibujo [posicion][ancho][alto] y sus fichas a 0xED00); vuelve con 9-10-11
@@ -591,16 +636,16 @@ C 0x6F36 a_dibujo_en_el_mapa: con 4-5-6, p04:693B (un dibujo [posicion][ancho][a
 C 0x6F39 vuelca_nombres: 0x300 de 0xED00 a 0x3800
 C 0x6F3C sprites_06: patrones de sprite p06:BE8A a 0x1800
 C 0x6F42 apunta a los atributos de los 32 sprites
-C 0x6F4C guarda el paso de la pantalla de nombres
+C 0x6F4C guarda el paso de la pantalla de nombres, o la pagina de la historia
 C 0x6F51 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
 C 0x6F95 rle: RLE de DE a la VRAM HL
 C 0x6F9B hl_mas_a: HL = HL + A
-C 0x6FBE lee el paso de la pantalla de nombres
+C 0x6FBE lee el paso de la pantalla de nombres, o la pagina de la historia
 C 0x6FC2 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
 C 0x6FC5 lee el texto en marcha
 C 0x6FCA lee la espera del texto (1 tecla, 2 tecla y fin)
-C 0x6FCF lee el paso de la pantalla de nombres
-C 0x6FD8 guarda el paso de la pantalla de nombres
+C 0x6FCF lee el paso de la pantalla de nombres, o la pagina de la historia
+C 0x6FD8 guarda el paso de la pantalla de nombres, o la pagina de la historia
 C 0x6FDC pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
 C 0x6FDF borra_patrones: 0x1000 de patrones y de colores a cero
 C 0x6FE2 borra_nombres: borra los nombres 0xED00 (0x300) y los vuelca
@@ -616,21 +661,30 @@ C 0x7019 apunta a los atributos de los 32 sprites
 C 0x7023 lee la cuenta de cuadros
 C 0x7029 color_de_cuatro_sprites: el color de p09:7050[0xE348] en los cuatro primeros sprites
 C 0x702C apunta a el paso del efecto de aparecer/borrar
+C 0x7034 apunta a el paso de la escena (inicial, historia, final)
 C 0x7039 lee el paso del efecto de aparecer/borrar
 C 0x703F hl_mas_a: HL = HL + A
-C 0x7053 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x7053 lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 C 0x7058 sonido_85: pide el sonido 0x85
 C 0x705B apunta a las banderas del juego (bit 6: suenan los efectos)
 C 0x7063 guarda se acaba la partida
 C 0x7066 guarda el estado del juego
 C 0x7069 guarda el paso del estado
+C 0x706E guarda las particulas se alejan del personaje
+C 0x7071 lee la cuenta de la escena (parpadeo, paso de las particulas)
 C 0x7074 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0x7088 copia_a_vram: LDIRVM de DE a la VRAM HL
 C 0x708E apunta a los 8 actores de la sala (0x80 bytes cada uno)
+C 0x7097 guarda la vida de las particulas, en cuadros
 C 0x709B guarda si la particula esta viva
 C 0x709E guarda el patron de la particula
 C 0x70A1 guarda la Y de la particula
+C 0x70AA guarda la cuenta de la escena (parpadeo, paso de las particulas)
+C 0x710E lee la vida de las particulas, en cuadros
+C 0x7112 guarda la vida de las particulas, en cuadros
+C 0x7117 apunta a la cuenta de la escena (parpadeo, paso de las particulas)
 C 0x711E apunta a la cuenta de cuadros
+C 0x7129 lee las particulas se alejan del personaje
 C 0x7130 despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0x713B despacha: salta a la palabra A de la tabla pegada detras del `call`
 C 0x7146 x_al_azar_del_final: H = una X al azar de p09:72CD
@@ -644,9 +698,13 @@ C 0x7177 y_al_azar_del_final_b: L = una Y al azar de p09:72DD
 C 0x717C particula_libre_del_final: IX = la primera particula escondida; Z si la hay
 C 0x7181 guarda la Y de la particula
 C 0x7184 guarda la X de la particula
+C 0x7187 lee la cuenta de la escena (parpadeo, paso de las particulas)
+C 0x718F lee la vida de las particulas, en cuadros
 C 0x7198 si la particula esta viva = 0x01
 C 0x719C el patron de la particula = 0x08
+C 0x71A0 lee la vida de las particulas, en cuadros
 C 0x71AA a_rumbo_desde_ix_y_9_10_11: con 1-2-3, p01:6312 (el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A); vuelve con 4-5-6; vuelve con 9-10-11
+C 0x71AD lee las particulas se alejan del personaje
 C 0x71B3 hl_negativo: HL = -HL
 C 0x71B6 de_negativo: DE = -DE
 C 0x71B9 guarda la velocidad Y de la particula
@@ -679,6 +737,7 @@ C 0x7245 apunta a los atributos de los 32 sprites
 C 0x724B lee la Y de la particula
 C 0x7250 lee la X de la particula
 C 0x7255 lee el patron de la particula
+C 0x7273 apunta a el paso de la escena (inicial, historia, final)
 C 0x728B compara con la Y de la particula
 C 0x7292 apunta a la cuenta de cuadros
 C 0x729B hl_mas_a: HL = HL + A

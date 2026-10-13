@@ -115,8 +115,8 @@ DATA_resto_A000:
 
 particulas:		; un paso de las 16 particulas de 0xE400 (0xE352, tabla p06:A5C2)
 	xor a			;a5b8
-	ld (0e35bh),a		;a5b9
-	ld a,(0e352h)		;a5bc
+	ld (0e35bh),a		;a5b9   ; guarda las particulas se alejan del personaje
+	ld a,(0e352h)		;a5bc   ; lee la cuenta de la escena (parpadeo, paso de las particulas)
 	call 040abh		;a5bf   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
@@ -143,7 +143,7 @@ particulas_empiezan:		; sus patrones (p06:A5F9 a 0x1800), las 16 escondidas y 0x
 	ld ix,0e400h		;a5d9   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
 	ld de,00010h		;a5dd
 	ld a,080h		;a5e0
-	ld (0e35ah),a		;a5e2
+	ld (0e35ah),a		;a5e2   ; guarda la vida de las particulas, en cuadros
 	xor a			;a5e5
 L_A5E6:
 	ld (ix+000h),a		;a5e6   ; guarda si la particula esta viva
@@ -152,7 +152,7 @@ L_A5E6:
 	add ix,de		;a5ef
 	djnz L_A5E6		;a5f1
 	ld a,001h		;a5f3
-	ld (0e352h),a		;a5f5
+	ld (0e352h),a		;a5f5   ; guarda la cuenta de la escena (parpadeo, paso de las particulas)
 	ret			;a5f8
 
 ; ----------------------------------------------------------------------
@@ -174,11 +174,11 @@ DATA_resto_A5F9:
 
 
 particulas_cuadro:		; salen por los bordes al azar, van hacia la posicion del personaje (p01:6312) y desaparecen en el centro; sprites en 0xF000
-	ld a,(0e35ah)		;a659
+	ld a,(0e35ah)		;a659   ; lee la vida de las particulas, en cuadros
 	dec a			;a65c
-	ld (0e35ah),a		;a65d
+	ld (0e35ah),a		;a65d   ; guarda la vida de las particulas, en cuadros
 	jr nz,L_A667		;a660
-	ld hl,0e352h		;a662
+	ld hl,0e352h		;a662   ; apunta a la cuenta de la escena (parpadeo, paso de las particulas)
 	inc (hl)			;a665
 	ret			;a666
 L_A667:
@@ -189,7 +189,7 @@ L_A667:
 	jp nc,L_A710		;a66e
 	and 003h		;a671
 	ld b,a			;a673
-	ld a,(0e35bh)		;a674
+	ld a,(0e35bh)		;a674   ; lee las particulas se alejan del personaje
 	or a			;a677
 	ld a,b			;a678
 	jr nz,$+13		;a679
@@ -264,18 +264,18 @@ L_A6C7:
 	jr nz,L_A710		;a6ca
 	ld (ix+002h),l		;a6cc   ; guarda la Y de la particula
 	ld (ix+004h),h		;a6cf   ; guarda la X de la particula
-	ld a,(0e352h)		;a6d2
+	ld a,(0e352h)		;a6d2   ; lee la cuenta de la escena (parpadeo, paso de las particulas)
 	dec a			;a6d5
 	ld b,020h		;a6d6
 	jr z,L_A6EB		;a6d8
-	ld a,(0e35ah)		;a6da
+	ld a,(0e35ah)		;a6da   ; lee la vida de las particulas, en cuadros
 	and 003h		;a6dd
 	jr z,L_A6EB		;a6df
 	ld b,050h		;a6e1
 	ld (ix+000h),001h		;a6e3   ; si la particula esta viva = 0x01
 	ld (ix+009h),008h		;a6e7   ; el patron de la particula = 0x08
 L_A6EB:
-	ld a,(0e35ah)		;a6eb
+	ld a,(0e35ah)		;a6eb   ; lee la vida de las particulas, en cuadros
 	and 001h		;a6ee
 	inc a			;a6f0
 	rlca			;a6f1
@@ -283,7 +283,7 @@ L_A6EB:
 	rlca			;a6f3
 	add a,b			;a6f4
 	call 0434dh		;a6f5   ; a_rumbo_desde_ix: con 1-2-3, p01:6312 (el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A); vuelve con 4-5-6
-	ld a,(0e35bh)		;a6f8
+	ld a,(0e35bh)		;a6f8   ; lee las particulas se alejan del personaje
 	or a			;a6fb
 	jr z,L_A704		;a6fc
 	call 043b3h		;a6fe   ; hl_negativo: HL = -HL
@@ -376,7 +376,7 @@ L_A7B0:
 	jr nz,L_A7BB		;a7b1
 	dec c			;a7b3
 	jr nz,L_A7BB		;a7b4
-	ld hl,0e350h		;a7b6
+	ld hl,0e350h		;a7b6   ; apunta a el paso de la escena (inicial, historia, final)
 	inc (hl)			;a7b9
 	ret			;a7ba
 L_A7BB:
@@ -572,43 +572,43 @@ L_AE3C:
 	inc de			;ae42
 	ld a,(hl)			;ae43
 	cp 003h		;ae44
-	call z,L_AE56		;ae46
+	call z,acento_arriba		;ae46   ; acento_arriba: el acento A a la fila de arriba de la letra anterior
 	cp 004h		;ae49
-	call z,L_AE56		;ae4b
+	call z,acento_arriba		;ae4b   ; acento_arriba: el acento A a la fila de arriba de la letra anterior
 	dec c			;ae4e
 	ret z			;ae4f
 	djnz L_AE3C		;ae50
 	inc de			;ae52
 	inc de			;ae53
 	jr L_AE3A		;ae54
-L_AE56:
-	inc hl			;ae56
-	dec de			;ae57
+acento_arriba:		; el acento A a la fila de arriba de la letra anterior
+	inc hl			;ae56   ; la letra siguiente
+	dec de			;ae57   ; tres atras: la fila de arriba
 	dec de			;ae58
 	dec de			;ae59
-	ld (de),a			;ae5a
-	inc de			;ae5b
+	ld (de),a			;ae5a   ; el acento
+	inc de			;ae5b   ; y vuelve
 	inc de			;ae5c
 	inc de			;ae5d
 	ret			;ae5e
 nombres_en_sprites:		; los dos nombres como patrones de sprite desde 0x1980
-	ld hl,0e8e2h		;ae5f
+	ld hl,0e8e2h		;ae5f   ; apunta a la variable de trabajo 0xE8E2 (16 bits)
 	ld de,0e8e3h		;ae62
 	ld bc,0000fh		;ae65
 	xor a			;ae68
 	ld (hl),a			;ae69
 	ldir		;ae6a
-	ld de,0e8e2h		;ae6c
+	ld de,0e8e2h		;ae6c   ; apunta a la variable de trabajo 0xE8E2 (16 bits)
 	ld hl,0eb00h		;ae6f   ; apunta a el primer nombre (8 letras y 0xFF)
 	call nombre_en_pares		;ae72   ; nombre_en_pares: las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
 	ld de,0e8eah		;ae75
 	ld hl,0eb09h		;ae78   ; apunta a el segundo nombre (8 letras y 0xFF)
 	call nombre_en_pares		;ae7b   ; nombre_en_pares: las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
 	ld a,0ffh		;ae7e
-	ld (0e8f2h),a		;ae80
+	ld (0e8f2h),a		;ae80   ; guarda la variable de trabajo 0xE8F2 (16 bits)
 	ld de,01980h		;ae83
-	ld hl,0e8e2h		;ae86
-	ld (0e8e0h),de		;ae89
+	ld hl,0e8e2h		;ae86   ; apunta a la variable de trabajo 0xE8E2 (16 bits)
+	ld (0e8e0h),de		;ae89   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	jr letras_en_sprites		;ae8d
 texto_en_sprites_bf98:		; el texto p06:BF98 como patrones de sprite desde 0x1800
 	ld de,01800h		;ae8f
@@ -619,7 +619,7 @@ texto_en_sprites_a830:		; el texto p06:A830 como patrones de sprite desde 0x1800
 	ld hl,0a830h		;ae9a
 	jr texto_en_sprites		;ae9d
 texto_en_sprites:		; borra los patrones de sprite y escribe el texto HL desde DE
-	ld (0e8e0h),de		;ae9f
+	ld (0e8e0h),de		;ae9f   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	push hl			;aea3
 	ld hl,01800h		;aea4
 	xor a			;aea7
@@ -643,10 +643,10 @@ L_AEB1:
 	jr letras_en_sprites		;aec7
 retrocede_destino:		; 0xE8E0 -= DE
 	push hl			;aec9
-	ld hl,(0e8e0h)		;aeca
+	ld hl,(0e8e0h)		;aeca   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	or a			;aecd
 	sbc hl,de		;aece
-	ld (0e8e0h),hl		;aed0
+	ld (0e8e0h),hl		;aed0   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	pop hl			;aed3
 	ret			;aed4
 dos_letras_en_sprite:		; dos letras de la fuente (p04:6F39) a 0xE8E0 y 0xE8E0 + 0x10
@@ -663,13 +663,13 @@ letra_en_sprite:		; los 8 bytes de la letra A de la fuente a la VRAM 0xE8E0
 	ld de,06f39h		;aee1
 	add hl,de			;aee4
 	ex de,hl			;aee5
-	ld hl,(0e8e0h)		;aee6
+	ld hl,(0e8e0h)		;aee6   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld bc,00008h		;aee9
 	call 05941h		;aeec   ; copia_a_vram: LDIRVM de DE a la VRAM HL
-	ld hl,(0e8e0h)		;aeef
+	ld hl,(0e8e0h)		;aeef   ; lee la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld de,00010h		;aef2
 	add hl,de			;aef5
-	ld (0e8e0h),hl		;aef6
+	ld (0e8e0h),hl		;aef6   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	pop hl			;aef9
 	inc hl			;aefa
 	ret			;aefb
@@ -709,7 +709,7 @@ DATA_vram_AF0A:
 
 
 final_1:		; un paso del final 1 (0xE339, tabla p06:AF54): el texto p06:AF0A y el nombre; con tecla se acaba (0xE340 = 0x80)
-	ld a,(0e339h)		;af4e
+	ld a,(0e339h)		;af4e   ; lee el paso del final del estado 6
 	call 040abh		;af51   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
@@ -734,11 +734,11 @@ L_AF5A:
 	call nombre_en_0x390d		;af66   ; nombre_en_0x390d: el primer nombre en la VRAM 0x390D
 	call 0600ah		;af69   ; sonido_3a: pide el sonido 0x3A
 final_siguiente:		; 0xE339 + 1
-	ld hl,0e339h		;af6c
+	ld hl,0e339h		;af6c   ; apunta a el paso del final del estado 6
 	inc (hl)			;af6f
 	ret			;af70
 L_AF71:
-	ld a,(0e008h)		;af71   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;af71   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and a			;af74
 	ret z			;af75
 	call 045abh		;af76   ; sonido_85: pide el sonido 0x85
@@ -753,7 +753,7 @@ L_AF80:
 	ld (0e340h),a		;af87   ; guarda en partida (bit 7: la demo acaba)
 	ret			;af8a
 final_2:		; un paso del final 2 (0xE339, tabla p06:AF91): espera la tecla de la fila 2, bit 4, y vuelve al estado 4, paso 4
-	ld a,(0e339h)		;af8b
+	ld a,(0e339h)		;af8b   ; lee el paso del final del estado 6
 	call 040abh		;af8e   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
@@ -772,7 +772,7 @@ DATA_saltos_AF91:
 
 L_AF97:
 	xor a			;af97
-	ld (0e369h),a		;af98
+	ld (0e369h),a		;af98   ; guarda la animacion de fichas de la sala (p07:800A)
 	call 0591bh		;af9b   ; pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
 	call 06487h		;af9e   ; fuente_y_colores: la fuente en los tres tercios y su color
 	ld de,0af0ah		;afa1
@@ -813,16 +813,16 @@ nombre_en_0x390d:		; el primer nombre en la VRAM 0x390D
 	ld hl,0390dh		;afe8
 	ld de,0eb00h		;afeb   ; apunta a el primer nombre (8 letras y 0xFF)
 L_AFEE:
-	ld a,(de)			;afee
+	ld a,(de)			;afee   ; la letra
 	inc de			;afef
-	inc a			;aff0
+	inc a			;aff0   ; 0xFF: acaba
 	ret z			;aff1
 	dec a			;aff2
-	cp 003h		;aff3
+	cp 003h		;aff3   ; 3 y 4: acentos
 	jr z,L_B001		;aff5
 	cp 004h		;aff7
 	jr z,L_B001		;aff9
-	call 0004dh		;affb   ; BIOS WRTVRM - Writes data in VRAM
+	call 0004dh		;affb   ; BIOS WRTVRM - Writes data in VRAM | a la VRAM
 	inc hl			;affe
 	jr L_AFEE		;afff
 L_B001:

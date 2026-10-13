@@ -23,47 +23,47 @@ DATA_partida_8000:
 
 L_8001:
 	and 00ch		;8001
-	ld (0e3f4h),a		;8003
+	ld (0e3f4h),a		;8003   ; guarda la direccion del salto en la escena
 	ld a,001h		;8006
-	ld (0e3ebh),a		;8008
+	ld (0e3ebh),a		;8008   ; guarda la fase del salto en la escena (1 sube, 2 baja)
 	inc a			;800b
 	ld (0e3e1h),a		;800c   ; guarda el paso de la escena de la escena de accion
 	call 0baech		;800f   ; sonido_0a: pide el sonido 0x0A
 L_8012:
 	call accion_direccion		;8012   ; accion_direccion: 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
 	and 00ch		;8015
-	ld bc,(0e8f0h)		;8017
-	ld de,(0e8f2h)		;801b
+	ld bc,(0e8f0h)		;8017   ; lee la variable de trabajo 0xE8F0 (16 bits) y el byte siguiente (16 bits)
+	ld de,(0e8f2h)		;801b   ; lee la variable de trabajo 0xE8F2 (16 bits) y el byte siguiente (16 bits)
 	jp accion_mueve		;801f   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
 L_8022:
 	djnz L_8060		;8022
 	call accion_sin_vida		;8024   ; accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
-	ld a,(0e3f4h)		;8027
+	ld a,(0e3f4h)		;8027   ; lee la direccion del salto en la escena
 	ld bc,010a9h		;802a
 	ld de,00180h		;802d
 	call accion_mueve		;8030   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
-	ld a,(0e3ebh)		;8033
+	ld a,(0e3ebh)		;8033   ; lee la fase del salto en la escena (1 sube, 2 baja)
 	dec a			;8036
 	jr nz,L_8049		;8037
-	ld hl,0e3f5h		;8039
+	ld hl,0e3f5h		;8039   ; apunta a el paso del salto en la escena (tabla p01:7C13)
 	inc (hl)			;803c
 	ld a,(hl)			;803d
 	cp 011h		;803e
 	jp nz,07c06h		;8040
 	dec (hl)			;8043
-	ld hl,0e3ebh		;8044
+	ld hl,0e3ebh		;8044   ; apunta a la fase del salto en la escena (1 sube, 2 baja)
 	inc (hl)			;8047
 	ret			;8048
 L_8049:
-	ld hl,0e3f5h		;8049
+	ld hl,0e3f5h		;8049   ; apunta a el paso del salto en la escena (tabla p01:7C13)
 	inc (hl)			;804c
 	ld a,(hl)			;804d
 	cp 022h		;804e
 	jp nz,07c06h		;8050
 	xor a			;8053
 	ld (hl),a			;8054
-	ld (0e3ebh),a		;8055
-	ld (0e3f4h),a		;8058
+	ld (0e3ebh),a		;8055   ; guarda la fase del salto en la escena (1 sube, 2 baja)
+	ld (0e3f4h),a		;8058   ; guarda la direccion del salto en la escena
 	inc a			;805b
 	ld (0e3e1h),a		;805c   ; guarda el paso de la escena de la escena de accion
 	ret			;805f
@@ -71,7 +71,7 @@ L_8060:
 	ld a,014h		;8060
 	ld (0e3f6h),a		;8062   ; guarda la vida en la escena de accion
 	ld a,001h		;8065
-	ld (0e3fch),a		;8067
+	ld (0e3fch),a		;8067   ; guarda los choques de la escena estan en marcha
 	ld a,004h		;806a
 	ld (0e3e3h),a		;806c   ; guarda hacia donde mira en la escena de accion (1-4)
 	ld hl,0e3e5h		;806f   ; apunta a la Y del personaje en la escena de accion
@@ -83,24 +83,24 @@ L_8060:
 L_807B:
 	djnz L_80C5		;807b
 	ld hl,010f0h		;807d
-	ld (0e8f0h),hl		;8080
+	ld (0e8f0h),hl		;8080   ; guarda la variable de trabajo 0xE8F0 (16 bits) y el byte siguiente (16 bits)
 	ld hl,00200h		;8083
-	ld (0e8f2h),hl		;8086
-	ld a,(0e008h)		;8089   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld (0e8f2h),hl		;8086   ; guarda la variable de trabajo 0xE8F2 (16 bits) y el byte siguiente (16 bits)
+	ld a,(0e008h)		;8089   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and 001h		;808c
 	jr z,L_80A9		;808e
 	ld a,0ffh		;8090
-	ld (0e3f5h),a		;8092
+	ld (0e3f5h),a		;8092   ; guarda el paso del salto en la escena (tabla p01:7C13)
 	ld a,(0e3f3h)		;8095   ; lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
 	and 00ch		;8098
-	ld (0e3f4h),a		;809a
+	ld (0e3f4h),a		;809a   ; guarda la direccion del salto en la escena
 	ld a,001h		;809d
-	ld (0e3ebh),a		;809f
+	ld (0e3ebh),a		;809f   ; guarda la fase del salto en la escena (1 sube, 2 baja)
 	inc a			;80a2
 	ld (0e3e1h),a		;80a3   ; guarda el paso de la escena de la escena de accion
 	call 0baech		;80a6   ; sonido_0a: pide el sonido 0x0A
 L_80A9:
-	ld a,(0e3b1h)		;80a9
+	ld a,(0e3b1h)		;80a9   ; lee el paso comun de la escena de accion
 	dec a			;80ac
 	jr nz,L_80B5		;80ad
 	ld a,003h		;80af
@@ -109,37 +109,37 @@ L_80A9:
 L_80B5:
 	call accion_direccion		;80b5   ; accion_direccion: 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
 	and 00ch		;80b8
-	ld bc,(0e8f0h)		;80ba
-	ld de,(0e8f2h)		;80be
+	ld bc,(0e8f0h)		;80ba   ; lee la variable de trabajo 0xE8F0 (16 bits) y el byte siguiente (16 bits)
+	ld de,(0e8f2h)		;80be   ; lee la variable de trabajo 0xE8F2 (16 bits) y el byte siguiente (16 bits)
 	jp accion_mueve		;80c2   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
 L_80C5:
 	djnz L_8100		;80c5
-	ld a,(0e3f4h)		;80c7
+	ld a,(0e3f4h)		;80c7   ; lee la direccion del salto en la escena
 	ld bc,010f0h		;80ca
 	ld de,00200h		;80cd
 	call accion_mueve		;80d0   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
-	ld a,(0e3ebh)		;80d3
+	ld a,(0e3ebh)		;80d3   ; lee la fase del salto en la escena (1 sube, 2 baja)
 	dec a			;80d6
 	jr nz,L_80E9		;80d7
-	ld hl,0e3f5h		;80d9
+	ld hl,0e3f5h		;80d9   ; apunta a el paso del salto en la escena (tabla p01:7C13)
 	inc (hl)			;80dc
 	ld a,(hl)			;80dd
 	cp 011h		;80de
 	jp nz,07c06h		;80e0
 	dec (hl)			;80e3
-	ld hl,0e3ebh		;80e4
+	ld hl,0e3ebh		;80e4   ; apunta a la fase del salto en la escena (1 sube, 2 baja)
 	inc (hl)			;80e7
 	ret			;80e8
 L_80E9:
-	ld hl,0e3f5h		;80e9
+	ld hl,0e3f5h		;80e9   ; apunta a el paso del salto en la escena (tabla p01:7C13)
 	inc (hl)			;80ec
 	ld a,(hl)			;80ed
 	cp 022h		;80ee
 	jp nz,07c06h		;80f0
 	xor a			;80f3
 	ld (hl),a			;80f4
-	ld (0e3ebh),a		;80f5
-	ld (0e3f4h),a		;80f8
+	ld (0e3ebh),a		;80f5   ; guarda la fase del salto en la escena (1 sube, 2 baja)
+	ld (0e3f4h),a		;80f8   ; guarda la direccion del salto en la escena
 	inc a			;80fb
 	ld (0e3e1h),a		;80fc   ; guarda el paso de la escena de la escena de accion
 	ret			;80ff
@@ -170,7 +170,7 @@ L_8132:
 	ld a,001h		;8132
 	ld (0e3e3h),a		;8134   ; guarda hacia donde mira en la escena de accion (1-4)
 	ld a,002h		;8137
-	ld (0e3b1h),a		;8139
+	ld (0e3b1h),a		;8139   ; guarda el paso comun de la escena de accion
 	jp accion_siguiente_paso		;813c   ; accion_siguiente_paso: 0xE3E1 + 1
 L_813F:
 	djnz L_814C		;813f
@@ -200,11 +200,11 @@ L_814C:
 	ld a,001h		;8170
 	ld (0e3fdh),a		;8172
 	ld a,003h		;8175
-	ld (0e3b1h),a		;8177
+	ld (0e3b1h),a		;8177   ; guarda el paso comun de la escena de accion
 	jp accion_siguiente_paso		;817a   ; accion_siguiente_paso: 0xE3E1 + 1
 L_817D:
 	djnz L_8190		;817d
-	ld a,(0e3b1h)		;817f
+	ld a,(0e3b1h)		;817f   ; lee el paso comun de la escena de accion
 	cp 004h		;8182
 	ret nz			;8184
 	xor a			;8185
@@ -225,7 +225,7 @@ L_8190:
 	ld (0e3e3h),a		;81a5   ; guarda hacia donde mira en la escena de accion (1-4)
 	ld (0e3f8h),a		;81a8
 	ld a,005h		;81ab
-	ld (0e3b1h),a		;81ad
+	ld (0e3b1h),a		;81ad   ; guarda el paso comun de la escena de accion
 	jp accion_sprites		;81b0   ; accion_sprites: los tres sprites del personaje de la escena de accion (0xE3E5, 0xE3E7) en 0xF000
 L_81B3:
 	xor a			;81b3
@@ -283,28 +283,28 @@ accion_sin_vida:		; si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
 	xor a			;8212
 	ret			;8213
 accion_direccion:		; 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
-	ld a,(0e009h)		;8214   ; lee las teclas que hay
+	ld a,(0e009h)		;8214   ; los cursores que hay
 	and 00fh		;8217
-	ld b,a			;8219
-	ld c,000h		;821a
+	ld b,a			;8219   ; B = los que hay
+	ld c,000h		;821a   ; ninguno: C = 0
 	jr z,L_824F		;821c
-	ld a,(0e008h)		;821e   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;821e   ; los cursores nuevos
 	and 00fh		;8221
-	cp 00fh		;8223
+	cp 00fh		;8223   ; todos a la vez: nada
 	ret z			;8225
-	ld c,001h		;8226
+	ld c,001h		;8226   ; arriba
 	rra			;8228
 	jr c,L_824F		;8229
-	ld c,002h		;822b
+	ld c,002h		;822b   ; abajo
 	rra			;822d
 	jr c,L_824F		;822e
-	ld c,004h		;8230
+	ld c,004h		;8230   ; izquierda
 	rra			;8232
 	jr c,L_824F		;8233
-	ld c,008h		;8235
+	ld c,008h		;8235   ; derecha
 	rra			;8237
 	jr c,L_824F		;8238
-	ld a,b			;823a
+	ld a,b			;823a   ; si no hay nuevos, los que hay
 	cp 00fh		;823b
 	ret z			;823d
 	ld c,001h		;823e
@@ -330,7 +330,7 @@ accion_mueve:		; mueve al personaje de la escena de accion en la direccion A con
 	ld (0e3e3h),a		;8260   ; guarda hacia donde mira en la escena de accion (1-4)
 L_8263:
 	ld b,000h		;8263
-	ld a,(0e3ebh)		;8265
+	ld a,(0e3ebh)		;8265   ; lee la fase del salto en la escena (1 sube, 2 baja)
 	or a			;8268
 	ret nz			;8269
 	ld a,(0e3f3h)		;826a   ; lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
@@ -538,34 +538,34 @@ L_83AB:
 	ld (0f00ah),hl		;83d9
 	ret			;83dc
 accion_sprites_extra:		; dos sprites en 0xF020
-	ld hl,0f020h		;83dd
-	ld de,08860h		;83e0
+	ld hl,0f020h		;83dd   ; el primer sprite
+	ld de,08860h		;83e0   ; Y 0x60, X 0x88
 	ld (hl),e			;83e3
 	inc l			;83e4
 	ld (hl),d			;83e5
 	inc l			;83e6
-	ld (hl),078h		;83e7
+	ld (hl),078h		;83e7   ; patron 0x78, color 0x0F
 	inc l			;83e9
 	ld (hl),00fh		;83ea
 	inc l			;83ec
-	ld (hl),e			;83ed
+	ld (hl),e			;83ed   ; el segundo en el mismo sitio
 	inc l			;83ee
 	ld (hl),d			;83ef
 	inc l			;83f0
-	ld (hl),07ch		;83f1
+	ld (hl),07ch		;83f1   ; patron 0x7C, color 5
 	inc l			;83f3
 	ld (hl),005h		;83f4
 	ret			;83f6
 accion_quita_extra:		; esconde los sprites de 0xF020
 	xor a			;83f7
 	ld (0e3a2h),a		;83f8
-	ld hl,0f020h		;83fb
+	ld hl,0f020h		;83fb   ; apunta a los sprites de los actores (desde el 8)
 	call esconde_un_sprite		;83fe   ; esconde_un_sprite: Y = 0xE0 y el resto a cero en el sprite de HL
 esconde_un_sprite:		; Y = 0xE0 y el resto a cero en el sprite de HL
-	xor a			;8401
-	ld (hl),0e0h		;8402
+	xor a			;8401   ; A = 0
+	ld (hl),0e0h		;8402   ; Y = 0xE0: escondido
 	inc l			;8404
-	ld (hl),a			;8405
+	ld (hl),a			;8405   ; X, patron y color a cero
 	inc l			;8406
 	ld (hl),a			;8407
 	inc l			;8408
@@ -573,40 +573,40 @@ esconde_un_sprite:		; Y = 0xE0 y el resto a cero en el sprite de HL
 	inc l			;840a
 	ret			;840b
 accion_sprites_arriba:		; tres sprites en la Y 0xA0 alrededor de la X del personaje
-	ld hl,0f010h		;840c
-	ld b,008h		;840f
+	ld hl,0f010h		;840c   ; desde el sprite 4
+	ld b,008h		;840f   ; 8 puntos a los lados
 	ld a,(0e3fah)		;8411
 	dec a			;8414
 	jr nz,L_8419		;8415
-	ld b,010h		;8417
+	ld b,010h		;8417   ; o 16
 L_8419:
-	ld a,(0e3e7h)		;8419   ; lee la X del personaje en la escena de accion
+	ld a,(0e3e7h)		;8419   ; la X del personaje
 	sub b			;841c
 	ld d,a			;841d
-	ld (hl),0a0h		;841e
+	ld (hl),0a0h		;841e   ; Y 0xA0
 	inc l			;8420
 	ld (hl),d			;8421
 	inc l			;8422
-	ld (hl),0ach		;8423
+	ld (hl),0ach		;8423   ; patron 0xAC, color 7
 	inc l			;8425
 	ld (hl),007h		;8426
 	inc l			;8428
 	ld a,d			;8429
-	sla b		;842a
+	sla b		;842a   ; al otro lado
 	add a,b			;842c
 	ld d,a			;842d
 	ld (hl),0a0h		;842e
 	inc l			;8430
 	ld (hl),d			;8431
 	inc l			;8432
-	ld (hl),0b4h		;8433
+	ld (hl),0b4h		;8433   ; patron 0xB4, color 7
 	inc l			;8435
 	ld (hl),007h		;8436
 	ld a,b			;8438
-	ld b,0e0h		;8439
+	ld b,0e0h		;8439   ; el tercero escondido
 	cp 020h		;843b
 	jr nz,L_8441		;843d
-	ld b,0a0h		;843f
+	ld b,0a0h		;843f   ; salvo con 16: en la Y 0xA0
 L_8441:
 	ld a,(0e3e7h)		;8441   ; lee la X del personaje en la escena de accion
 	inc l			;8444
@@ -620,10 +620,10 @@ L_8441:
 	ret			;844e
 cambia_de_sala:		; modo 1: la sala nueva por el borde (vecinas: sala - 0x20, + 0x20, - 1, + 1 de p02:858C), las salas 0x201-0x228 a mano o el salto de 0xE36A
 	xor a			;844f
-	ld (0e3cch),a		;8450
-	ld (0e3c9h),a		;8453
-	ld (0e383h),a		;8456
-	ld (0e369h),a		;8459
+	ld (0e3cch),a		;8450   ; guarda el personaje flota (modo 10)
+	ld (0e3c9h),a		;8453   ; guarda la cuenta de espera del personaje
+	ld (0e383h),a		;8456   ; guarda la cuenta de la animacion de fichas
+	ld (0e369h),a		;8459   ; guarda la animacion de fichas de la sala (p07:800A)
 	ld (0e39eh),a		;845c
 	ld a,(0eb7ch)		;845f   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;8462
@@ -660,7 +660,7 @@ L_8485:
 	ld a,(0e337h)		;84a2   ; lee que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	cp 002h		;84a5
 	jp z,salta_a_la_sala		;84a7   ; salta_a_la_sala: la sala de 0xE36A; a la 0x201 sin lo que hace falta, la maquina se reinicia (`jp 0`)
-	ld a,(0e386h)		;84aa
+	ld a,(0e386h)		;84aa   ; lee el final del desplazamiento (1 abajo, 2 arriba)
 	and a			;84ad
 	jp nz,L_8B17		;84ae
 	ld hl,0eb6ch		;84b1   ; apunta a las banderas de la historia, byte 0x2C (se graban con la partida)
@@ -697,24 +697,24 @@ L_84E3:
 	sbc hl,de		;84ef
 	jp nc,salas_226_227		;84f1   ; salas_226_227: las vecinas de las salas 0x226 y 0x227
 L_84F4:
-	ld a,(0e3c5h)		;84f4   ; lee la direccion del paso en curso
+	ld a,(0e3c5h)		;84f4   ; la direccion del paso
 	dec a			;84f7
-	ld hl,0858ch		;84f8
-	add a,a			;84fb
+	ld hl,0858ch		;84f8   ; la tabla de vecinas
+	add a,a			;84fb   ; 4 bytes por direccion
 	call 040a0h		;84fc   ; hl_mas_2a: HL = HL + 2 * A
-	ld e,(hl)			;84ff
+	ld e,(hl)			;84ff   ; DE = lo que se suma a la sala
 	inc hl			;8500
 	ld d,(hl)			;8501
 	inc hl			;8502
-	ld c,(hl)			;8503
+	ld c,(hl)			;8503   ; C = lo que se suma a la Y
 	inc hl			;8504
-	ld b,(hl)			;8505
+	ld b,(hl)			;8505   ; B = lo que se suma a la X
 	ld hl,(0eb40h)		;8506   ; lee la sala
 	ld (0e376h),hl		;8509   ; guarda la sala de la que se viene y el byte siguiente (16 bits)
-	add hl,de			;850c
+	add hl,de			;850c   ; la sala vecina
 	ld (0eb40h),hl		;850d   ; guarda la sala
 	ex de,hl			;8510
-	ld hl,00063h		;8511
+	ld hl,00063h		;8511   ; las salas con algo especial al entrar
 	and a			;8514
 	sbc hl,de		;8515
 	jp z,L_8B62		;8517
@@ -956,11 +956,11 @@ marca_369:		; 0xE369 = 2 si 0xEB69 no lleva el bit 7
 	bit 7,(hl)		;86e7
 	ret nz			;86e9
 	ld a,002h		;86ea
-	ld (0e369h),a		;86ec
+	ld (0e369h),a		;86ec   ; guarda la animacion de fichas de la sala (p07:800A)
 	ret			;86ef
 L_86F0:
 	ld a,003h		;86f0
-	ld (0e369h),a		;86f2
+	ld (0e369h),a		;86f2   ; guarda la animacion de fichas de la sala (p07:800A)
 	ld hl,0020dh		;86f5
 	ld (0eb40h),hl		;86f8   ; guarda la sala
 	ld b,000h		;86fb
@@ -968,7 +968,7 @@ L_86F0:
 	jp posicion_en_la_sala_nueva		;86ff   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8702:
 	ld a,003h		;8702
-	ld (0e369h),a		;8704
+	ld (0e369h),a		;8704   ; guarda la animacion de fichas de la sala (p07:800A)
 	ld hl,0020ch		;8707
 	ld (0eb40h),hl		;870a   ; guarda la sala
 	ld b,000h		;870d
@@ -1239,7 +1239,7 @@ salta_a_la_sala:		; la sala de 0xE36A; a la 0x201 sin lo que hace falta, la maqu
 	sbc hl,de		;8914
 	jr nz,L_891D		;8916
 	ld a,003h		;8918
-	ld (0e369h),a		;891a
+	ld (0e369h),a		;891a   ; guarda la animacion de fichas de la sala (p07:800A)
 L_891D:
 	ld hl,00201h		;891d
 	and a			;8920
@@ -1283,7 +1283,7 @@ L_895D:
 	ld a,000h		;8969
 	jr c,L_8973		;896b
 	inc a			;896d
-	ld (0e369h),a		;896e
+	ld (0e369h),a		;896e   ; guarda la animacion de fichas de la sala (p07:800A)
 	ld a,00ah		;8971
 L_8973:
 	ld (0e3c0h),a		;8973   ; guarda el modo del personaje (tabla p01:718E)
@@ -1369,60 +1369,60 @@ L_89F5:
 	ld (0e3c1h),hl		;8a09   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8a0c
 L_8A0D:
-	ld hl,0021fh		;8a0d
+	ld hl,0021fh		;8a0d   ; la sala 0x21F
 	and a			;8a10
 	sbc hl,de		;8a11
 	jr nz,L_8A6E		;8a13
-	ld de,(0e376h)		;8a15   ; lee la sala de la que se viene y el byte siguiente (16 bits)
-	ld hl,00024h		;8a19
+	ld de,(0e376h)		;8a15   ; la entrada depende de la sala de la que se viene
+	ld hl,00024h		;8a19   ; desde la 0x24
 	and a			;8a1c
 	sbc hl,de		;8a1d
-	ld bc,00020h		;8a1f
+	ld bc,00020h		;8a1f   ; en (0x20, 0x00)
 	jr z,L_8A69		;8a22
-	ld hl,00052h		;8a24
+	ld hl,00052h		;8a24   ; desde la 0x52
 	and a			;8a27
 	sbc hl,de		;8a28
 	ld bc,07000h		;8a2a
 	jr z,L_8A69		;8a2d
-	ld hl,0005ch		;8a2f
+	ld hl,0005ch		;8a2f   ; desde la 0x5C
 	and a			;8a32
 	sbc hl,de		;8a33
 	ld bc,0b020h		;8a35
 	jr z,L_8A69		;8a38
-	ld hl,000cah		;8a3a
+	ld hl,000cah		;8a3a   ; desde la 0xCA
 	and a			;8a3d
 	sbc hl,de		;8a3e
 	ld bc,04000h		;8a40
 	jr z,L_8A69		;8a43
-	ld hl,00116h		;8a45
+	ld hl,00116h		;8a45   ; desde la 0x116
 	and a			;8a48
 	sbc hl,de		;8a49
 	ld bc,07070h		;8a4b
 	jr z,L_8A69		;8a4e
-	ld hl,001b1h		;8a50
+	ld hl,001b1h		;8a50   ; desde la 0x1B1
 	and a			;8a53
 	sbc hl,de		;8a54
 	ld bc,04070h		;8a56
 	jr z,L_8A69		;8a59
-	ld hl,001c5h		;8a5b
+	ld hl,001c5h		;8a5b   ; desde la 0x1C5
 	and a			;8a5e
 	sbc hl,de		;8a5f
 	ld bc,00050h		;8a61
 	jr z,L_8A69		;8a64
-	ld bc,0b050h		;8a66
+	ld bc,0b050h		;8a66   ; desde las demas, en (0x50, 0xB0)
 L_8A69:
 	ld (0e3c1h),bc		;8a69   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8a6d
 L_8A6E:
-	ld hl,00158h		;8a6e
+	ld hl,00158h		;8a6e   ; la sala 0x158
 	and a			;8a71
 	sbc hl,de		;8a72
 	jr nz,L_8A94		;8a74
-	ld hl,00158h		;8a76
+	ld hl,00158h		;8a76   ; viniendo de ella misma
 	and a			;8a79
 	sbc hl,bc		;8a7a
 	ret nz			;8a7c
-	ld a,(0e3c2h)		;8a7d   ; lee la X del personaje
+	ld a,(0e3c2h)		;8a7d   ; segun la X
 	cp 030h		;8a80
 	ld bc,03020h		;8a82
 	jr nz,L_8A8A		;8a85
@@ -1433,75 +1433,75 @@ L_8A8A:
 	ld (0e3c1h),bc		;8a8f   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8a93
 L_8A94:
-	ld hl,00006h		;8a94
+	ld hl,00006h		;8a94   ; la sala 6
 	and a			;8a97
 	sbc hl,de		;8a98
 	jr nz,L_8AAA		;8a9a
-	ld hl,00027h		;8a9c
+	ld hl,00027h		;8a9c   ; viniendo de la 0x27
 	and a			;8a9f
 	sbc hl,bc		;8aa0
 	ret nz			;8aa2
-	ld hl,02030h		;8aa3
+	ld hl,02030h		;8aa3   ; en (0x30, 0x20)
 	ld (0e3c1h),hl		;8aa6   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8aa9
 L_8AAA:
-	ld hl,00027h		;8aaa
+	ld hl,00027h		;8aaa   ; la sala 0x27
 	and a			;8aad
 	sbc hl,de		;8aae
 	jr nz,L_8AC0		;8ab0
-	ld hl,00006h		;8ab2
+	ld hl,00006h		;8ab2   ; viniendo de la 6
 	and a			;8ab5
 	sbc hl,bc		;8ab6
 	ret nz			;8ab8
-	ld hl,05030h		;8ab9
+	ld hl,05030h		;8ab9   ; en (0x30, 0x50)
 	ld (0e3c1h),hl		;8abc   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8abf
 L_8AC0:
-	ld hl,001b5h		;8ac0
+	ld hl,001b5h		;8ac0   ; la sala 0x1B5
 	and a			;8ac3
 	sbc hl,de		;8ac4
 	jr nz,L_8AD6		;8ac6
-	ld hl,00194h		;8ac8
+	ld hl,00194h		;8ac8   ; viniendo de la 0x194
 	and a			;8acb
 	sbc hl,bc		;8acc
 	ret nz			;8ace
-	ld hl,08020h		;8acf
+	ld hl,08020h		;8acf   ; en (0x20, 0x80)
 	ld (0e3c1h),hl		;8ad2   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8ad5
 L_8AD6:
-	ld hl,00194h		;8ad6
+	ld hl,00194h		;8ad6   ; la sala 0x194
 	and a			;8ad9
 	sbc hl,de		;8ada
 	jr nz,L_8AEC		;8adc
-	ld hl,001b5h		;8ade
+	ld hl,001b5h		;8ade   ; viniendo de la 0x1B5
 	and a			;8ae1
 	sbc hl,bc		;8ae2
 	ret nz			;8ae4
-	ld hl,06030h		;8ae5
+	ld hl,06030h		;8ae5   ; en (0x30, 0x60)
 	ld (0e3c1h),hl		;8ae8   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8aeb
 L_8AEC:
-	ld hl,00226h		;8aec
+	ld hl,00226h		;8aec   ; la sala 0x226
 	and a			;8aef
 	sbc hl,de		;8af0
 	jr nz,L_8B02		;8af2
-	ld hl,001a1h		;8af4
+	ld hl,001a1h		;8af4   ; viniendo de la 0x1A1
 	and a			;8af7
 	sbc hl,bc		;8af8
 	ret nz			;8afa
-	ld hl,08030h		;8afb
+	ld hl,08030h		;8afb   ; en (0x30, 0x80)
 	ld (0e3c1h),hl		;8afe   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8b01
 L_8B02:
-	ld hl,001a1h		;8b02
+	ld hl,001a1h		;8b02   ; la sala 0x1A1
 	and a			;8b05
 	sbc hl,de		;8b06
 	ret nz			;8b08
-	ld hl,00226h		;8b09
+	ld hl,00226h		;8b09   ; viniendo de la 0x226
 	and a			;8b0c
 	sbc hl,bc		;8b0d
 	ret nz			;8b0f
-	ld hl,06040h		;8b10
+	ld hl,06040h		;8b10   ; en (0x40, 0x60)
 	ld (0e3c1h),hl		;8b13   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8b16
 L_8B17:
@@ -1512,7 +1512,7 @@ L_8B17:
 	ld hl,00210h		;8b20
 	ld (0eb40h),hl		;8b23   ; guarda la sala
 	xor a			;8b26
-	ld (0e386h),a		;8b27
+	ld (0e386h),a		;8b27   ; guarda el final del desplazamiento (1 abajo, 2 arriba)
 	jp L_8587		;8b2a
 L_8B2D:
 	ld hl,06050h		;8b2d
@@ -1520,7 +1520,7 @@ L_8B2D:
 	ld hl,0020fh		;8b33
 	ld (0eb40h),hl		;8b36   ; guarda la sala
 	xor a			;8b39
-	ld (0e386h),a		;8b3a
+	ld (0e386h),a		;8b3a   ; guarda el final del desplazamiento (1 abajo, 2 arriba)
 	jp L_8587		;8b3d
 L_8B40:
 	ld hl,(0e376h)		;8b40   ; lee la sala de la que se viene y el byte siguiente (16 bits)
@@ -1529,7 +1529,7 @@ L_8B40:
 	sbc hl,de		;8b47
 	jp nz,posicion_en_la_sala_nueva		;8b49   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 	ld a,002h		;8b4c
-	ld (0e378h),a		;8b4e
+	ld (0e378h),a		;8b4e   ; guarda la animacion del modo 4 (1 o 2)
 	ld hl,0eb67h		;8b51   ; apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
 	res 0,(hl)		;8b54
 	ld hl,0eb68h		;8b56   ; apunta a las banderas de la historia, byte 0x28 (se graban con la partida)
@@ -1545,7 +1545,7 @@ L_8B62:
 	sbc hl,de		;8b69
 	jp nz,posicion_en_la_sala_nueva		;8b6b   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 	ld a,001h		;8b6e
-	ld (0e378h),a		;8b70
+	ld (0e378h),a		;8b70   ; guarda la animacion del modo 4 (1 o 2)
 	ld hl,0eb67h		;8b73   ; apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
 	res 0,(hl)		;8b76
 	ld a,b			;8b78
@@ -1634,31 +1634,31 @@ L_8C13:
 	jp posicion_en_la_sala_nueva		;8c2f   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 salas_al_azar:		; en las salas 0x228-0x22D, la siguiente sale al azar de p02:8C83
 	ld de,(0eb40h)		;8c32   ; lee la sala
-	ld hl,00228h		;8c36
+	ld hl,00228h		;8c36   ; la sala 0x228
 	and a			;8c39
 	sbc hl,de		;8c3a
 	jr z,$+77		;8c3c
-	ld hl,00229h		;8c3e
+	ld hl,00229h		;8c3e   ; la 0x229
 	and a			;8c41
 	sbc hl,de		;8c42
 	jr z,$+69		;8c44
-	ld hl,0022ah		;8c46
+	ld hl,0022ah		;8c46   ; la 0x22A
 	and a			;8c49
 	sbc hl,de		;8c4a
 	jr z,$+90		;8c4c
-	ld hl,0022bh		;8c4e
+	ld hl,0022bh		;8c4e   ; la 0x22B
 	and a			;8c51
 	sbc hl,de		;8c52
 	jr z,$+82		;8c54
-	ld hl,0022ch		;8c56
+	ld hl,0022ch		;8c56   ; la 0x22C
 	and a			;8c59
 	sbc hl,de		;8c5a
 	jr z,$+103		;8c5c
-	ld hl,0022dh		;8c5e
+	ld hl,0022dh		;8c5e   ; la 0x22D
 	and a			;8c61
 	sbc hl,de		;8c62
 	jr z,$+95		;8c64
-	ld a,r		;8c66
+	ld a,r		;8c66   ; las demas: una de tres al azar
 	and 003h		;8c68
 	and a			;8c6a
 	jr z,L_8C6E		;8c6b
@@ -2215,9 +2215,9 @@ empieza_accion:		; 0xE3A1 = A, 0xE337 = 3 y la escena 0 de la escena de accion
 	jr z,L_908F		;908b
 	ld a,004h		;908d
 L_908F:
-	ld (0e3a0h),a		;908f
+	ld (0e3a0h),a		;908f   ; guarda el paso con el que empieza el rival
 	xor a			;9092
-	ld (0e39fh),a		;9093
+	ld (0e39fh),a		;9093   ; guarda el paso de la preparacion de la escena de accion
 	dec a			;9096
 	ld (0e368h),a		;9097   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ret			;909a
@@ -2231,8 +2231,8 @@ accion_2:		; la escena de accion 2 en la sala 0x212
 	ld hl,00212h		;90aa
 	ld (0eb40h),hl		;90ad   ; guarda la sala
 	xor a			;90b0
-	ld (0e39fh),a		;90b1
-	ld (0e3a0h),a		;90b4
+	ld (0e39fh),a		;90b1   ; guarda el paso de la preparacion de la escena de accion
+	ld (0e3a0h),a		;90b4   ; guarda el paso con el que empieza el rival
 	dec a			;90b7
 	ld (0e368h),a		;90b8   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ret			;90bb
@@ -2246,8 +2246,8 @@ accion_4:		; la escena de accion 4 en la sala 0x222
 	ld hl,00222h		;90cb
 	ld (0eb40h),hl		;90ce   ; guarda la sala
 	xor a			;90d1
-	ld (0e39fh),a		;90d2
-	ld (0e3a0h),a		;90d5
+	ld (0e39fh),a		;90d2   ; guarda el paso de la preparacion de la escena de accion
+	ld (0e3a0h),a		;90d5   ; guarda el paso con el que empieza el rival
 	dec a			;90d8
 	ld (0e368h),a		;90d9   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ret			;90dc
@@ -2261,8 +2261,8 @@ accion_7:		; la escena de accion 7 en la sala 0x224
 	ld hl,00224h		;90ed
 	ld (0eb40h),hl		;90f0   ; guarda la sala
 	xor a			;90f3
-	ld (0e39fh),a		;90f4
-	ld (0e3a0h),a		;90f7
+	ld (0e39fh),a		;90f4   ; guarda el paso de la preparacion de la escena de accion
+	ld (0e3a0h),a		;90f7   ; guarda el paso con el que empieza el rival
 	dec a			;90fa
 	ld (0e368h),a		;90fb   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ret			;90fe
@@ -2276,8 +2276,8 @@ accion_8:		; la escena de accion 8 en la sala 0x225
 	ld hl,00225h		;910f
 	ld (0eb40h),hl		;9112   ; guarda la sala
 	xor a			;9115
-	ld (0e39fh),a		;9116
-	ld (0e3a0h),a		;9119
+	ld (0e39fh),a		;9116   ; guarda el paso de la preparacion de la escena de accion
+	ld (0e3a0h),a		;9119   ; guarda el paso con el que empieza el rival
 	dec a			;911c
 	ld (0e368h),a		;911d   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ret			;9120
@@ -2402,7 +2402,7 @@ evento_01_1:		; el evento 0x01, paso 1
 	ret nz			;91c7
 	jp evento_siguiente_paso		;91c8   ; evento_siguiente_paso: 0xE8AB + 1
 evento_01_2:		; el evento 0x01, paso 2
-	ld a,(0e008h)		;91cb   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;91cb   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and a			;91ce
 	ret z			;91cf
 	call 067c8h		;91d0   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
@@ -2455,9 +2455,9 @@ evento_03_0:		; el evento 0x03, paso 0
 	ld hl,09249h		;921f
 	ld bc,00700h		;9222
 L_9225:
-	ld a,(hl)			;9225
+	ld a,(hl)			;9225   ; el tipo de la tabla
 	inc hl			;9226
-	cp e			;9227
+	cp e			;9227   ; es el del personaje de enfrente?
 	jr nz,L_922E		;9228
 	ld a,(hl)			;922a
 	cp d			;922b
@@ -2500,10 +2500,10 @@ DATA_resto_9249:
 
 evento_03_1:		; el evento 0x03, paso 1
 	call 04503h		;926c
-	ld a,(0e372h)		;926f
+	ld a,(0e372h)		;926f   ; lee el paso del efecto que sube
 	sub 002h		;9272
 	ret nz			;9274
-	ld (0e372h),a		;9275
+	ld (0e372h),a		;9275   ; guarda el paso del efecto que sube
 	jp evento_siguiente_paso		;9278   ; evento_siguiente_paso: 0xE8AB + 1
 evento_03_2:		; el evento 0x03, paso 2
 	xor a			;927b
@@ -2542,8 +2542,8 @@ evento_03_4:		; el evento 0x03, paso 4
 	ld a,0ffh		;92c3
 	ld (0e368h),a		;92c5   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	xor a			;92c8
-	ld (0e39fh),a		;92c9
-	ld (0e3a0h),a		;92cc
+	ld (0e39fh),a		;92c9   ; guarda el paso de la preparacion de la escena de accion
+	ld (0e3a0h),a		;92cc   ; guarda el paso con el que empieza el rival
 	ret			;92cf
 evento_04:		; el evento 0x04 (0xE8AA): despacha su paso 0xE8AB (tabla p02:92D6)
 	ld a,(0e8abh)		;92d0   ; lee el paso del evento
@@ -2564,7 +2564,7 @@ DATA_saltos_92D6:
 
 evento_04_0:		; el evento 0x04, paso 0
 	call 0428ah		;92da   ; a_anima_al_de_enfrente: con 7-8, p07:8758 (un paso de la animacion del actor de enfrente (0xE370, tabla p07:8762)); vuelve con 1-2-3
-	ld a,(0e36fh)		;92dd
+	ld a,(0e36fh)		;92dd   ; lee el resultado de la animacion del de enfrente
 	and a			;92e0
 	ret z			;92e1
 	dec a			;92e2
@@ -2573,9 +2573,9 @@ evento_04_0:		; el evento 0x04, paso 0
 	ld hl,09310h		;92ea
 	ld c,000h		;92ed
 L_92EF:
-	ld a,(hl)			;92ef
+	ld a,(hl)			;92ef   ; el tipo de la tabla
 	inc hl			;92f0
-	cp e			;92f1
+	cp e			;92f1   ; es el del personaje de enfrente?
 	jr nz,L_92F8		;92f2
 	ld a,(hl)			;92f4
 	cp d			;92f5
@@ -2615,7 +2615,7 @@ DATA_resto_9310:
 
 evento_04_1:		; el evento 0x04, paso 1
 	xor a			;9315
-	ld (0e36fh),a		;9316
+	ld (0e36fh),a		;9316   ; guarda el resultado de la animacion del de enfrente
 	ld (0e360h),a		;9319   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	jp 0585ch		;931c   ; borra_cursor: borra el cursor de la columna de opciones
 evento_05:		; el evento 0x05 (0xE8AA), de un solo paso
@@ -2662,7 +2662,7 @@ evento_06_1:		; el evento 0x06, paso 1
 	ret nz			;935e
 	jp evento_siguiente_paso		;935f   ; evento_siguiente_paso: 0xE8AB + 1
 evento_06_2:		; el evento 0x06, paso 2
-	ld a,(0e008h)		;9362   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;9362   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and a			;9365
 	ret z			;9366
 	call 067c8h		;9367   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
@@ -2708,7 +2708,7 @@ evento_07_1:		; el evento 0x07, paso 1
 	ret nz			;93a2
 	ld de,00020h		;93a3
 	ld hl,0b486h		;93a6
-	call 044b8h		;93a9
+	call 044b8h		;93a9   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call 05e5fh		;93ac   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 	jp evento_siguiente_paso		;93af   ; evento_siguiente_paso: 0xE8AB + 1
 evento_07_2:		; el evento 0x07, paso 2
@@ -2717,7 +2717,7 @@ evento_07_2:		; el evento 0x07, paso 2
 	ret nz			;93b6
 	ld de,00020h		;93b7
 	ld hl,0b490h		;93ba
-	call 044b8h		;93bd
+	call 044b8h		;93bd   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	xor a			;93c0
 	ld hl,0e830h		;93c1
 	ld (hl),a			;93c4
@@ -2768,7 +2768,7 @@ evento_08_1:		; el evento 0x08, paso 1
 	ret nz			;9408
 	ld de,0b020h		;9409
 	ld hl,0b4a4h		;940c
-	call 044b8h		;940f
+	call 044b8h		;940f   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call 05e5fh		;9412   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 	jp evento_siguiente_paso		;9415   ; evento_siguiente_paso: 0xE8AB + 1
 evento_08_2:		; el evento 0x08, paso 2
@@ -2777,7 +2777,7 @@ evento_08_2:		; el evento 0x08, paso 2
 	ret nz			;941c
 	ld de,0b020h		;941d
 	ld hl,0b4aeh		;9420
-	call 044b8h		;9423
+	call 044b8h		;9423   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	xor a			;9426
 	ld hl,0e83bh		;9427
 	ld (hl),a			;942a
@@ -2832,7 +2832,7 @@ evento_0a_1:		; el evento 0x0A, paso 1
 	ret nz			;9476
 	ld de,02050h		;9477
 	ld hl,0950ah		;947a
-	call 044b8h		;947d
+	call 044b8h		;947d   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call 05e5fh		;9480   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 	jp evento_siguiente_paso		;9483   ; evento_siguiente_paso: 0xE8AB + 1
 evento_0a_2:		; el evento 0x0A, paso 2
@@ -2843,7 +2843,7 @@ evento_0a_2:		; el evento 0x0A, paso 2
 	ret nz			;948d
 	ld de,01040h		;948e
 	ld hl,094e4h		;9491
-	call 044b8h		;9494
+	call 044b8h		;9494   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call 05e5fh		;9497   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 	jp evento_siguiente_paso		;949a   ; evento_siguiente_paso: 0xE8AB + 1
 evento_0a_3:		; el evento 0x0A, paso 3
@@ -2854,7 +2854,7 @@ evento_0a_3:		; el evento 0x0A, paso 3
 	ld hl,094beh		;94a5
 	xor a			;94a8
 	ld (0e36dh),a		;94a9   ; guarda el color de las fichas copiadas
-	call 044b8h		;94ac
+	call 044b8h		;94ac   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call 05e5fh		;94af   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 	ld hl,0eb6dh		;94b2   ; apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
 	set 5,(hl)		;94b5
@@ -2987,7 +2987,7 @@ evento_0c_1:		; el evento 0x0C, paso 1
 	ret nz			;9583
 	jp evento_siguiente_paso		;9584   ; evento_siguiente_paso: 0xE8AB + 1
 evento_0c_2:		; el evento 0x0C, paso 2
-	ld a,(0e008h)		;9587   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;9587   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and a			;958a
 	ret z			;958b
 	call 067c8h		;958c   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
@@ -3201,8 +3201,8 @@ evento_0f:		; el evento 0x0F (0xE8AA), de un solo paso
 	ld a,0ffh		;9729
 	ld (0e368h),a		;972b   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	xor a			;972e
-	ld (0e39fh),a		;972f
-	ld (0e3a0h),a		;9732
+	ld (0e39fh),a		;972f   ; guarda el paso de la preparacion de la escena de accion
+	ld (0e3a0h),a		;9732   ; guarda el paso con el que empieza el rival
 	ret			;9735
 evento_10:		; el evento 0x10 (0xE8AA): despacha su paso 0xE8AB (tabla p02:973C)
 	ld a,(0e8abh)		;9736   ; lee el paso del evento
@@ -3350,7 +3350,7 @@ DATA_saltos_9806:
 evento_12_0:		; el evento 0x12, paso 0
 	ld de,07030h		;980a
 	ld hl,0982bh		;980d
-	call 044b8h		;9810
+	call 044b8h		;9810   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call 05e5fh		;9813   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 	jp evento_siguiente_paso		;9816   ; evento_siguiente_paso: 0xE8AB + 1
 evento_12_1:		; el evento 0x12, paso 1
@@ -3533,7 +3533,7 @@ evento_15_1:		; el evento 0x15, paso 1
 	ret nz			;991d
 	jp evento_siguiente_paso		;991e   ; evento_siguiente_paso: 0xE8AB + 1
 evento_15_2:		; el evento 0x15, paso 2
-	ld a,(0e008h)		;9921   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;9921   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and a			;9924
 	ret z			;9925
 	call 058ffh		;9926   ; esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
@@ -3577,7 +3577,7 @@ evento_16_1:		; el evento 0x16, paso 1
 	ret nz			;995e
 	jp evento_siguiente_paso		;995f   ; evento_siguiente_paso: 0xE8AB + 1
 evento_16_2:		; el evento 0x16, paso 2
-	ld a,(0e008h)		;9962   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;9962   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and a			;9965
 	ret z			;9966
 	xor a			;9967
@@ -3628,7 +3628,7 @@ evento_17_1:		; el evento 0x17, paso 1
 	set 0,(hl)		;99b0
 	jp evento_siguiente_paso		;99b2   ; evento_siguiente_paso: 0xE8AB + 1
 evento_17_2:		; el evento 0x17, paso 2
-	ld a,(0e008h)		;99b5   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;99b5   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and a			;99b8
 	ret z			;99b9
 	call 058ffh		;99ba   ; esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
@@ -3671,7 +3671,7 @@ evento_18_0:		; el evento 0x18, paso 0
 	call 0b4b8h		;99f4   ; sprites_de_0xeb7d: 8 sprites en 0xF060: cada bit de 0xEB7D elige una de las dos posiciones de p03:B4F5
 	jp evento_siguiente_paso		;99f7   ; evento_siguiente_paso: 0xE8AB + 1
 evento_18_1:		; el evento 0x18, paso 1
-	ld a,(0e008h)		;99fa   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+	ld a,(0e008h)		;99fa   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo o espacio, 5 menu: boton 2 o M, 6 RETURN, 7 F5)
 	and a			;99fd
 	ret z			;99fe
 	call 058ffh		;99ff   ; esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
@@ -3686,7 +3686,7 @@ evento_18_1:		; el evento 0x18, paso 1
 evento_19:		; el evento 0x19 (0xE8AA), de un solo paso
 	call 0bac4h		;9a14   ; sonido_27: pide el sonido 0x27
 	ld a,002h		;9a17
-	ld (0ea01h),a		;9a19
+	ld (0ea01h),a		;9a19   ; guarda el paso del rival
 	ld a,008h		;9a1c
 	ld (0e360h),a		;9a1e   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	jp 0585ch		;9a21   ; borra_cursor: borra el cursor de la columna de opciones
@@ -3706,7 +3706,7 @@ evento_1b:		; el evento 0x1B (0xE8AA), de un solo paso
 	jp 0585ch		;9a42   ; borra_cursor: borra el cursor de la columna de opciones
 evento_1c:		; el evento 0x1C (0xE8AA), de un solo paso
 	ld a,006h		;9a45
-	ld (0ea01h),a		;9a47
+	ld (0ea01h),a		;9a47   ; guarda el paso del rival
 	ld a,008h		;9a4a
 	ld (0e360h),a		;9a4c   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	jp 0585ch		;9a4f   ; borra_cursor: borra el cursor de la columna de opciones
@@ -3805,8 +3805,8 @@ evento_1e:		; el evento 0x1E (0xE8AA), de un solo paso
 	ld a,0ffh		;9ade
 	ld (0e368h),a		;9ae0   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	xor a			;9ae3
-	ld (0e39fh),a		;9ae4
-	ld (0e3a0h),a		;9ae7
+	ld (0e39fh),a		;9ae4   ; guarda el paso de la preparacion de la escena de accion
+	ld (0e3a0h),a		;9ae7   ; guarda el paso con el que empieza el rival
 	ret			;9aea
 evento_1f:		; el evento 0x1F (0xE8AA): despacha su paso 0xE8AB (tabla p02:9AF1)
 	ld a,(0e8abh)		;9aeb   ; lee el paso del evento
@@ -3935,7 +3935,7 @@ evento_21:		; el evento 0x21 (0xE8AA), de un solo paso
 	ld hl,09bc3h		;9bae
 	xor a			;9bb1
 	ld (0e36dh),a		;9bb2   ; guarda el color de las fichas copiadas
-	call 044b8h		;9bb5
+	call 044b8h		;9bb5   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call 05e5fh		;9bb8   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 	ld hl,0eb5bh		;9bbb   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
 	set 5,(hl)		;9bbe
@@ -3969,13 +3969,13 @@ evento_22:		; el evento 0x22 (0xE8AA), de un solo paso
 	ld a,0ffh		;9be8
 	ld (0e368h),a		;9bea   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	xor a			;9bed
-	ld (0e39fh),a		;9bee
-	ld (0e3a0h),a		;9bf1
+	ld (0e39fh),a		;9bee   ; guarda el paso de la preparacion de la escena de accion
+	ld (0e3a0h),a		;9bf1   ; guarda el paso con el que empieza el rival
 	ret			;9bf4
 evento_23:		; el evento 0x23 (0xE8AA), de un solo paso
 	ld de,03020h		;9bf5
 	ld hl,09c04h		;9bf8
-	call 044b8h		;9bfb
+	call 044b8h		;9bfb   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call 05e5fh		;9bfe   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 	jp evento_05		;9c01   ; evento_05: el evento 0x05 (0xE8AA), de un solo paso
 
@@ -3995,7 +3995,7 @@ DATA_dibujo_9C04:
 evento_24:		; el evento 0x24 (0xE8AA), de un solo paso
 	ld de,06040h		;9c0a
 	ld hl,09c19h		;9c0d
-	call 044b8h		;9c10
+	call 044b8h		;9c10   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call 05e5fh		;9c13   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 	jp evento_05		;9c16   ; evento_05: el evento 0x05 (0xE8AA), de un solo paso
 
@@ -4014,20 +4014,20 @@ DATA_dibujo_9C19:
 
 evento_25:		; el evento 0x25 (0xE8AA), de un solo paso
 	ld a,00ah		;9c1f
-	ld (0ea01h),a		;9c21
+	ld (0ea01h),a		;9c21   ; guarda el paso del rival
 	ld a,008h		;9c24
 	ld (0e360h),a		;9c26   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	jp 0585ch		;9c29   ; borra_cursor: borra el cursor de la columna de opciones
 evento_26:		; el evento 0x26 (0xE8AA), de un solo paso
 	ld a,00dh		;9c2c
-	ld (0ea01h),a		;9c2e
+	ld (0ea01h),a		;9c2e   ; guarda el paso del rival
 	ld a,008h		;9c31
 	ld (0e360h),a		;9c33   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	call 045b0h		;9c36   ; sonido_86: pide el sonido 0x86
 	jp 0585ch		;9c39   ; borra_cursor: borra el cursor de la columna de opciones
 evento_27:		; el evento 0x27 (0xE8AA), de un solo paso
 	ld a,019h		;9c3c
-	ld (0ea01h),a		;9c3e
+	ld (0ea01h),a		;9c3e   ; guarda el paso del rival
 	ld a,008h		;9c41
 	ld (0e360h),a		;9c43   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	call 04560h		;9c46   ; sonido_53: pide el sonido 0x53
@@ -4037,7 +4037,7 @@ evento_28:		; el evento 0x28 (0xE8AA), de un solo paso
 	ld (0e36dh),a		;9c4d   ; guarda el color de las fichas copiadas
 	ld de,04030h		;9c50
 	ld hl,09c5fh		;9c53
-	call 044b8h		;9c56
+	call 044b8h		;9c56   ; copia_bloques: BC (alto, ancho) bloques de 2x2 fichas de HL a la pantalla DE y su dureza
 	call 05e5fh		;9c59   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
 	jp evento_05		;9c5c   ; evento_05: el evento 0x05 (0xE8AA), de un solo paso
 
@@ -4149,23 +4149,23 @@ evento_2a_3:		; el evento 0x2A, paso 3
 	ret			;9cec
 ajusta_respuesta:		; busca el tipo del personaje (0xE363) en p03:AABE y ajusta la respuesta C con su rutina (tabla p02:9D1E)
 	ld b,000h		;9ced
-	ld (0e8e0h),de		;9cef
+	ld (0e8e0h),de		;9cef   ; guarda la variable de trabajo 0xE8E0 (16 bits; cada rutina la usa a su manera) y el byte siguiente (16 bits)
 	ld ix,0aabeh		;9cf3
 	ld hl,(0e365h)		;9cf7   ; lee la ficha del personaje de enfrente
 	push hl			;9cfa
 	pop iy		;9cfb
 	ld de,(0e363h)		;9cfd   ; lee el tipo del personaje de enfrente
 L_9D01:
-	ld l,(ix+000h)		;9d01
+	ld l,(ix+000h)		;9d01   ; el tipo de la tabla
 	ld h,(ix+001h)		;9d04
-	ld a,l			;9d07
+	ld a,l			;9d07   ; 0xFFFF: acaba sin encontrarlo
 	and h			;9d08
 	cp 0ffh		;9d09
 	ret z			;9d0b
 	and a			;9d0c
-	sbc hl,de		;9d0d
+	sbc hl,de		;9d0d   ; es el del personaje de enfrente?
 	jr z,L_9D18		;9d0f
-	inc b			;9d11
+	inc b			;9d11   ; cuenta la posicion
 	inc ix		;9d12
 	inc ix		;9d14
 	jr L_9D01		;9d16
@@ -4292,13 +4292,13 @@ DATA_saltos_9D1E:
 
 respuesta_del_tipo_10:		; ajusta la respuesta C del personaje de tipo 0x10 con las banderas de la historia
 	ld hl,0eb58h		;9df0   ; apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
-	bit 6,(hl)		;9df3
+	bit 6,(hl)		;9df3   ; mira la bandera 6 de la historia (0xEB58)
 	jr nz,L_9E10		;9df5
-	ld a,c			;9df7
-	cp 007h		;9df8
+	ld a,c			;9df7   ; A = la respuesta
+	cp 007h		;9df8   ; compara la respuesta con la 0x07
 	jr nz,L_9DFF		;9dfa
-	ld c,008h		;9dfc
-	ret			;9dfe
+	ld c,008h		;9dfc   ; la respuesta pasa a ser la 0x08
+	ret			;9dfe   ; vuelve con la respuesta en C
 L_9DFF:
 	cp 004h		;9dff
 	ret nz			;9e01
@@ -4306,36 +4306,36 @@ L_9DFF:
 	ld (0e368h),a		;9e04   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	call 04856h		;9e07   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
 	call 04574h		;9e0a   ; sonido_13: pide el sonido 0x13
-	ld c,004h		;9e0d
-	ret			;9e0f
+	ld c,004h		;9e0d   ; la respuesta pasa a ser la 0x04
+	ret			;9e0f   ; vuelve con la respuesta en C
 L_9E10:
-	ld c,007h		;9e10
-	ret			;9e12
+	ld c,007h		;9e10   ; la respuesta pasa a ser la 0x07
+	ret			;9e12   ; vuelve con la respuesta en C
 respuesta_del_tipo_11:		; ajusta la respuesta C del personaje de tipo 0x11 con las banderas de la historia
 	ld hl,0eb58h		;9e13   ; apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
-	bit 7,(hl)		;9e16
+	bit 7,(hl)		;9e16   ; mira la bandera 7 de la historia (0xEB58)
 	jr nz,L_9E1D		;9e18
-	ld c,003h		;9e1a
-	ret			;9e1c
+	ld c,003h		;9e1a   ; la respuesta pasa a ser la 0x03
+	ret			;9e1c   ; vuelve con la respuesta en C
 L_9E1D:
 	ld a,001h		;9e1d
 	ld (0e368h),a		;9e1f   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	call 04856h		;9e22   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
 	call 04574h		;9e25   ; sonido_13: pide el sonido 0x13
 	ld hl,0eb58h		;9e28   ; apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
-	set 6,(hl)		;9e2b
-	ld c,006h		;9e2d
-	ret			;9e2f
+	set 6,(hl)		;9e2b   ; pone la bandera 6 de la historia (0xEB58)
+	ld c,006h		;9e2d   ; la respuesta pasa a ser la 0x06
+	ret			;9e2f   ; vuelve con la respuesta en C
 respuesta_del_tipo_01:		; ajusta la respuesta C del personaje de tipo 0x01 con las banderas de la historia
 	ld hl,0eb59h		;9e30   ; apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
-	bit 7,(hl)		;9e33
+	bit 7,(hl)		;9e33   ; mira la bandera 7 de la historia (0xEB59)
 	ret z			;9e35
-	ld c,002h		;9e36
-	ret			;9e38
+	ld c,002h		;9e36   ; la respuesta pasa a ser la 0x02
+	ret			;9e38   ; vuelve con la respuesta en C
 marca_salas_cf_b0_f0:		; en las salas 0xCF y 0xB0 pone el bit 7 de 0xEB59; en la 0xF0, ninguno
-	ld c,080h		;9e39
+	ld c,080h		;9e39   ; C = el bit 7
 	ld de,(0eb40h)		;9e3b   ; lee la sala
-	ld hl,000cfh		;9e3f
+	ld hl,000cfh		;9e3f   ; las salas 0xCF y 0xB0
 	and a			;9e42
 	sbc hl,de		;9e43
 	jr z,L_9E58		;9e45
@@ -4343,11 +4343,11 @@ marca_salas_cf_b0_f0:		; en las salas 0xCF y 0xB0 pone el bit 7 de 0xEB59; en la
 	and a			;9e4a
 	sbc hl,de		;9e4b
 	jr z,L_9E58		;9e4d
-	ld hl,000f0h		;9e4f
+	ld hl,000f0h		;9e4f   ; la 0xF0
 	and a			;9e52
 	sbc hl,de		;9e53
 	ret nz			;9e55
-	ld c,000h		;9e56
+	ld c,000h		;9e56   ; sin bit
 L_9E58:
 	ld a,(0eb59h)		;9e58   ; lee las banderas de la historia, byte 0x19 (se graban con la partida)
 	or c			;9e5b
@@ -4355,74 +4355,74 @@ L_9E58:
 	ret			;9e5f
 respuesta_del_tipo_14:		; ajusta la respuesta C del personaje de tipo 0x14 con las banderas de la historia
 	ld hl,0eb5bh		;9e60   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
-	ld a,c			;9e63
-	cp 005h		;9e64
-	ret nz			;9e66
+	ld a,c			;9e63   ; A = la respuesta
+	cp 005h		;9e64   ; compara la respuesta con la 0x05
+	ret nz			;9e66   ; vuelve si no lo es
 	ld a,009h		;9e67
 	ld (0e3c0h),a		;9e69   ; guarda el modo del personaje (tabla p01:718E)
 	ld a,002h		;9e6c
 	ld (0e482h),a		;9e6e
-	set 7,(hl)		;9e71
-	ret			;9e73
+	set 7,(hl)		;9e71   ; pone la bandera 7 de la historia (0xEB5B)
+	ret			;9e73   ; vuelve con la respuesta en C
 respuesta_del_tipo_16:		; ajusta la respuesta C del personaje de tipo 0x16 con las banderas de la historia
 	ld hl,0eb5bh		;9e74   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
-	bit 7,(hl)		;9e77
+	bit 7,(hl)		;9e77   ; mira la bandera 7 de la historia (0xEB5B)
 	jr nz,L_9E84		;9e79
-	ld a,c			;9e7b
-	dec a			;9e7c
-	ret nz			;9e7d
+	ld a,c			;9e7b   ; A = la respuesta
+	dec a			;9e7c   ; mira si es la respuesta 0x01
+	ret nz			;9e7d   ; vuelve si no lo es
 	ld hl,0eb5dh		;9e7e   ; apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
-	set 7,(hl)		;9e81
-	ret			;9e83
+	set 7,(hl)		;9e81   ; pone la bandera 7 de la historia (0xEB5D)
+	ret			;9e83   ; vuelve con la respuesta en C
 L_9E84:
-	ld c,005h		;9e84
-	ret			;9e86
+	ld c,005h		;9e84   ; la respuesta pasa a ser la 0x05
+	ret			;9e86   ; vuelve con la respuesta en C
 respuesta_del_tipo_17:		; ajusta la respuesta C del personaje de tipo 0x17 con las banderas de la historia
 	ld hl,0eb5bh		;9e87   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
-	bit 7,(hl)		;9e8a
+	bit 7,(hl)		;9e8a   ; mira la bandera 7 de la historia (0xEB5B)
 	jr nz,L_9E9B		;9e8c
 	ld hl,0eb5dh		;9e8e   ; apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
-	bit 6,(hl)		;9e91
-	ld c,004h		;9e93
+	bit 6,(hl)		;9e91   ; mira la bandera 6 de la historia (0xEB5D)
+	ld c,004h		;9e93   ; la respuesta pasa a ser la 0x04
 	ret nz			;9e95
-	set 6,(hl)		;9e96
-	ld c,003h		;9e98
-	ret			;9e9a
+	set 6,(hl)		;9e96   ; pone la bandera 6 de la historia (0xEB5D)
+	ld c,003h		;9e98   ; la respuesta pasa a ser la 0x03
+	ret			;9e9a   ; vuelve con la respuesta en C
 L_9E9B:
-	ld c,006h		;9e9b
-	ret			;9e9d
+	ld c,006h		;9e9b   ; la respuesta pasa a ser la 0x06
+	ret			;9e9d   ; vuelve con la respuesta en C
 respuesta_del_tipo_19:		; ajusta la respuesta C del personaje de tipo 0x19 con las banderas de la historia
 	ld hl,0eb5bh		;9e9e   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
-	bit 7,(hl)		;9ea1
+	bit 7,(hl)		;9ea1   ; mira la bandera 7 de la historia (0xEB5B)
 	jr nz,L_9EBF		;9ea3
-	ld a,c			;9ea5
-	cp 005h		;9ea6
-	ret z			;9ea8
+	ld a,c			;9ea5   ; A = la respuesta
+	cp 005h		;9ea6   ; compara la respuesta con la 0x05
+	ret z			;9ea8   ; vuelve si lo es
 	ld hl,0eb5eh		;9ea9   ; apunta a las banderas de la historia, byte 0x1E (se graban con la partida)
-	bit 7,(hl)		;9eac
+	bit 7,(hl)		;9eac   ; mira la bandera 7 de la historia (0xEB5E)
 	jr nz,L_9EB5		;9eae
-	set 7,(hl)		;9eb0
-	ld c,000h		;9eb2
-	ret			;9eb4
+	set 7,(hl)		;9eb0   ; pone la bandera 7 de la historia (0xEB5E)
+	ld c,000h		;9eb2   ; la respuesta pasa a ser la 0x00
+	ret			;9eb4   ; vuelve con la respuesta en C
 L_9EB5:
 	bit 6,(hl)		;9eb5
-	ld c,002h		;9eb7
+	ld c,002h		;9eb7   ; la respuesta pasa a ser la 0x02
 	ret nz			;9eb9
 	set 6,(hl)		;9eba
-	ld c,001h		;9ebc
-	ret			;9ebe
+	ld c,001h		;9ebc   ; la respuesta pasa a ser la 0x01
+	ret			;9ebe   ; vuelve con la respuesta en C
 L_9EBF:
-	ld c,00ch		;9ebf
-	ret			;9ec1
+	ld c,00ch		;9ebf   ; la respuesta pasa a ser la 0x0C
+	ret			;9ec1   ; vuelve con la respuesta en C
 respuesta_del_tipo_1a:		; ajusta la respuesta C del personaje de tipo 0x1A con las banderas de la historia
 	ld hl,0eb5bh		;9ec2   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
-	bit 7,(hl)		;9ec5
+	bit 7,(hl)		;9ec5   ; mira la bandera 7 de la historia (0xEB5B)
 	jr nz,L_9EEA		;9ec7
-	ld a,c			;9ec9
-	cp 006h		;9eca
-	ret z			;9ecc
+	ld a,c			;9ec9   ; A = la respuesta
+	cp 006h		;9eca   ; compara la respuesta con la 0x06
+	ret z			;9ecc   ; vuelve si lo es
 	ld hl,0eb5eh		;9ecd   ; apunta a las banderas de la historia, byte 0x1E (se graban con la partida)
-	bit 5,(hl)		;9ed0
+	bit 5,(hl)		;9ed0   ; mira la bandera 5 de la historia (0xEB5E)
 	jr z,L_9EE3		;9ed2
 	ld a,r		;9ed4
 	and 00ch		;9ed6
@@ -4434,53 +4434,53 @@ respuesta_del_tipo_1a:		; ajusta la respuesta C del personaje de tipo 0x1A con l
 	dec a			;9ee0
 L_9EE1:
 	ld c,a			;9ee1
-	ret			;9ee2
+	ret			;9ee2   ; vuelve con la respuesta en C
 L_9EE3:
-	ld a,c			;9ee3
-	cp 00ah		;9ee4
-	ret nz			;9ee6
+	ld a,c			;9ee3   ; A = la respuesta
+	cp 00ah		;9ee4   ; compara la respuesta con la 0x0A
+	ret nz			;9ee6   ; vuelve si no lo es
 	set 5,(hl)		;9ee7
-	ret			;9ee9
+	ret			;9ee9   ; vuelve con la respuesta en C
 L_9EEA:
-	ld c,00ch		;9eea
-	ret			;9eec
+	ld c,00ch		;9eea   ; la respuesta pasa a ser la 0x0C
+	ret			;9eec   ; vuelve con la respuesta en C
 respuesta_del_tipo_1b:		; ajusta la respuesta C del personaje de tipo 0x1B con las banderas de la historia
 	ld hl,0eb5dh		;9eed   ; apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
-	bit 7,(hl)		;9ef0
+	bit 7,(hl)		;9ef0   ; mira la bandera 7 de la historia (0xEB5D)
 	ret z			;9ef2
 	ex de,hl			;9ef3
 	ld hl,0eb5bh		;9ef4   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
-	bit 7,(hl)		;9ef7
+	bit 7,(hl)		;9ef7   ; mira la bandera 7 de la historia (0xEB5B)
 	ret nz			;9ef9
-	ld c,001h		;9efa
+	ld c,001h		;9efa   ; la respuesta pasa a ser la 0x01
 	ex de,hl			;9efc
-	set 5,(hl)		;9efd
-	ret			;9eff
+	set 5,(hl)		;9efd   ; pone la bandera 5 de la historia (0xEB5B)
+	ret			;9eff   ; vuelve con la respuesta en C
 respuesta_del_tipo_1c:		; ajusta la respuesta C del personaje de tipo 0x1C con las banderas de la historia
 	ld hl,0eb5ch		;9f00   ; apunta a las banderas de la historia, byte 0x1C (se graban con la partida)
-	bit 7,(hl)		;9f03
+	bit 7,(hl)		;9f03   ; mira la bandera 7 de la historia (0xEB5C)
 	ret nz			;9f05
-	set 7,(hl)		;9f06
-	ld c,001h		;9f08
-	ret			;9f0a
+	set 7,(hl)		;9f06   ; pone la bandera 7 de la historia (0xEB5C)
+	ld c,001h		;9f08   ; la respuesta pasa a ser la 0x01
+	ret			;9f0a   ; vuelve con la respuesta en C
 respuesta_del_tipo_22:		; ajusta la respuesta C del personaje de tipo 0x22 con las banderas de la historia
 	ld hl,0eb5ah		;9f0b   ; apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
-	ld a,c			;9f0e
-	cp 002h		;9f0f
+	ld a,c			;9f0e   ; A = la respuesta
+	cp 002h		;9f0f   ; compara la respuesta con la 0x02
 	jr nz,L_9F16		;9f11
-	set 7,(hl)		;9f13
-	ret			;9f15
+	set 7,(hl)		;9f13   ; pone la bandera 7 de la historia (0xEB5A)
+	ret			;9f15   ; vuelve con la respuesta en C
 L_9F16:
 	cp 003h		;9f16
 	jr nz,L_9F26		;9f18
 	bit 3,(hl)		;9f1a
 	jr z,L_9F23		;9f1c
-	ld c,005h		;9f1e
+	ld c,005h		;9f1e   ; la respuesta pasa a ser la 0x05
 	set 6,(hl)		;9f20
-	ret			;9f22
+	ret			;9f22   ; vuelve con la respuesta en C
 L_9F23:
 	set 2,(hl)		;9f23
-	ret			;9f25
+	ret			;9f25   ; vuelve con la respuesta en C
 L_9F26:
 	cp 007h		;9f26
 	ret nz			;9f28
@@ -4488,143 +4488,143 @@ L_9F26:
 	ld (0e368h),a		;9f2b   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	call 04856h		;9f2e   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
 	call 04574h		;9f31   ; sonido_13: pide el sonido 0x13
-	ld c,007h		;9f34
+	ld c,007h		;9f34   ; la respuesta pasa a ser la 0x07
 	ld a,001h		;9f36
 	ld (0e9d8h),a		;9f38   ; guarda el objeto 4 (bit 0: se lleva)
-	ret			;9f3b
+	ret			;9f3b   ; vuelve con la respuesta en C
 respuesta_del_tipo_15:		; ajusta la respuesta C del personaje de tipo 0x15 con las banderas de la historia
 	ld hl,0eb5ah		;9f3c   ; apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
-	ld a,c			;9f3f
-	dec a			;9f40
-	ret nz			;9f41
-	set 5,(hl)		;9f42
-	ret			;9f44
+	ld a,c			;9f3f   ; A = la respuesta
+	dec a			;9f40   ; mira si es la respuesta 0x01
+	ret nz			;9f41   ; vuelve si no lo es
+	set 5,(hl)		;9f42   ; pone la bandera 5 de la historia (0xEB5A)
+	ret			;9f44   ; vuelve con la respuesta en C
 respuesta_del_tipo_2c:		; ajusta la respuesta C del personaje de tipo 0x2C con las banderas de la historia
 	ld hl,0e9d2h		;9f45   ; apunta a el objeto 1 (bit 0: se lleva)
-	bit 7,(hl)		;9f48
+	bit 7,(hl)		;9f48   ; mira la bandera 7 de el objeto 1 (0xE9D2)
 	jr nz,L_9F53		;9f4a
-	ld a,c			;9f4c
-	cp 004h		;9f4d
-	ret nz			;9f4f
-	ld c,007h		;9f50
-	ret			;9f52
+	ld a,c			;9f4c   ; A = la respuesta
+	cp 004h		;9f4d   ; compara la respuesta con la 0x04
+	ret nz			;9f4f   ; vuelve si no lo es
+	ld c,007h		;9f50   ; la respuesta pasa a ser la 0x07
+	ret			;9f52   ; vuelve con la respuesta en C
 L_9F53:
-	ld a,c			;9f53
-	dec a			;9f54
+	ld a,c			;9f53   ; A = la respuesta
+	dec a			;9f54   ; mira si es la respuesta 0x01
 	jr nz,L_9F5A		;9f55
-	ld c,003h		;9f57
-	ret			;9f59
+	ld c,003h		;9f57   ; la respuesta pasa a ser la 0x03
+	ret			;9f59   ; vuelve con la respuesta en C
 L_9F5A:
 	dec a			;9f5a
 	ret nz			;9f5b
-	ld c,006h		;9f5c
+	ld c,006h		;9f5c   ; la respuesta pasa a ser la 0x06
 	ld a,001h		;9f5e
 	ld (0e8a2h),a		;9f60   ; guarda la columna del menu
 	ld a,003h		;9f63
 	ld (0e8a3h),a		;9f65   ; guarda la lista de opciones del menu
-	ret			;9f68
+	ret			;9f68   ; vuelve con la respuesta en C
 respuesta_del_tipo_27:		; ajusta la respuesta C del personaje de tipo 0x27 con las banderas de la historia
 	ld hl,0eb5fh		;9f69   ; apunta a las banderas de la historia, byte 0x1F (se graban con la partida)
-	bit 7,(hl)		;9f6c
+	bit 7,(hl)		;9f6c   ; mira la bandera 7 de la historia (0xEB5F)
 	jr nz,L_9F7C		;9f6e
-	ld a,c			;9f70
-	cp 00bh		;9f71
-	ret z			;9f73
+	ld a,c			;9f70   ; A = la respuesta
+	cp 00bh		;9f71   ; compara la respuesta con la 0x0B
+	ret z			;9f73   ; vuelve si lo es
 	ld a,r		;9f74
 	and 004h		;9f76
 	rra			;9f78
 	rra			;9f79
 	ld c,a			;9f7a
-	ret			;9f7b
+	ret			;9f7b   ; vuelve con la respuesta en C
 L_9F7C:
-	ld a,c			;9f7c
-	cp 00bh		;9f7d
-	ret nz			;9f7f
-	ld c,00ch		;9f80
-	ret			;9f82
+	ld a,c			;9f7c   ; A = la respuesta
+	cp 00bh		;9f7d   ; compara la respuesta con la 0x0B
+	ret nz			;9f7f   ; vuelve si no lo es
+	ld c,00ch		;9f80   ; la respuesta pasa a ser la 0x0C
+	ret			;9f82   ; vuelve con la respuesta en C
 respuesta_del_tipo_28:		; ajusta la respuesta C del personaje de tipo 0x28 con las banderas de la historia
 	ld hl,0eb5fh		;9f83   ; apunta a las banderas de la historia, byte 0x1F (se graban con la partida)
-	bit 6,(hl)		;9f86
+	bit 6,(hl)		;9f86   ; mira la bandera 6 de la historia (0xEB5F)
 	jr nz,L_9FAA		;9f88
-	ld a,c			;9f8a
-	cp 00bh		;9f8b
-	ret z			;9f8d
-	cp 007h		;9f8e
+	ld a,c			;9f8a   ; A = la respuesta
+	cp 00bh		;9f8b   ; compara la respuesta con la 0x0B
+	ret z			;9f8d   ; vuelve si lo es
+	cp 007h		;9f8e   ; compara la respuesta con la 0x07
 	jr nz,L_9F95		;9f90
-	ld c,00dh		;9f92
-	ret			;9f94
+	ld c,00dh		;9f92   ; la respuesta pasa a ser la 0x0D
+	ret			;9f94   ; vuelve con la respuesta en C
 L_9F95:
-	bit 5,(hl)		;9f95
+	bit 5,(hl)		;9f95   ; la bandera 5 de 0xEB5F
 	jr z,L_9FA3		;9f97
-	ld a,r		;9f99
+	ld a,r		;9f99   ; al azar
 	and 002h		;9f9b
 	jr nz,L_9FA1		;9f9d
-	ld a,004h		;9f9f
+	ld a,004h		;9f9f   ; la respuesta 2 o 4
 L_9FA1:
 	ld c,a			;9fa1
-	ret			;9fa2
+	ret			;9fa2   ; vuelve con la respuesta en C
 L_9FA3:
-	ld a,c			;9fa3
-	cp 003h		;9fa4
-	ret nz			;9fa6
+	ld a,c			;9fa3   ; A = la respuesta
+	cp 003h		;9fa4   ; compara la respuesta con la 0x03
+	ret nz			;9fa6   ; vuelve si no lo es
 	set 5,(hl)		;9fa7
-	ret			;9fa9
+	ret			;9fa9   ; vuelve con la respuesta en C
 L_9FAA:
-	ld a,c			;9faa
-	cp 00bh		;9fab
+	ld a,c			;9faa   ; A = la respuesta
+	cp 00bh		;9fab   ; compara la respuesta con la 0x0B
 	jr nz,L_9FB2		;9fad
-	ld c,00ch		;9faf
-	ret			;9fb1
+	ld c,00ch		;9faf   ; la respuesta pasa a ser la 0x0C
+	ret			;9fb1   ; vuelve con la respuesta en C
 L_9FB2:
 	cp 005h		;9fb2
 	jr nc,L_9FB9		;9fb4
-	ld c,006h		;9fb6
-	ret			;9fb8
+	ld c,006h		;9fb6   ; la respuesta pasa a ser la 0x06
+	ret			;9fb8   ; vuelve con la respuesta en C
 L_9FB9:
 	cp 009h		;9fb9
 	ret nz			;9fbb
 	bit 4,(hl)		;9fbc
 	ret nz			;9fbe
-	ld c,008h		;9fbf
+	ld c,008h		;9fbf   ; la respuesta pasa a ser la 0x08
 	set 4,(hl)		;9fc1
 	ld hl,0eb6dh		;9fc3   ; apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
-	set 6,(hl)		;9fc6
+	set 6,(hl)		;9fc6   ; pone la bandera 6 de la historia (0xEB6D)
 	xor a			;9fc8
 	ld (0eb7bh),a		;9fc9   ; guarda las banderas de la historia, byte 0x3B (se graban con la partida)
-	ret			;9fcc
+	ret			;9fcc   ; vuelve con la respuesta en C
 respuesta_del_tipo_09:		; ajusta la respuesta C del personaje de tipo 0x09 con las banderas de la historia
 	ld hl,0e9d0h		;9fcd   ; apunta a los objetos (dos bytes cada uno; bit 0: se lleva)
-	bit 0,(hl)		;9fd0
+	bit 0,(hl)		;9fd0   ; mira la bandera 0 de el objeto 0 (0xE9D0)
 	jr nz,L_9FD7		;9fd2
-	set 0,(hl)		;9fd4
-	ret			;9fd6
+	set 0,(hl)		;9fd4   ; pone la bandera 0 de el objeto 0 (0xE9D0)
+	ret			;9fd6   ; vuelve con la respuesta en C
 L_9FD7:
-	ld c,001h		;9fd7
-	ret			;9fd9
+	ld c,001h		;9fd7   ; la respuesta pasa a ser la 0x01
+	ret			;9fd9   ; vuelve con la respuesta en C
 respuesta_del_tipo_25:		; ajusta la respuesta C del personaje de tipo 0x25 con las banderas de la historia
 	ld hl,0eb60h		;9fda   ; apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
-	bit 7,(hl)		;9fdd
+	bit 7,(hl)		;9fdd   ; mira la bandera 7 de la historia (0xEB60)
 	jr nz,L_9FEF		;9fdf
-	bit 5,(hl)		;9fe1
+	bit 5,(hl)		;9fe1   ; mira la bandera 5 de la historia (0xEB60)
 	jr z,L_9FEC		;9fe3
-	ld a,c			;9fe5
-	cp 005h		;9fe6
-	ret z			;9fe8
-	ld c,001h		;9fe9
-	ret			;9feb
+	ld a,c			;9fe5   ; A = la respuesta
+	cp 005h		;9fe6   ; compara la respuesta con la 0x05
+	ret z			;9fe8   ; vuelve si lo es
+	ld c,001h		;9fe9   ; la respuesta pasa a ser la 0x01
+	ret			;9feb   ; vuelve con la respuesta en C
 L_9FEC:
 	set 5,(hl)		;9fec
-	ret			;9fee
+	ret			;9fee   ; vuelve con la respuesta en C
 L_9FEF:
-	ld a,c			;9fef
-	cp 005h		;9ff0
+	ld a,c			;9fef   ; A = la respuesta
+	cp 005h		;9ff0   ; compara la respuesta con la 0x05
 	jr z,L_9FF7		;9ff2
-	ld c,003h		;9ff4
-	ret			;9ff6
+	ld c,003h		;9ff4   ; la respuesta pasa a ser la 0x03
+	ret			;9ff6   ; vuelve con la respuesta en C
 L_9FF7:
-	ld c,006h		;9ff7
-	ret			;9ff9
+	ld c,006h		;9ff7   ; la respuesta pasa a ser la 0x06
+	ret			;9ff9   ; vuelve con la respuesta en C
 respuesta_del_tipo_26:		; ajusta la respuesta C del personaje de tipo 0x26 con las banderas de la historia
 	ld hl,0eb60h		;9ffa   ; apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
-	bit 6,(hl)		;9ffd
+	bit 6,(hl)		;9ffd   ; mira la bandera 6 de la historia (0xEB60)
 	ret z			;9fff
