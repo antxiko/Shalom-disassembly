@@ -28,3 +28,1232 @@ F 0x5DE7 16
 D 0x5F21 0x6000 relleno_ff  223 bytes a 0xFF hasta el final del banco: relleno; lo leen nadie (223 bytes)
 F 0x5F21 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x402E borra_zona_de_juego_y_21_22_23 borra 16 filas x 24 de 0xED00 y las vuelca; vuelve con 21-22-23
+L 0x4034 graficos_del_marcador_y_21_22_23 patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD; vuelve con 21-22-23
+L 0x403A vuelca_zona_de_juego_y_21_22_23 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
+L 0x4040 sonido_28_y_21_22_23 pide el sonido 0x28; vuelve con 21-22-23
+L 0x4046 vuelca_ventana_y_12_13_14 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
+L 0x404C interrupcion gancho H.KEYI: la musica con 29-30-31 (p29:6449) y, si no esta ya dentro, el cuadro del juego
+L 0x40A0 hl_mas_2a HL = HL + 2 * A
+L 0x40A1 hl_mas_a HL = HL + A
+L 0x40A6 de_mas_a DE = DE + A
+L 0x40AB despacha salta a la palabra A de la tabla pegada detras del `call`
+L 0x40B5 despacha_hl salta a la palabra HL de la tabla pegada detras del `call`
+L 0x40BD cartucho_en_8000 pone en 0x8000 el slot del cartucho (ENASLT)
+L 0x40DD slot_del_cartucho A = el slot del cartucho (primario y secundario), copia en 0xF0F8
+L 0x40F9 bancos_1_2_3 pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+L 0x40FF bancos_4_5_6 pone los bancos 4-5-6 (p00:4103)
+L 0x4103 pon_trio pone A, A+1 y A+2 en 0x6000, 0x8000 y 0xA000 y su copia
+L 0x410D pon_duo pone A y A+1 en 0x8000 y 0xA000 y su copia
+L 0x411B bancos_7_8 pone los bancos 7-8 en 0x8000 y 0xA000
+L 0x4125 bancos_9_10_11 pone los bancos 9-10-11
+L 0x412B bancos_12_13_14 pone los bancos 12-13-14
+L 0x4131 bancos_15_16_17 pone los bancos 15-16-17
+L 0x4137 bancos_18_19_20 pone los bancos 18-19-20
+L 0x413D bancos_21_22_23 pone los bancos 21-22-23
+L 0x4143 bancos_24_25_26 pone los bancos 24-25-26
+L 0x4149 bancos_27_28 pone los bancos 27-28 en 0x8000 y 0xA000
+L 0x4153 efecto pide el sonido A si 0xE002 lleva el bit 6
+L 0x415B pide_sonido pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+L 0x41A3 init INIT del cartucho: engancha H.STKE para arrancar cuando el BASIC acabe
+L 0x41B5 arranque pila, RAM a cero, ganchos, bancos 1-2-3 y la presentacion (p01:60CB); se queda en `jr $`
+L 0x4242 a_rotulo_konami_cuadro con 4-5-6, p04:6555 (una columna del rotulo cada cuadro: carga la pantalla 0xE00F (p04:65B8) en 0xED00 y la va pintando (p04:65C4)); vuelve con 1-2-3
+L 0x424B a_titulo con 4-5-6, p04:622B (monta el titulo (p04:6234) y el texto p04:606C); vuelve con 1-2-3
+L 0x4254 a_rotulo_konami con 4-5-6, p04:6527 (el RLE p04:7761 y 6 filas x 21 nombres desde 0x40 en 0x3907); vuelve con 1-2-3
+L 0x425D a_titulo_cuadro con 4-5-6, p04:6266 (un cuadro del titulo: espera, sonido 0x50 y los sprites que aparecen (0xE3AC, p04:62C3)); vuelve con 1-2-3
+L 0x4266 a_escena_inicial con 4-5-6, p04:6693 (un paso de la escena inicial (0xE350, tabla p04:6699)); vuelve con 1-2-3
+L 0x426F a_fuente_y_colores con 4-5-6, p04:6487 (la fuente en los tres tercios y su color); vuelve con 1-2-3
+L 0x4278 a_estado_6_pantalla con 4-5-6, p06:AEFC (el final segun 0xE338 (tabla p06:AF02)); vuelve con 1-2-3
+L 0x4281 a_final con 9-10-11, p09:6C23 (un paso del final del juego (0xE350, tabla p09:6C29)); vuelve con 1-2-3
+L 0x428A a_anima_al_de_enfrente con 7-8, p07:8758 (un paso de la animacion del actor de enfrente (0xE370, tabla p07:8762)); vuelve con 1-2-3
+L 0x4297 a_crea_actor con 7-8, p07:82FE (en el primer hueco de 0xE400: el tipo BC en (E, D), direccion al azar, colores (p07:83B4) y nombre (p08:A063)); vuelve con 1-2-3
+L 0x42A0 habla_con_1_2_3_y_1_2_3 datos del personaje, p03:AB92, el texto y modo 3; vuelve con 1-2-3
+L 0x42A6 habla_y_1_2_3 datos del personaje, p03:AB92, el texto y modo 9; vuelve con 1-2-3
+L 0x42AC a_fuente con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3
+L 0x42B5 a_marco_de_la_escena con 4-5-6, p04:631F (los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818); vuelve con 1-2-3
+L 0x42BE a_dibujos_de_la_sala con 9-10-11, p09:622B (en las salas de p09:6291, los dibujos de p09:63A5 (0xFE cambia el color)); vuelve con 1-2-3
+L 0x42C7 a_dibujos_por_bandera con 9-10-11, p09:60CC (en las salas de p09:613C, los dibujos de p09:6162 cuya bandera de la historia esta puesta); vuelve con 1-2-3
+L 0x42D0 a_crea_actores_de_la_sala con 7-8, p07:827A (borra los 8 actores y crea los de la lista p07:8BC2[sala] (o p07:9032/904C); luego el actor 0xC8 de 0xEB69/0xEB7A); vuelve con 1-2-3
+L 0x42D9 a_sprites_de_actores con 7-8, p07:865C (dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas); vuelve con 1-2-3
+L 0x42E2 a_desaparece_por_tercios con 12-13-14, p00:4C04 (efecto de borrar en tres pasos (0xE348) sobre la lista de 0xE34C); vuelve con 9-10-11
+L 0x42EF a_demo_empieza con 9-10-11, p11:BC5C (la demo: sala de partida 2 (0xE338), guion desde el principio (0xE00B) y el personaje en (0x50, 0x60)); vuelve con 1-2-3
+L 0x42F8 a_solo_ret con 9-10-11, p11:BD11 (no hace nada: `ret`); vuelve con 1-2-3
+L 0x4301 a_demo_cuadro con 9-10-11, p11:BC86 (un cuadro de la demo (p11:BC92); al acabar el guion, sonido 0x85 y 0xE340 = 0); vuelve con 1-2-3
+L 0x430A a_teclas_nuevas con 1-2-3, p01:70BE (guarda A en (HL) y deja en (HL-1) lo que no estaba); vuelve con 9-10-11
+L 0x4313 texto_y_9_10_11 un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E); vuelve con 9-10-11
+L 0x431D a_aparece_por_tercios con 4-5-6, p00:4B1A (efecto de aparecer en tres pasos (0xE348) sobre la lista de 0xE34C); vuelve con 9-10-11
+L 0x4326 a_texto_en_sprites_bf98 con 4-5-6, p06:AE8F (el texto p06:BF98 como patrones de sprite desde 0x1800); vuelve con 9-10-11
+L 0x432F a_marco_de_la_escena_y_9_10_11 con 4-5-6, p04:631F (los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818); vuelve con 1-2-3; vuelve con 9-10-11
+L 0x4335 a_fuente_y_9_10_11 con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3; vuelve con 9-10-11
+L 0x433B a_rectangulo_de_fichas con 4-5-6, p04:6792 (B x C fichas seguidas desde A en el bufer HL (0x20 por fila)); vuelve con 9-10-11
+L 0x4344 a_dibujo_en_el_mapa con 4-5-6, p04:693B (un dibujo [posicion][ancho][alto] y sus fichas a 0xED00); vuelve con 9-10-11
+L 0x434D a_rumbo_desde_ix con 1-2-3, p01:6312 (el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A); vuelve con 4-5-6
+L 0x4356 a_rumbo_al_rival con 1-2-3, p01:6320 (el paso hacia 0xE3E5/0xE3E7 con la velocidad A); vuelve con 9-10-11
+L 0x435F a_rumbo_desde_ix_y_9_10_11 con 1-2-3, p01:6312 (el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A); vuelve con 4-5-6; vuelve con 9-10-11
+L 0x4365 a_primera_sala con 1-2-3, p01:6702 (la sala de partida (o la de 0xE338, p01:67E3) con sus banderas y la entrada); vuelve con 9-10-11
+L 0x436E a_cuadro_de_la_sala con 1-2-3, p00:5A6E (un cuadro dentro de la sala: sprites, actores (p07:800A), musica y el modo 0xE360 (tabla p00:5A83)); vuelve con 9-10-11
+L 0x4377 a_historia con 4-5-6, p04:6E03 (un paso de la historia (0xE350, tabla p04:6E09): ocho pantallas de texto (p04:6EDC) con su animacion); vuelve con 1-2-3
+L 0x4380 a_borra_partida con 1-2-3, p01:6677 (0xE340-0xF080 a cero, la sala 0x200, nombres y posicion de partida); vuelve con 4-5-6
+L 0x4389 a_pide_contrasena con 12-13-14, p14:BBF0 (un paso de la entrada de la contrasena (0xE3B2, tabla p14:BBFF)); vuelve con 1-2-3
+L 0x4392 a_da_contrasena con 12-13-14, p14:BA95 (un paso de la contrasena que se le da al jugador (0xE38E, tabla p14:BAA4)); vuelve con 1-2-3
+L 0x439B a_mezcla_patrones con 4-5-6, p04:6B2D (cada 4 cuadros mezcla los patrones de 0x2500 y 0x2600 con la mascara 0xE34A); vuelve con 9-10-11
+L 0x43A4 palabra_de_tabla DE = la palabra A de la tabla DE
+L 0x43AD de_negativo DE = -DE
+L 0x43B3 hl_negativo HL = -HL
+L 0x43BB nibble_de_la_sala A = el nibble de la sala 0xEB40 en la tabla DE (par: el alto)
+L 0x43D0 aleatorio A = el registro R revuelto con la cuenta de cuadros
+L 0x442C borra_barra borra con FILVRM la parte que sobra de una barra del marcador
+L 0x4509 mapa_de_bloques HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
+L 0x451D bloque_de_la_sala HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala en la posicion L = Y, H = X
+L 0x4560 sonido_53 pide el sonido 0x53
+L 0x4565 sonido_14 pide el sonido 0x14
+L 0x456A sonido_26 pide el sonido 0x26
+L 0x456F sonido_47 pide el sonido 0x47
+L 0x4574 sonido_13 pide el sonido 0x13
+L 0x4579 sonido_28 pide el sonido 0x28
+L 0x457E sonido_01 pide el sonido 1
+L 0x4583 sonido_01_b pide el sonido 1
+L 0x4588 sonido_05 pide el sonido 5: el del cursor de los menus
+L 0x458D sonido_1e pide el sonido 0x1E
+L 0x4592 sonido_06 pide el sonido 6
+L 0x4597 sonido_07 pide el sonido 7
+L 0x459C sonido_23 pide el sonido 0x23
+L 0x45A1 sonido_29 pide el sonido 0x29
+L 0x45A6 sonido_81 pide el sonido 0x81
+L 0x45AB sonido_85 pide el sonido 0x85
+L 0x45B0 sonido_86 pide el sonido 0x86
+L 0x45B5 sonido_80 pide el sonido 0x80
+L 0x45BA sonido_24 pide el sonido 0x24
+L 0x45BF sonido_48 pide el sonido 0x48
+L 0x45C4 sonido_2f pide el sonido 0x2F
+L 0x45C9 sonido_2b pide el sonido 0x2B
+L 0x45CE musica_pendiente cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+L 0x45E1 musica_de_la_sala elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+L 0x47C6 fichas_de_la_sala el juego de fichas de la sala (nibble p12:6000, lista p12:6120): patrones p12:64CE y colores p12:6C06 a la VRAM
+L 0x482F graficos_de_la_sala dos bloques RLE de p12:7990[p12:7750[sala]] a 0x2280 y 0x0280 (patrones y colores)
+L 0x4856 graficos_del_personaje el bloque A-1 de p12:733E en RLE a 0x2D80
+L 0x4875 graficos_del_marcador patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD
+L 0x4893 pantalla_de_27 nombres p27:9B8B, fichas p27:9ECB/9ED4 y lo que toque segun 0xE3A1 (tabla p00:48BE)
+L 0x48E8 graficos_18_a patrones y colores de p18:91D1-973D a la VRAM y nombres p18:9910 y p18:9928
+L 0x493F graficos_18_b patrones p18:9935 y colores p18:9E89 en los tres tercios
+L 0x4954 graficos_18_c patrones p18:9935 volteados y colores p18:A14C/A158
+L 0x4972 graficos_18_d patrones y colores p18:A2F9/A627, tambien volteados
+L 0x4999 graficos_18_e patrones y colores p18:AB2E-B40C, nombres p27:B987
+L 0x49F0 graficos_14_a patrones y colores p14:A7EF-B37B y 0x1E0 nombres de p20:A84E
+L 0x4A29 graficos_14_b patrones y colores p14:B636-B924 y 0x100 nombres de p20:AA2E
+L 0x4A74 graficos_14_c patrones p14:B96F y colores p14:BA17 en el tercio central
+L 0x4A8C sprites_de_la_sala los patrones de sprite de la sala: lista p18:6A28[p18:67F1[sala]] (en la sala 0x12C ademas p27:BBC4)
+L 0x4AC2 un_sprite_de_la_lista una entrada de 4 bytes: [banderas][primer patron][RLE] (bit 0: copia volteada de otro)
+L 0x4AEC patron_de_sprite HL = 0x1800 + 8 * el byte siguiente de DE
+L 0x4AF9 patrones_del_personaje los patrones de p18:65DC[0xEB74 o 0xE3C3] a 0x1860
+L 0x4B1A aparece_por_tercios efecto de aparecer en tres pasos (0xE348) sobre la lista de 0xE34C
+L 0x4B72 lista_rle_con_mascara recorre la lista de 6 bytes de 0xE34C y pasa sus RLE a la VRAM con la mascara C
+L 0x4B9D rle_con_mascara un RLE de la lista a la VRAM con la mascara C
+L 0x4C04 desaparece_por_tercios efecto de borrar en tres pasos (0xE348) sobre la lista de 0xE34C
+L 0x4C5D lista_vram_con_mascara recorre la lista de 4 bytes de 0xE34C y hace AND con C en la VRAM
+L 0x4C88 vram_con_mascara AND de DE bytes de la VRAM con C
+L 0x4CC2 columna_de_vram 16 bytes de DE a la VRAM HL, saltando C en origen y destino
+L 0x4CD4 cortinilla_8 copia la ficha 0xE349 de 64 (8x8) de la lista de 0xE34C, una por cuadro
+L 0x4D28 cortinilla_12 como p00:4CD4 con filas de 12
+L 0x4D6C graficos_04_a patrones p04:7FFC a 0x2400 y 0x200 colores de p05:8EA9
+L 0x4D87 graficos_04_b patrones p04:7CB8 a 0x2A00 y 0x200 colores de p05:8CA9
+L 0x4D9B sprites_06 patrones de sprite p06:BE8A a 0x1800
+L 0x4DAA graficos_04_c p04:68F0 y patrones volteados p06:AA5D a 0x2410
+L 0x4DBC texto_fijo_4 texto C (0-2 segun 0xE8A4, o 4-6 con los tipos 0x59/0x5A) de la tabla fija 4 (p21:6DA6)
+L 0x4DE1 texto_fijo_1 texto C de la tabla fija 1 (p21:6928)
+L 0x4DE5 texto_fijo_2 texto C de la tabla fija 2 (p21:6DAC)
+L 0x4DE9 texto_fijo_3 texto C de la tabla fija 3 (p21:7080)
+L 0x4DFD texto un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+L 0x4E0C empieza_texto busca el texto (p00:4E76), borra la ventana y deja el cursor
+L 0x4E28 bancos_del_estado pone el reparto que corresponde al estado 0xE000/0xE001
+L 0x4E4E sigue_texto escribe el texto en curso (p00:4EC0) y acaba cuando 0xE886 llega a 1
+L 0x4E6A bancos_del_texto pone 21-22-23, 24-25-26 o 27-28 segun 0xE88F
+L 0x4E76 busca_texto 0xE882 = el texto C: tablas fijas 1-4 (0xE889) o la de la sala (grupo p21:639E, tabla p21:64BA)
+L 0x4EC0 escribe_texto un caracter del texto: codigos FF fin, FE linea, FD espera, FC-F7 nombres y avisos
+L 0x4F5D espera_tecla espera a que se pulse una tecla (0xE887 = 1) con el cursor parpadeando en 0xEFF7
+L 0x4F62 cursor_de_espera parpadea el cursor del texto y, con tecla, sigue (p00:5087)
+L 0x4F86 espera_y_acaba espera tecla y acaba el texto (0xE887 = 2)
+L 0x4FAB nombre_del_personaje escribe el nombre de 0xEAFF (codigo FC)
+L 0x4FB1 escribe_nombre escribe el nombre de IX hasta 0xFF
+L 0x500E nombre_11 escribe el nombre de 0xEB11
+L 0x503A nombre_08 escribe el nombre de 0xEB08
+L 0x5043 nombre_1a escribe el nombre de 0xEB1A
+L 0x504E cuatro_caracteres escribe cuatro caracteres del texto seguidos
+L 0x5066 fin_de_linea al llegar a la columna 23: si el caracter no puede ir, salta de linea
+L 0x5087 salto_de_linea salta de linea en la ventana del texto (0x40 bytes = dos filas)
+L 0x50B0 sube_el_texto sube la ventana del texto 0xEF00 una linea
+L 0x50E3 acaba_texto vuelca la ventana y acaba el texto
+L 0x50EB borra_ventana borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+L 0x5101 sonido_de_letra el sonido de cada letra (2-4 segun 0xE3B0) salvo en ciertas salas
+L 0x514B mapa_de_la_sala la sala 0xEB40 (12 x 8 bloques a nibbles, p15:6000 o p20:B606) a los nombres 0xED00 y la dureza 0xE800
+L 0x5221 es_duro A = 1 si la ficha B es >= la primera dura (0xE361)
+L 0x522B menu un paso del menu de la sala (0xE8A0, tabla p00:5231)
+L 0x5245 menu_abre abre el menu: el personaje de enfrente (0xE8A6) o nada
+L 0x5293 menu_siguiente pasa al siguiente paso del menu (0xE8A0 + 1)
+L 0x5298 datos_del_personaje copia de la ficha IX los nombres (0xEB1B-0xEB1F) y 0xEB25
+L 0x52DE menu_pinta pinta las opciones del menu
+L 0x52F1 menu_opciones elige la lista de opciones del menu
+L 0x5390 menu_elige mueve el cursor del menu y, con disparo, elige
+L 0x53DE menu_cuenta cuenta cuantas veces se ha elegido cada opcion (0xE8D0)
+L 0x5401 menu_responde la respuesta a la opcion elegida (p07:988E)
+L 0x5516 respuesta_al_azar C = la respuesta (opcion + 4 * lado) con dos bits al azar
+L 0x55BA menu_texto escribe la respuesta y vuelve al menu
+L 0x55E5 menu_cursor mueve el cursor de la cuadricula y, con disparo, pasa al paso 4
+L 0x55F3 menu_paso 0xE8A0 = A
+L 0x55F7 menu_guarda_cuenta guarda C en la cuenta de la opcion
+L 0x560E ficha_de_actor HL = 0xE400 + A * 0x80: la ficha del actor A
+L 0x561D habla_con_1_2_3 datos del personaje, p03:AB92, el texto y modo 3
+L 0x5632 habla datos del personaje, p03:AB92, el texto y modo 9
+L 0x5641 menu_fijo abre el menu con el personaje de la tabla p00:5676[0xE3A1]
+L 0x567A opciones_guardadas las opciones de A con el cursor guardado (0xE8B2/0xE8B1)
+L 0x568A opciones la lista de opciones A de p04:7902 a 0xE8B8, cursor a cero
+L 0x56B0 lista_de_objetos los objetos que se llevan (0xE9D0, bit 0) a 0xE8B8; acarreo si no hay ninguno
+L 0x56DB pinta_opciones las opciones de 0xE8B8 (textos p04:7A15) en columna desde 0x3A1A
+L 0x5728 pinta_objetos los objetos de 0xE8B8 en cuadricula desde 0x3A24
+L 0x5774 cursor_vertical arriba/abajo con repeticion (0xE8B0) en 0xE8A4
+L 0x57AE pinta_cursor el cursor parpadeante en la columna de opciones
+L 0x57CC pinta_cursor_cuadricula el cursor parpadeante en la cuadricula de objetos
+L 0x5806 cursor_cuadricula mueve el cursor de la cuadricula de 3 columnas
+L 0x585C borra_cursor borra el cursor de la columna de opciones
+L 0x586C borra_cursor_cuadricula borra el cursor de la cuadricula
+L 0x588C marco_del_menu el marco del menu (p00:454A) y su interior a cero
+L 0x58A7 color_de_borde VDP R#7 = B
+L 0x58AC primera_ficha_vacia los 8 bytes de la ficha 0 a cero en los tres tercios de patrones y colores
+L 0x58BF borra_nombres borra los nombres 0xED00 (0x300) y los vuelca
+L 0x58D4 borra_zona_de_juego borra 16 filas x 24 de 0xED00 y las vuelca
+L 0x58EA borra_nombres_sin_ventana borra 0x1E0 de 0xED00 y los vuelca
+L 0x58FF esconde_sprites Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+L 0x590D corta_sprites guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+L 0x591B pantalla_vacia sprites escondidos, ficha 0 vacia y nombres a cero
+L 0x592B escribe_en_vram SETWRT en HL y C' = el puerto de datos del VDP
+L 0x5937 lee_de_vram SETRD en HL y C' = el puerto de datos del VDP
+L 0x5941 copia_a_vram LDIRVM de DE a la VRAM HL
+L 0x5945 copia_a_dos_tercios LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
+L 0x594A copia_a_tres_tercios LDIRVM en los tres tercios
+L 0x595D llena_dos_tercios FILVRM en dos tercios
+L 0x5961 llena_tres_tercios FILVRM en los tres tercios
+L 0x5972 rle_a_dos_tercios el RLE de DE (p00:5A2A) en dos tercios
+L 0x5976 rle_a_tres_tercios el RLE de DE en los tres tercios
+L 0x5986 rle_volteado_a_dos_tercios el RLE volteado (p00:5A32) en dos tercios
+L 0x598A rle_volteado_a_tres_tercios el RLE volteado en los tres tercios
+L 0x599A borra_patrones 0x1000 de patrones y de colores a cero
+L 0x59AE borra_fichas_del_juego 0x300 de patrones y colores desde la ficha 0x10, en dos tercios
+L 0x59C2 bytes_a_vram lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+L 0x59D9 bytes_a_vram_a_cero como p00:59C2 escribiendo ceros
+L 0x59DD texto_a_vram texto de DE a la VRAM HL hasta 0xFF; 3 y 4 (dakuten) van a la fila de arriba
+L 0x59FB rle_con_destino RLE de DE con su direccion de VRAM delante
+L 0x5A03 rle_a_vram RLE de DE a la VRAM HL: 0 acaba, bit 7 = repite, si no copia n; C bit 0 = volteado
+L 0x5A2A rle RLE de DE a la VRAM HL
+L 0x5A2E rle_volteado_con_destino RLE volteado de DE con su direccion de VRAM delante
+L 0x5A32 rle_volteado RLE de DE a la VRAM HL con los bits de cada byte al reves
+L 0x5A36 voltea_sprites C sprites de 16x16 de la VRAM HL volteados a DE
+L 0x5A42 voltea_un_sprite un sprite de 16x16 de la VRAM HL volteado a DE (bytes al reves y mitades cambiadas)
+L 0x5A5E byte_del_rle A = el byte de DE, al reves si C bit 0
+L 0x5A63 invierte_bits A con sus 8 bits al reves
+L 0x5A6E cuadro_de_la_sala un cuadro dentro de la sala: sprites, actores (p07:800A), musica y el modo 0xE360 (tabla p00:5A83)
+L 0x5A97 modo_0 modo 0: la tecla de menu, p01:7162, los sprites y los actores; cambia de modo si toca
+L 0x5AD9 modo_1 modo 1 (p07:844F): sale de la sala
+L 0x5AFA modo_menu modo 2: el menu de la sala
+L 0x5B4A modo_texto modo 3: el texto del personaje y lo que pasa despues en las salas 0x79, 0x185, 0x201, 0x1AA
+L 0x5BC0 modo_4 modo 4 (p08:B3F9) hasta que 0xE378 = 0
+L 0x5BD4 modo_6 modo 6 (p04:6019 y p04:603F segun 0xE379) y el texto 0 o 1
+L 0x5BF6 modo_7 modo 7 (p21:6000)
+L 0x5C11 modo_8 modo 8: una ronda de rutinas de los bancos 1-3 y 9-11
+L 0x5C41 modo_9 modo 9: escribe el texto y pasa al 8
+L 0x5C58 tecla_de_menu con la tecla de menu (0xE008 bit 5) espera a que no quede actor y pasa al modo 2
+L 0x5C8F cierra_menu con la tecla de menu se cierra el menu (o, en ciertas salas, otra cosa)
+L 0x5D33 menu_en_la_sala_211 en la sala 0x211, la tecla de menu abre el paso 9
+L 0x5D64 bloque_de_enfrente A = el bloque que hay delante del personaje (0xE3C1 + p00:5DE7[0xE3C6])
+L 0x5D80 en_el_borde Z/C segun si el personaje esta en el borde de su direccion
+L 0x5DAB en_el_borde_de_ix como p00:5D80 con los bordes de la ficha IX (+0x30-0x33)
+L 0x5DD3 pon_bloque_de_enfrente pone B en el bloque de delante
+L 0x5DF1 nombres_en_cuadricula 0xED00 y 0xEE00 con las fichas 0-0xFF en bloques de 8x8
+L 0x5DFA cuadricula_de_fichas 256 fichas seguidas en 4 bloques de 8 x 8
+L 0x5E18 nombres_del_marco las fichas 0x10-0x6F en dos bloques de 16 x 6
+L 0x5E45 vuelca_nombres_sin_ventana 0x1E0 de 0xED00 a 0x3800
+L 0x5E51 vuelca_nombres 0x300 de 0xED00 a 0x3800
+L 0x5E5F vuelca_zona_de_juego 16 filas x 24 de 0xED00 a 0x3800
+L 0x5E69 vuelca_ventana 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto)
+L 0x5E8A vuelca_marcador 7 filas x 8 de 0xEE18 a 0x3918
+L 0x5EAE vuelca BC bytes de DE a la VRAM HL (a cero si 0xE36C)
+L 0x5ECA vuelca_sprites los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
+C 0x402E borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x4031 bancos_21_22_23: pone los bancos 21-22-23
+C 0x4034 graficos_del_marcador: patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD
+C 0x4037 bancos_21_22_23: pone los bancos 21-22-23
+C 0x403A vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x403D bancos_21_22_23: pone los bancos 21-22-23
+C 0x4040 sonido_28: pide el sonido 0x28
+C 0x4043 bancos_21_22_23: pone los bancos 21-22-23
+C 0x4046 vuelca_ventana: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto)
+C 0x4049 bancos_12_13_14: pone los bancos 12-13-14
+C 0x4050 apunta a la interrupcion: bit 0 dentro del cuadro, bit 4 sin musica
+C 0x4059 el mapper: pone en 0x6000 el banco de A
+C 0x405D el mapper: pone en 0x8000 el banco de A
+C 0x4061 el mapper: pone en 0xA000 el banco de A
+C 0x4064 motor_cuadro: un cuadro del sonido (lo llama la interrupcion): fundidos, los 5 canales y los registros del PSG
+C 0x4067 lee la copia del banco de 0x6000
+C 0x406A el mapper: pone en 0x6000 el banco de A
+C 0x406D lee la copia del banco de 0x8000
+C 0x4070 el mapper: pone en 0x8000 el banco de A
+C 0x4073 lee la copia del banco de 0xA000
+C 0x4076 el mapper: pone en 0xA000 el banco de A
+C 0x4079 apunta a la interrupcion: bit 0 dentro del cuadro, bit 4 sin musica
+C 0x4082 lee_los_mandos: 0xE009 = lo que hay, 0xE008 = lo nuevo
+C 0x4085 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x408C lee sin el sonido de las letras (cambia con la tecla del bit 7)
+C 0x4092 guarda sin el sonido de las letras (cambia con la tecla del bit 7)
+C 0x4095 cuadro: un cuadro del juego (lo llama la interrupcion): cuenta 0xE003 y despacha el estado 0xE000 (tabla p01:64DF)
+C 0x4099 guarda la interrupcion: bit 0 dentro del cuadro, bit 4 sin musica
+C 0x40AD hl_mas_a: HL = HL + A
+C 0x40F5 guarda el slot del cartucho
+C 0x4104 apunta a la copia del banco de 0x6000
+C 0x4107 el mapper: pone en 0x6000 el banco de A
+C 0x410D el mapper: pone en 0x8000 el banco de A
+C 0x4113 el mapper: pone en 0xA000 el banco de A
+C 0x4120 apunta a la copia del banco de 0x8000
+C 0x414E apunta a la copia del banco de 0x8000
+C 0x4154 apunta a las banderas del juego (bit 6: suenan los efectos)
+C 0x4162 lee la copia del banco de 0x6000 y el byte siguiente (16 bits)
+C 0x4165 lee la copia del banco de 0xA000 y el byte siguiente (16 bits)
+C 0x416E el mapper: pone en 0x6000 el banco de A
+C 0x4171 guarda la copia del banco de 0x6000
+C 0x4175 el mapper: pone en 0x8000 el banco de A
+C 0x4178 guarda la copia del banco de 0x8000
+C 0x417C guarda la copia del banco de 0xA000
+C 0x417F el mapper: pone en 0xA000 el banco de A
+C 0x4183 motor_pide: el sonido A: 0x80 corta el fundido, 0x81/0x85/0x86 funden, 0x84 sube; si no, su cabecera (p29:612F) a los canales de menos prioridad
+C 0x4188 guarda la copia del banco de 0x6000 y el byte siguiente (16 bits)
+C 0x418B guarda la copia del banco de 0xA000 y el byte siguiente (16 bits)
+C 0x4190 el mapper: pone en 0x6000 el banco de A
+C 0x4194 el mapper: pone en 0x8000 el banco de A
+C 0x4198 el mapper: pone en 0xA000 el banco de A
+C 0x41A4 slot_del_cartucho: A = el slot del cartucho (primario y secundario), copia en 0xF0F8
+C 0x41B8 la musica que suena
+C 0x41DC cartucho_en_8000: pone en 0x8000 el slot del cartucho (ENASLT)
+C 0x41DF slot_del_cartucho: A = el slot del cartucho (primario y secundario), copia en 0xF0F8
+C 0x41F5 el mapper: pone en 0x6000 el banco de A
+C 0x41F8 guarda la copia del banco de 0x6000
+C 0x41FC el mapper: pone en 0x8000 el banco de A
+C 0x41FF guarda la copia del banco de 0x8000
+C 0x4203 el mapper: pone en 0xA000 el banco de A
+C 0x4206 guarda la copia del banco de 0xA000
+C 0x4213 apunta a el estado del juego
+C 0x4216 apunta a el paso del estado
+C 0x4220 apunta a la musica que suena
+C 0x422F guarda la interrupcion: bit 0 dentro del cuadro, bit 4 sin musica
+C 0x4232 busca_otro_cartucho: busca en los cuatro slots (y sus subslots) un cartucho con YZ en 0x4010; su slot en 0xF0F7, 0xF0F9 = 1
+C 0x4235 enciende_la_maquina: PSG en silencio, VRAM a cero y los registros del VDP
+C 0x4239 guarda la interrupcion: bit 0 dentro del cuadro, bit 4 sin musica
+C 0x4242 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4245 rotulo_konami_cuadro: una columna del rotulo cada cuadro: carga la pantalla 0xE00F (p04:65B8) en 0xED00 y la va pintando (p04:65C4)
+C 0x4248 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x424B bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x424E titulo: monta el titulo (p04:6234) y el texto p04:606C
+C 0x4251 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4254 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4257 rotulo_konami: el RLE p04:7761 y 6 filas x 21 nombres desde 0x40 en 0x3907
+C 0x425A bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x425D bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4260 titulo_cuadro: un cuadro del titulo: espera, sonido 0x50 y los sprites que aparecen (0xE3AC, p04:62C3)
+C 0x4263 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4266 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4269 escena_inicial: un paso de la escena inicial (0xE350, tabla p04:6699)
+C 0x426C bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x426F bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4272 fuente_y_colores: la fuente en los tres tercios y su color
+C 0x4275 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4278 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x427B estado_6_pantalla: el final segun 0xE338 (tabla p06:AF02)
+C 0x427E bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4281 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4284 final: un paso del final del juego (0xE350, tabla p09:6C29)
+C 0x4287 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x428A bancos_7_8: pone los bancos 7-8 en 0x8000 y 0xA000
+C 0x428F anima_al_de_enfrente: un paso de la animacion del actor de enfrente (0xE370, tabla p07:8762)
+C 0x4294 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4297 bancos_7_8: pone los bancos 7-8 en 0x8000 y 0xA000
+C 0x429A crea_actor: en el primer hueco de 0xE400: el tipo BC en (E, D), direccion al azar, colores (p07:83B4) y nombre (p08:A063)
+C 0x429D bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x42A0 habla_con_1_2_3: datos del personaje, p03:AB92, el texto y modo 3
+C 0x42A3 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x42A6 habla: datos del personaje, p03:AB92, el texto y modo 9
+C 0x42A9 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x42AC bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x42AF fuente: la fuente en 0x2808 y 0x3000 y su color
+C 0x42B2 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x42B5 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x42B8 marco_de_la_escena: los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818
+C 0x42BB bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x42BE bancos_9_10_11: pone los bancos 9-10-11
+C 0x42C1 dibujos_de_la_sala: en las salas de p09:6291, los dibujos de p09:63A5 (0xFE cambia el color)
+C 0x42C4 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x42C7 bancos_9_10_11: pone los bancos 9-10-11
+C 0x42CA dibujos_por_bandera: en las salas de p09:613C, los dibujos de p09:6162 cuya bandera de la historia esta puesta
+C 0x42CD bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x42D0 bancos_7_8: pone los bancos 7-8 en 0x8000 y 0xA000
+C 0x42D3 crea_actores_de_la_sala: borra los 8 actores y crea los de la lista p07:8BC2[sala] (o p07:9032/904C); luego el actor 0xC8 de 0xEB69/0xEB7A
+C 0x42D6 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x42D9 bancos_7_8: pone los bancos 7-8 en 0x8000 y 0xA000
+C 0x42DC sprites_de_actores: dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas
+C 0x42DF bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x42E2 bancos_12_13_14: pone los bancos 12-13-14
+C 0x42E7 desaparece_por_tercios: efecto de borrar en tres pasos (0xE348) sobre la lista de 0xE34C
+C 0x42EC bancos_9_10_11: pone los bancos 9-10-11
+C 0x42EF bancos_9_10_11: pone los bancos 9-10-11
+C 0x42F2 demo_empieza: la demo: sala de partida 2 (0xE338), guion desde el principio (0xE00B) y el personaje en (0x50, 0x60)
+C 0x42F5 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x42F8 bancos_9_10_11: pone los bancos 9-10-11
+C 0x42FB solo_ret: no hace nada: `ret`
+C 0x42FE bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4301 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4304 demo_cuadro: un cuadro de la demo (p11:BC92); al acabar el guion, sonido 0x85 y 0xE340 = 0
+C 0x4307 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x430A bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x430D teclas_nuevas: guarda A en (HL) y deja en (HL-1) lo que no estaba
+C 0x4310 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4315 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x431A bancos_9_10_11: pone los bancos 9-10-11
+C 0x431D bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4320 aparece_por_tercios: efecto de aparecer en tres pasos (0xE348) sobre la lista de 0xE34C
+C 0x4323 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4326 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4329 texto_en_sprites_bf98: el texto p06:BF98 como patrones de sprite desde 0x1800
+C 0x432C bancos_9_10_11: pone los bancos 9-10-11
+C 0x432F a_marco_de_la_escena: con 4-5-6, p04:631F (los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818); vuelve con 1-2-3
+C 0x4332 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4335 a_fuente: con 4-5-6, p04:648C (la fuente en 0x2808 y 0x3000 y su color); vuelve con 1-2-3
+C 0x4338 bancos_9_10_11: pone los bancos 9-10-11
+C 0x433B bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x433E rectangulo_de_fichas: B x C fichas seguidas desde A en el bufer HL (0x20 por fila)
+C 0x4341 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4344 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4347 dibujo_en_el_mapa: un dibujo [posicion][ancho][alto] y sus fichas a 0xED00
+C 0x434A bancos_9_10_11: pone los bancos 9-10-11
+C 0x434D bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4350 rumbo_desde_ix: el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A
+C 0x4353 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4356 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4359 rumbo_al_rival: el paso hacia 0xE3E5/0xE3E7 con la velocidad A
+C 0x435C bancos_9_10_11: pone los bancos 9-10-11
+C 0x435F a_rumbo_desde_ix: con 1-2-3, p01:6312 (el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A); vuelve con 4-5-6
+C 0x4362 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4365 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4368 primera_sala: la sala de partida (o la de 0xE338, p01:67E3) con sus banderas y la entrada
+C 0x436B bancos_9_10_11: pone los bancos 9-10-11
+C 0x436E bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4371 cuadro_de_la_sala: un cuadro dentro de la sala: sprites, actores (p07:800A), musica y el modo 0xE360 (tabla p00:5A83)
+C 0x4374 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4377 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x437A historia: un paso de la historia (0xE350, tabla p04:6E09): ocho pantallas de texto (p04:6EDC) con su animacion
+C 0x437D bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4380 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4383 borra_partida: 0xE340-0xF080 a cero, la sala 0x200, nombres y posicion de partida
+C 0x4386 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4389 bancos_12_13_14: pone los bancos 12-13-14
+C 0x438C pide_contrasena: un paso de la entrada de la contrasena (0xE3B2, tabla p14:BBFF)
+C 0x438F bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4392 bancos_12_13_14: pone los bancos 12-13-14
+C 0x4395 da_contrasena: un paso de la contrasena que se le da al jugador (0xE38E, tabla p14:BAA4)
+C 0x4398 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x439B bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x439E mezcla_patrones: cada 4 cuadros mezcla los patrones de 0x2500 y 0x2600 con la mascara 0xE34A
+C 0x43A1 bancos_9_10_11: pone los bancos 9-10-11
+C 0x43AE hl_negativo: HL = -HL
+C 0x43BB lee la sala
+C 0x43D6 apunta a la cuenta de cuadros
+C 0x43DB bancos_18_19_20: pone los bancos 18-19-20
+C 0x43DE lee la escena de accion (1-9)
+C 0x43E4 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x43E9 bancos_18_19_20: pone los bancos 18-19-20
+C 0x43EF lee el fotograma del personaje
+C 0x43F2 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x43F8 rle: RLE de DE a la VRAM HL
+C 0x43FB bancos_del_estado: pone el reparto que corresponde al estado 0xE000/0xE001
+C 0x4406 borra_barra: borra con FILVRM la parte que sobra de una barra del marcador
+C 0x440C borra_barra: borra con FILVRM la parte que sobra de una barra del marcador
+C 0x4414 borra_barra: borra con FILVRM la parte que sobra de una barra del marcador
+C 0x441C borra_barra: borra con FILVRM la parte que sobra de una barra del marcador
+C 0x4424 borra_barra: borra con FILVRM la parte que sobra de una barra del marcador
+C 0x443D lee el dibujo de p12:733E que se ve (0: ninguno)
+C 0x4442 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4445 lee el dibujo de p12:733E que se ve (0: ninguno)
+C 0x444F palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x4459 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x445F vuelca_marcador: 7 filas x 8 de 0xEE18 a 0x3918
+C 0x4465 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x446B bancos_9_10_11: pone los bancos 9-10-11
+C 0x446E bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4471 apunta a el marcador (8 x 7)
+C 0x4487 vuelca_marcador: 7 filas x 8 de 0xEE18 a 0x3918
+C 0x448A apunta a el marcador (8 x 7)
+C 0x44BE mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
+C 0x44C3 bloque_de_la_sala: HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala en la posicion L = Y, H = X
+C 0x44D7 hl_mas_a: HL = HL + A
+C 0x44E2 lee el color de las fichas copiadas
+C 0x44EE hl_mas_a: HL = HL + A
+C 0x44F5 hl_mas_a: HL = HL + A
+C 0x44FF guarda el color de las fichas copiadas
+C 0x4503 efecto_que_sube_cuadro: un cuadro del efecto: la Y sube cada 16 cuadros y al acabar se esconde
+C 0x4506 a_sprites_de_actores: con 7-8, p07:865C (dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas); vuelve con 1-2-3
+C 0x4530 bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+C 0x4562 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x4567 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x456C pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x4571 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x4576 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x457B pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x4580 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x4585 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x458A pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x458F pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x4594 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x4599 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x459E pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45A3 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45A8 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45AD pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45B2 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45B7 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45BC pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45C1 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45C6 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45CB pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45CE apunta a la espera hasta la musica de 0xE33A
+C 0x45D8 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45DB lee la musica que va despues
+C 0x45DE pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x45ED nibble_de_la_sala: A = el nibble de la sala 0xEB40 en la tabla DE (par: el alto)
+C 0x45F4 apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
+C 0x45FD lee la sala
+C 0x4608 lee las banderas de la historia, byte 0x1D (se graban con la partida)
+C 0x4613 lee la sala
+C 0x461E apunta a las banderas de la historia, byte 0x24 (se graban con la partida)
+C 0x4627 lee las banderas de la historia, byte 0x20 (se graban con la partida)
+C 0x4632 lee la musica que suena
+C 0x4645 lee la sala
+C 0x4650 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x4665 hl_mas_a: HL = HL + A
+C 0x4669 apunta a la musica que suena
+C 0x466F lee la espera hasta la musica de 0xE33A
+C 0x4676 guarda la musica que va despues
+C 0x467B guarda la espera hasta la musica de 0xE33A
+C 0x4680 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x4683 lee la musica que suena
+C 0x4686 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x4689 guarda la musica que va despues
+C 0x468E guarda la espera hasta la musica de 0xE33A
+C 0x4693 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x47C6 bancos_12_13_14: pone los bancos 12-13-14
+C 0x47CC nibble_de_la_sala: A = el nibble de la sala 0xEB40 en la tabla DE (par: el alto)
+C 0x47D2 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x47D6 guarda la primera ficha dura de la sala
+C 0x4800 copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
+C 0x481B copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
+C 0x482C bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x482F bancos_12_13_14: pone los bancos 12-13-14
+C 0x4832 lee la sala
+C 0x483E palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x4845 rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x4850 rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x4853 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4856 bancos_12_13_14: pone los bancos 12-13-14
+C 0x485D palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x4863 rle: RLE de DE a la VRAM HL
+C 0x4866 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4869 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x486C bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x486F graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x4872 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4875 bancos_12_13_14: pone los bancos 12-13-14
+C 0x487E rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x4887 rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x488D rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x4890 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4893 bancos_27_28: pone los bancos 27-28 en 0x8000 y 0xA000
+C 0x4899 rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x489F bancos_9_10_11: pone los bancos 9-10-11
+C 0x48A8 rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x48B1 rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x48B4 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x48B7 lee la escena de accion (1-9)
+C 0x48BB despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x48D0 bancos_27_28: pone los bancos 27-28 en 0x8000 y 0xA000
+C 0x48D6 bancos_27_28: pone los bancos 27-28 en 0x8000 y 0xA000
+C 0x48DC bancos_27_28: pone los bancos 27-28 en 0x8000 y 0xA000
+C 0x48E2 bancos_27_28: pone los bancos 27-28 en 0x8000 y 0xA000
+C 0x48E8 bancos_18_19_20: pone los bancos 18-19-20
+C 0x48F1 rle: RLE de DE a la VRAM HL
+C 0x48FA rle_volteado: RLE de DE a la VRAM HL con los bits de cada byte al reves
+C 0x4903 rle: RLE de DE a la VRAM HL
+C 0x490C rle: RLE de DE a la VRAM HL
+C 0x4915 rle: RLE de DE a la VRAM HL
+C 0x491E rle_volteado: RLE de DE a la VRAM HL con los bits de cada byte al reves
+C 0x4927 rle: RLE de DE a la VRAM HL
+C 0x4930 rle: RLE de DE a la VRAM HL
+C 0x4936 rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x493C rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x493F bancos_18_19_20: pone los bancos 18-19-20
+C 0x4948 rle_a_tres_tercios: el RLE de DE en los tres tercios
+C 0x4951 rle_a_tres_tercios: el RLE de DE en los tres tercios
+C 0x4954 bancos_18_19_20: pone los bancos 18-19-20
+C 0x495D rle_volteado_a_dos_tercios: el RLE volteado (p00:5A32) en dos tercios
+C 0x4966 rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x496F rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x4972 bancos_18_19_20: pone los bancos 18-19-20
+C 0x497B rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x4984 rle_volteado_a_dos_tercios: el RLE volteado (p00:5A32) en dos tercios
+C 0x498D rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x4996 rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x4999 bancos_18_19_20: pone los bancos 18-19-20
+C 0x49A2 rle: RLE de DE a la VRAM HL
+C 0x49AB rle_volteado: RLE de DE a la VRAM HL con los bits de cada byte al reves
+C 0x49B4 rle: RLE de DE a la VRAM HL
+C 0x49BD rle: RLE de DE a la VRAM HL
+C 0x49C6 rle: RLE de DE a la VRAM HL
+C 0x49CF rle_volteado: RLE de DE a la VRAM HL con los bits de cada byte al reves
+C 0x49D8 rle: RLE de DE a la VRAM HL
+C 0x49E1 rle: RLE de DE a la VRAM HL
+C 0x49E4 bancos_27_28: pone los bancos 27-28 en 0x8000 y 0xA000
+C 0x49EA rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x49ED bancos_9_10_11: pone los bancos 9-10-11
+C 0x49F0 bancos_12_13_14: pone los bancos 12-13-14
+C 0x49F9 rle: RLE de DE a la VRAM HL
+C 0x4A02 rle: RLE de DE a la VRAM HL
+C 0x4A0B rle: RLE de DE a la VRAM HL
+C 0x4A14 rle: RLE de DE a la VRAM HL
+C 0x4A17 bancos_18_19_20: pone los bancos 18-19-20
+C 0x4A26 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4A29 bancos_12_13_14: pone los bancos 12-13-14
+C 0x4A32 rle: RLE de DE a la VRAM HL
+C 0x4A3B rle_volteado: RLE de DE a la VRAM HL con los bits de cada byte al reves
+C 0x4A44 rle: RLE de DE a la VRAM HL
+C 0x4A4D rle: RLE de DE a la VRAM HL
+C 0x4A56 rle: RLE de DE a la VRAM HL
+C 0x4A5F rle: RLE de DE a la VRAM HL
+C 0x4A62 bancos_18_19_20: pone los bancos 18-19-20
+C 0x4A71 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4A74 bancos_12_13_14: pone los bancos 12-13-14
+C 0x4A7D rle: RLE de DE a la VRAM HL
+C 0x4A86 rle: RLE de DE a la VRAM HL
+C 0x4A89 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4A8C lee la sala
+C 0x4A97 bancos_27_28: pone los bancos 27-28 en 0x8000 y 0xA000
+C 0x4A9D rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x4AA0 bancos_18_19_20: pone los bancos 18-19-20
+C 0x4AA6 lee la sala
+C 0x4AAE palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x4AB3 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4AB8 un_sprite_de_la_lista: una entrada de 4 bytes: [banderas][primer patron][RLE] (bit 0: copia volteada de otro)
+C 0x4AC9 patron_de_sprite: HL = 0x1800 + 8 * el byte siguiente de DE
+C 0x4AD4 rle: RLE de DE a la VRAM HL
+C 0x4AD8 patron_de_sprite: HL = 0x1800 + 8 * el byte siguiente de DE
+C 0x4ADC patron_de_sprite: HL = 0x1800 + 8 * el byte siguiente de DE
+C 0x4AE9 voltea_sprites: C sprites de 16x16 de la VRAM HL volteados a DE
+C 0x4AF9 bancos_18_19_20: pone los bancos 18-19-20
+C 0x4AFC lee las banderas de la historia, byte 0x34 (se graban con la partida)
+C 0x4B08 lee el fotograma del personaje
+C 0x4B0E palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x4B14 rle: RLE de DE a la VRAM HL
+C 0x4B17 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4B1A lee el paso del efecto de aparecer/borrar
+C 0x4B24 guarda la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4B29 lista_rle_con_mascara: recorre la lista de 6 bytes de 0xE34C y pasa sus RLE a la VRAM con la mascara C
+C 0x4B2E guarda la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4B33 lista_rle_con_mascara: recorre la lista de 6 bytes de 0xE34C y pasa sus RLE a la VRAM con la mascara C
+C 0x4B38 guarda la mascara del efecto
+C 0x4B3B guarda el efecto en marcha
+C 0x4B3E apunta a el paso del efecto de aparecer/borrar
+C 0x4B44 guarda la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4B47 lee la mascara del efecto
+C 0x4B4B lista_rle_con_mascara: recorre la lista de 6 bytes de 0xE34C y pasa sus RLE a la VRAM con la mascara C
+C 0x4B4E apunta a la mascara del efecto
+C 0x4B5F guarda la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4B64 lista_rle_con_mascara: recorre la lista de 6 bytes de 0xE34C y pasa sus RLE a la VRAM con la mascara C
+C 0x4B68 guarda el efecto en marcha
+C 0x4B6B guarda la mascara del efecto
+C 0x4B6E guarda el paso del efecto de aparecer/borrar
+C 0x4B72 lee la lista del efecto
+C 0x4B7F rle_con_mascara: un RLE de la lista a la VRAM con la mascara C
+C 0x4B89 rle_con_mascara: un RLE de la lista a la VRAM con la mascara C
+C 0x4B93 rle_con_mascara: un RLE de la lista a la VRAM con la mascara C
+C 0x4BA6 lee la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4BC6 escribe_en_vram: SETWRT en HL y C' = el puerto de datos del VDP
+C 0x4BDB lee la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4BF3 lee la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4C04 lee el paso del efecto de aparecer/borrar
+C 0x4C0E guarda la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4C13 lista_vram_con_mascara: recorre la lista de 4 bytes de 0xE34C y hace AND con C en la VRAM
+C 0x4C18 guarda la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4C1D lista_vram_con_mascara: recorre la lista de 4 bytes de 0xE34C y hace AND con C en la VRAM
+C 0x4C22 guarda la mascara del efecto
+C 0x4C27 guarda el efecto en marcha
+C 0x4C2A apunta a el paso del efecto de aparecer/borrar
+C 0x4C30 guarda la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4C33 lee la mascara del efecto
+C 0x4C37 lista_vram_con_mascara: recorre la lista de 4 bytes de 0xE34C y hace AND con C en la VRAM
+C 0x4C3A apunta a la mascara del efecto
+C 0x4C4A guarda la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4C4F lista_vram_con_mascara: recorre la lista de 4 bytes de 0xE34C y hace AND con C en la VRAM
+C 0x4C53 guarda el efecto en marcha
+C 0x4C56 guarda la mascara del efecto
+C 0x4C59 guarda el paso del efecto de aparecer/borrar
+C 0x4C5D lee la lista del efecto
+C 0x4C6A vram_con_mascara: AND de DE bytes de la VRAM con C
+C 0x4C74 vram_con_mascara: AND de DE bytes de la VRAM con C
+C 0x4C7E vram_con_mascara: AND de DE bytes de la VRAM con C
+C 0x4C91 lee la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4CAE lee la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4CCA hl_mas_a: HL = HL + A
+C 0x4CCE de_mas_a: DE = DE + A
+C 0x4CD4 lee la lista del efecto
+C 0x4CD8 lee el paso del efecto de aparecer/borrar
+C 0x4CE3 guarda la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4CE7 guarda el efecto en marcha
+C 0x4CEA apunta a el paso del efecto de aparecer/borrar
+C 0x4CEF apunta a la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4D1B guarda el efecto en marcha
+C 0x4D1E guarda el paso del efecto de aparecer/borrar
+C 0x4D28 lee la lista del efecto
+C 0x4D2C lee el paso del efecto de aparecer/borrar
+C 0x4D38 apunta a la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x4D6C bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4D75 rle: RLE de DE a la VRAM HL
+C 0x4D81 copia_a_vram: LDIRVM de DE a la VRAM HL
+C 0x4D84 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4D87 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4D90 rle: RLE de DE a la VRAM HL
+C 0x4D9B bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4DA4 rle: RLE de DE a la VRAM HL
+C 0x4DA7 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4DAA bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4DAD graficos_de_lista: B entradas de 4 bytes [RLE][VRAM] en dos tercios
+C 0x4DB6 rle_volteado_a_dos_tercios: el RLE volteado (p00:5A32) en dos tercios
+C 0x4DB9 bancos_9_10_11: pone los bancos 9-10-11
+C 0x4DBC lee el tipo del personaje de enfrente
+C 0x4DD0 lee la opcion del cursor
+C 0x4DEB guarda la tabla del texto (1-4 fijas; otra: la de la sala)
+C 0x4DF0 lee la opcion del cursor
+C 0x4DFE vuelca_ventana: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto)
+C 0x4E02 lee el paso del texto (0 prepara, 1 escribe)
+C 0x4E05 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x4E0E guarda el texto en marcha
+C 0x4E11 bancos_21_22_23: pone los bancos 21-22-23
+C 0x4E14 busca_texto: 0xE882 = el texto C: tablas fijas 1-4 (0xE889) o la de la sala (grupo p21:639E, tabla p21:64BA)
+C 0x4E17 bancos_del_estado: pone el reparto que corresponde al estado 0xE000/0xE001
+C 0x4E1A borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x4E1D lee el principio de la linea del texto
+C 0x4E20 guarda el cursor del texto
+C 0x4E23 apunta a el paso del texto (0 prepara, 1 escribe)
+C 0x4E28 lee el estado del juego
+C 0x4E2F lee el paso del estado
+C 0x4E33 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4E36 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4E3B bancos_9_10_11: pone los bancos 9-10-11
+C 0x4E40 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4E43 lee el paso del estado
+C 0x4E48 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x4E4B bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x4E4F guarda el texto que va despues
+C 0x4E52 bancos_del_texto: pone 21-22-23, 24-25-26 o 27-28 segun 0xE88F
+C 0x4E55 escribe_texto: un caracter del texto: codigos FF fin, FE linea, FD espera, FC-F7 nombres y avisos
+C 0x4E58 bancos_del_estado: pone el reparto que corresponde al estado 0xE000/0xE001
+C 0x4E5B apunta a el texto en marcha
+C 0x4E63 guarda el paso del texto (0 prepara, 1 escribe)
+C 0x4E66 guarda la tabla del texto (1-4 fijas; otra: la de la sala)
+C 0x4E6A lee el grupo de bancos del texto
+C 0x4E6D despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x4E77 guarda el grupo de bancos del texto
+C 0x4E7A lee la tabla del texto (1-4 fijas; otra: la de la sala)
+C 0x4E7F guarda el numero del texto
+C 0x4E9E nibble_de_la_sala: A = el nibble de la sala 0xEB40 en la tabla DE (par: el alto)
+C 0x4EA1 guarda el grupo de bancos del texto
+C 0x4EA5 lee la sala
+C 0x4EB1 bancos_del_texto: pone 21-22-23, 24-25-26 o 27-28 segun 0xE88F
+C 0x4EB5 lee el numero del texto
+C 0x4EB8 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x4EBB guarda el puntero del texto
+C 0x4EC0 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x4EC4 espera_tecla: espera a que se pulse una tecla (0xE887 = 1) con el cursor parpadeando en 0xEFF7
+C 0x4EC8 espera_y_acaba: espera tecla y acaba el texto (0xE887 = 2)
+C 0x4ECB lee la cuenta de cuadros
+C 0x4ED1 lee las lineas que quedan por subir
+C 0x4ED5 sube_el_texto: sube la ventana del texto 0xEF00 una linea
+C 0x4ED8 lee el puntero del texto
+C 0x4EDC lee el cursor del texto
+C 0x4EE1 acaba_texto: vuelca la ventana y acaba el texto
+C 0x4EE5 salto_de_linea: salta de linea en la ventana del texto (0x40 bytes = dos filas)
+C 0x4EEC nombre_del_personaje: escribe el nombre de 0xEAFF (codigo FC)
+C 0x4EF0 nombre_11: escribe el nombre de 0xEB11
+C 0x4EF4 espera_y_acaba: espera tecla y acaba el texto (0xE887 = 2)
+C 0x4EF8 nombre_08: escribe el nombre de 0xEB08
+C 0x4EFC nombre_1a: escribe el nombre de 0xEB1A
+C 0x4F04 cuatro_caracteres: escribe cuatro caracteres del texto seguidos
+C 0x4F1C lee escribir en gris (0x0A)
+C 0x4F2F fin_de_linea: al llegar a la columna 23: si el caracter no puede ir, salta de linea
+C 0x4F39 guarda escribir en gris (0x0A)
+C 0x4F3E lee escribir en gris (0x0A)
+C 0x4F4D guarda el cursor del texto
+C 0x4F51 guarda el puntero del texto
+C 0x4F5A sonido_de_letra: el sonido de cada letra (2-4 segun 0xE3B0) salvo en ciertas salas
+C 0x4F5F guarda la espera del texto (1 tecla, 2 tecla y fin)
+C 0x4F62 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x4F69 lee la cuenta de cuadros
+C 0x4F7A lee el puntero del texto
+C 0x4F7E salto_de_linea: salta de linea en la ventana del texto (0x40 bytes = dos filas)
+C 0x4F82 guarda la espera del texto (1 tecla, 2 tecla y fin)
+C 0x4F88 guarda la espera del texto (1 tecla, 2 tecla y fin)
+C 0x4F8C guarda el texto en marcha
+C 0x4F8F cursor_de_espera: parpadea el cursor del texto y, con tecla, sigue (p00:5087)
+C 0x4F92 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x4F97 guarda el paso del texto (0 prepara, 1 escribe)
+C 0x4F9A lee el puntero del texto
+C 0x4F9E guarda el texto que va despues
+C 0x4FA5 guarda el nombre va entre parentesis
+C 0x4FB9 lee el nombre va entre parentesis
+C 0x4FC0 guarda quien habla (sonido de las letras)
+C 0x4FC7 sonido_de_letra: el sonido de cada letra (2-4 segun 0xE3B0) salvo en ciertas salas
+C 0x4FD0 guarda el cursor del texto
+C 0x4FD4 guarda el puntero del texto
+C 0x4FD9 guarda el nombre va entre parentesis
+C 0x4FF1 lee escribir en gris (0x0A)
+C 0x5001 lee escribir en gris (0x0A)
+C 0x500F guarda escribir en gris (0x0A)
+C 0x5012 lee el nombre va entre parentesis
+C 0x5024 escribe_nombre: escribe el nombre de IX hasta 0xFF
+C 0x5027 lee las banderas de la historia, byte 0x3B (se graban con la partida)
+C 0x5036 guarda escribir en gris (0x0A)
+C 0x5040 escribe_nombre: escribe el nombre de IX hasta 0xFF
+C 0x504B escribe_nombre: escribe el nombre de IX hasta 0xFF
+C 0x5053 guarda el cursor del texto
+C 0x5056 guarda el puntero del texto
+C 0x507E lee el puntero del texto
+C 0x5088 guarda el puntero del texto
+C 0x508C lee el principio de la linea del texto
+C 0x5093 lee el principio de la linea del texto
+C 0x5097 guarda el principio de la linea del texto
+C 0x509A guarda el cursor del texto
+C 0x509D apunta a los atributos de los 32 sprites
+C 0x50A6 guarda las lineas que quedan por subir
+C 0x50AA guarda el principio de la linea del texto
+C 0x50AD guarda el cursor del texto
+C 0x50B0 apunta a las lineas que quedan por subir
+C 0x50B7 apunta a la ventana del texto (32 x 8)
+C 0x50C4 hl_mas_a: HL = HL + A
+C 0x50C9 de_mas_a: DE = DE + A
+C 0x50E3 vuelca_ventana: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto)
+C 0x50E6 apunta a el texto en marcha
+C 0x50EB apunta a la ventana del texto (32 x 8)
+C 0x50FB guarda el principio de la linea del texto
+C 0x50FE vuelca_ventana: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto)
+C 0x5103 lee la sala
+C 0x511C lee la sala
+C 0x5133 lee sin el sonido de las letras (cambia con la tecla del bit 7)
+C 0x5138 lee quien habla (sonido de las letras)
+C 0x5148 efecto: pide el sonido A si 0xE002 lleva el bit 6
+C 0x514F apunta a la dureza de los bloques de la sala (16 por fila)
+C 0x515C bancos_18_19_20: pone los bancos 18-19-20
+C 0x515F lee la sala
+C 0x516D bancos_15_16_17: pone los bancos 15-16-17
+C 0x5170 lee la sala
+C 0x5176 lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0x517F lee la sala
+C 0x519D apunta a los nombres de la pantalla (32 x 24)
+C 0x51A3 apunta a la dureza de los bloques de la sala (16 por fila)
+C 0x51E5 es_duro: A = 1 si la ficha B es >= la primera dura (0xE361)
+C 0x51F8 hl_mas_a: HL = HL + A
+C 0x521E bancos_del_estado: pone el reparto que corresponde al estado 0xE000/0xE001
+C 0x5221 lee la primera ficha dura de la sala
+C 0x522B lee el paso del menu (tabla p00:5231)
+C 0x522E despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x5247 guarda la lista de opciones del menu
+C 0x5251 actor_de_enfrente: 0xE8A6 = el actor que esta delante del personaje (0xFF si no hay); si es una puerta, prepara el salto
+C 0x5254 lee el actor de enfrente (0xFF: ninguno)
+C 0x525B ficha_de_actor: HL = 0xE400 + A * 0x80: la ficha del actor A
+C 0x525E guarda la ficha del personaje de enfrente
+C 0x5267 guarda el tipo del personaje de enfrente
+C 0x526F apunta a las veces que se ha elegido cada opcion
+C 0x5277 lee la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
+C 0x5289 hl_mas_a: HL = HL + A
+C 0x5290 datos_del_personaje: copia de la ficha IX los nombres (0xEB1B-0xEB1F) y 0xEB25
+C 0x5293 apunta a el paso del menu (tabla p00:5231)
+C 0x52CF apunta a las veces que se ha elegido cada opcion
+C 0x52DE lee la lista de opciones del menu
+C 0x52E1 opciones_guardadas: las opciones de A con el cursor guardado (0xE8B2/0xE8B1)
+C 0x52E4 pinta_opciones: las opciones de 0xE8B8 (textos p04:7A15) en columna desde 0x3A1A
+C 0x52E9 guarda la clase del menu (1 hablar, 2 opciones, 3 objetos)
+C 0x52EE menu_paso: 0xE8A0 = A
+C 0x52F1 lee la lista de opciones del menu
+C 0x5300 lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x5309 de_mas_a: DE = DE + A
+C 0x531E lee hay otro cartucho
+C 0x532D guarda la lista de opciones del menu
+C 0x533A apunta a las banderas de la historia, byte 0x25 (se graban con la partida)
+C 0x5347 guarda la lista de opciones del menu
+C 0x534A opciones: la lista de opciones A de p04:7902 a 0xE8B8, cursor a cero
+C 0x534D pinta_opciones: las opciones de 0xE8B8 (textos p04:7A15) en columna desde 0x3A1A
+C 0x5352 guarda la clase del menu (1 hablar, 2 opciones, 3 objetos)
+C 0x5355 menu_siguiente: pasa al siguiente paso del menu (0xE8A0 + 1)
+C 0x5358 lista_de_objetos: los objetos que se llevan (0xE9D0, bit 0) a 0xE8B8; acarreo si no hay ninguno
+C 0x535D pinta_objetos: los objetos de 0xE8B8 en cuadricula desde 0x3A24
+C 0x5362 guarda la clase del menu (1 hablar, 2 opciones, 3 objetos)
+C 0x5367 menu_paso: 0xE8A0 = A
+C 0x536C guarda la clase del menu (1 hablar, 2 opciones, 3 objetos)
+C 0x536F guarda la columna del menu
+C 0x5375 guarda la opcion del cursor
+C 0x537A menu_paso: 0xE8A0 = A
+C 0x5382 guarda la clase del menu (1 hablar, 2 opciones, 3 objetos)
+C 0x5385 guarda la columna del menu
+C 0x538A menu_paso: 0xE8A0 = A
+C 0x5394 cursor_vertical: arriba/abajo con repeticion (0xE8B0) en 0xE8A4
+C 0x539D pinta_cursor: el cursor parpadeante en la columna de opciones
+C 0x53A0 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x53A6 lee la clase del menu (1 hablar, 2 opciones, 3 objetos)
+C 0x53AA menu_siguiente: pasa al siguiente paso del menu (0xE8A0 + 1)
+C 0x53AD lee la opcion del cursor
+C 0x53B3 lee la columna del menu
+C 0x53B9 menu_siguiente: pasa al siguiente paso del menu (0xE8A0 + 1)
+C 0x53BC lee el menu tiene dos columnas
+C 0x53C1 lee la columna del menu
+C 0x53C7 guarda la columna del menu
+C 0x53D2 guarda la opcion del cursor
+C 0x53D5 marco_del_menu: el marco del menu (p00:454A) y su interior a cero
+C 0x53D8 pinta_opciones: las opciones de 0xE8B8 (textos p04:7A15) en columna desde 0x3A1A
+C 0x53DB pinta_cursor: el cursor parpadeante en la columna de opciones
+C 0x53DE borra_cursor: borra el cursor de la columna de opciones
+C 0x53E1 lee la clase del menu (1 hablar, 2 opciones, 3 objetos)
+C 0x53E7 lee la columna del menu
+C 0x53EB apunta a las veces que se ha elegido cada opcion
+C 0x53F3 lee la opcion del cursor
+C 0x53F6 hl_mas_a: HL = HL + A
+C 0x53FE menu_siguiente: pasa al siguiente paso del menu (0xE8A0 + 1)
+C 0x5401 bancos_7_8: pone los bancos 7-8 en 0x8000 y 0xA000
+C 0x5404 lee la clase del menu (1 hablar, 2 opciones, 3 objetos)
+C 0x5411 lee el actor de enfrente (0xFF: ninguno)
+C 0x5418 lee el tipo del personaje de enfrente
+C 0x5424 lee la columna del menu
+C 0x5428 lee la opcion del cursor
+C 0x545D de_mas_a: DE = DE + A
+C 0x5467 de_mas_a: DE = DE + A
+C 0x5477 menu_guarda_cuenta: guarda C en la cuenta de la opcion
+C 0x547B de_mas_a: DE = DE + A
+C 0x5480 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5483 ajusta_respuesta: busca el tipo del personaje (0xE363) en p03:AABE y ajusta la respuesta C con su rutina (tabla p02:9D1E)
+C 0x5486 apunta a las banderas de la historia, byte 0x2A (se graban con la partida)
+C 0x548D apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0x5494 apunta a las banderas de la historia, byte 0x30 (se graban con la partida)
+C 0x549B texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x549E menu_siguiente: pasa al siguiente paso del menu (0xE8A0 + 1)
+C 0x54A2 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x54A5 borra_cursor: borra el cursor de la columna de opciones
+C 0x54A9 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x54AD guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x54B1 guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x54B7 guarda la sala a la que se salta y el byte siguiente (16 bits)
+C 0x54BD guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x54C0 borra_cursor: borra el cursor de la columna de opciones
+C 0x54CA guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x54CD borra_cursor: borra el cursor de la columna de opciones
+C 0x54D0 texto_fijo_4: texto C (0-2 segun 0xE8A4, o 4-6 con los tipos 0x59/0x5A) de la tabla fija 4 (p21:6DA6)
+C 0x54D3 menu_siguiente: pasa al siguiente paso del menu (0xE8A0 + 1)
+C 0x54D6 respuesta_al_azar: C = la respuesta (opcion + 4 * lado) con dos bits al azar
+C 0x54DE texto_fijo_1: texto C de la tabla fija 1 (p21:6928)
+C 0x54E1 menu_siguiente: pasa al siguiente paso del menu (0xE8A0 + 1)
+C 0x54E7 lee la sala
+C 0x54F7 respuesta_al_azar: C = la respuesta (opcion + 4 * lado) con dos bits al azar
+C 0x54FA lee la ficha del personaje de enfrente
+C 0x54FF hl_mas_a: HL = HL + A
+C 0x550A texto_fijo_2: texto C de la tabla fija 2 (p21:6DAC)
+C 0x550D menu_siguiente: pasa al siguiente paso del menu (0xE8A0 + 1)
+C 0x5510 texto_fijo_3: texto C de la tabla fija 3 (p21:7080)
+C 0x5513 menu_siguiente: pasa al siguiente paso del menu (0xE8A0 + 1)
+C 0x5516 lee la columna del menu
+C 0x5520 lee la opcion del cursor
+C 0x552F bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5533 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5538 opcion_cerrada: acarreo si la opcion C no vale todavia con el personaje de tipo 0xE363 (banderas de la historia)
+C 0x553E bancos_7_8: pone los bancos 7-8 en 0x8000 y 0xA000
+C 0x5547 de_mas_a: DE = DE + A
+C 0x5550 guarda la lista de opciones del menu
+C 0x5559 guarda la columna del menu
+C 0x555C lee la opcion del cursor
+C 0x5564 menu_paso: 0xE8A0 = A
+C 0x5567 lee la opcion del cursor
+C 0x556D hl_mas_a: HL = HL + A
+C 0x5574 lee la opcion del cursor
+C 0x5577 apunta a las opciones del menu (0xFF acaba)
+C 0x557A hl_mas_a: HL = HL + A
+C 0x5595 guarda la opcion del cursor
+C 0x5598 lee el tipo del personaje de enfrente
+C 0x55AF hl_mas_a: HL = HL + A
+C 0x55B3 hl_mas_a: HL = HL + A
+C 0x55BA texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x55BD lee el texto en marcha
+C 0x55C2 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x55C7 lee el texto que va despues
+C 0x55CF guarda la lista de opciones del menu
+C 0x55D4 guarda el paso del menu (tabla p00:5231)
+C 0x55D8 lee el texto que va despues
+C 0x55DB guarda el evento en curso (tabla p02:9135)
+C 0x55DF guarda el paso del evento
+C 0x55E2 menu_siguiente: pasa al siguiente paso del menu (0xE8A0 + 1)
+C 0x55E5 cursor_cuadricula: mueve el cursor de la cuadricula de 3 columnas
+C 0x55E8 pinta_cursor_cuadricula: el cursor parpadeante en la cuadricula de objetos
+C 0x55EB lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x55F3 guarda el paso del menu (tabla p00:5231)
+C 0x55F9 lee la columna del menu
+C 0x55FD apunta a las veces que se ha elegido cada opcion
+C 0x5605 lee la opcion del cursor
+C 0x5608 hl_mas_a: HL = HL + A
+C 0x5618 apunta a los 8 actores de la sala (0x80 bytes cada uno)
+C 0x561D datos_del_personaje: copia de la ficha IX los nombres (0xEB1B-0xEB1F) y 0xEB25
+C 0x5620 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5623 banderas_tras_hablar: despues de la respuesta C: banderas de la historia en las salas 0x89 y 0x79
+C 0x5626 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x5629 bancos_7_8: pone los bancos 7-8 en 0x8000 y 0xA000
+C 0x562C apunta a el modo dentro de la sala (tabla p00:5A83)
+C 0x5632 datos_del_personaje: copia de la ficha IX los nombres (0xEB1B-0xEB1F) y 0xEB25
+C 0x5635 banderas_tras_hablar: despues de la respuesta C: banderas de la historia en las salas 0x89 y 0x79
+C 0x5638 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x563B apunta a el modo dentro de la sala (tabla p00:5A83)
+C 0x5643 guarda la lista de opciones del menu
+C 0x5646 lee la escena de accion (1-9)
+C 0x564E palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x5655 guarda el tipo del personaje de enfrente
+C 0x5659 guarda la ficha del personaje de enfrente
+C 0x5660 datos_del_personaje: copia de la ficha IX los nombres (0xEB1B-0xEB1F) y 0xEB25
+C 0x5663 apunta a las veces que se ha elegido cada opcion
+C 0x5670 apunta a el paso del menu (tabla p00:5231)
+C 0x567E guarda la opcion del cursor
+C 0x5684 guarda la columna del menu
+C 0x568A apunta a la columna del menu
+C 0x568F apunta a la opcion del cursor
+C 0x5694 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x569A palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x569F guarda el menu tiene dos columnas
+C 0x56A3 apunta a las opciones del menu (0xFF acaba)
+C 0x56A9 bancos_del_estado: pone el reparto que corresponde al estado 0xE000/0xE001
+C 0x56B1 guarda la columna del menu
+C 0x56B4 guarda la opcion del cursor
+C 0x56B7 apunta a los objetos (dos bytes cada uno; bit 0: se lleva)
+C 0x56BD apunta a las opciones del menu (0xFF acaba)
+C 0x56CF apunta a las opciones del menu (0xFF acaba)
+C 0x56DB bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x56DE marco_del_menu: el marco del menu (p00:454A) y su interior a cero
+C 0x56E7 lee la columna del menu
+C 0x56EB apunta a las opciones del menu (0xFF acaba)
+C 0x570B texto_a_vram: texto de DE a la VRAM HL hasta 0xFF; 3 y 4 (dakuten) van a la fila de arriba
+C 0x5722 guarda la ultima opcion
+C 0x5725 bancos_del_estado: pone el reparto que corresponde al estado 0xE000/0xE001
+C 0x5728 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x572B borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x5734 apunta a las opciones del menu (0xFF acaba)
+C 0x574C texto_a_vram: texto de DE a la VRAM HL hasta 0xFF; 3 y 4 (dakuten) van a la fila de arriba
+C 0x5759 hl_mas_a: HL = HL + A
+C 0x5760 hl_mas_a: HL = HL + A
+C 0x576E guarda la ultima opcion
+C 0x5771 bancos_del_estado: pone el reparto que corresponde al estado 0xE000/0xE001
+C 0x5774 apunta a la repeticion del cursor
+C 0x5777 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x577E lee las teclas que hay
+C 0x5789 apunta a la opcion del cursor
+C 0x578E lee la ultima opcion
+C 0x5795 sonido_05: pide el sonido 5: el del cursor de los menus
+C 0x57A4 sonido_05: pide el sonido 5: el del cursor de los menus
+C 0x57AE borra_cursor: borra el cursor de la columna de opciones
+C 0x57B4 lee la opcion del cursor
+C 0x57BD hl_mas_a: HL = HL + A
+C 0x57C0 lee la cuenta de cuadros
+C 0x57CC borra_cursor_cuadricula: borra el cursor de la cuadricula
+C 0x57D2 lee la opcion del cursor
+C 0x57EE hl_mas_a: HL = HL + A
+C 0x57F7 hl_mas_a: HL = HL + A
+C 0x57FA lee la cuenta de cuadros
+C 0x5806 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x580C apunta a la opcion del cursor
+C 0x5818 lee la ultima opcion
+C 0x582B sonido_05: pide el sonido 5: el del cursor de los menus
+C 0x5836 sonido_05: pide el sonido 5: el del cursor de los menus
+C 0x583D lee la ultima opcion
+C 0x5847 sonido_05: pide el sonido 5: el del cursor de los menus
+C 0x5858 sonido_05: pide el sonido 5: el del cursor de los menus
+C 0x588F bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+C 0x58A0 hl_mas_a: HL = HL + A
+C 0x58B3 llena_tres_tercios: FILVRM en los tres tercios
+C 0x58BC llena_tres_tercios: FILVRM en los tres tercios
+C 0x58BF primera_ficha_vacia: los 8 bytes de la ficha 0 a cero en los tres tercios de patrones y colores
+C 0x58C2 apunta a los nombres de la pantalla (32 x 24)
+C 0x58D1 vuelca_nombres: 0x300 de 0xED00 a 0x3800
+C 0x58D4 apunta a los nombres de la pantalla (32 x 24)
+C 0x58E7 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x58EA primera_ficha_vacia: los 8 bytes de la ficha 0 a cero en los tres tercios de patrones y colores
+C 0x58ED apunta a los nombres de la pantalla (32 x 24)
+C 0x58FC vuelca_nombres_sin_ventana: 0x1E0 de 0xED00 a 0x3800
+C 0x58FF apunta a los atributos de los 32 sprites
+C 0x590A vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
+C 0x590D lee los atributos de los 32 sprites
+C 0x5910 guarda la Y guardada del primer sprite
+C 0x5915 guarda los atributos de los 32 sprites
+C 0x5918 vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
+C 0x591B esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+C 0x591E primera_ficha_vacia: los 8 bytes de la ficha 0 a cero en los tres tercios de patrones y colores
+C 0x5950 copia_a_vram: LDIRVM de DE a la VRAM HL
+C 0x597A rle: RLE de DE a la VRAM HL
+C 0x598E rle_volteado: RLE de DE a la VRAM HL con los bits de cada byte al reves
+C 0x59B5 llena_dos_tercios: FILVRM en dos tercios
+C 0x59BF llena_dos_tercios: FILVRM en dos tercios
+C 0x5A03 escribe_en_vram: SETWRT en HL y C' = el puerto de datos del VDP
+C 0x5A14 byte_del_rle: A = el byte de DE, al reves si C bit 0
+C 0x5A1F byte_del_rle: A = el byte de DE, al reves si C bit 0
+C 0x5A36 voltea_un_sprite: un sprite de 16x16 de la VRAM HL volteado a DE (bytes al reves y mitades cambiadas)
+C 0x5A3B de_mas_a: DE = DE + A
+C 0x5A48 invierte_bits: A con sus 8 bits al reves
+C 0x5A6E vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
+C 0x5A71 bancos_7_8: pone los bancos 7-8 en 0x8000 y 0xA000
+C 0x5A74 anima_fichas: la animacion de fichas de la sala (0xE369, tabla p07:8010)
+C 0x5A77 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5A7A musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0x5A7D lee el modo dentro de la sala (tabla p00:5A83)
+C 0x5A80 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x5A97 tecla_de_menu: con la tecla de menu (0xE008 bit 5) espera a que no quede actor y pasa al modo 2
+C 0x5A9A lee el modo dentro de la sala (tabla p00:5A83)
+C 0x5AA0 lee el menu pedido
+C 0x5AA6 mueve_personaje: un cuadro del personaje: el modo 0xE3C0 (tabla p01:718E)
+C 0x5AAC patrones_del_personaje: los patrones de p18:65DC[0xEB74 o 0xE3C3] a 0x1860
+C 0x5AAF bancos_7_8: pone los bancos 7-8 en 0x8000 y 0xA000
+C 0x5AB2 mueve_actores: un cuadro de los 8 actores: su rutina y, si se mueven, su paso
+C 0x5AB5 sprites_de_actores: dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas
+C 0x5AB8 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5ABB lee el modo dentro de la sala (tabla p00:5A83)
+C 0x5AC1 actor_de_enfrente: 0xE8A6 = el actor que esta delante del personaje (0xFF si no hay); si es una puerta, prepara el salto
+C 0x5AC4 lee que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x5ACF guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5AD5 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5AD9 cambia_de_sala: modo 1: la sala nueva por el borde (vecinas: sala - 0x20, + 0x20, - 1, + 1 de p02:858C), las salas 0x201-0x228 a mano o el salto de 0xE36A
+C 0x5AE4 guarda la espera del estado, en cuadros
+C 0x5AE9 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5AEC marca_salas_cf_b0_f0: en las salas 0xCF y 0xB0 pone el bit 7 de 0xEB59; en la 0xF0, ninguno
+C 0x5AEF monta_la_sala: musica, fichas, mapa, sprites, actores, marcador y menu de la sala
+C 0x5AF3 guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x5AF6 guarda la direccion del paso en curso
+C 0x5AFA cierra_menu: con la tecla de menu se cierra el menu (o, en ciertas salas, otra cosa)
+C 0x5AFD lee el modo dentro de la sala (tabla p00:5A83)
+C 0x5B05 menu: un paso del menu de la sala (0xE8A0, tabla p00:5231)
+C 0x5B0B lee el paso del menu (tabla p00:5231)
+C 0x5B16 lee la sala
+C 0x5B28 lee la sala
+C 0x5B33 lee la sala
+C 0x5B3D lee la sala
+C 0x5B47 a_sprites_de_actores: con 7-8, p07:865C (dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas); vuelve con 1-2-3
+C 0x5B4D a_sprites_de_actores: con 7-8, p07:865C (dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas); vuelve con 1-2-3
+C 0x5B50 lee el numero del texto
+C 0x5B56 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x5B59 lee el texto en marcha
+C 0x5B5E lee la sala
+C 0x5B8D guarda el modo del personaje (tabla p01:718E)
+C 0x5B9C guarda el modo del personaje (tabla p01:718E)
+C 0x5BA1 apunta a el paso del menu (tabla p00:5231)
+C 0x5BA8 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5BB8 guarda la espera del texto (1 tecla, 2 tecla y fin)
+C 0x5BBB guarda el paso del texto (0 prepara, 1 escribe)
+C 0x5BC3 a_sprites_de_actores: con 7-8, p07:865C (dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas); vuelve con 1-2-3
+C 0x5BC6 modo_4_anima: modo 4: la animacion 0xE378 (1 o 2; tabla p03:B402)
+C 0x5BCF guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5BD4 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x5BD7 comprueba_cuatro_actores: 0xE379 = 1 si el byte 0x1B de los actores 1-4 vale 3, 1, 2 y 4; si no, 2
+C 0x5BDA bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5BE5 habla_con_1_2_3_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 3; vuelve con 1-2-3
+C 0x5BE8 bancos_4_5_6: pone los bancos 4-5-6 (p00:4103)
+C 0x5BEB pon_dibujo_6057: sonido 0x1E, 0xE40D = 3 y el dibujo p04:6057 en (0x30, 0x40)
+C 0x5BEE bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5BF3 habla_con_1_2_3_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 3; vuelve con 1-2-3
+C 0x5BFA bancos_21_22_23: pone los bancos 21-22-23
+C 0x5BFD desplazamiento: un paso del modo 7 (0xE387, tabla p21:600F)
+C 0x5C00 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5C03 sprites_del_personaje: los tres sprites del personaje en 0xF000
+C 0x5C0D guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5C11 menu_en_la_sala_211: en la sala 0x211, la tecla de menu abre el paso 9
+C 0x5C14 lee el modo dentro de la sala (tabla p00:5A83)
+C 0x5C1D bancos_9_10_11: pone los bancos 9-10-11
+C 0x5C20 prepara_escena: un paso de la preparacion de la escena de accion (0xE39F, tabla p10:8C5C)
+C 0x5C23 sprites_de_objetos: los sprites de los 7 objetos de 0xEA20 en 0xF020 (fotogramas p11:AC85) y el resto escondidos
+C 0x5C26 bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5C29 accion: un paso del guion de la escena de accion (0xE3E0, tabla p01:77E1; paso 0xE3E1)
+C 0x5C2C accion_sprites: los tres sprites del personaje de la escena de accion (0xE3E5, 0xE3E7) en 0xF000
+C 0x5C2F mueve_proyectiles: un cuadro de los 3 proyectiles de 0xEC30: su rutina, la velocidad y si sale por arriba
+C 0x5C32 sprites_de_proyectiles: los sprites de los 3 proyectiles en 0xF060
+C 0x5C35 bancos_9_10_11: pone los bancos 9-10-11
+C 0x5C38 choques_de_la_escena: los choques de los 8 objetos de 0xEA00 con el personaje (bit 0 de +0x0D) y con los proyectiles (bit 1)
+C 0x5C3B barras: la barra de vida si no esta tocado y la segunda barra de la escena (tabla p09:6BCA)
+C 0x5C3E bancos_1_2_3: pone los bancos 1-2-3 y su copia en 0xF0F1-0xF0F3
+C 0x5C41 accion_sprites: los tres sprites del personaje de la escena de accion (0xE3E5, 0xE3E7) en 0xF000
+C 0x5C44 lee el numero del texto
+C 0x5C4A texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x5C4D lee el texto en marcha
+C 0x5C54 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5C58 lee el menu pedido
+C 0x5C63 lee el personaje va de un bloque a otro
+C 0x5C68 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x5C70 guarda el menu pedido
+C 0x5C84 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5C88 guarda el paso del menu (tabla p00:5231)
+C 0x5C8B guarda el menu pedido
+C 0x5C8F lee el paso del menu (tabla p00:5231)
+C 0x5C99 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x5C9F lee la sala
+C 0x5CB8 lee la sala
+C 0x5CC4 lee el objeto 1 (bit 0: se lleva)
+C 0x5CD5 lee el actor de enfrente (0xFF: ninguno)
+C 0x5CDB lee la ficha del personaje de enfrente
+C 0x5CE3 apunta a las veces que se ha elegido cada opcion
+C 0x5CEC guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5CEF guarda el menu pedido
+C 0x5CF2 borra_cursor: borra el cursor de la columna de opciones
+C 0x5CF6 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x5CFE habla_con_1_2_3_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 3; vuelve con 1-2-3
+C 0x5D01 apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0x5D08 apunta a las banderas de la historia, byte 0x2C (se graban con la partida)
+C 0x5D18 habla_con_1_2_3_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 3; vuelve con 1-2-3
+C 0x5D1C guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x5D20 guarda las banderas de la historia, byte 0x3B (se graban con la partida)
+C 0x5D28 habla_con_1_2_3_y_1_2_3: datos del personaje, p03:AB92, el texto y modo 3; vuelve con 1-2-3
+C 0x5D2D guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5D30 borra_cursor: borra el cursor de la columna de opciones
+C 0x5D33 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x5D3E lee la sala
+C 0x5D5B guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x5D60 guarda el paso del menu (tabla p00:5231)
+C 0x5D64 lee la Y del personaje y el byte siguiente (16 bits)
+C 0x5D67 lee la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
+C 0x5D6F de_mas_a: DE = DE + A
+C 0x5D79 bloque_de_la_sala: HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala en la posicion L = Y, H = X
+C 0x5D80 lee la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
+C 0x5D83 lee la Y del personaje y el byte siguiente (16 bits)
+C 0x5D8A despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x5DAC despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x5DD7 de_mas_a: DE = DE + A
+C 0x5DE1 bloque_de_la_sala: HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala en la posicion L = Y, H = X
+C 0x5DF1 apunta a los nombres de la pantalla (32 x 24)
+C 0x5DF4 cuadricula_de_fichas: 256 fichas seguidas en 4 bloques de 8 x 8
+C 0x5E48 apunta a los nombres de la pantalla (32 x 24)
+C 0x5E4E vuelca: BC bytes de DE a la VRAM HL (a cero si 0xE36C)
+C 0x5E54 apunta a los nombres de la pantalla (32 x 24)
+C 0x5E5A vuelca: BC bytes de DE a la VRAM HL (a cero si 0xE36C)
+C 0x5E62 apunta a los nombres de la pantalla (32 x 24)
+C 0x5E6C apunta a la ventana del texto (32 x 8)
+C 0x5E76 vuelca: BC bytes de DE a la VRAM HL (a cero si 0xE36C)
+C 0x5E7C de_mas_a: DE = DE + A
+C 0x5E82 hl_mas_a: HL = HL + A
+C 0x5E8D apunta a el marcador (8 x 7)
+C 0x5E97 vuelca: BC bytes de DE a la VRAM HL (a cero si 0xE36C)
+C 0x5E9D de_mas_a: DE = DE + A
+C 0x5EA3 hl_mas_a: HL = HL + A
+C 0x5EAA guarda pantalla en negro (los volcados escriben ceros)
+C 0x5EB8 lee pantalla en negro (los volcados escriben ceros)
+C 0x5ECA lee las banderas de sprites (bit 0: sin rotar)
+C 0x5EDB apunta a el desplazamiento de la rotacion de sprites
+C 0x5F18 apunta a los atributos de los 32 sprites
+C 0x5F1E copia_a_vram: LDIRVM de DE a la VRAM HL
+# --- fin de las anotaciones de anota.py ---

@@ -94,3 +94,1273 @@ F 0x9CB0 2
 D 0x9D1E 0x9DF0 saltos_9D1E  tabla de 105 palabras del despachador (call 0x408D en 0x9D1B); lo leen L_40AB (210 bytes)
 F 0x9D1E 2
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x81C6 accion_siguiente_escena 0xE3E0 + 1 y su paso 0xE3E1 a cero
+L 0x81CE accion_siguiente_paso 0xE3E1 + 1
+L 0x81D3 accion_avanza suma las dos velocidades (p02:81E2 y p02:81D6)
+L 0x81D6 accion_avanza_y 0xE3E4 (Y, con fraccion) += 0xE3EC
+L 0x81E2 accion_avanza_x 0xE3E6 (X, con fraccion) += 0xE3EE
+L 0x81EE accion_rebota_y 0xE3EC = -0xE3EC
+L 0x81F8 accion_rebota_x 0xE3EE = -0xE3EE
+L 0x8202 accion_sin_vida si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
+L 0x8214 accion_direccion 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
+L 0x8254 accion_mueve mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+L 0x8292 accion_un_paso un paso en la direccion A con los topes BC (y BC' en vertical)
+L 0x8311 accion_sprites los tres sprites del personaje de la escena de accion (0xE3E5, 0xE3E7) en 0xF000
+L 0x83DD accion_sprites_extra dos sprites en 0xF020
+L 0x83F7 accion_quita_extra esconde los sprites de 0xF020
+L 0x8401 esconde_un_sprite Y = 0xE0 y el resto a cero en el sprite de HL
+L 0x840C accion_sprites_arriba tres sprites en la Y 0xA0 alrededor de la X del personaje
+L 0x844F cambia_de_sala modo 1: la sala nueva por el borde (vecinas: sala - 0x20, + 0x20, - 1, + 1 de p02:858C), las salas 0x201-0x228 a mano o el salto de 0xE36A
+L 0x857D posicion_en_la_sala_nueva Y += C, X += B en el personaje y 0xE3C5 = 0
+L 0x859C salas_201_20d las vecinas de las salas 0x202-0x20D (tabla p02:85A4)
+L 0x86E4 marca_369 0xE369 = 2 si 0xEB69 no lleva el bit 7
+L 0x8714 salas_213_21e las vecinas de las salas 0x213-0x21E (tabla p02:871C)
+L 0x88D4 salas_226_227 las vecinas de las salas 0x226 y 0x227
+L 0x8906 salta_a_la_sala la sala de 0xE36A; a la 0x201 sin lo que hace falta, la maquina se reinicia (`jp 0`)
+L 0x8947 entrada_especial la posicion de entrada en las salas que la tienen a mano (0x201, 0x118, 0xE2, 0x20E, 0x87, 0x152, 0x21F...)
+L 0x8C32 salas_al_azar en las salas 0x228-0x22D, la siguiente sale al azar de p02:8C83
+L 0x8CF5 actor_de_enfrente 0xE8A6 = el actor que esta delante del personaje (0xFF si no hay); si es una puerta, prepara el salto
+L 0x9065 salta_a 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+L 0x906E empieza_accion 0xE3A1 = A, 0xE337 = 3 y la escena 0 de la escena de accion
+L 0x909B accion_2 la escena de accion 2 en la sala 0x212
+L 0x90BC accion_4 la escena de accion 4 en la sala 0x222
+L 0x90DD accion_7 la escena de accion 7 en la sala 0x224
+L 0x90FF accion_8 la escena de accion 8 en la sala 0x225
+L 0x9121 guarda_actor_de_enfrente 0xE8A6 = C
+L 0x912E evento un paso del evento 0xE8AA (tabla p02:9135)
+L 0x9189 evento_siguiente_paso 0xE8AB + 1
+L 0x918E evento_01 el evento 0x01 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9194)
+L 0x919A evento_01_0 el evento 0x01, paso 0
+L 0x91BE evento_01_1 el evento 0x01, paso 1
+L 0x91CB evento_01_2 el evento 0x01, paso 2
+L 0x91F3 evento_02 el evento 0x02 (0xE8AA), de un solo paso
+L 0x9206 evento_03 el evento 0x03 (0xE8AA): despacha su paso 0xE8AB (tabla p02:920C)
+L 0x9216 evento_03_0 el evento 0x03, paso 0
+L 0x926C evento_03_1 el evento 0x03, paso 1
+L 0x927B evento_03_2 el evento 0x03, paso 2
+L 0x9296 evento_03_3 el evento 0x03, paso 3
+L 0x92A8 evento_03_4 el evento 0x03, paso 4
+L 0x92D0 evento_04 el evento 0x04 (0xE8AA): despacha su paso 0xE8AB (tabla p02:92D6)
+L 0x92DA evento_04_0 el evento 0x04, paso 0
+L 0x9315 evento_04_1 el evento 0x04, paso 1
+L 0x931F evento_05 el evento 0x05 (0xE8AA), de un solo paso
+L 0x9326 evento_06 el evento 0x06 (0xE8AA): despacha su paso 0xE8AB (tabla p02:932C)
+L 0x9332 evento_06_0 el evento 0x06, paso 0
+L 0x9355 evento_06_1 el evento 0x06, paso 1
+L 0x9362 evento_06_2 el evento 0x06, paso 2
+L 0x9382 evento_07 el evento 0x07 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9388)
+L 0x9390 evento_07_0 el evento 0x07, paso 0
+L 0x939B evento_07_1 el evento 0x07, paso 1
+L 0x93B2 evento_07_2 el evento 0x07, paso 2
+L 0x93D8 evento_07_3 el evento 0x07, paso 3
+L 0x93E8 evento_08 el evento 0x08 (0xE8AA): despacha su paso 0xE8AB (tabla p02:93EE)
+L 0x93F6 evento_08_0 el evento 0x08, paso 0
+L 0x9401 evento_08_1 el evento 0x08, paso 1
+L 0x9418 evento_08_2 el evento 0x08, paso 2
+L 0x943E evento_08_3 el evento 0x08, paso 3
+L 0x944E evento_09 el evento 0x09 (0xE8AA), de un solo paso
+L 0x9456 evento_0a el evento 0x0A (0xE8AA): despacha su paso 0xE8AB (tabla p02:945C)
+L 0x9464 evento_0a_0 el evento 0x0A, paso 0
+L 0x946F evento_0a_1 el evento 0x0A, paso 1
+L 0x9486 evento_0a_2 el evento 0x0A, paso 2
+L 0x949D evento_0a_3 el evento 0x0A, paso 3
+L 0x9510 evento_0b el evento 0x0B (0xE8AA): despacha su paso 0xE8AB (tabla p02:9516)
+L 0x951A evento_0b_0 el evento 0x0B, paso 0
+L 0x9528 evento_0b_1 el evento 0x0B, paso 1
+L 0x954B evento_0c el evento 0x0C (0xE8AA): despacha su paso 0xE8AB (tabla p02:9551)
+L 0x9557 evento_0c_0 el evento 0x0C, paso 0
+L 0x957A evento_0c_1 el evento 0x0C, paso 1
+L 0x9587 evento_0c_2 el evento 0x0C, paso 2
+L 0x95A7 evento_0d el evento 0x0D (0xE8AA), de un solo paso
+L 0x95BA evento_0e el evento 0x0E (0xE8AA): despacha su paso 0xE8AB (tabla p02:95C0)
+L 0x95DE evento_0e_0 el evento 0x0E, paso 0
+L 0x95EC evento_0e_1 el evento 0x0E, paso 1
+L 0x95FE evento_0e_2 el evento 0x0E, paso 2
+L 0x961B evento_0e_3 el evento 0x0E, paso 3
+L 0x9632 evento_0e_4 el evento 0x0E, paso 4
+L 0x9648 evento_0e_5 el evento 0x0E, paso 5
+L 0x965F evento_0e_6 el evento 0x0E, paso 6
+L 0x9670 evento_0e_7 el evento 0x0E, paso 7
+L 0x9687 evento_0e_8 el evento 0x0E, paso 8
+L 0x969F evento_0e_9 el evento 0x0E, paso 9
+L 0x96B6 evento_0e_10 el evento 0x0E, paso 10
+L 0x96C7 evento_0e_11 el evento 0x0E, paso 11
+L 0x96DE evento_0e_12 el evento 0x0E, paso 12
+L 0x96EC evento_0e_13 el evento 0x0E, paso 13
+L 0x9703 evento_0e_14 el evento 0x0E, paso 14
+L 0x970E evento_0f el evento 0x0F (0xE8AA), de un solo paso
+L 0x9736 evento_10 el evento 0x10 (0xE8AA): despacha su paso 0xE8AB (tabla p02:973C)
+L 0x9746 evento_10_0 el evento 0x10, paso 0
+L 0x975A evento_10_1 el evento 0x10, paso 1
+L 0x976B evento_10_2 el evento 0x10, paso 2
+L 0x977B evento_10_3 el evento 0x10, paso 3
+L 0x9790 evento_10_4 el evento 0x10, paso 4
+L 0x979B evento_11 el evento 0x11 (0xE8AA): despacha su paso 0xE8AB (tabla p02:97A1)
+L 0x97AB evento_11_0 el evento 0x11, paso 0
+L 0x97BF evento_11_1 el evento 0x11, paso 1
+L 0x97D0 evento_11_2 el evento 0x11, paso 2
+L 0x97E0 evento_11_3 el evento 0x11, paso 3
+L 0x97F5 evento_11_4 el evento 0x11, paso 4
+L 0x9800 evento_12 el evento 0x12 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9806)
+L 0x980A evento_12_0 el evento 0x12, paso 0
+L 0x9819 evento_12_1 el evento 0x12, paso 1
+L 0x9831 evento_13 el evento 0x13 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9837)
+L 0x9841 evento_13_0 el evento 0x13, paso 0
+L 0x984B evento_13_1 el evento 0x13, paso 1
+L 0x985C evento_13_2 el evento 0x13, paso 2
+L 0x986C evento_13_3 el evento 0x13, paso 3
+L 0x9879 evento_13_4 el evento 0x13, paso 4
+L 0x988C evento_14 el evento 0x14 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9892)
+L 0x989C evento_14_0 el evento 0x14, paso 0
+L 0x98A6 evento_14_1 el evento 0x14, paso 1
+L 0x98B7 evento_14_2 el evento 0x14, paso 2
+L 0x98C7 evento_14_3 el evento 0x14, paso 3
+L 0x98D4 evento_14_4 el evento 0x14, paso 4
+L 0x98E7 evento_15 el evento 0x15 (0xE8AA): despacha su paso 0xE8AB (tabla p02:98ED)
+L 0x98F3 evento_15_0 el evento 0x15, paso 0
+L 0x9914 evento_15_1 el evento 0x15, paso 1
+L 0x9921 evento_15_2 el evento 0x15, paso 2
+L 0x993B evento_16 el evento 0x16 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9941)
+L 0x9947 evento_16_0 el evento 0x16, paso 0
+L 0x9955 evento_16_1 el evento 0x16, paso 1
+L 0x9962 evento_16_2 el evento 0x16, paso 2
+L 0x9976 evento_17 el evento 0x17 (0xE8AA): despacha su paso 0xE8AB (tabla p02:997C)
+L 0x9982 evento_17_0 el evento 0x17, paso 0
+L 0x99A3 evento_17_1 el evento 0x17, paso 1
+L 0x99B5 evento_17_2 el evento 0x17, paso 2
+L 0x99CF evento_18 el evento 0x18 (0xE8AA): despacha su paso 0xE8AB (tabla p02:99D5)
+L 0x99D9 evento_18_0 el evento 0x18, paso 0
+L 0x99FA evento_18_1 el evento 0x18, paso 1
+L 0x9A14 evento_19 el evento 0x19 (0xE8AA), de un solo paso
+L 0x9A24 evento_1a el evento 0x1A (0xE8AA), de un solo paso
+L 0x9A32 evento_1b el evento 0x1B (0xE8AA), de un solo paso
+L 0x9A45 evento_1c el evento 0x1C (0xE8AA), de un solo paso
+L 0x9A52 evento_1d el evento 0x1D (0xE8AA): despacha su paso 0xE8AB (tabla p02:9A58)
+L 0x9A62 evento_1d_0 el evento 0x1D, paso 0
+L 0x9A6A evento_1d_1 el evento 0x1D, paso 1
+L 0x9A85 evento_1d_2 el evento 0x1D, paso 2
+L 0x9A92 evento_1d_3 el evento 0x1D, paso 3
+L 0x9AA7 evento_1d_4 el evento 0x1D, paso 4
+L 0x9AC3 evento_1e el evento 0x1E (0xE8AA), de un solo paso
+L 0x9AEB evento_1f el evento 0x1F (0xE8AA): despacha su paso 0xE8AB (tabla p02:9AF1)
+L 0x9AFB evento_1f_0 el evento 0x1F, paso 0
+L 0x9B0F evento_1f_1 el evento 0x1F, paso 1
+L 0x9B20 evento_1f_2 el evento 0x1F, paso 2
+L 0x9B30 evento_1f_3 el evento 0x1F, paso 3
+L 0x9B45 evento_1f_4 el evento 0x1F, paso 4
+L 0x9B50 evento_20 el evento 0x20 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9B56)
+L 0x9B60 evento_20_0 el evento 0x20, paso 0
+L 0x9B6A evento_20_1 el evento 0x20, paso 1
+L 0x9B7B evento_20_2 el evento 0x20, paso 2
+L 0x9B8B evento_20_3 el evento 0x20, paso 3
+L 0x9B98 evento_20_4 el evento 0x20, paso 4
+L 0x9BAB evento_21 el evento 0x21 (0xE8AA), de un solo paso
+L 0x9BCD evento_22 el evento 0x22 (0xE8AA), de un solo paso
+L 0x9BF5 evento_23 el evento 0x23 (0xE8AA), de un solo paso
+L 0x9C0A evento_24 el evento 0x24 (0xE8AA), de un solo paso
+L 0x9C1F evento_25 el evento 0x25 (0xE8AA), de un solo paso
+L 0x9C2C evento_26 el evento 0x26 (0xE8AA), de un solo paso
+L 0x9C3C evento_27 el evento 0x27 (0xE8AA), de un solo paso
+L 0x9C4C evento_28 el evento 0x28 (0xE8AA), de un solo paso
+L 0x9C65 evento_29 el evento 0x29 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9C6B)
+L 0x9C73 evento_29_0 el evento 0x29, paso 0
+L 0x9C87 evento_29_1 el evento 0x29, paso 1
+L 0x9C92 evento_29_2 el evento 0x29, paso 2
+L 0x9C9F evento_29_3 el evento 0x29, paso 3
+L 0x9CAA evento_2a el evento 0x2A (0xE8AA): despacha su paso 0xE8AB (tabla p02:9CB0)
+L 0x9CB8 evento_2a_0 el evento 0x2A, paso 0
+L 0x9CC2 evento_2a_1 el evento 0x2A, paso 1
+L 0x9CCD evento_2a_2 el evento 0x2A, paso 2
+L 0x9CDA evento_2a_3 el evento 0x2A, paso 3
+L 0x9CED ajusta_respuesta busca el tipo del personaje (0xE363) en p03:AABE y ajusta la respuesta C con su rutina (tabla p02:9D1E)
+L 0x9DF0 respuesta_del_tipo_10 ajusta la respuesta C del personaje de tipo 0x10 con las banderas de la historia
+L 0x9E13 respuesta_del_tipo_11 ajusta la respuesta C del personaje de tipo 0x11 con las banderas de la historia
+L 0x9E30 respuesta_del_tipo_01 ajusta la respuesta C del personaje de tipo 0x01 con las banderas de la historia
+L 0x9E39 marca_salas_cf_b0_f0 en las salas 0xCF y 0xB0 pone el bit 7 de 0xEB59; en la 0xF0, ninguno
+L 0x9E60 respuesta_del_tipo_14 ajusta la respuesta C del personaje de tipo 0x14 con las banderas de la historia
+L 0x9E74 respuesta_del_tipo_16 ajusta la respuesta C del personaje de tipo 0x16 con las banderas de la historia
+L 0x9E87 respuesta_del_tipo_17 ajusta la respuesta C del personaje de tipo 0x17 con las banderas de la historia
+L 0x9E9E respuesta_del_tipo_19 ajusta la respuesta C del personaje de tipo 0x19 con las banderas de la historia
+L 0x9EC2 respuesta_del_tipo_1a ajusta la respuesta C del personaje de tipo 0x1A con las banderas de la historia
+L 0x9EED respuesta_del_tipo_1b ajusta la respuesta C del personaje de tipo 0x1B con las banderas de la historia
+L 0x9F00 respuesta_del_tipo_1c ajusta la respuesta C del personaje de tipo 0x1C con las banderas de la historia
+L 0x9F0B respuesta_del_tipo_22 ajusta la respuesta C del personaje de tipo 0x22 con las banderas de la historia
+L 0x9F3C respuesta_del_tipo_15 ajusta la respuesta C del personaje de tipo 0x15 con las banderas de la historia
+L 0x9F45 respuesta_del_tipo_2c ajusta la respuesta C del personaje de tipo 0x2C con las banderas de la historia
+L 0x9F69 respuesta_del_tipo_27 ajusta la respuesta C del personaje de tipo 0x27 con las banderas de la historia
+L 0x9F83 respuesta_del_tipo_28 ajusta la respuesta C del personaje de tipo 0x28 con las banderas de la historia
+L 0x9FCD respuesta_del_tipo_09 ajusta la respuesta C del personaje de tipo 0x09 con las banderas de la historia
+L 0x9FDA respuesta_del_tipo_25 ajusta la respuesta C del personaje de tipo 0x25 con las banderas de la historia
+L 0x9FFA respuesta_del_tipo_26 ajusta la respuesta C del personaje de tipo 0x26 con las banderas de la historia
+C 0x800C guarda el paso de la escena de la escena de accion
+C 0x800F sonido_0a: pide el sonido 0x0A
+C 0x8012 accion_direccion: 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
+C 0x801F accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+C 0x8024 accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
+C 0x8030 accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+C 0x805C guarda el paso de la escena de la escena de accion
+C 0x8062 guarda la vida en la escena de accion
+C 0x806C guarda hacia donde mira en la escena de accion (1-4)
+C 0x806F apunta a la Y del personaje en la escena de accion
+C 0x8078 accion_siguiente_paso: 0xE3E1 + 1
+C 0x8089 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x8095 lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
+C 0x80A3 guarda el paso de la escena de la escena de accion
+C 0x80A6 sonido_0a: pide el sonido 0x0A
+C 0x80B1 guarda el paso de la escena de la escena de accion
+C 0x80B5 accion_direccion: 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
+C 0x80C2 accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+C 0x80D0 accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+C 0x80FC guarda el paso de la escena de la escena de accion
+C 0x8102 accion_siguiente_paso: 0xE3E1 + 1
+C 0x8105 lee la X del personaje en la escena de accion
+C 0x8118 guarda la direccion pulsada en la escena de accion (1, 2, 4, 8)
+C 0x811B accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+C 0x8126 lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
+C 0x8129 accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+C 0x812C lee la X del personaje en la escena de accion
+C 0x8134 guarda hacia donde mira en la escena de accion (1-4)
+C 0x813C accion_siguiente_paso: 0xE3E1 + 1
+C 0x8148 accion_siguiente_paso: 0xE3E1 + 1
+C 0x8151 lee la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x8155 guarda la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x815B lee la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x815F guarda la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x8168 guarda la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x816D guarda la Y del personaje en la escena de accion
+C 0x817A accion_siguiente_paso: 0xE3E1 + 1
+C 0x818B guarda el fotograma del personaje en la escena de accion
+C 0x819A accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+C 0x819D lee la X del personaje en la escena de accion
+C 0x81A5 guarda hacia donde mira en la escena de accion (1-4)
+C 0x81B0 accion_sprites: los tres sprites del personaje de la escena de accion (0xE3E5, 0xE3E7) en 0xF000
+C 0x81BB apunta a la Y del personaje en la escena de accion
+C 0x81C6 apunta a la escena de la escena de accion (tabla p01:77E1)
+C 0x81CE apunta a el paso de la escena de la escena de accion
+C 0x81D3 accion_avanza_x: 0xE3E6 (X, con fraccion) += 0xE3EE
+C 0x81D6 lee la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x81D9 lee la velocidad Y en la escena de accion y el byte siguiente (16 bits)
+C 0x81DE guarda la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x81E2 lee la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x81E5 lee la velocidad X en la escena de accion y el byte siguiente (16 bits)
+C 0x81EA guarda la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x81EE lee la velocidad Y en la escena de accion y el byte siguiente (16 bits)
+C 0x81F1 hl_negativo: HL = -HL
+C 0x81F4 guarda la velocidad Y en la escena de accion y el byte siguiente (16 bits)
+C 0x81F8 lee la velocidad X en la escena de accion y el byte siguiente (16 bits)
+C 0x81FB hl_negativo: HL = -HL
+C 0x81FE guarda la velocidad X en la escena de accion y el byte siguiente (16 bits)
+C 0x8202 lee la vida en la escena de accion
+C 0x8209 guarda tocado en la escena de accion (parpadea)
+C 0x820F guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x8214 lee las teclas que hay
+C 0x821E lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x8250 guarda la direccion pulsada en la escena de accion (1, 2, 4, 8)
+C 0x8254 accion_un_paso: un paso en la direccion A con los topes BC (y BC' en vertical)
+C 0x8257 lee la escena de accion (1-9)
+C 0x8260 guarda hacia donde mira en la escena de accion (1-4)
+C 0x826A lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
+C 0x8270 lee la cuenta de cuadros
+C 0x8279 lee hacia donde mira en la escena de accion (1-4)
+C 0x8282 hl_mas_a: HL = HL + A
+C 0x8286 guarda el fotograma del personaje en la escena de accion
+C 0x82A0 guarda hacia donde mira en la escena de accion (1-4)
+C 0x82A3 lee la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x82A7 guarda la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x82AA lee la X del personaje en la escena de accion
+C 0x82B0 apunta a la X del personaje en la escena de accion
+C 0x82B5 lee la escena de accion (1-9)
+C 0x82C2 guarda hacia donde mira en la escena de accion (1-4)
+C 0x82C5 de_negativo: DE = -DE
+C 0x82C8 lee la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x82CC guarda la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x82CF lee la X del personaje en la escena de accion
+C 0x82D4 apunta a la X del personaje en la escena de accion
+C 0x82DB guarda hacia donde mira en la escena de accion (1-4)
+C 0x82DE de_negativo: DE = -DE
+C 0x82E1 lee la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x82E5 guarda la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x82E8 lee la Y del personaje en la escena de accion
+C 0x82F0 apunta a la Y del personaje en la escena de accion
+C 0x82F8 guarda hacia donde mira en la escena de accion (1-4)
+C 0x82FB lee la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x82FF guarda la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0x8302 lee la Y del personaje en la escena de accion
+C 0x830B apunta a la Y del personaje en la escena de accion
+C 0x8313 lee la escena de accion (1-9)
+C 0x8325 lee el fotograma del personaje en la escena de accion
+C 0x832B lee la escena de accion (1-9)
+C 0x8339 lee la Y del personaje en la escena de accion
+C 0x833D lee la X del personaje en la escena de accion
+C 0x8341 guarda los atributos de los 32 sprites y el byte siguiente (16 bits)
+C 0x836A lee tocado en la escena de accion (parpadea)
+C 0x8370 lee la cuenta de cuadros
+C 0x8382 lee la escena de accion (1-9)
+C 0x8388 lee la X del personaje en la escena de accion
+C 0x838C lee la Y del personaje en la escena de accion
+C 0x8390 mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
+C 0x8397 hl_mas_a: HL = HL + A
+C 0x83A0 apunta a los atributos de los 32 sprites
+C 0x83AB lee la Y del personaje en la escena de accion
+C 0x83AF lee la X del personaje en la escena de accion
+C 0x83B3 guarda los atributos de los 32 sprites y el byte siguiente (16 bits)
+C 0x83FE esconde_un_sprite: Y = 0xE0 y el resto a cero en el sprite de HL
+C 0x8419 lee la X del personaje en la escena de accion
+C 0x8441 lee la X del personaje en la escena de accion
+C 0x845F lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x8464 guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x8467 lee la sala de partida (indice de p01:67E3)
+C 0x846C salas_al_azar: en las salas 0x228-0x22D, la siguiente sale al azar de p02:8C83
+C 0x846F lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0x8480 apunta a las banderas de la historia, byte 0x38 (se graban con la partida)
+C 0x8485 apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0x848A apunta a las banderas de la historia, byte 0x2B (se graban con la partida)
+C 0x848F apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0x8496 apunta a las banderas de la historia, byte 0x39 (se graban con la partida)
+C 0x849D apunta a las banderas de la historia, byte 0x2A (se graban con la partida)
+C 0x84A2 lee que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x84A7 salta_a_la_sala: la sala de 0xE36A; a la 0x201 sin lo que hace falta, la maquina se reinicia (`jp 0`)
+C 0x84B1 apunta a las banderas de la historia, byte 0x2C (se graban con la partida)
+C 0x84B8 apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0x84BD lee la sala
+C 0x84CF salas_201_20d: las vecinas de las salas 0x202-0x20D (tabla p02:85A4)
+C 0x84E0 salas_213_21e: las vecinas de las salas 0x213-0x21E (tabla p02:871C)
+C 0x84F1 salas_226_227: las vecinas de las salas 0x226 y 0x227
+C 0x84F4 lee la direccion del paso en curso
+C 0x84FC hl_mas_2a: HL = HL + 2 * A
+C 0x8506 lee la sala
+C 0x8509 guarda la sala de la que se viene y el byte siguiente (16 bits)
+C 0x850D guarda la sala
+C 0x857D apunta a la Y del personaje
+C 0x8588 guarda la direccion del paso en curso
+C 0x859C lee la sala (16 bits)
+C 0x85A1 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x85BF guarda la sala
+C 0x85C6 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x85C9 lee la direccion del paso en curso
+C 0x85D3 guarda la sala
+C 0x85DA posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x85E0 guarda la sala
+C 0x85E7 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x85EA lee la direccion del paso en curso
+C 0x85F4 guarda la sala
+C 0x85FB posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8601 guarda la sala
+C 0x8608 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x860B lee la direccion del paso en curso
+C 0x8615 guarda la sala
+C 0x861C posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8622 guarda la sala
+C 0x8629 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x862C lee la direccion del paso en curso
+C 0x8636 guarda la sala
+C 0x863D posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8643 guarda la sala
+C 0x864A posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x864D lee la direccion del paso en curso
+C 0x8657 guarda la sala
+C 0x865E marca_369: 0xE369 = 2 si 0xEB69 no lleva el bit 7
+C 0x8661 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8667 guarda la sala
+C 0x866E posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8671 lee la direccion del paso en curso
+C 0x867B guarda la sala
+C 0x8682 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8688 guarda la sala
+C 0x868F posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8692 lee la direccion del paso en curso
+C 0x869C guarda la sala
+C 0x86A3 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x86A9 guarda la sala
+C 0x86B0 marca_369: 0xE369 = 2 si 0xEB69 no lleva el bit 7
+C 0x86B3 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x86B6 lee la direccion del paso en curso
+C 0x86C0 guarda la sala
+C 0x86C7 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x86CD guarda la sala
+C 0x86D4 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x86DA guarda la sala
+C 0x86E1 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x86E4 apunta a las banderas de la historia, byte 0x29 (se graban con la partida)
+C 0x86F8 guarda la sala
+C 0x86FF posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x870A guarda la sala
+C 0x8711 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8714 lee la sala (16 bits)
+C 0x8719 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x8737 guarda la sala
+C 0x873E posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8741 lee la direccion del paso en curso
+C 0x874B guarda la sala
+C 0x8752 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8758 guarda la sala
+C 0x875F posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8762 lee la direccion del paso en curso
+C 0x8771 guarda la sala
+C 0x8778 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x877E guarda la sala
+C 0x8785 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x878B guarda la sala
+C 0x8792 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8798 guarda la sala
+C 0x879F posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x87A2 lee la direccion del paso en curso
+C 0x87AB guarda la sala
+C 0x87B2 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x87B8 guarda la sala
+C 0x87BF posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x87C2 lee la direccion del paso en curso
+C 0x87CC guarda la sala
+C 0x87D3 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x87D9 guarda la sala
+C 0x87E0 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x87E3 lee la direccion del paso en curso
+C 0x87EF guarda la sala
+C 0x87F6 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x87FC guarda la sala
+C 0x8803 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8809 guarda la sala
+C 0x8810 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8813 lee la direccion del paso en curso
+C 0x8821 guarda la sala
+C 0x8828 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x882E guarda la sala
+C 0x8835 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x883B guarda la sala
+C 0x8842 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8845 lee la direccion del paso en curso
+C 0x884F guarda la sala
+C 0x8856 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x885C guarda la sala
+C 0x8863 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8866 lee la direccion del paso en curso
+C 0x886F guarda la sala
+C 0x8876 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x887C guarda la sala
+C 0x8883 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8886 lee la direccion del paso en curso
+C 0x888F guarda la sala
+C 0x8896 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x889C guarda la sala
+C 0x88A3 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x88A6 lee la direccion del paso en curso
+C 0x88B0 guarda la sala
+C 0x88B7 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x88BD guarda la sala
+C 0x88C4 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x88CA guarda la sala
+C 0x88D1 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x88D4 lee la sala (16 bits)
+C 0x88D9 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x88E3 guarda la sala de la que se viene y el byte siguiente (16 bits)
+C 0x88E9 guarda la sala
+C 0x88F0 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x88F6 guarda la sala de la que se viene y el byte siguiente (16 bits)
+C 0x88FC guarda la sala
+C 0x8903 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8906 lee la sala
+C 0x8909 guarda la sala de la que se viene y el byte siguiente (16 bits)
+C 0x890C lee la sala a la que se salta y el byte siguiente (16 bits)
+C 0x8925 lee el objeto 1 (bit 0: se lleva)
+C 0x892B apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
+C 0x8939 guarda la sala
+C 0x893E guarda la direccion del paso en curso
+C 0x8943 guarda acaba de entrar en la sala
+C 0x8947 lee la sala
+C 0x8955 guarda el modo del personaje (tabla p01:718E)
+C 0x8959 guarda pantalla en negro (los volcados escriben ceros)
+C 0x8965 lee las banderas de la historia, byte 0x24 (se graban con la partida)
+C 0x8973 guarda el modo del personaje (tabla p01:718E)
+C 0x897F lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x898B apunta a la X del personaje
+C 0x899B lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x89A7 apunta a la Y del personaje
+C 0x89AF guarda el modo del personaje (tabla p01:718E)
+C 0x89BB lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x89C6 apunta a la Y del personaje
+C 0x89DE lee las banderas de la historia, byte 0x38 (se graban con la partida)
+C 0x89E3 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x89F1 guarda las banderas de la historia, byte 0x38 (se graban con la partida)
+C 0x89F5 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8A01 apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0x8A09 guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8A15 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8A69 guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8A7D lee la X del personaje
+C 0x8A8A apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0x8A8F guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8AA6 guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8ABC guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8AD2 guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8AE8 guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8AFE guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8B13 guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8B1D guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8B23 guarda la sala
+C 0x8B30 guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8B36 guarda la sala
+C 0x8B40 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8B49 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8B51 apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0x8B56 apunta a las banderas de la historia, byte 0x28 (se graban con la partida)
+C 0x8B5F posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8B62 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8B6B posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8B73 apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0x8B7C posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8B83 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8B86 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8B8F posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8B92 guarda la sala
+C 0x8B96 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8B99 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8BA2 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8BA5 guarda la sala
+C 0x8BA9 apunta a las banderas de la historia, byte 0x37 (se graban con la partida)
+C 0x8BAE posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8BB1 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8BBA posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8BBD guarda la sala
+C 0x8BC1 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8BC4 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8BCD posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8BD0 apunta a las banderas de la historia, byte 0x36 (se graban con la partida)
+C 0x8BD7 apunta a las banderas de la historia, byte 0x34 (se graban con la partida)
+C 0x8BE7 guarda la sala
+C 0x8BEB posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8BF1 guarda la sala
+C 0x8BF4 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8BF7 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8C00 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8C03 apunta a la cuenta de vueltas por la sala 0x7E
+C 0x8C07 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8C0D guarda la sala
+C 0x8C10 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8C13 lee la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8C1C posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8C1F apunta a la cuenta de vueltas por la sala 0x7E
+C 0x8C26 posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8C2C guarda la sala
+C 0x8C2F posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8C32 lee la sala
+C 0x8C71 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x8C74 guarda la sala
+C 0x8C7B guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x8C7F guarda la cuenta de las salas al azar
+C 0x8C89 lee la sala
+C 0x8C8C guarda la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8C8F apunta a la cuenta de las salas al azar
+C 0x8CA1 guarda la sala
+C 0x8CA6 lee la sala
+C 0x8CA9 guarda la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8CAC apunta a la cuenta de las salas al azar
+C 0x8CBE guarda la sala
+C 0x8CC3 lee la sala
+C 0x8CC6 guarda la sala de la que se viene y el byte siguiente (16 bits)
+C 0x8CC9 apunta a la cuenta de las salas al azar
+C 0x8CDB guarda la sala
+C 0x8CDE lee la direccion del paso en curso
+C 0x8CE5 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x8CEA posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+C 0x8CF5 lee la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
+C 0x8CFC palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x8CFF lee la Y del personaje y el byte siguiente (16 bits)
+C 0x8D08 apunta a los 8 actores de la sala (0x80 bytes cada uno)
+C 0x8D10 lee si se puede hablar con el actor (p02:8D10)
+C 0x8D1A apunta a acaba de entrar en la sala
+C 0x8D25 lee la Y del actor
+C 0x8D28 lee la X del actor
+C 0x8D2E guarda_actor_de_enfrente: 0xE8A6 = C
+C 0x8D3D guarda el actor de enfrente (0xFF: ninguno)
+C 0x8D42 lee la Y del personaje y el byte siguiente (16 bits)
+C 0x8D52 guarda_actor_de_enfrente: 0xE8A6 = C
+C 0x8D55 ficha_de_actor: HL = 0xE400 + A * 0x80: la ficha del actor A
+C 0x8D6E salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8D7B guarda el modo del personaje (tabla p01:718E)
+C 0x8D7E apunta a el objeto 1 (bit 0: se lleva)
+C 0x8D86 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8D94 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8DA2 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8DB0 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8DBE salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8DCC salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8DDA salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8DE8 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8DF6 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E04 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E12 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E20 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E2E salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E3C salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E4A salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E58 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E66 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E74 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E82 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E90 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8E9E salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8EAC salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8EBA salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8EC8 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8ED6 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8EE4 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8EF2 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8F00 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8F0E salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8F1C guarda la sala
+C 0x8F21 empieza_accion: 0xE3A1 = A, 0xE337 = 3 y la escena 0 de la escena de accion
+C 0x8F2F guarda la sala
+C 0x8F34 empieza_accion: 0xE3A1 = A, 0xE337 = 3 y la escena 0 de la escena de accion
+C 0x8F42 guarda la sala
+C 0x8F47 empieza_accion: 0xE3A1 = A, 0xE337 = 3 y la escena 0 de la escena de accion
+C 0x8F50 accion_2: la escena de accion 2 en la sala 0x212
+C 0x8F59 accion_4: la escena de accion 4 en la sala 0x222
+C 0x8F62 accion_7: la escena de accion 7 en la sala 0x224
+C 0x8F70 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8F7E salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8F8C salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8F9A salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8FA8 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8FB6 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8FBF accion_8: la escena de accion 8 en la sala 0x225
+C 0x8FCD salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8FDB salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8FE9 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x8FF7 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x9005 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x9013 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x9021 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x902F salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x9043 guarda la sala de partida (indice de p01:67E3)
+C 0x9046 guarda en partida (bit 7: la demo acaba)
+C 0x9055 salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+C 0x9062 guarda la sala a la que se salta y el byte siguiente (16 bits)
+C 0x9065 guarda la sala a la que se salta y el byte siguiente (16 bits)
+C 0x906A guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x906E guarda la escena de accion (1-9)
+C 0x9073 guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x9079 guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x907C apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0x9086 apunta a las banderas de la historia, byte 0x26 (se graban con la partida)
+C 0x9097 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x909D guarda la escena de accion (1-9)
+C 0x90A1 guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x90A7 guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x90AD guarda la sala
+C 0x90B8 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x90BE guarda la escena de accion (1-9)
+C 0x90C2 guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x90C8 guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x90CE guarda la sala
+C 0x90D9 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x90DF guarda la escena de accion (1-9)
+C 0x90E4 guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x90EA guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x90F0 guarda la sala
+C 0x90FB guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9101 guarda la escena de accion (1-9)
+C 0x9106 guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x910C guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x9112 guarda la sala
+C 0x911D guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9122 guarda el actor de enfrente (0xFF: ninguno)
+C 0x912E lee el evento en curso (tabla p02:9135)
+C 0x9132 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9189 apunta a el paso del evento
+C 0x918E lee el paso del evento
+C 0x9191 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x919A sonido_2f: pide el sonido 0x2F
+C 0x919F guarda las banderas de sprites (bit 0: sin rotar)
+C 0x91A2 apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0x91A7 corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+C 0x91AA borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x91AE guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x91B1 graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
+C 0x91B5 nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+C 0x91B8 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x91BB evento_siguiente_paso: 0xE8AB + 1
+C 0x91C0 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x91C3 lee el texto en marcha
+C 0x91C8 evento_siguiente_paso: 0xE8AB + 1
+C 0x91CB lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x91D0 redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
+C 0x91DA guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x91DD graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x91E0 lee la Y guardada del primer sprite
+C 0x91E3 guarda los atributos de los 32 sprites
+C 0x91E7 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x91EA vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
+C 0x91EF guarda el paso del menu (tabla p00:5231)
+C 0x91F3 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x91F6 apunta a el objeto 1 (bit 0: se lleva)
+C 0x91FD guarda el paso del menu (tabla p00:5231)
+C 0x9202 guarda la lista de opciones del menu
+C 0x9206 lee el paso del evento
+C 0x9209 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9218 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x921B lee el tipo del personaje de enfrente
+C 0x9238 hl_mas_a: HL = HL + A
+C 0x9243 sonido_09: pide el sonido 9
+C 0x9246 evento_siguiente_paso: 0xE8AB + 1
+C 0x9278 evento_siguiente_paso: 0xE8AB + 1
+C 0x927C guarda las banderas de sprites (bit 0: sin rotar)
+C 0x927F lee la sala
+C 0x9288 evento_siguiente_paso: 0xE8AB + 1
+C 0x928D guarda el paso del menu (tabla p00:5231)
+C 0x9292 guarda la lista de opciones del menu
+C 0x9298 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x929B lee el texto en marcha
+C 0x92A0 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x92A5 evento_siguiente_paso: 0xE8AB + 1
+C 0x92AA guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x92AF guarda la escena de accion (1-9)
+C 0x92B4 guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x92BA guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x92C0 guarda la sala
+C 0x92C5 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x92D0 lee el paso del evento
+C 0x92D3 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x92DA a_anima_al_de_enfrente: con 7-8, p07:8758 (un paso de la animacion del actor de enfrente (0xE370, tabla p07:8762)); vuelve con 1-2-3
+C 0x92E3 evento_siguiente_paso: 0xE8AB + 1
+C 0x92E6 lee el tipo del personaje de enfrente
+C 0x9302 hl_mas_a: HL = HL + A
+C 0x930D evento_siguiente_paso: 0xE8AB + 1
+C 0x9319 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x931C borra_cursor: borra el cursor de la columna de opciones
+C 0x9320 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9323 borra_cursor: borra el cursor de la columna de opciones
+C 0x9326 lee el paso del evento
+C 0x9329 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9332 sonido_2f: pide el sonido 0x2F
+C 0x9337 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x933A apunta a las banderas de la historia, byte 0x26 (se graban con la partida)
+C 0x933F corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+C 0x9342 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x9347 graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
+C 0x934C nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+C 0x934F vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9352 evento_siguiente_paso: 0xE8AB + 1
+C 0x9357 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x935A lee el texto en marcha
+C 0x935F evento_siguiente_paso: 0xE8AB + 1
+C 0x9362 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x9367 redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
+C 0x936F lee la Y guardada del primer sprite
+C 0x9372 guarda los atributos de los 32 sprites
+C 0x9376 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x9379 vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
+C 0x937E guarda el paso del menu (tabla p00:5231)
+C 0x9382 lee el paso del evento
+C 0x9385 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9392 guarda la espera del estado, en cuadros
+C 0x9395 sonido_06: pide el sonido 6
+C 0x9398 evento_siguiente_paso: 0xE8AB + 1
+C 0x939B apunta a la espera del estado, en cuadros
+C 0x93AC vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x93AF evento_siguiente_paso: 0xE8AB + 1
+C 0x93B2 apunta a la espera del estado, en cuadros
+C 0x93D2 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x93D5 evento_siguiente_paso: 0xE8AB + 1
+C 0x93DA texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x93DD lee el texto en marcha
+C 0x93E2 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x93E5 borra_cursor: borra el cursor de la columna de opciones
+C 0x93E8 lee el paso del evento
+C 0x93EB despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x93F8 guarda la espera del estado, en cuadros
+C 0x93FB sonido_06: pide el sonido 6
+C 0x93FE evento_siguiente_paso: 0xE8AB + 1
+C 0x9401 apunta a la espera del estado, en cuadros
+C 0x9412 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9415 evento_siguiente_paso: 0xE8AB + 1
+C 0x9418 apunta a la espera del estado, en cuadros
+C 0x942B apunta a los 8 actores de la sala (0x80 bytes cada uno)
+C 0x9438 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x943B evento_siguiente_paso: 0xE8AB + 1
+C 0x9440 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9443 lee el texto en marcha
+C 0x9448 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x944B borra_cursor: borra el cursor de la columna de opciones
+C 0x9450 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x9453 evento_05: el evento 0x05 (0xE8AA), de un solo paso
+C 0x9456 lee el paso del evento
+C 0x9459 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9466 guarda la espera del estado, en cuadros
+C 0x9469 sonido_1e: pide el sonido 0x1E
+C 0x946C evento_siguiente_paso: 0xE8AB + 1
+C 0x946F apunta a la espera del estado, en cuadros
+C 0x9480 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9483 evento_siguiente_paso: 0xE8AB + 1
+C 0x9486 apunta a la espera del estado, en cuadros
+C 0x9497 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x949A evento_siguiente_paso: 0xE8AB + 1
+C 0x949D apunta a la espera del estado, en cuadros
+C 0x94A9 guarda el color de las fichas copiadas
+C 0x94AF vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x94B2 apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0x94B8 guarda el objeto 4 (bit 0: se lleva)
+C 0x94BB evento_05: el evento 0x05 (0xE8AA), de un solo paso
+C 0x9510 lee el paso del evento
+C 0x9513 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x951C guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x951F graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x9522 sonido_13: pide el sonido 0x13
+C 0x9525 evento_siguiente_paso: 0xE8AB + 1
+C 0x952A texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x952D lee el texto en marcha
+C 0x9532 apunta a las banderas de la historia, byte 0x31 (se graban con la partida)
+C 0x9539 guarda el objeto 3 (bit 0: se lleva)
+C 0x953D guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9542 guarda el paso del menu (tabla p00:5231)
+C 0x9547 guarda la lista de opciones del menu
+C 0x954B lee el paso del evento
+C 0x954E despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9559 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x955C apunta a las banderas de la historia, byte 0x34 (se graban con la partida)
+C 0x9561 corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+C 0x9564 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x9569 graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
+C 0x956E nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+C 0x9571 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9574 sonido_2f: pide el sonido 0x2F
+C 0x9577 evento_siguiente_paso: 0xE8AB + 1
+C 0x957C texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x957F lee el texto en marcha
+C 0x9584 evento_siguiente_paso: 0xE8AB + 1
+C 0x9587 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x958C redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
+C 0x9594 lee la Y guardada del primer sprite
+C 0x9597 guarda los atributos de los 32 sprites
+C 0x959B guarda las banderas de sprites (bit 0: sin rotar)
+C 0x959E vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
+C 0x95A3 guarda el paso del menu (tabla p00:5231)
+C 0x95AC sonido_1e: pide el sonido 0x1E
+C 0x95B1 guarda el paso del menu (tabla p00:5231)
+C 0x95B6 guarda la lista de opciones del menu
+C 0x95BA lee el paso del evento
+C 0x95BD despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x95E0 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x95E3 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x95E6 sonido_13: pide el sonido 0x13
+C 0x95E9 evento_siguiente_paso: 0xE8AB + 1
+C 0x95EE texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x95F1 lee el texto en marcha
+C 0x95F6 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x95FB evento_siguiente_paso: 0xE8AB + 1
+C 0x9600 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x9603 corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+C 0x9606 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x960A guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x960E graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
+C 0x9612 nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+C 0x9615 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9618 evento_siguiente_paso: 0xE8AB + 1
+C 0x961D texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9620 lee el texto en marcha
+C 0x9625 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x962C guarda el evento en curso (tabla p02:9135)
+C 0x962F evento_siguiente_paso: 0xE8AB + 1
+C 0x9632 corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+C 0x9635 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x963A graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
+C 0x963F nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+C 0x9642 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9645 evento_siguiente_paso: 0xE8AB + 1
+C 0x964A texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x964D lee el texto en marcha
+C 0x9652 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x9659 guarda el evento en curso (tabla p02:9135)
+C 0x965C evento_siguiente_paso: 0xE8AB + 1
+C 0x965F redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
+C 0x9664 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9667 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x966A sonido_13: pide el sonido 0x13
+C 0x966D evento_siguiente_paso: 0xE8AB + 1
+C 0x9672 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9675 lee el texto en marcha
+C 0x967A lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x9681 guarda el evento en curso (tabla p02:9135)
+C 0x9684 evento_siguiente_paso: 0xE8AB + 1
+C 0x9687 corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+C 0x968A borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x968E guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9692 graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
+C 0x9696 nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+C 0x9699 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x969C evento_siguiente_paso: 0xE8AB + 1
+C 0x96A1 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x96A4 lee el texto en marcha
+C 0x96A9 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x96B0 guarda el evento en curso (tabla p02:9135)
+C 0x96B3 evento_siguiente_paso: 0xE8AB + 1
+C 0x96B6 redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
+C 0x96BB guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x96BE graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x96C1 sonido_13: pide el sonido 0x13
+C 0x96C4 evento_siguiente_paso: 0xE8AB + 1
+C 0x96C9 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x96CC lee el texto en marcha
+C 0x96D1 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x96D8 guarda el evento en curso (tabla p02:9135)
+C 0x96DB evento_siguiente_paso: 0xE8AB + 1
+C 0x96E0 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x96E3 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x96E6 sonido_13: pide el sonido 0x13
+C 0x96E9 evento_siguiente_paso: 0xE8AB + 1
+C 0x96EE texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x96F1 lee el texto en marcha
+C 0x96F6 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x96FD guarda el evento en curso (tabla p02:9135)
+C 0x9700 evento_siguiente_paso: 0xE8AB + 1
+C 0x9705 guarda el paso del menu (tabla p00:5231)
+C 0x970A guarda la lista de opciones del menu
+C 0x9710 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9715 guarda la escena de accion (1-9)
+C 0x971A guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x9720 guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x9726 guarda la sala
+C 0x972B guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9736 lee el paso del evento
+C 0x9739 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9747 guarda el resultado de la carga (2: fallo)
+C 0x974A guarda el paso del menu de carga
+C 0x974D lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9754 guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9757 evento_siguiente_paso: 0xE8AB + 1
+C 0x975A graba_en_cinta: un paso de la grabacion en cinta (tabla p03:BDB5)
+C 0x975D lee el resultado de la carga (2: fallo)
+C 0x9765 evento_siguiente_paso: 0xE8AB + 1
+C 0x9768 evento_siguiente_paso: 0xE8AB + 1
+C 0x976D texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9770 lee el texto en marcha
+C 0x9775 evento_siguiente_paso: 0xE8AB + 1
+C 0x9778 evento_siguiente_paso: 0xE8AB + 1
+C 0x977D texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9780 lee el texto en marcha
+C 0x9785 lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x978A guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x978D evento_siguiente_paso: 0xE8AB + 1
+C 0x9792 guarda el paso del menu (tabla p00:5231)
+C 0x9797 guarda la lista de opciones del menu
+C 0x979B lee el paso del evento
+C 0x979E despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x97AC guarda el resultado de la carga (2: fallo)
+C 0x97AF guarda el paso del menu de carga
+C 0x97B2 lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x97B9 guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x97BC evento_siguiente_paso: 0xE8AB + 1
+C 0x97BF graba_en_disco: un paso de la grabacion en disco (tabla p03:BBBA)
+C 0x97C2 lee el resultado de la carga (2: fallo)
+C 0x97CA evento_siguiente_paso: 0xE8AB + 1
+C 0x97CD evento_siguiente_paso: 0xE8AB + 1
+C 0x97D2 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x97D5 lee el texto en marcha
+C 0x97DA evento_siguiente_paso: 0xE8AB + 1
+C 0x97DD evento_siguiente_paso: 0xE8AB + 1
+C 0x97E2 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x97E5 lee el texto en marcha
+C 0x97EA lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x97EF guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x97F2 evento_siguiente_paso: 0xE8AB + 1
+C 0x97F7 guarda el paso del menu (tabla p00:5231)
+C 0x97FC guarda la lista de opciones del menu
+C 0x9800 lee el paso del evento
+C 0x9803 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9813 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9816 evento_siguiente_paso: 0xE8AB + 1
+C 0x981B texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x981E lee el texto en marcha
+C 0x9823 apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
+C 0x9828 evento_05: el evento 0x05 (0xE8AA), de un solo paso
+C 0x9831 lee el paso del evento
+C 0x9834 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9842 guarda el resultado de la carga (2: fallo)
+C 0x9845 guarda el paso del menu de carga
+C 0x9848 evento_siguiente_paso: 0xE8AB + 1
+C 0x984B comprueba_la_cinta: un paso de la comprobacion de la cinta (tabla p03:BEE7)
+C 0x984E lee el resultado de la carga (2: fallo)
+C 0x9856 evento_siguiente_paso: 0xE8AB + 1
+C 0x9859 evento_siguiente_paso: 0xE8AB + 1
+C 0x985E texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9861 lee el texto en marcha
+C 0x9866 evento_siguiente_paso: 0xE8AB + 1
+C 0x9869 evento_siguiente_paso: 0xE8AB + 1
+C 0x986E texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9871 lee el texto en marcha
+C 0x9876 evento_siguiente_paso: 0xE8AB + 1
+C 0x9879 lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x987E guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9883 guarda el paso del menu (tabla p00:5231)
+C 0x9888 guarda la lista de opciones del menu
+C 0x988C lee el paso del evento
+C 0x988F despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x989D guarda el resultado de la carga (2: fallo)
+C 0x98A0 guarda el paso del menu de carga
+C 0x98A3 evento_siguiente_paso: 0xE8AB + 1
+C 0x98A6 comprueba_el_disco: un paso de la comprobacion del disco (tabla p03:BC05)
+C 0x98A9 lee el resultado de la carga (2: fallo)
+C 0x98B1 evento_siguiente_paso: 0xE8AB + 1
+C 0x98B4 evento_siguiente_paso: 0xE8AB + 1
+C 0x98B9 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x98BC lee el texto en marcha
+C 0x98C1 evento_siguiente_paso: 0xE8AB + 1
+C 0x98C4 evento_siguiente_paso: 0xE8AB + 1
+C 0x98C9 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x98CC lee el texto en marcha
+C 0x98D1 evento_siguiente_paso: 0xE8AB + 1
+C 0x98D4 lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x98D9 guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x98DE guarda el paso del menu (tabla p00:5231)
+C 0x98E3 guarda la lista de opciones del menu
+C 0x98E7 lee el paso del evento
+C 0x98EA despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x98F5 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x98F8 sonido_32: pide el sonido 0x32
+C 0x98FB esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+C 0x98FE borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x9903 graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
+C 0x9908 nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+C 0x990B vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x990E sprites_de_0xeb7d: 8 sprites en 0xF060: cada bit de 0xEB7D elige una de las dos posiciones de p03:B4F5
+C 0x9911 evento_siguiente_paso: 0xE8AB + 1
+C 0x9916 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9919 lee el texto en marcha
+C 0x991E evento_siguiente_paso: 0xE8AB + 1
+C 0x9921 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x9926 esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+C 0x9929 redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
+C 0x992D guarda las banderas de sprites (bit 0: sin rotar)
+C 0x9932 guarda el paso del menu (tabla p00:5231)
+C 0x9937 guarda la lista de opciones del menu
+C 0x993B lee el paso del evento
+C 0x993E despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9949 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x994C graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x994F sonido_13: pide el sonido 0x13
+C 0x9952 evento_siguiente_paso: 0xE8AB + 1
+C 0x9957 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x995A lee el texto en marcha
+C 0x995F evento_siguiente_paso: 0xE8AB + 1
+C 0x9962 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x9968 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x996D guarda el paso del menu (tabla p00:5231)
+C 0x9972 guarda la lista de opciones del menu
+C 0x9976 lee el paso del evento
+C 0x9979 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9984 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x9987 sonido_2f: pide el sonido 0x2F
+C 0x998A esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+C 0x998D borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x9992 graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
+C 0x9997 nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+C 0x999A vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x999D sprites_de_0xeb7d: 8 sprites en 0xF060: cada bit de 0xEB7D elige una de las dos posiciones de p03:B4F5
+C 0x99A0 evento_siguiente_paso: 0xE8AB + 1
+C 0x99A5 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x99A8 lee el texto en marcha
+C 0x99AD apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
+C 0x99B2 evento_siguiente_paso: 0xE8AB + 1
+C 0x99B5 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x99BA esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+C 0x99BD redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
+C 0x99C1 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x99C6 guarda el paso del menu (tabla p00:5231)
+C 0x99CB guarda la lista de opciones del menu
+C 0x99CF lee el paso del evento
+C 0x99D2 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x99DB guarda las banderas de sprites (bit 0: sin rotar)
+C 0x99DE sonido_32: pide el sonido 0x32
+C 0x99E1 esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+C 0x99E4 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x99E9 graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
+C 0x99EE nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+C 0x99F1 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x99F4 sprites_de_0xeb7d: 8 sprites en 0xF060: cada bit de 0xEB7D elige una de las dos posiciones de p03:B4F5
+C 0x99F7 evento_siguiente_paso: 0xE8AB + 1
+C 0x99FA lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x99FF esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+C 0x9A02 redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
+C 0x9A06 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x9A0B guarda el paso del menu (tabla p00:5231)
+C 0x9A10 guarda la lista de opciones del menu
+C 0x9A14 sonido_27: pide el sonido 0x27
+C 0x9A1E guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9A21 borra_cursor: borra el cursor de la columna de opciones
+C 0x9A27 guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x9A2C guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9A2F borra_cursor: borra el cursor de la columna de opciones
+C 0x9A35 guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x9A3F guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9A42 borra_cursor: borra el cursor de la columna de opciones
+C 0x9A4C guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9A4F borra_cursor: borra el cursor de la columna de opciones
+C 0x9A52 lee el paso del evento
+C 0x9A55 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9A64 guarda la espera del estado, en cuadros
+C 0x9A67 evento_siguiente_paso: 0xE8AB + 1
+C 0x9A6A apunta a la espera del estado, en cuadros
+C 0x9A6E evento_siguiente_paso: 0xE8AB + 1
+C 0x9A79 hl_mas_a: HL = HL + A
+C 0x9A8A apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0x9A8F evento_siguiente_paso: 0xE8AB + 1
+C 0x9A94 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9A97 lee el texto en marcha
+C 0x9A9C lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x9AA1 accion_quita_extra: esconde los sprites de 0xF020
+C 0x9AA4 evento_siguiente_paso: 0xE8AB + 1
+C 0x9AA9 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9AAC lee el texto en marcha
+C 0x9AB6 apunta a las banderas de la historia, byte 0x25 (se graban con la partida)
+C 0x9ABD guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9AC0 borra_cursor: borra el cursor de la columna de opciones
+C 0x9AC5 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9ACA guarda la escena de accion (1-9)
+C 0x9ACF guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x9AD5 guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x9ADB guarda la sala
+C 0x9AE0 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9AEB lee el paso del evento
+C 0x9AEE despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9AFC guarda el resultado de la carga (2: fallo)
+C 0x9AFF guarda el paso del menu de carga
+C 0x9B02 lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9B09 guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9B0C evento_siguiente_paso: 0xE8AB + 1
+C 0x9B0F graba_en_el_otro_cartucho: un paso de la grabacion en el otro cartucho (0xE38E, tabla p03:BB1A)
+C 0x9B12 lee el resultado de la carga (2: fallo)
+C 0x9B1A evento_siguiente_paso: 0xE8AB + 1
+C 0x9B1D evento_siguiente_paso: 0xE8AB + 1
+C 0x9B22 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9B25 lee el texto en marcha
+C 0x9B2A evento_siguiente_paso: 0xE8AB + 1
+C 0x9B2D evento_siguiente_paso: 0xE8AB + 1
+C 0x9B32 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9B35 lee el texto en marcha
+C 0x9B3A lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9B3F guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9B42 evento_siguiente_paso: 0xE8AB + 1
+C 0x9B47 guarda el paso del menu (tabla p00:5231)
+C 0x9B4C guarda la lista de opciones del menu
+C 0x9B50 lee el paso del evento
+C 0x9B53 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9B61 guarda el resultado de la carga (2: fallo)
+C 0x9B64 guarda el paso del menu de carga
+C 0x9B67 evento_siguiente_paso: 0xE8AB + 1
+C 0x9B6A comprueba_el_otro_cartucho: un paso de la comprobacion: lo vuelve a leer y lo compara con 0xEB40 (tabla p03:BB65)
+C 0x9B6D lee el resultado de la carga (2: fallo)
+C 0x9B75 evento_siguiente_paso: 0xE8AB + 1
+C 0x9B78 evento_siguiente_paso: 0xE8AB + 1
+C 0x9B7D texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9B80 lee el texto en marcha
+C 0x9B85 evento_siguiente_paso: 0xE8AB + 1
+C 0x9B88 evento_siguiente_paso: 0xE8AB + 1
+C 0x9B8D texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9B90 lee el texto en marcha
+C 0x9B95 evento_siguiente_paso: 0xE8AB + 1
+C 0x9B98 lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9B9D guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9BA2 guarda el paso del menu (tabla p00:5231)
+C 0x9BA7 guarda la lista de opciones del menu
+C 0x9BB2 guarda el color de las fichas copiadas
+C 0x9BB8 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9BBB apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0x9BC0 evento_05: el evento 0x05 (0xE8AA), de un solo paso
+C 0x9BCF guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9BD4 guarda la escena de accion (1-9)
+C 0x9BD9 guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
+C 0x9BDF guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+C 0x9BE5 guarda la sala
+C 0x9BEA guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9BFE vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9C01 evento_05: el evento 0x05 (0xE8AA), de un solo paso
+C 0x9C13 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9C16 evento_05: el evento 0x05 (0xE8AA), de un solo paso
+C 0x9C26 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9C29 borra_cursor: borra el cursor de la columna de opciones
+C 0x9C33 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9C36 sonido_86: pide el sonido 0x86
+C 0x9C39 borra_cursor: borra el cursor de la columna de opciones
+C 0x9C43 guarda el modo dentro de la sala (tabla p00:5A83)
+C 0x9C46 sonido_53: pide el sonido 0x53
+C 0x9C49 borra_cursor: borra el cursor de la columna de opciones
+C 0x9C4D guarda el color de las fichas copiadas
+C 0x9C59 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x9C5C evento_05: el evento 0x05 (0xE8AA), de un solo paso
+C 0x9C65 lee el paso del evento
+C 0x9C68 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9C74 guarda el resultado de la carga (2: fallo)
+C 0x9C77 guarda el paso del menu de carga
+C 0x9C7A lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9C81 guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9C84 evento_siguiente_paso: 0xE8AB + 1
+C 0x9C87 a_da_contrasena: con 12-13-14, p14:BA95 (un paso de la contrasena que se le da al jugador (0xE38E, tabla p14:BAA4)); vuelve con 1-2-3
+C 0x9C8A lee el resultado de la carga (2: fallo)
+C 0x9C8F evento_siguiente_paso: 0xE8AB + 1
+C 0x9C94 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9C97 lee el texto en marcha
+C 0x9C9C evento_siguiente_paso: 0xE8AB + 1
+C 0x9CA1 guarda el paso del menu (tabla p00:5231)
+C 0x9CA6 guarda la lista de opciones del menu
+C 0x9CAA lee el paso del evento
+C 0x9CAD despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x9CB9 guarda el resultado de la carga (2: fallo)
+C 0x9CBC guarda el paso del menu de carga
+C 0x9CBF evento_siguiente_paso: 0xE8AB + 1
+C 0x9CC2 a_da_contrasena: con 12-13-14, p14:BA95 (un paso de la contrasena que se le da al jugador (0xE38E, tabla p14:BAA4)); vuelve con 1-2-3
+C 0x9CC5 lee el resultado de la carga (2: fallo)
+C 0x9CCA evento_siguiente_paso: 0xE8AB + 1
+C 0x9CCF texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x9CD2 lee el texto en marcha
+C 0x9CD7 evento_siguiente_paso: 0xE8AB + 1
+C 0x9CDA lee las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9CDF guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0x9CE4 guarda el paso del menu (tabla p00:5231)
+C 0x9CE9 guarda la lista de opciones del menu
+C 0x9CF7 lee la ficha del personaje de enfrente
+C 0x9CFD lee el tipo del personaje de enfrente
+C 0x9D1B despacha_hl: salta a la palabra HL de la tabla pegada detras del `call`
+C 0x9DF0 apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0x9E04 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9E07 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x9E0A sonido_13: pide el sonido 0x13
+C 0x9E13 apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0x9E1F guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9E22 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x9E25 sonido_13: pide el sonido 0x13
+C 0x9E28 apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0x9E30 apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0x9E3B lee la sala
+C 0x9E58 lee las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0x9E5C guarda las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0x9E60 apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0x9E69 guarda el modo del personaje (tabla p01:718E)
+C 0x9E74 apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0x9E7E apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
+C 0x9E87 apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0x9E8E apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
+C 0x9E9E apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0x9EA9 apunta a las banderas de la historia, byte 0x1E (se graban con la partida)
+C 0x9EC2 apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0x9ECD apunta a las banderas de la historia, byte 0x1E (se graban con la partida)
+C 0x9EED apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
+C 0x9EF4 apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0x9F00 apunta a las banderas de la historia, byte 0x1C (se graban con la partida)
+C 0x9F0B apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
+C 0x9F2B guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x9F2E graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0x9F31 sonido_13: pide el sonido 0x13
+C 0x9F38 guarda el objeto 4 (bit 0: se lleva)
+C 0x9F3C apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
+C 0x9F45 apunta a el objeto 1 (bit 0: se lleva)
+C 0x9F60 guarda la columna del menu
+C 0x9F65 guarda la lista de opciones del menu
+C 0x9F69 apunta a las banderas de la historia, byte 0x1F (se graban con la partida)
+C 0x9F83 apunta a las banderas de la historia, byte 0x1F (se graban con la partida)
+C 0x9FC3 apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0x9FC9 guarda las banderas de la historia, byte 0x3B (se graban con la partida)
+C 0x9FCD apunta a los objetos (dos bytes cada uno; bit 0: se lleva)
+C 0x9FDA apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
+C 0x9FFA apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
+# --- fin de las anotaciones de anota.py ---

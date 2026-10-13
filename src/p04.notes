@@ -330,3 +330,493 @@ F 0x7CB6 16
 D 0x7FFA 0x8000 graficos_7FFA  graficos (L_59FB): [direccion de VRAM] y [n] n < 0x80 repite el siguiente, n > 0x80 copia n & 0x7F, 0x80 otra direccion, 0 acaba (sigue en el banco 5, en 0x8000); se solapan 2 bloques: (graficos_7FFC 7FFC-8000); lo leen p04:6E35, p00:4D75 (6 bytes)
 F 0x7FFA 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x6000 sonido_41 pide el sonido 0x41
+L 0x6005 sonido_50 pide el sonido 0x50
+L 0x600A sonido_3a pide el sonido 0x3A
+L 0x600F sonido_4a pide el sonido 0x4A
+L 0x6014 sonido_4b pide el sonido 0x4B
+L 0x6019 comprueba_cuatro_actores 0xE379 = 1 si el byte 0x1B de los actores 1-4 vale 3, 1, 2 y 4; si no, 2
+L 0x603F pon_dibujo_6057 sonido 0x1E, 0xE40D = 3 y el dibujo p04:6057 en (0x30, 0x40)
+L 0x6090 graficos_del_titulo borde negro, pantalla vacia, 5 graficos de p04:60B5, patrones volteados p05:B255 y sprites p04:60C9
+L 0x622B titulo monta el titulo (p04:6234) y el texto p04:606C
+L 0x6234 monta_titulo los graficos, el texto p04:605D y el rectangulo de nombres de p05:B5CA
+L 0x624F rectangulo_a_vram B filas de C bytes de HL a la VRAM DE (0x20 por fila)
+L 0x6266 titulo_cuadro un cuadro del titulo: espera, sonido 0x50 y los sprites que aparecen (0xE3AC, p04:62C3)
+L 0x62AE sprites_del_titulo copia a 0xF000 la lista de sprites A de p04:62C3
+L 0x631F marco_de_la_escena los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818
+L 0x6487 fuente_y_colores la fuente en los tres tercios y su color
+L 0x648C fuente la fuente en 0x2808 y 0x3000 y su color
+L 0x6491 fuente_en_tres_tercios la fuente p04:6F39 en 0x2000, 0x2800 y 0x3000 y lo extra de p04:6F41
+L 0x64AC fuente_extra p04:76E9 en 0x2808 y la fuente en 0x3000
+L 0x64BB copia_fuente 0x7B0 bytes de la fuente p04:6F39 a la VRAM HL
+L 0x64C4 color_de_la_fuente_en_tres_tercios color 0xF0 para la fuente en los tres tercios
+L 0x64DC color_de_la_fuente color 0xF0 para la fuente (y 5 y 8 para dos fichas)
+L 0x6501 pon_color_f0 llena BC bytes de la VRAM HL con 0xF0
+L 0x6506 fuente_en_dos_tercios 0x200 bytes de la fuente en dos tercios y colores a cero
+L 0x6527 rotulo_konami el RLE p04:7761 y 6 filas x 21 nombres desde 0x40 en 0x3907
+L 0x6555 rotulo_konami_cuadro una columna del rotulo cada cuadro: carga la pantalla 0xE00F (p04:65B8) en 0xED00 y la va pintando (p04:65C4)
+L 0x659D pantalla_del_rotulo el RLE de la pantalla A (p04:65B8) a 0xED00
+L 0x65AE vram_del_rotulo DE = la direccion de VRAM A de p04:65C4
+L 0x65D0 rle_a_ram_con_destino el RLE de HL con su direccion de RAM delante
+L 0x65D4 rle_a_ram RLE de HL a la RAM DE: 0 acaba, bit 7 = repite, si no copia n; con 0x80, otra direccion
+L 0x65F0 cortinilla_de_la_escena efecto en pasos (0xE348) con la lista de 0xE34C, de dos en dos columnas (p00:4CC2)
+L 0x6693 escena_inicial un paso de la escena inicial (0xE350, tabla p04:6699)
+L 0x6703 escena_inicial_00 el paso 0 de la escena inicial (0xE350, tabla p04:6699)
+L 0x670B escena_inicial_01 el paso 1 de la escena inicial (0xE350, tabla p04:6699)
+L 0x670E escena_inicial_02 el paso 2 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6711 escena_inicial_03 el paso 3 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6714 escena_inicial_04 el paso 4 de la escena inicial (0xE350, tabla p04:6699)
+L 0x671A escena_inicial_05 el paso 5 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6792 rectangulo_de_fichas B x C fichas seguidas desde A en el bufer HL (0x20 por fila)
+L 0x67A3 escena_inicial_06 el paso 6 de la escena inicial (0xE350, tabla p04:6699)
+L 0x67C1 escena_inicial_07 el paso 7 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6802 escena_inicial_08 el paso 8 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6815 escena_inicial_14 el paso 14 de la escena inicial (0xE350, tabla p04:6699)
+L 0x681A escena_inicial_12 el paso 12 de la escena inicial (0xE350, tabla p04:6699)
+L 0x681F escena_inicial_09 el paso 9 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6853 dibujo_de_la_respuesta en el paso 9, con la opcion 1, cambia unas fichas
+L 0x688B segunda_vez C + 1 si 0xE8D2 es impar
+L 0x6893 escena_inicial_11 el paso 11 de la escena inicial (0xE350, tabla p04:6699)
+L 0x68AC escena_inicial_15 el paso 15 de la escena inicial (0xE350, tabla p04:6699)
+L 0x68F0 graficos_de_lista B entradas de 4 bytes [RLE][VRAM] en dos tercios
+L 0x693B dibujo_en_el_mapa un dibujo [posicion][ancho][alto] y sus fichas a 0xED00
+L 0x695A escena_inicial_16 el paso 16 de la escena inicial (0xE350, tabla p04:6699)
+L 0x696C escena_inicial_17 el paso 17 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6A15 copia_lista [destino][n] y n bytes
+L 0x6A20 parpadeo_de_sprites el color de los 4 primeros sprites de p04:6A39 segun el cuadro
+L 0x6A41 escena_inicial_18 el paso 18 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6A4C escena_inicial_19 el paso 19 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6A6A escena_inicial_20 el paso 20 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6A8E escena_inicial_21 el paso 21 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6ABB escena_inicial_22 el paso 22 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6AD5 escena_inicial_23 el paso 23 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6B01 escena_inicial_24 el paso 24 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6B18 escena_inicial_25 el paso 25 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6B2D mezcla_patrones cada 4 cuadros mezcla los patrones de 0x2500 y 0x2600 con la mascara 0xE34A
+L 0x6B4E mezcla_patrones_una_vez 0xE8 bytes: (0x2500 AND mascara) OR (0x2600 AND NOT mascara) a 0x2500 y 0x2D00
+L 0x6B89 escena_inicial_26 el paso 26 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6B8F escena_inicial_27 el paso 27 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6B95 escena_inicial_28 el paso 28 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6BAA escena_inicial_29 el paso 29 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6BB8 escena_inicial_30 el paso 30 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6BD6 escena_inicial_31 el paso 31 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6C01 escena_inicial_32 el paso 32 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6C10 escena_inicial_33 el paso 33 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6C16 escena_inicial_34 el paso 34 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6C2E escena_inicial_35 el paso 35 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6C40 escena_inicial_36 el paso 36 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6C5F escena_siguiente 0xE350 + 1
+L 0x6C64 escena_inicial_37 el paso 37 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6C7E escena_inicial_38 el paso 38 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6C90 escena_inicial_39 el paso 39 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6CBF escena_inicial_40 el paso 40 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6CC2 escena_inicial_41 el paso 41 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6CF2 escena_inicial_42 el paso 42 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6D29 escena_inicial_43 el paso 43 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6D55 escena_inicial_44 el paso 44 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6D67 escena_inicial_45 el paso 45 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6D83 escena_inicial_46 el paso 46 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6D97 escena_inicial_47 el paso 47 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6DA9 escena_inicial_48 el paso 48 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6DAF escena_inicial_49 el paso 49 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6DC8 escena_inicial_50 el paso 50 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6DCE escena_inicial_51 el paso 51 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6DE6 escena_inicial_52 el paso 52 de la escena inicial (0xE350, tabla p04:6699)
+L 0x6DEC animacion_de_la_escena 0xE34C = la lista p04:7C71[0xE351]
+L 0x6DFA cuenta_hasta_2 (HL) + 1 sin pasar de 2 y el siguiente paso
+L 0x6E03 historia un paso de la historia (0xE350, tabla p04:6E09): ocho pantallas de texto (p04:6EDC) con su animacion
+L 0x6E13 historia_0 el paso 0 de la historia (0xE350, tabla p04:6E09)
+L 0x6E80 historia_1 el paso 1 de la historia (0xE350, tabla p04:6E09)
+L 0x6E86 historia_2 el paso 2 de la historia (0xE350, tabla p04:6E09)
+L 0x6E97 historia_3 el paso 3 de la historia (0xE350, tabla p04:6E09)
+L 0x6EBF historia_4 el paso 4 de la historia (0xE350, tabla p04:6E09)
+L 0x6EE4 anima_ficha_60 en cuatro filas (p05:94A9) la ficha 0x60 cambia con el cuadro (p04:6F1E)
+L 0x6EF7 anima_fila B fichas de DE: donde hay 0x60 escribe en la VRAM HL la ficha del cuadro
+L 0x6F26 historia_siguiente 0xE350 + 1
+L 0x6F2B animacion_de_la_historia 0xE34C = la lista p04:7C71[0xE351]
+C 0x6002 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x6007 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x600C pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x6011 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x6016 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0x603F sonido_1e: pide el sonido 0x1E
+C 0x604E guarda el color de las fichas copiadas
+C 0x6054 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x6092 color_de_borde: VDP R#7 = B
+C 0x6095 pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
+C 0x609D graficos_de_lista: B entradas de 4 bytes [RLE][VRAM] en dos tercios
+C 0x60A6 rle_volteado_a_dos_tercios: el RLE volteado (p00:5A32) en dos tercios
+C 0x60AF rle: RLE de DE a la VRAM HL
+C 0x60B2 fuente: la fuente en 0x2808 y 0x3000 y su color
+C 0x622B monta_titulo: los graficos, el texto p04:605D y el rectangulo de nombres de p05:B5CA
+C 0x6231 bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+C 0x623B graficos_del_titulo: borde negro, pantalla vacia, 5 graficos de p04:60B5, patrones volteados p05:B255 y sprites p04:60C9
+C 0x6241 bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+C 0x6255 copia_a_vram: LDIRVM de DE a la VRAM HL
+C 0x6260 de_mas_a: DE = DE + A
+C 0x6269 apunta a los atributos de los 32 sprites
+C 0x6282 lee la espera del estado, en cuadros
+C 0x628C sonido_50: pide el sonido 0x50
+C 0x6294 sprites_del_titulo: copia a 0xF000 la lista de sprites A de p04:62C3
+C 0x6297 lee la espera del estado, en cuadros
+C 0x62B4 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x62BD apunta a los atributos de los 32 sprites
+C 0x6322 rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x6328 rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x632E dibujo_en_el_mapa: un dibujo [posicion][ancho][alto] y sus fichas a 0xED00
+C 0x633A rectangulo_a_vram: B filas de C bytes de HL a la VRAM DE (0x20 por fila)
+C 0x6487 fuente_en_tres_tercios: la fuente p04:6F39 en 0x2000, 0x2800 y 0x3000 y lo extra de p04:6F41
+C 0x648C fuente_extra: p04:76E9 en 0x2808 y la fuente en 0x3000
+C 0x6494 copia_fuente: 0x7B0 bytes de la fuente p04:6F39 a la VRAM HL
+C 0x649A copia_fuente: 0x7B0 bytes de la fuente p04:6F39 a la VRAM HL
+C 0x649D fuente_extra: p04:76E9 en 0x2808 y la fuente en 0x3000
+C 0x64A9 copia_a_vram: LDIRVM de DE a la VRAM HL
+C 0x64B5 copia_a_vram: LDIRVM de DE a la VRAM HL
+C 0x64C1 copia_a_vram: LDIRVM de DE a la VRAM HL
+C 0x64D0 color_de_la_fuente: color 0xF0 para la fuente (y 5 y 8 para dos fichas)
+C 0x64D9 pon_color_f0: llena BC bytes de la VRAM HL con 0xF0
+C 0x64E2 pon_color_f0: llena BC bytes de la VRAM HL con 0xF0
+C 0x650F copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
+C 0x651A llena_dos_tercios: FILVRM en dos tercios
+C 0x6524 llena_dos_tercios: FILVRM en dos tercios
+C 0x6530 rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x6563 pantalla_del_rotulo: el RLE de la pantalla A (p04:65B8) a 0xED00
+C 0x6567 vram_del_rotulo: DE = la direccion de VRAM A de p04:65C4
+C 0x657E de_mas_a: DE = DE + A
+C 0x6582 apunta a los nombres de la pantalla (32 x 24)
+C 0x6585 hl_mas_a: HL = HL + A
+C 0x6591 de_mas_a: DE = DE + A
+C 0x6596 hl_mas_a: HL = HL + A
+C 0x65A0 hl_mas_2a: HL = HL + 2 * A
+C 0x65A8 apunta a los nombres de la pantalla (32 x 24)
+C 0x65AB rle_a_ram: RLE de HL a la RAM DE: 0 acaba, bit 7 = repite, si no copia n; con 0x80, otra direccion
+C 0x65B1 hl_mas_2a: HL = HL + 2 * A
+C 0x65F0 lee la lista del efecto
+C 0x65F4 lee el paso del efecto de aparecer/borrar
+C 0x6604 rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x6609 guarda la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x660E guarda el efecto en marcha
+C 0x6611 apunta a el paso del efecto de aparecer/borrar
+C 0x6616 apunta a la tabla del efecto (0: colores, 1: patrones) o la cuenta
+C 0x6648 columna_de_vram: 16 bytes de DE a la VRAM HL, saltando C en origen y destino
+C 0x665D hl_mas_a: HL = HL + A
+C 0x6680 columna_de_vram: 16 bytes de DE a la VRAM HL, saltando C en origen y destino
+C 0x668C guarda el efecto en marcha
+C 0x668F guarda el paso del efecto de aparecer/borrar
+C 0x6696 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x6708 escena_siguiente: 0xE350 + 1
+C 0x670B escena_siguiente: 0xE350 + 1
+C 0x670E escena_siguiente: 0xE350 + 1
+C 0x6711 escena_siguiente: 0xE350 + 1
+C 0x6714 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6717 escena_siguiente: 0xE350 + 1
+C 0x671C guarda el paso de la pantalla de nombres
+C 0x671F borra_patrones: 0x1000 de patrones y de colores a cero
+C 0x6722 pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
+C 0x6725 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x6728 fuente: la fuente en 0x2808 y 0x3000 y su color
+C 0x6731 rle: RLE de DE a la VRAM HL
+C 0x673A rle: RLE de DE a la VRAM HL
+C 0x6743 rle: RLE de DE a la VRAM HL
+C 0x674C rle: RLE de DE a la VRAM HL
+C 0x6758 copia_a_vram: LDIRVM de DE a la VRAM HL
+C 0x676D rectangulo_de_fichas: B x C fichas seguidas desde A en el bufer HL (0x20 por fila)
+C 0x6778 rectangulo_de_fichas: B x C fichas seguidas desde A en el bufer HL (0x20 por fila)
+C 0x677C guarda el paso del efecto de aparecer/borrar
+C 0x677F marco_de_la_escena: los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818
+C 0x6785 guarda la lista del efecto
+C 0x6788 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x678B escena_siguiente: 0xE350 + 1
+C 0x67A5 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x67A8 lee el texto en marcha
+C 0x67B2 guarda la lista de opciones del menu
+C 0x67B5 opciones_guardadas: las opciones de A con el cursor guardado (0xE8B2/0xE8B1)
+C 0x67B8 pinta_opciones: las opciones de 0xE8B8 (textos p04:7A15) en columna desde 0x3A1A
+C 0x67BB pinta_cursor: el cursor parpadeante en la columna de opciones
+C 0x67BE escena_siguiente: 0xE350 + 1
+C 0x67C1 cursor_vertical: arriba/abajo con repeticion (0xE8B0) en 0xE8A4
+C 0x67C4 pinta_cursor: el cursor parpadeante en la columna de opciones
+C 0x67C7 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x67DA borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x67DD escena_siguiente: 0xE350 + 1
+C 0x67E0 lee la opcion del cursor
+C 0x67E8 lee la opcion del cursor
+C 0x67F6 rectangulo_de_fichas: B x C fichas seguidas desde A en el bufer HL (0x20 por fila)
+C 0x67FF vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x6802 lee la opcion del cursor
+C 0x6807 escena_siguiente: 0xE350 + 1
+C 0x680A cortinilla_12: como p00:4CD4 con filas de 12
+C 0x680D lee el efecto en marcha
+C 0x6812 escena_siguiente: 0xE350 + 1
+C 0x6822 lee la opcion del cursor
+C 0x6825 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x6829 lee la opcion del cursor
+C 0x682D segunda_vez: C + 1 si 0xE8D2 es impar
+C 0x6831 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6835 lee el texto en marcha
+C 0x683A lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x683F lee la opcion del cursor
+C 0x684A dibujo_de_la_respuesta: en el paso 9, con la opcion 1, cambia unas fichas
+C 0x6859 lee la opcion del cursor
+C 0x6867 rectangulo_de_fichas: B x C fichas seguidas desde A en el bufer HL (0x20 por fila)
+C 0x6870 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x6893 lee la opcion del cursor
+C 0x6898 escena_siguiente: 0xE350 + 1
+C 0x689D guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x68A6 sonido_13: pide el sonido 0x13
+C 0x68A9 escena_siguiente: 0xE350 + 1
+C 0x68AD guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0x68B0 pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
+C 0x68B3 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x68BB graficos_de_lista: B entradas de 4 bytes [RLE][VRAM] en dos tercios
+C 0x68C4 rle_volteado_a_dos_tercios: el RLE volteado (p00:5A32) en dos tercios
+C 0x68CA dibujo_en_el_mapa: un dibujo [posicion][ancho][alto] y sus fichas a 0xED00
+C 0x68CD marco_de_la_escena: los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818
+C 0x68D0 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x68D3 fuente: la fuente en 0x2808 y 0x3000 y su color
+C 0x68D9 texto_en_sprites_a830: el texto p06:A830 como patrones de sprite desde 0x1800
+C 0x68DC nombres_en_sprites: los dos nombres como patrones de sprite desde 0x1980
+C 0x68E1 guarda la lista de opciones del menu
+C 0x68E4 opciones_guardadas: las opciones de A con el cursor guardado (0xE8B2/0xE8B1)
+C 0x68E7 pinta_opciones: las opciones de 0xE8B8 (textos p04:7A15) en columna desde 0x3A1A
+C 0x68EA pinta_cursor: el cursor parpadeante en la columna de opciones
+C 0x68ED escena_siguiente: 0xE350 + 1
+C 0x68FA rle_a_dos_tercios: el RLE de DE (p00:5A2A) en dos tercios
+C 0x6900 hl_mas_a: HL = HL + A
+C 0x6944 mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
+C 0x6953 hl_mas_a: HL = HL + A
+C 0x695A cursor_vertical: arriba/abajo con repeticion (0xE8B0) en 0xE8A4
+C 0x695D pinta_cursor: el cursor parpadeante en la columna de opciones
+C 0x6960 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x6966 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6969 escena_siguiente: 0xE350 + 1
+C 0x696C lee la opcion del cursor
+C 0x6973 guarda el paso de la pantalla de nombres
+C 0x6978 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x697B lee el texto en marcha
+C 0x6980 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x6989 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x698C lee el texto en marcha
+C 0x6999 copia_lista: [destino][n] y n bytes
+C 0x699C borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x69A1 guarda la espera del estado, en cuadros
+C 0x69A4 escena_siguiente: 0xE350 + 1
+C 0x6A20 lee la cuenta de cuadros
+C 0x6A28 hl_mas_a: HL = HL + A
+C 0x6A41 parpadeo_de_sprites: el color de los 4 primeros sprites de p04:6A39 segun el cuadro
+C 0x6A44 apunta a la espera del estado, en cuadros
+C 0x6A49 escena_siguiente: 0xE350 + 1
+C 0x6A4E texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6A51 lee el texto en marcha
+C 0x6A58 guarda la espera del estado, en cuadros
+C 0x6A5E copia_lista: [destino][n] y n bytes
+C 0x6A64 copia_lista: [destino][n] y n bytes
+C 0x6A67 escena_siguiente: 0xE350 + 1
+C 0x6A6A apunta a la espera del estado, en cuadros
+C 0x6A73 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6A78 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6A7B lee el texto en marcha
+C 0x6A82 guarda la espera del estado, en cuadros
+C 0x6A88 copia_lista: [destino][n] y n bytes
+C 0x6A8B escena_siguiente: 0xE350 + 1
+C 0x6A8E parpadeo_de_sprites: el color de los 4 primeros sprites de p04:6A39 segun el cuadro
+C 0x6A91 apunta a la espera del estado, en cuadros
+C 0x6A9A borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6A9F texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6AA2 lee el texto en marcha
+C 0x6AA9 guarda la espera del estado, en cuadros
+C 0x6AAF copia_lista: [destino][n] y n bytes
+C 0x6AB5 copia_lista: [destino][n] y n bytes
+C 0x6AB8 escena_siguiente: 0xE350 + 1
+C 0x6ABB apunta a la espera del estado, en cuadros
+C 0x6AC4 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6AC9 guarda la espera del estado, en cuadros
+C 0x6ACF copia_lista: [destino][n] y n bytes
+C 0x6AD2 escena_siguiente: 0xE350 + 1
+C 0x6AD5 apunta a la espera del estado, en cuadros
+C 0x6ADE borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6AE3 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6AE6 lee el texto en marcha
+C 0x6AF1 guarda la mascara del efecto
+C 0x6AF6 guarda la espera del estado, en cuadros
+C 0x6AFB guarda el efecto en marcha
+C 0x6AFE escena_siguiente: 0xE350 + 1
+C 0x6B01 parpadeo_de_sprites: el color de los 4 primeros sprites de p04:6A39 segun el cuadro
+C 0x6B04 apunta a la espera del estado, en cuadros
+C 0x6B09 sonido_26: pide el sonido 0x26
+C 0x6B0F copia_lista: [destino][n] y n bytes
+C 0x6B12 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6B15 escena_siguiente: 0xE350 + 1
+C 0x6B18 particulas: un paso de las 16 particulas de 0xE400 (0xE352, tabla p06:A5C2)
+C 0x6B1D texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6B20 lee el texto en marcha
+C 0x6B25 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x6B2A escena_siguiente: 0xE350 + 1
+C 0x6B2D lee la cuenta de cuadros
+C 0x6B33 lee el efecto en marcha
+C 0x6B38 mezcla_patrones_una_vez: 0xE8 bytes: (0x2500 AND mascara) OR (0x2600 AND NOT mascara) a 0x2500 y 0x2D00
+C 0x6B3B apunta a la mascara del efecto
+C 0x6B4A guarda el efecto en marcha
+C 0x6B4E lee la mascara del efecto
+C 0x6B89 mezcla_patrones: cada 4 cuadros mezcla los patrones de 0x2500 y 0x2600 con la mascara 0xE34A
+C 0x6B8C particulas: un paso de las 16 particulas de 0xE400 (0xE352, tabla p06:A5C2)
+C 0x6B8F borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6B92 escena_siguiente: 0xE350 + 1
+C 0x6B97 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6B9A lee el texto en marcha
+C 0x6B9F lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x6BA4 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6BA7 escena_siguiente: 0xE350 + 1
+C 0x6BAA pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
+C 0x6BAD marco_de_la_escena: los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818
+C 0x6BB2 guarda el paso de la pantalla de nombres
+C 0x6BB5 escena_siguiente: 0xE350 + 1
+C 0x6BBA texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6BBD lee el texto en marcha
+C 0x6BC7 guarda la lista de opciones del menu
+C 0x6BCA opciones_guardadas: las opciones de A con el cursor guardado (0xE8B2/0xE8B1)
+C 0x6BCD pinta_opciones: las opciones de 0xE8B8 (textos p04:7A15) en columna desde 0x3A1A
+C 0x6BD0 pinta_cursor: el cursor parpadeante en la columna de opciones
+C 0x6BD3 escena_siguiente: 0xE350 + 1
+C 0x6BD6 cursor_vertical: arriba/abajo con repeticion (0xE8B0) en 0xE8A4
+C 0x6BD9 pinta_cursor: el cursor parpadeante en la columna de opciones
+C 0x6BDC lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x6BE3 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x6BEB lee la opcion del cursor
+C 0x6BF1 escena_siguiente: 0xE350 + 1
+C 0x6BF4 escena_siguiente: 0xE350 + 1
+C 0x6BF7 escena_siguiente: 0xE350 + 1
+C 0x6BFC sonido_41: pide el sonido 0x41
+C 0x6C03 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6C06 lee el texto en marcha
+C 0x6C13 cuenta_hasta_2: (HL) + 1 sin pasar de 2 y el siguiente paso
+C 0x6C20 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6C23 lee el texto en marcha
+C 0x6C30 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6C33 lee el texto en marcha
+C 0x6C38 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x6C3D escena_siguiente: 0xE350 + 1
+C 0x6C40 sonido_4a: pide el sonido 0x4A
+C 0x6C43 borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x6C46 borra_fichas_del_juego: 0x300 de patrones y colores desde la ficha 0x10, en dos tercios
+C 0x6C49 nombres_del_marco: las fichas 0x10-0x6F en dos bloques de 16 x 6
+C 0x6C4C vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x6C4F marco_de_la_escena: los RLE p04:633D y p04:6432, el dibujo p04:6443 y 8 x 8 nombres en 0x3818
+C 0x6C54 guarda el paso de la pantalla de nombres
+C 0x6C57 animacion_de_la_escena: 0xE34C = la lista p04:7C71[0xE351]
+C 0x6C5C guarda la espera del estado, en cuadros
+C 0x6C64 apunta a la espera del estado, en cuadros
+C 0x6C6D lee la cuenta de cuadros
+C 0x6C73 cortinilla_de_la_escena: efecto en pasos (0xE348) con la lista de 0xE34C, de dos en dos columnas (p00:4CC2)
+C 0x6C76 lee el efecto en marcha
+C 0x6C7B escena_siguiente: 0xE350 + 1
+C 0x6C80 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6C83 lee el texto en marcha
+C 0x6C88 lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x6C8D escena_siguiente: 0xE350 + 1
+C 0x6C90 esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+C 0x6C93 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6C98 guarda la lista de opciones del menu
+C 0x6C9B opciones_guardadas: las opciones de A con el cursor guardado (0xE8B2/0xE8B1)
+C 0x6C9E pinta_opciones: las opciones de 0xE8B8 (textos p04:7A15) en columna desde 0x3A1A
+C 0x6CA1 pinta_cursor: el cursor parpadeante en la columna de opciones
+C 0x6CA4 escena_siguiente: 0xE350 + 1
+C 0x6CBF escena_siguiente: 0xE350 + 1
+C 0x6CC2 cursor_vertical: arriba/abajo con repeticion (0xE8B0) en 0xE8A4
+C 0x6CC5 pinta_cursor: el cursor parpadeante en la columna de opciones
+C 0x6CC8 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x6CCF lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0x6CE0 lee la opcion del cursor
+C 0x6CE4 escena_siguiente: 0xE350 + 1
+C 0x6CF2 apunta a las veces que se ha elegido cada opcion
+C 0x6D02 escena_siguiente: 0xE350 + 1
+C 0x6D05 escena_siguiente: 0xE350 + 1
+C 0x6D08 sonido_85: pide el sonido 0x85
+C 0x6D0B borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
+C 0x6D0E borra_fichas_del_juego: 0x300 de patrones y colores desde la ficha 0x10, en dos tercios
+C 0x6D14 apunta a los atributos de los 32 sprites
+C 0x6D1E guarda el fotograma del personaje
+C 0x6D23 guarda las banderas de sprites (bit 0: sin rotar)
+C 0x6D29 apunta a las veces que se ha elegido cada opcion
+C 0x6D31 hl_mas_a: HL = HL + A
+C 0x6D35 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6D38 lee el texto en marcha
+C 0x6D3D lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x6D42 lee las veces que se ha elegido cada opcion
+C 0x6D57 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6D5A lee el texto en marcha
+C 0x6D5F lee la espera del texto (1 tecla, 2 tecla y fin)
+C 0x6D64 escena_siguiente: 0xE350 + 1
+C 0x6D67 borra_fichas_del_juego: 0x300 de patrones y colores desde la ficha 0x10, en dos tercios
+C 0x6D6A mapa_de_la_sala: la sala 0xEB40 (12 x 8 bloques a nibbles, p15:6000 o p20:B606) a los nombres 0xED00 y la dureza 0xE800
+C 0x6D6D vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0x6D72 guarda el paso de la pantalla de nombres
+C 0x6D75 animacion_de_la_escena: 0xE34C = la lista p04:7C71[0xE351]
+C 0x6D80 escena_siguiente: 0xE350 + 1
+C 0x6D83 lee la cuenta de cuadros
+C 0x6D89 aparece_por_tercios: efecto de aparecer en tres pasos (0xE348) sobre la lista de 0xE34C
+C 0x6D8C lee el efecto en marcha
+C 0x6D91 sonido_2b: pide el sonido 0x2B
+C 0x6D94 escena_siguiente: 0xE350 + 1
+C 0x6D99 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6D9C lee el texto en marcha
+C 0x6DAC cuenta_hasta_2: (HL) + 1 sin pasar de 2 y el siguiente paso
+C 0x6DBA texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6DBD lee el texto en marcha
+C 0x6DCB cuenta_hasta_2: (HL) + 1 sin pasar de 2 y el siguiente paso
+C 0x6DD8 texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6DDB lee el texto en marcha
+C 0x6DE8 guarda el paso ha acabado
+C 0x6DEC lee el paso de la pantalla de nombres
+C 0x6DF2 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x6DF5 guarda la lista del efecto
+C 0x6E00 escena_siguiente: 0xE350 + 1
+C 0x6E06 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0x6E13 a_borra_partida: con 1-2-3, p01:6677 (0xE340-0xF080 a cero, la sala 0x200, nombres y posicion de partida); vuelve con 4-5-6
+C 0x6E18 guarda el primer nombre (8 letras y 0xFF)
+C 0x6E1B guarda el segundo nombre (8 letras y 0xFF)
+C 0x6E1E pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
+C 0x6E21 borra_patrones: 0x1000 de patrones y de colores a cero
+C 0x6E29 nombres_en_cuadricula: 0xED00 y 0xEE00 con las fichas 0-0xFF en bloques de 8x8
+C 0x6E2F rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x6E35 rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x6E3B rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x6E41 rle_con_destino: RLE de DE con su direccion de VRAM delante
+C 0x6E44 esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+C 0x6E47 sonido_4b: pide el sonido 0x4B
+C 0x6E4B guarda el paso de la pantalla de nombres
+C 0x6E4E guarda el paso del efecto de aparecer/borrar
+C 0x6E51 guarda el efecto en marcha
+C 0x6E54 guarda el paso del texto (0 prepara, 1 escribe)
+C 0x6E5A guarda la sala
+C 0x6E60 guarda el primer nombre (8 letras y 0xFF) y el byte siguiente (16 bits)
+C 0x6E7A vuelca_nombres: 0x300 de 0xED00 a 0x3800
+C 0x6E7D historia_siguiente: 0xE350 + 1
+C 0x6E80 animacion_de_la_historia: 0xE34C = la lista p04:7C71[0xE351]
+C 0x6E83 historia_siguiente: 0xE350 + 1
+C 0x6E86 lee la cuenta de cuadros
+C 0x6E8C cortinilla_8: copia la ficha 0xE349 de 64 (8x8) de la lista de 0xE34C, una por cuadro
+C 0x6E8F lee el efecto en marcha
+C 0x6E94 historia_siguiente: 0xE350 + 1
+C 0x6E97 lee el paso de la pantalla de nombres
+C 0x6E9C anima_ficha_60: en cuatro filas (p05:94A9) la ficha 0x60 cambia con el cuadro (p04:6F1E)
+C 0x6E9F lee el paso de la pantalla de nombres
+C 0x6EA5 hl_mas_a: HL = HL + A
+C 0x6EA9 lee la cuenta de cuadros
+C 0x6EAF texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+C 0x6EB2 lee el texto en marcha
+C 0x6EB9 guarda la espera del estado, en cuadros
+C 0x6EBC historia_siguiente: 0xE350 + 1
+C 0x6EBF apunta a la espera del estado, en cuadros
+C 0x6EC4 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0x6EC7 apunta a el paso de la pantalla de nombres
+C 0x6ED8 guarda el paso ha acabado
+C 0x6EEB anima_fila: B fichas de DE: donde hay 0x60 escribe en la VRAM HL la ficha del cuadro
+C 0x6F07 lee la cuenta de cuadros
+C 0x6F11 hl_mas_a: HL = HL + A
+C 0x6F2B lee el paso de la pantalla de nombres
+C 0x6F31 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0x6F34 guarda la lista del efecto
+# --- fin de las anotaciones de anota.py ---

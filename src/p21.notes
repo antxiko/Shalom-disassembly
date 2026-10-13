@@ -334,3 +334,49 @@ F 0x7F17 16
 D 0x7FA9 0x8000 mensaje_21_7FA9  mensaje (p00:4EDF): caracteres; 0xFE linea, 0xFD espera una tecla, 0xFC/0xFB/0xF9/0xF8 un nombre, 0xF7 y 0xF6 cambian la letra, 0xFA acaba con un byte detras, 0xFF acaba (sigue en el banco 22, en 0x8000); lo leen p00:4E76 (87 bytes)
 F 0x7FA9 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x6000 desplazamiento un paso del modo 7 (0xE387, tabla p21:600F)
+L 0x6019 desplazamiento_empieza borra la zona de juego, el fondo (p21:6357), el personaje en (0x50, 0x50) y 8 pasos de espera
+L 0x603F desplazamiento_entra cada 16 cuadros el personaje sube un punto; al acabar, la musica y el guion p21:617B
+L 0x6074 desplazamiento_baja un cuadro: la pantalla baja (p21:60C2) y los dibujos del guion (p21:615E)
+L 0x607D desplazamiento_empieza_arriba como p21:6019 con el fondo de p21:6389 y el guion p21:61BF
+L 0x60B9 desplazamiento_sube un cuadro: la pantalla sube (p21:6112) y los dibujos del guion (p21:61A2)
+L 0x60C2 pantalla_baja cada 0xE389 cuadros baja 20 filas de 0xEEC0 una fila; al acabar, 0xE386 = 1
+L 0x6112 pantalla_sube cada 0xE389 cuadros sube 20 filas de 0xED20 una fila; al acabar, 0xE386 = 2
+L 0x615E dibujo_del_guion_abajo al llegar la cuenta 0xE38A a la de 0xE38D, el siguiente dibujo del guion (0xE38B) arriba
+L 0x61A2 dibujo_del_guion_arriba al llegar la cuenta, el siguiente dibujo del guion abajo
+L 0x61E6 dibujo_entrante el dibujo A de p21:621D en la columna B de la fila que entra
+L 0x6357 fondo_de_bajada 0xEC60 lleno de la ficha 0x10 y 6 filas de p21:62AF en 0xEE20
+L 0x6384 hl_mas_a HL = HL + A
+L 0x6389 fondo_de_subida 21 filas de 0xED00 con la ficha 0x10
+C 0x6007 hl_mas_a: HL = HL + A
+C 0x6019 borra_zona_de_juego_y_21_22_23: borra 16 filas x 24 de 0xED00 y las vuelca; vuelve con 21-22-23
+C 0x601C graficos_del_marcador_y_21_22_23: patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD; vuelve con 21-22-23
+C 0x601F fondo_de_bajada: 0xEC60 lleno de la ficha 0x10 y 6 filas de p21:62AF en 0xEE20
+C 0x6022 vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
+C 0x602C guarda las banderas de sprites (bit 0: sin rotar)
+C 0x6032 guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x603F lee la cuenta de cuadros
+C 0x604B apunta a la Y del personaje
+C 0x606C sonido_28_y_21_22_23: pide el sonido 0x28; vuelve con 21-22-23
+C 0x6074 vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
+C 0x6077 pantalla_baja: cada 0xE389 cuadros baja 20 filas de 0xEEC0 una fila; al acabar, 0xE386 = 1
+C 0x607A dibujo_del_guion_abajo: al llegar la cuenta 0xE38A a la de 0xE38D, el siguiente dibujo del guion (0xE38B) arriba
+C 0x607D borra_zona_de_juego_y_21_22_23: borra 16 filas x 24 de 0xED00 y las vuelca; vuelve con 21-22-23
+C 0x6080 graficos_del_marcador_y_21_22_23: patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD; vuelve con 21-22-23
+C 0x6083 fondo_de_subida: 21 filas de 0xED00 con la ficha 0x10
+C 0x6086 vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
+C 0x608B guarda las banderas de sprites (bit 0: sin rotar)
+C 0x60A9 guarda la Y del personaje y el byte siguiente (16 bits)
+C 0x60B1 sonido_28_y_21_22_23: pide el sonido 0x28; vuelve con 21-22-23
+C 0x60B9 vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
+C 0x60BC pantalla_sube: cada 0xE389 cuadros sube 20 filas de 0xED20 una fila; al acabar, 0xE386 = 2
+C 0x60BF dibujo_del_guion_arriba: al llegar la cuenta, el siguiente dibujo del guion abajo
+C 0x6133 apunta a los nombres de la pantalla (32 x 24)
+C 0x61F8 apunta a la ventana del texto (32 x 8)
+C 0x6201 hl_mas_a: HL = HL + A
+C 0x6215 hl_mas_a: HL = HL + A
+C 0x637D hl_mas_a: HL = HL + A
+C 0x6389 apunta a los nombres de la pantalla (32 x 24)
+# --- fin de las anotaciones de anota.py ---

@@ -58,3 +58,744 @@ F 0xBEE7 2
 D 0xBF7D 0xC000 vram_BF7D  bytes a la VRAM (L_59C2): [direccion] y bytes; 0xFE otra direccion, 0xFF acaba; se solapan 2 bloques: (relleno_ff BF9C-C000); lo leen p03:BF77, nadie (131 bytes)
 F 0xBF7D 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0xA00B respuesta_del_tipo_29 ajusta la respuesta C del personaje de tipo 0x29 con las banderas de la historia
+L 0xA01C respuesta_del_tipo_2a ajusta la respuesta C del personaje de tipo 0x2A con las banderas de la historia
+L 0xA061 respuesta_del_tipo_2d ajusta la respuesta C del personaje de tipo 0x2D con las banderas de la historia
+L 0xA09D respuesta_del_tipo_31 ajusta la respuesta C del personaje de tipo 0x31 con las banderas de la historia
+L 0xA0A7 respuesta_del_tipo_33 ajusta la respuesta C del personaje de tipo 0x33 con las banderas de la historia
+L 0xA0CC respuesta_del_tipo_34 ajusta la respuesta C del personaje de tipo 0x34 con las banderas de la historia
+L 0xA105 respuesta_del_tipo_3a ajusta la respuesta C del personaje de tipo 0x3A con las banderas de la historia
+L 0xA11A respuesta_del_tipo_35 ajusta la respuesta C del personaje de tipo 0x35 con las banderas de la historia
+L 0xA142 respuesta_del_tipo_36 ajusta la respuesta C del personaje de tipo 0x36 con las banderas de la historia
+L 0xA153 respuesta_del_tipo_37 ajusta la respuesta C del personaje de tipo 0x37 con las banderas de la historia
+L 0xA1A9 respuesta_del_tipo_44 ajusta la respuesta C del personaje de tipo 0x44 con las banderas de la historia
+L 0xA1C4 respuesta_del_tipo_48 ajusta la respuesta C del personaje de tipo 0x48 con las banderas de la historia
+L 0xA1CD respuesta_del_tipo_4a ajusta la respuesta C del personaje de tipo 0x4A con las banderas de la historia
+L 0xA1DE respuesta_del_tipo_47 ajusta la respuesta C del personaje de tipo 0x47 con las banderas de la historia
+L 0xA1EA respuesta_del_tipo_4b ajusta la respuesta C del personaje de tipo 0x4B con las banderas de la historia
+L 0xA1F3 respuesta_del_tipo_4d ajusta la respuesta C del personaje de tipo 0x4D con las banderas de la historia
+L 0xA265 respuesta_del_tipo_50 ajusta la respuesta C del personaje de tipo 0x50 con las banderas de la historia
+L 0xA2CC respuesta_del_tipo_40 ajusta la respuesta C del personaje de tipo 0x40 con las banderas de la historia
+L 0xA2D5 respuesta_del_tipo_4e ajusta la respuesta C del personaje de tipo 0x4E con las banderas de la historia
+L 0xA356 respuesta_del_tipo_06 ajusta la respuesta C del personaje de tipo 0x06 con las banderas de la historia
+L 0xA393 respuesta_del_tipo_52 ajusta la respuesta C del personaje de tipo 0x52 con las banderas de la historia
+L 0xA3CB respuesta_del_tipo_54 ajusta la respuesta C del personaje de tipo 0x54 con las banderas de la historia
+L 0xA3E8 respuesta_del_tipo_55 ajusta la respuesta C del personaje de tipo 0x55 con las banderas de la historia
+L 0xA3FC respuesta_del_tipo_56 ajusta la respuesta C del personaje de tipo 0x56 con las banderas de la historia
+L 0xA41B respuesta_del_tipo_57 ajusta la respuesta C del personaje de tipo 0x57 con las banderas de la historia
+L 0xA441 respuesta_del_tipo_58 ajusta la respuesta C del personaje de tipo 0x58 con las banderas de la historia
+L 0xA460 respuesta_del_tipo_60 ajusta la respuesta C del personaje de tipo 0x60 con las banderas de la historia
+L 0xA488 respuesta_del_tipo_61 ajusta la respuesta C del personaje de tipo 0x61 con las banderas de la historia
+L 0xA4BA respuesta_del_tipo_63 ajusta la respuesta C del personaje de tipo 0x63 con las banderas de la historia
+L 0xA532 respuesta_del_tipo_64 ajusta la respuesta C del personaje de tipo 0x64 con las banderas de la historia
+L 0xA570 respuesta_del_tipo_6c ajusta la respuesta C del personaje de tipo 0x6C con las banderas de la historia
+L 0xA583 respuesta_del_tipo_77 ajusta la respuesta C del personaje de tipo 0x77 con las banderas de la historia
+L 0xA5C4 respuesta_del_tipo_73 ajusta la respuesta C del personaje de tipo 0x73 con las banderas de la historia
+L 0xA5F4 respuesta_del_tipo_74 ajusta la respuesta C del personaje de tipo 0x74 con las banderas de la historia
+L 0xA606 respuesta_del_tipo_70 ajusta la respuesta C del personaje de tipo 0x70 con las banderas de la historia
+L 0xA62C respuesta_del_tipo_83 ajusta la respuesta C del personaje de tipo 0x83 con las banderas de la historia
+L 0xA683 respuesta_del_tipo_89 ajusta la respuesta C del personaje de tipo 0x89 con las banderas de la historia
+L 0xA6C8 respuesta_del_tipo_8a ajusta la respuesta C del personaje de tipo 0x8A con las banderas de la historia
+L 0xA6D9 respuesta_del_tipo_90 ajusta la respuesta C del personaje de tipo 0x90 con las banderas de la historia
+L 0xA6F5 respuesta_del_tipo_a2 ajusta la respuesta C del personaje de tipo 0xA2 con las banderas de la historia
+L 0xA701 respuesta_del_tipo_a3 ajusta la respuesta C del personaje de tipo 0xA3 con las banderas de la historia
+L 0xA721 respuesta_del_tipo_a4 ajusta la respuesta C del personaje de tipo 0xA4 con las banderas de la historia
+L 0xA7C2 respuesta_del_tipo_a8 ajusta la respuesta C del personaje de tipo 0xA8 con las banderas de la historia
+L 0xA7CB respuesta_del_tipo_aa ajusta la respuesta C del personaje de tipo 0xAA con las banderas de la historia
+L 0xA7EE respuesta_del_tipo_ad ajusta la respuesta C del personaje de tipo 0xAD con las banderas de la historia
+L 0xA7F4 respuesta_del_tipo_bf ajusta la respuesta C del personaje de tipo 0xBF con las banderas de la historia
+L 0xA803 respuesta_del_tipo_c1 ajusta la respuesta C del personaje de tipo 0xC1 con las banderas de la historia
+L 0xA82B respuesta_del_tipo_c2 ajusta la respuesta C del personaje de tipo 0xC2 con las banderas de la historia
+L 0xA83A respuesta_del_tipo_bc ajusta la respuesta C del personaje de tipo 0xBC con las banderas de la historia
+L 0xA844 respuesta_del_tipo_c7 ajusta la respuesta C del personaje de tipo 0xC7 con las banderas de la historia
+L 0xA887 respuesta_del_tipo_a7 ajusta la respuesta C del personaje de tipo 0xA7 con las banderas de la historia
+L 0xA8A9 respuesta_del_tipo_cb ajusta la respuesta C del personaje de tipo 0xCB con las banderas de la historia
+L 0xA8DA respuesta_del_tipo_cc ajusta la respuesta C del personaje de tipo 0xCC con las banderas de la historia
+L 0xA911 respuesta_del_tipo_e0 ajusta la respuesta C del personaje de tipo 0xE0 con las banderas de la historia
+L 0xA96E respuesta_del_tipo_d0 ajusta la respuesta C del personaje de tipo 0xD0 con las banderas de la historia
+L 0xA978 respuesta_del_tipo_f6 ajusta la respuesta C del personaje de tipo 0xF6 con las banderas de la historia
+L 0xA9C2 respuesta_del_tipo_f8 ajusta la respuesta C del personaje de tipo 0xF8 con las banderas de la historia
+L 0xA9F4 respuesta_del_tipo_fb ajusta la respuesta C del personaje de tipo 0xFB con las banderas de la historia
+L 0xA9FD respuesta_del_tipo_ff ajusta la respuesta C del personaje de tipo 0xFF con las banderas de la historia
+L 0xAA27 respuesta_del_tipo_11b ajusta la respuesta C del personaje de tipo 0x11B con las banderas de la historia
+L 0xAA2F respuesta_del_tipo_155 ajusta la respuesta C del personaje de tipo 0x155 con las banderas de la historia
+L 0xAA6E respuesta_del_tipo_156 ajusta la respuesta C del personaje de tipo 0x156 con las banderas de la historia
+L 0xAAAF respuesta_del_tipo_c4 ajusta la respuesta C del personaje de tipo 0xC4 con las banderas de la historia
+L 0xAB92 banderas_tras_hablar despues de la respuesta C: banderas de la historia en las salas 0x89 y 0x79
+L 0xABBD respuesta_de_la_sala en ciertas salas cambia la respuesta C (4-7, 8-11...) por otra; acarreo si la cambia
+L 0xB08C opcion_cerrada acarreo si la opcion C no vale todavia con el personaje de tipo 0xE363 (banderas de la historia)
+L 0xB377 efecto_que_sube prepara el efecto del actor de enfrente (p03:B3A8[tipo - 0x25]) y los sprites de 0xF010
+L 0xB3B6 efecto_que_sube_cuadro un cuadro del efecto: la Y sube cada 16 cuadros y al acabar se esconde
+L 0xB3F9 modo_4_anima modo 4: la animacion 0xE378 (1 o 2; tabla p03:B402)
+L 0xB406 anima_borde_izquierdo cambia los bloques de (0x20, 0x00) con los dibujos p03:B490/B486/B47C segun la espera
+L 0xB441 anima_borde_derecho cambia los bloques de (0x20, 0xB0) con los dibujos p03:B4AE/B4A4/B49A segun la espera
+L 0xB4B8 sprites_de_0xeb7d 8 sprites en 0xF060: cada bit de 0xEB7D elige una de las dos posiciones de p03:B4F5
+L 0xB525 crea_proyectil en el primer hueco de 0xEC30 (3 de 16 bytes) un proyectil de clase C delante del personaje (p03:B56E)
+L 0xB578 mueve_proyectiles un cuadro de los 3 proyectiles de 0xEC30: su rutina, la velocidad y si sale por arriba
+L 0xB597 avanza_proyectil Y += velocidad Y y X += velocidad X en la ficha IX
+L 0xB5BE proyectil_fuera lo borra si sale por arriba
+L 0xB5CB rutina_del_proyectil la rutina de la clase A del proyectil (tabla p03:B5CF)
+L 0xB5DA borra_proyectiles los 3 proyectiles de 0xEC30 a cero
+L 0xB5E8 sprites_de_proyectiles los sprites de los 3 proyectiles en 0xF060
+L 0xB6F4 proyectil_por_pasos la rutina del paso (ix+1) del proyectil (tabla p03:B6FA)
+L 0xB749 proyectil_rebota_x en las X 0x28 o 0xD0 rebota
+L 0xB75E invierte_vx velocidad X = - velocidad X
+L 0xB76A proyectil_rebota_y por arriba rebota; por abajo se pierde (0xE3A8 - 1 y, al acabarse, 0xE3F6 - 1)
+L 0xB790 invierte_vy velocidad Y = - velocidad Y
+L 0xB79C proyectil_contra_el_personaje si llega a la altura del personaje y lo toca, rebota y cambia de angulo
+L 0xB87B refleja_angulo el angulo (ix+0x0F) reflejado (p03:B889)
+L 0xB88F velocidad_por_angulo las velocidades del angulo y la rapidez (p03:B8C6, p03:B8BA)
+L 0xB8D2 proyectil_contra_bloques mira los cuatro puntos del proyectil contra los bloques (p03:B906)
+L 0xB928 choque_con_bloque si el punto HL da en un bloque, rebota por el lado que toca
+L 0xB9AA golpea_bloque acarreo si el punto no es duro; si lo es le quita un golpe y, al romperse, lo borra y suelta lo que guardaba
+L 0xBA9B proyectil_quieto las dos velocidades a cero
+L 0xBAA8 pon_velocidades velocidad X = DE y velocidad Y = HL
+L 0xBAAC pon_vy la velocidad Y = DE
+L 0xBAB3 pon_vx la velocidad X = DE
+L 0xBABA sonido_08 pide el sonido 8
+L 0xBABF sonido_09 pide el sonido 9
+L 0xBAC4 sonido_27 pide el sonido 0x27
+L 0xBAC9 sonido_21 pide el sonido 0x21
+L 0xBACE sonido_18 pide el sonido 0x18
+L 0xBAD3 sonido_1b pide el sonido 0x1B
+L 0xBAD8 sonido_1a pide el sonido 0x1A
+L 0xBADD sonido_19 pide el sonido 0x19
+L 0xBAE2 sonido_1f pide el sonido 0x1F
+L 0xBAE7 sonido_20 pide el sonido 0x20
+L 0xBAEC sonido_0a pide el sonido 0x0A
+L 0xBAF1 sonido_15 pide el sonido 0x15
+L 0xBAF6 sonido_5d pide el sonido 0x5D
+L 0xBAFB sonido_5e pide el sonido 0x5E
+L 0xBB00 sonido_3b pide el sonido 0x3B
+L 0xBB05 sonido_32 pide el sonido 0x32
+L 0xBB0A sonido_3f pide el sonido 0x3F
+L 0xBB0F sonido_42 pide el sonido 0x42
+L 0xBB14 graba_en_el_otro_cartucho un paso de la grabacion en el otro cartucho (0xE38E, tabla p03:BB1A)
+L 0xBB20 graba_siguiente 0xE38E + 1
+L 0xBB5F comprueba_el_otro_cartucho un paso de la comprobacion: lo vuelve a leer y lo compara con 0xEB40 (tabla p03:BB65)
+L 0xBBB4 graba_en_disco un paso de la grabacion en disco (tabla p03:BBBA)
+L 0xBBFF comprueba_el_disco un paso de la comprobacion del disco (tabla p03:BC05)
+L 0xBC54 disco_escribe BDOS: crea el fichero de p03:BC85, escribe los 0x3E bytes de la partida y lo cierra
+L 0xBC90 disco_lee BDOS: abre el fichero de p03:BC85 y lee los 0x3E bytes a 0xE03A
+L 0xBCBE bdos_abre BDOS 0x0F (abrir) con el FCB de 0xE035
+L 0xBCCE bdos_crea BDOS 0x16 (crear)
+L 0xBCDE bdos_cierra BDOS 0x10 (cerrar)
+L 0xBCEE prepara_fcb el FCB en DE: unidad 0, el nombre de HL y ceros
+L 0xBD05 fcb_registro bloque actual 0, registro de 1 byte y registro aleatorio 0
+L 0xBD22 bdos_escribe DTA = 0xC8C0 y 0x3E bytes con BDOS 0x26
+L 0xBD30 bdos_lee DTA = 0xE03A y 0x3E bytes con BDOS 0x27
+L 0xBD3E bdos_escribe_bloque BDOS 0x26 (escribir bloque); error 4
+L 0xBD4E bdos_lee_bloque BDOS 0x27 (leer bloque); error 3
+L 0xBD6D disco_mal error: recupera la pila y H.KEYI y 0xE38F = 2
+L 0xBD80 cambia_ram_del_disco cambia 0xC000-0xD0FF por la copia de 0xE280 y borra 0xF1C0
+L 0xBD8A espera_y_devuelve_ram 256 llamadas a 0xCE7B y vuelve a cambiar la RAM
+L 0xBD97 intercambia_ram intercambia 0x1100 bytes de 0xE280 con 0xC000
+L 0xBDAF graba_en_cinta un paso de la grabacion en cinta (tabla p03:BDB5)
+L 0xBDBD cinta_siguiente 0xE38E + 1
+L 0xBDDA cinta_escribe_cabecera 10 x 0xEA y el nombre de p03:BE03
+L 0xBE09 cinta_escribe_partida los 0x3E bytes de 0xEB40 y la suma
+L 0xBE3F suma_de_la_partida A = la suma de los 0x3F bytes de 0xEB40
+L 0xBE4B guarda_nombres los nombres 0xEB00/0xEB09 a la partida (0xEB42/0xEB4A)
+L 0xBE5A copia_hasta_ff copia de HL a DE hasta 0xFF
+L 0xBE63 guarda_objetos el bit 0 de cada objeto de 0xE9D0 a los bits de 0xEB53-0xEB55
+L 0xBE86 cinta_mal_al_grabar para el motor y 0xE38F = 2
+L 0xBE98 aviso_de_grabar el nombre y el aviso de p03:BEC5
+L 0xBEA4 nombre_a_vram el nombre de 0xEB1B a la VRAM 0x3A21
+L 0xBEE1 comprueba_la_cinta un paso de la comprobacion de la cinta (tabla p03:BEE7)
+L 0xBEF9 cinta_compara lee la cinta y la compara con 0xEB40 y la suma
+L 0xBF43 cinta_busca_cabecera busca 10 x 0xEA y el nombre de p03:BE03
+L 0xBF71 aviso_de_comprobar el nombre y el aviso de p03:BF7D
+C 0xA00B apunta a las banderas de la historia, byte 0x22 (se graban con la partida)
+C 0xA01C apunta a las banderas de la historia, byte 0x22 (se graban con la partida)
+C 0xA04E guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xA051 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0xA054 sonido_13: pide el sonido 0x13
+C 0xA05B guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xA061 apunta a las banderas de la historia, byte 0x23 (se graban con la partida)
+C 0xA097 apunta a el objeto 1 (bit 0: se lleva)
+C 0xA09D apunta a el objeto 2 (bit 0: se lleva)
+C 0xA0A7 apunta a las banderas de la historia, byte 0x25 (se graban con la partida)
+C 0xA0CC apunta a las banderas de la historia, byte 0x25 (se graban con la partida)
+C 0xA0EB apunta a el objeto 9 (bit 0: se lleva)
+C 0xA105 apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xA10C apunta a las banderas de la historia, byte 0x26 (se graban con la partida)
+C 0xA11A apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0xA142 apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0xA153 apunta a las banderas de la historia, byte 0x28 (se graban con la partida)
+C 0xA16C apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0xA1A9 apunta a las banderas de la historia, byte 0x2A (se graban con la partida)
+C 0xA1C4 apunta a las banderas de la historia, byte 0x29 (se graban con la partida)
+C 0xA1CD apunta a las banderas de la historia, byte 0x2B (se graban con la partida)
+C 0xA1DE apunta a las banderas de la historia, byte 0x29 (se graban con la partida)
+C 0xA1EA apunta a las banderas de la historia, byte 0x29 (se graban con la partida)
+C 0xA1F3 apunta a las banderas de la historia, byte 0x2C (se graban con la partida)
+C 0xA20E lee las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0xA251 lee las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0xA265 apunta a las banderas de la historia, byte 0x2E (se graban con la partida)
+C 0xA26C lee las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0xA277 guarda las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0xA2B8 lee las banderas de la historia, byte 0x1A (se graban con la partida)
+C 0xA2C3 apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
+C 0xA2CF apunta a las banderas de la historia, byte 0x2A (se graban con la partida)
+C 0xA2D5 apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0xA2DC apunta a las banderas de la historia, byte 0x2F (se graban con la partida)
+C 0xA2F6 apunta a las banderas de la historia, byte 0x30 (se graban con la partida)
+C 0xA2FD apunta a las banderas de la historia, byte 0x2F (se graban con la partida)
+C 0xA34C guarda el objeto 3 (bit 0: se lleva)
+C 0xA356 apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0xA362 apunta a las banderas de la historia, byte 0x22 (se graban con la partida)
+C 0xA36E apunta a las banderas de la historia, byte 0x22 (se graban con la partida)
+C 0xA382 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xA385 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0xA388 sonido_13: pide el sonido 0x13
+C 0xA38F guarda el objeto 5 (bit 0: se lleva)
+C 0xA393 apunta a las banderas de la historia, byte 0x31 (se graban con la partida)
+C 0xA396 lee las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0xA3C2 guarda el objeto 5 (bit 0: se lleva)
+C 0xA3C5 apunta a las banderas de la historia, byte 0x30 (se graban con la partida)
+C 0xA3CB apunta a las banderas de la historia, byte 0x32 (se graban con la partida)
+C 0xA3D4 lee las banderas de la historia, byte 0x33 (se graban con la partida)
+C 0xA3E8 apunta a las banderas de la historia, byte 0x32 (se graban con la partida)
+C 0xA3F1 lee las banderas de la historia, byte 0x33 (se graban con la partida)
+C 0xA3FC apunta a las banderas de la historia, byte 0x32 (se graban con la partida)
+C 0xA41B apunta a las banderas de la historia, byte 0x32 (se graban con la partida)
+C 0xA441 apunta a las banderas de la historia, byte 0x33 (se graban con la partida)
+C 0xA460 apunta a las banderas de la historia, byte 0x34 (se graban con la partida)
+C 0xA488 apunta a las banderas de la historia, byte 0x35 (se graban con la partida)
+C 0xA4B3 guarda el objeto 6 (bit 0: se lleva)
+C 0xA4BA apunta a las banderas de la historia, byte 0x36 (se graban con la partida)
+C 0xA4EB guarda el objeto 6 (bit 0: se lleva)
+C 0xA514 guarda el objeto 6 (bit 0: se lleva)
+C 0xA52B guarda el objeto 6 (bit 0: se lleva)
+C 0xA532 apunta a las banderas de la historia, byte 0x36 (se graban con la partida)
+C 0xA547 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xA54A graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0xA54D sonido_13: pide el sonido 0x13
+C 0xA561 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xA564 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0xA567 sonido_13: pide el sonido 0x13
+C 0xA570 apunta a las banderas de la historia, byte 0x38 (se graban con la partida)
+C 0xA583 apunta a las banderas de la historia, byte 0x39 (se graban con la partida)
+C 0xA59A lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xA5C4 apunta a las banderas de la historia, byte 0x39 (se graban con la partida)
+C 0xA5CE guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xA5D1 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0xA5D4 sonido_13: pide el sonido 0x13
+C 0xA5E8 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xA5EB graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0xA5EE sonido_13: pide el sonido 0x13
+C 0xA5FA guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xA5FD graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0xA600 sonido_13: pide el sonido 0x13
+C 0xA606 apunta a las banderas de la historia, byte 0x3C (se graban con la partida)
+C 0xA62C apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0xA643 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xA646 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0xA649 sonido_13: pide el sonido 0x13
+C 0xA656 apunta a el objeto 7 (bit 0: se lleva)
+C 0xA660 apunta a el objeto 7 (bit 0: se lleva)
+C 0xA66A apunta a el objeto 7 (bit 0: se lleva)
+C 0xA674 apunta a el objeto 7 (bit 0: se lleva)
+C 0xA67D apunta a el objeto 7 (bit 0: se lleva)
+C 0xA683 apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0xA68D guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xA690 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0xA693 sonido_13: pide el sonido 0x13
+C 0xA6B3 apunta a el objeto 8 (bit 0: se lleva)
+C 0xA6C8 apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0xA6D9 apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0xA6F5 apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0xA701 apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0xA708 lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xA71B apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0xA721 apunta a las banderas de la historia, byte 0x26 (se graban con la partida)
+C 0xA728 lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xA748 apunta a las banderas de la historia, byte 0x39 (se graban con la partida)
+C 0xA765 lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xA786 lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xA79E apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0xA7A7 lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xA7C2 lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xA7CB apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0xA7EE apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
+C 0xA7F4 apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0xA803 apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0xA813 apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
+C 0xA81E apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0xA82B apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0xA83A apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0xA844 apunta a las banderas de la historia, byte 0x1C (se graban con la partida)
+C 0xA852 lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xA887 apunta a las banderas de la historia, byte 0x1C (se graban con la partida)
+C 0xA8A9 apunta a las banderas de la historia, byte 0x21 (se graban con la partida)
+C 0xA8B0 lee las banderas de la historia, byte 0x22 (se graban con la partida)
+C 0xA8B9 apunta a las banderas de la historia, byte 0x22 (se graban con la partida)
+C 0xA8DA apunta a las banderas de la historia, byte 0x21 (se graban con la partida)
+C 0xA904 apunta a las banderas de la historia, byte 0x22 (se graban con la partida)
+C 0xA911 apunta a las banderas de la historia, byte 0x2B (se graban con la partida)
+C 0xA927 apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
+C 0xA96E apunta a las banderas de la historia, byte 0x1F (se graban con la partida)
+C 0xA978 apunta a las banderas de la historia, byte 0x38 (se graban con la partida)
+C 0xA9B5 apunta a las banderas de la historia, byte 0x37 (se graban con la partida)
+C 0xA9C2 apunta a las banderas de la historia, byte 0x37 (se graban con la partida)
+C 0xA9E7 apunta a las banderas de la historia, byte 0x38 (se graban con la partida)
+C 0xA9F4 apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xA9FD apunta a las banderas de la historia, byte 0x1E (se graban con la partida)
+C 0xAA1C apunta a las banderas de la historia, byte 0x22 (se graban con la partida)
+C 0xAA21 apunta a el objeto 11 (bit 0: se lleva)
+C 0xAA27 apunta a las banderas de la historia, byte 0x1E (se graban con la partida)
+C 0xAA2F apunta a las banderas de la historia, byte 0x24 (se graban con la partida)
+C 0xAA62 guarda el dibujo de p12:733E que se ve (0: ninguno)
+C 0xAA65 graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+C 0xAA68 sonido_13: pide el sonido 0x13
+C 0xAA6E apunta a las banderas de la historia, byte 0x30 (se graban con la partida)
+C 0xAA9F apunta a el objeto 7 (bit 0: se lleva)
+C 0xAAA9 apunta a las banderas de la historia, byte 0x30 (se graban con la partida)
+C 0xAAAF apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
+C 0xAB92 lee la sala
+C 0xABA1 apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
+C 0xABAE apunta a las banderas de la historia, byte 0x24 (se graban con la partida)
+C 0xABBD lee la sala
+C 0xABE9 apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
+C 0xAC01 apunta a el objeto 1 (bit 0: se lleva)
+C 0xAC13 apunta a el objeto 1 (bit 0: se lleva)
+C 0xAC33 apunta a las banderas de la historia, byte 0x1E (se graban con la partida)
+C 0xAC42 apunta a las banderas de la historia, byte 0x24 (se graban con la partida)
+C 0xAC8A apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0xAC9D apunta a las banderas de la historia, byte 0x2A (se graban con la partida)
+C 0xACB3 lee las banderas de la historia, byte 0x29 (se graban con la partida)
+C 0xAD2D apunta a las banderas de la historia, byte 0x2C (se graban con la partida)
+C 0xAD49 apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0xAD6B apunta a las banderas de la historia, byte 0x2F (se graban con la partida)
+C 0xAD8B apunta a las banderas de la historia, byte 0x31 (se graban con la partida)
+C 0xADB1 lee el tipo del personaje de enfrente
+C 0xAE0F apunta a las banderas de la historia, byte 0x37 (se graban con la partida)
+C 0xAE16 apunta a las banderas de la historia, byte 0x36 (se graban con la partida)
+C 0xAE41 apunta a las banderas de la historia, byte 0x36 (se graban con la partida)
+C 0xAE48 apunta a las banderas de la historia, byte 0x37 (se graban con la partida)
+C 0xAF17 lee las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0xAF27 apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0xAF54 lee las banderas de la historia, byte 0x1C (se graban con la partida)
+C 0xAF67 apunta a las banderas de la historia, byte 0x1F (se graban con la partida)
+C 0xAFD1 apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
+C 0xAFDD apunta a las banderas de la historia, byte 0x38 (se graban con la partida)
+C 0xAFE8 apunta a las banderas de la historia, byte 0x37 (se graban con la partida)
+C 0xAFF5 apunta a las banderas de la historia, byte 0x38 (se graban con la partida)
+C 0xB00A apunta a las banderas de la historia, byte 0x37 (se graban con la partida)
+C 0xB029 apunta a las banderas de la historia, byte 0x22 (se graban con la partida)
+C 0xB030 apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
+C 0xB044 apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
+C 0xB065 apunta a las banderas de la historia, byte 0x1C (se graban con la partida)
+C 0xB06C apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
+C 0xB08C lee el tipo del personaje de enfrente
+C 0xB09C apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
+C 0xB0A5 apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
+C 0xB0BA lee las banderas de la historia, byte 0x3B (se graban con la partida)
+C 0xB0C0 apunta a las banderas de la historia, byte 0x1F (se graban con la partida)
+C 0xB0D1 apunta a las banderas de la historia, byte 0x21 (se graban con la partida)
+C 0xB0F0 apunta a las banderas de la historia, byte 0x23 (se graban con la partida)
+C 0xB108 lee las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0xB11B apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0xB12C apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0xB133 apunta a las banderas de la historia, byte 0x28 (se graban con la partida)
+C 0xB147 apunta a las banderas de la historia, byte 0x28 (se graban con la partida)
+C 0xB158 apunta a las banderas de la historia, byte 0x2C (se graban con la partida)
+C 0xB15F apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0xB170 lee las banderas de la historia, byte 0x2E (se graban con la partida)
+C 0xB183 apunta a las banderas de la historia, byte 0x31 (se graban con la partida)
+C 0xB1B0 apunta a las banderas de la historia, byte 0x32 (se graban con la partida)
+C 0xB1C1 lee las banderas de la historia, byte 0x32 (se graban con la partida)
+C 0xB1D4 apunta a las banderas de la historia, byte 0x33 (se graban con la partida)
+C 0xB1E5 apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
+C 0xB1EC apunta a las banderas de la historia, byte 0x26 (se graban con la partida)
+C 0xB1F3 apunta a las banderas de la historia, byte 0x2B (se graban con la partida)
+C 0xB21C apunta a las banderas de la historia, byte 0x38 (se graban con la partida)
+C 0xB22D apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xB245 apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
+C 0xB25D lee las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0xB264 lee el objeto 7 (bit 0: se lleva)
+C 0xB26E lee las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0xB280 lee las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0xB2A8 apunta a las banderas de la historia, byte 0x26 (se graban con la partida)
+C 0xB2C4 apunta a las banderas de la historia, byte 0x25 (se graban con la partida)
+C 0xB2CB lee las banderas de la historia, byte 0x18 (se graban con la partida)
+C 0xB2E3 lee las banderas de la historia, byte 0x19 (se graban con la partida)
+C 0xB2F8 apunta a las banderas de la historia, byte 0x1C (se graban con la partida)
+C 0xB309 apunta a las banderas de la historia, byte 0x21 (se graban con la partida)
+C 0xB31F apunta a las banderas de la historia, byte 0x21 (se graban con la partida)
+C 0xB335 apunta a las banderas de la historia, byte 0x38 (se graban con la partida)
+C 0xB346 apunta a las banderas de la historia, byte 0x24 (se graban con la partida)
+C 0xB35B apunta a las banderas de la historia, byte 0x30 (se graban con la partida)
+C 0xB364 apunta a las banderas de la historia, byte 0x30 (se graban con la partida)
+C 0xB377 lee la ficha del personaje de enfrente
+C 0xB383 palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0xB3FF despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xB406 apunta a la espera del estado, en cuadros
+C 0xB415 sonido_06: pide el sonido 6
+C 0xB421 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB42D vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB439 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB441 apunta a la espera del estado, en cuadros
+C 0xB450 sonido_06: pide el sonido 6
+C 0xB45C vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB468 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB474 vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+C 0xB4B8 lee las banderas de la historia, byte 0x3D (se graban con la partida)
+C 0xB545 lee hacia donde mira en la escena de accion (1-4)
+C 0xB54C hl_mas_a: HL = HL + A
+C 0xB54F lee la Y del personaje en la escena de accion
+C 0xB557 lee la X del personaje en la escena de accion
+C 0xB560 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xB57F lee la clase del proyectil (0: libre)
+C 0xB585 rutina_del_proyectil: la rutina de la clase A del proyectil (tabla p03:B5CF)
+C 0xB588 avanza_proyectil: Y += velocidad Y y X += velocidad X en la ficha IX
+C 0xB58B proyectil_fuera: lo borra si sale por arriba
+C 0xB597 lee la Y del proyectil
+C 0xB59A lee la Y del proyectil (fraccion)
+C 0xB59D lee la velocidad Y del proyectil (alta)
+C 0xB5A0 lee la velocidad Y del proyectil
+C 0xB5A4 guarda la Y del proyectil
+C 0xB5A7 guarda la Y del proyectil (fraccion)
+C 0xB5AA lee la X del proyectil
+C 0xB5AD lee la X del proyectil (fraccion)
+C 0xB5B0 lee la velocidad X del proyectil (alta)
+C 0xB5B3 lee la velocidad X del proyectil
+C 0xB5B7 guarda la X del proyectil
+C 0xB5BA guarda la X del proyectil (fraccion)
+C 0xB5BE lee la X del proyectil
+C 0xB5C6 la clase del proyectil (0: libre) = 0x00
+C 0xB5CC despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xB5F7 lee la clase del proyectil (0: libre)
+C 0xB5FD lee la Y del proyectil
+C 0xB602 lee la X del proyectil
+C 0xB607 lee el patron del proyectil
+C 0xB60C lee el color del proyectil
+C 0xB62B pon_vx: la velocidad X = DE
+C 0xB62E el patron del proyectil = 0x80
+C 0xB632 el color del proyectil = 0x0F
+C 0xB636 sonido_15: pide el sonido 0x15
+C 0xB63B guarda la clase del proyectil (0: libre)
+C 0xB63F lee hacia donde mira en la escena de accion (1-4)
+C 0xB64B pon_vy: la velocidad Y = DE
+C 0xB64E el patron del proyectil = 0x88
+C 0xB652 el color del proyectil = 0x0F
+C 0xB656 sonido_15: pide el sonido 0x15
+C 0xB65A lee la Y del proyectil
+C 0xB660 la clase del proyectil (0: libre) = 0x00
+C 0xB665 el color del proyectil = 0x0F
+C 0xB669 proyectil_quieto: las dos velocidades a cero
+C 0xB66C lee hacia donde mira en la escena de accion (1-4)
+C 0xB68E guarda el patron del proyectil
+C 0xB691 lee la Y del proyectil
+C 0xB698 pon_vy: la velocidad Y = DE
+C 0xB69B sonido_15: pide el sonido 0x15
+C 0xB69F guarda el patron del proyectil
+C 0xB6A2 lee la X del proyectil
+C 0xB6AD pon_vx: la velocidad X = DE
+C 0xB6B0 sonido_15: pide el sonido 0x15
+C 0xB6B4 lee la Y del proyectil
+C 0xB6BD lee la X del proyectil
+C 0xB6C5 la clase del proyectil (0: libre) = 0x00
+C 0xB6CA el patron del proyectil = 0xB8
+C 0xB6CE el color del proyectil = 0x0F
+C 0xB6D2 lee la Y del proyectil
+C 0xB6D7 guarda la Y del proyectil
+C 0xB6DB guarda la rapidez del proyectil
+C 0xB6EE guarda la cuenta del proyectil
+C 0xB6F1 proyectil_quieto: las dos velocidades a cero
+C 0xB6F4 lee el paso del proyectil
+C 0xB6F7 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xB6FE lee la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+C 0xB701 guarda la X del proyectil (fraccion)
+C 0xB704 guarda la X del proyectil
+C 0xB70C lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xB712 sonido_18: pide el sonido 0x18
+C 0xB715 sube el paso del proyectil
+C 0xB721 guarda el angulo del proyectil
+C 0xB72E guarda la rapidez del proyectil
+C 0xB731 velocidad_por_angulo: las velocidades del angulo y la rapidez (p03:B8C6, p03:B8BA)
+C 0xB734 proyectil_rebota_x: en las X 0x28 o 0xD0 rebota
+C 0xB737 proyectil_rebota_y: por arriba rebota; por abajo se pierde (0xE3A8 - 1 y, al acabarse, 0xE3F6 - 1)
+C 0xB73A lee la clase del proyectil (0: libre)
+C 0xB73F lee la velocidad Y del proyectil (alta)
+C 0xB743 proyectil_contra_el_personaje: si llega a la altura del personaje y lo toca, rebota y cambia de angulo
+C 0xB746 proyectil_contra_bloques: mira los cuatro puntos del proyectil contra los bloques (p03:B906)
+C 0xB74B lee la X del proyectil
+C 0xB757 guarda la X del proyectil
+C 0xB75A la X del proyectil (fraccion) = 0x00
+C 0xB75E lee la velocidad X del proyectil (alta)
+C 0xB761 lee la velocidad X del proyectil
+C 0xB764 de_negativo: DE = -DE
+C 0xB767 pon_vx: la velocidad X = DE
+C 0xB76C lee la Y del proyectil
+C 0xB777 guarda la clase del proyectil (0: libre)
+C 0xB77A sonido_29: pide el sonido 0x29
+C 0xB784 apunta a la vida en la escena de accion
+C 0xB789 guarda la Y del proyectil
+C 0xB78C la Y del proyectil (fraccion) = 0x00
+C 0xB790 lee la velocidad Y del proyectil (alta)
+C 0xB793 lee la velocidad Y del proyectil
+C 0xB796 de_negativo: DE = -DE
+C 0xB799 pon_vy: la velocidad Y = DE
+C 0xB7A8 lee la X del personaje en la escena de accion
+C 0xB7AB le resta la X del proyectil
+C 0xB7B8 le resta la Y del proyectil
+C 0xB7BE le resta la Y del proyectil
+C 0xB7C2 sonido_19: pide el sonido 0x19
+C 0xB7C6 la Y del proyectil = 0xA4
+C 0xB7CA guarda la Y del proyectil (fraccion)
+C 0xB7DD velocidad_por_angulo: las velocidades del angulo y la rapidez (p03:B8C6, p03:B8BA)
+C 0xB7E0 lee la velocidad X del proyectil (alta)
+C 0xB7E4 lee el angulo del proyectil
+C 0xB7EB refleja_angulo: el angulo (ix+0x0F) reflejado (p03:B889)
+C 0xB7F1 refleja_angulo: el angulo (ix+0x0F) reflejado (p03:B889)
+C 0xB7F5 baja la cuenta del proyectil
+C 0xB7F8 lee la cuenta del proyectil
+C 0xB7FD la cuenta del proyectil = 0x08
+C 0xB801 lee la rapidez del proyectil
+C 0xB80B guarda la rapidez del proyectil
+C 0xB813 lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
+C 0xB822 lee el angulo del proyectil
+C 0xB82D guarda el angulo del proyectil
+C 0xB836 lee el angulo del proyectil
+C 0xB84B lee la X del personaje en la escena de accion
+C 0xB850 compara con la X del proyectil
+C 0xB857 compara con la X del proyectil
+C 0xB85D lee la X del personaje en la escena de accion
+C 0xB862 compara con la X del proyectil
+C 0xB869 compara con la X del proyectil
+C 0xB86D lee el angulo del proyectil
+C 0xB875 lee el angulo del proyectil
+C 0xB87B lee el angulo del proyectil
+C 0xB881 hl_mas_a: HL = HL + A
+C 0xB885 guarda el angulo del proyectil
+C 0xB88F lee el angulo del proyectil
+C 0xB892 lee la rapidez del proyectil
+C 0xB89A palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0xB8A5 pon_vx: la velocidad X = DE
+C 0xB8AD palabra_de_tabla: DE = la palabra A de la tabla DE
+C 0xB8B7 pon_vy: la velocidad Y = DE
+C 0xB8D2 lee la Y del proyectil
+C 0xB8DA mira el bit 7 de la velocidad Y del proyectil (alta)
+C 0xB8E2 mira el bit 7 de la velocidad X del proyectil (alta)
+C 0xB8F1 hl_mas_a: HL = HL + A
+C 0xB8F4 lee la Y del proyectil
+C 0xB8FA lee la X del proyectil
+C 0xB901 choque_con_bloque: si el punto HL da en un bloque, rebota por el lado que toca
+C 0xB92A golpea_bloque: acarreo si el punto no es duro; si lo es le quita un golpe y, al romperse, lo borra y suelta lo que guardaba
+C 0xB930 lee la Y del proyectil
+C 0xB933 lee la X del proyectil
+C 0xB94E guarda la X del proyectil
+C 0xB951 mira el bit 7 de la velocidad X del proyectil (alta)
+C 0xB956 invierte_vx: velocidad X = - velocidad X
+C 0xB95D guarda la Y del proyectil
+C 0xB960 mira el bit 7 de la velocidad Y del proyectil (alta)
+C 0xB965 invierte_vy: velocidad Y = - velocidad Y
+C 0xB977 guarda la X del proyectil
+C 0xB97A mira el bit 7 de la velocidad X del proyectil (alta)
+C 0xB97F invierte_vx: velocidad X = - velocidad X
+C 0xB991 guarda la Y del proyectil
+C 0xB994 mira el bit 7 de la velocidad Y del proyectil (alta)
+C 0xB999 invierte_vy: velocidad Y = - velocidad Y
+C 0xB9AA mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
+C 0xB9BF sonido_1a: pide el sonido 0x1A
+C 0xB9C9 sonido_1b: pide el sonido 0x1B
+C 0xB9F7 apunta a los 8 actores de la sala (0x80 bytes cada uno)
+C 0xBA09 el patron del proyectil = 0x90
+C 0xBA0D el color del proyectil = 0x08
+C 0xBA11 lee la Y del personaje en la escena de accion
+C 0xBA14 guarda la Y del proyectil
+C 0xBA17 lee la X del personaje en la escena de accion
+C 0xBA1C guarda la X del proyectil
+C 0xBA20 lee el paso del proyectil
+C 0xBA2F lee las teclas que hay
+C 0xBA35 sube el paso del proyectil
+C 0xBA3C lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xBA42 sonido_20: pide el sonido 0x20
+C 0xBA45 sube el paso del proyectil
+C 0xBA48 lee las teclas que hay
+C 0xBA6C lee la Y del proyectil
+C 0xBA73 lee la velocidad Y del proyectil (alta)
+C 0xBA76 lee la velocidad Y del proyectil
+C 0xBA80 sonido_5e: pide el sonido 0x5E
+C 0xBA83 la Y del proyectil = 0xA8
+C 0xBA87 el patron del proyectil = 0x98
+C 0xBA8B la cuenta del proyectil = 0x10
+C 0xBA8F sube el paso del proyectil
+C 0xBA94 baja la cuenta del proyectil
+C 0xBAA8 pon_vx: la velocidad X = DE
+C 0xBAAC guarda la velocidad Y del proyectil (alta)
+C 0xBAAF guarda la velocidad Y del proyectil
+C 0xBAB3 guarda la velocidad X del proyectil (alta)
+C 0xBAB6 guarda la velocidad X del proyectil
+C 0xBABC pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBAC1 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBAC6 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBACB pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBAD0 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBAD5 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBADA pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBADF pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBAE4 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBAE9 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBAEE pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBAF3 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBAF8 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBAFD pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBB02 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBB07 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBB0C pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBB11 pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+C 0xBB14 lee el paso del menu de carga
+C 0xBB17 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xBB20 apunta a el paso del menu de carga
+C 0xBB25 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0xBB28 aviso_de_grabar: el nombre y el aviso de p03:BEC5
+C 0xBB2B guarda_nombres: los nombres 0xEB00/0xEB09 a la partida (0xEB42/0xEB4A)
+C 0xBB2E guarda_objetos: el bit 0 de cada objeto de 0xE9D0 a los bits de 0xEB53-0xEB55
+C 0xBB31 sonido_01: pide el sonido 1
+C 0xBB34 graba_siguiente: 0xE38E + 1
+C 0xBB37 otro_cartucho_lee: prepara la peticion en 0xE012 (p01:6047) y llama al otro cartucho con C = 0x0A (p01:6073)
+C 0xBB3A lee el resultado de la carga (2: fallo)
+C 0xBB41 graba_siguiente: 0xE38E + 1
+C 0xBB44 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBB47 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBB4C guarda el resultado de la carga (2: fallo)
+C 0xBB53 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBB56 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBB5B guarda el resultado de la carga (2: fallo)
+C 0xBB5F lee el paso del menu de carga
+C 0xBB62 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xBB6D borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0xBB70 aviso_de_comprobar: el nombre y el aviso de p03:BF7D
+C 0xBB73 sonido_01: pide el sonido 1
+C 0xBB76 graba_siguiente: 0xE38E + 1
+C 0xBB79 otro_cartucho_graba: prepara la peticion en 0xE012 y llama al otro cartucho con C = 0x0B (p01:609D)
+C 0xBB7C lee el resultado de la carga (2: fallo)
+C 0xBB83 graba_siguiente: 0xE38E + 1
+C 0xBB86 apunta a la sala (16 bits)
+C 0xBB96 graba_siguiente: 0xE38E + 1
+C 0xBB99 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBB9C musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBBA1 guarda el resultado de la carga (2: fallo)
+C 0xBBA8 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBBAB musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBBB0 guarda el resultado de la carga (2: fallo)
+C 0xBBB4 lee el paso del menu de carga
+C 0xBBB7 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xBBC0 apunta a el paso del menu de carga
+C 0xBBC5 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0xBBC8 aviso_de_grabar: el nombre y el aviso de p03:BEC5
+C 0xBBCB guarda_nombres: los nombres 0xEB00/0xEB09 a la partida (0xEB42/0xEB4A)
+C 0xBBCE guarda_objetos: el bit 0 de cada objeto de 0xE9D0 a los bits de 0xEB53-0xEB55
+C 0xBBD1 sonido_01: pide el sonido 1
+C 0xBBD7 disco_escribe: BDOS: crea el fichero de p03:BC85, escribe los 0x3E bytes de la partida y lo cierra
+C 0xBBDA lee el resultado de la carga (2: fallo)
+C 0xBBE4 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBBE7 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBBEC guarda el resultado de la carga (2: fallo)
+C 0xBBF3 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBBF6 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBBFB guarda el resultado de la carga (2: fallo)
+C 0xBBFF lee el paso del menu de carga
+C 0xBC02 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xBC0D borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0xBC10 aviso_de_comprobar: el nombre y el aviso de p03:BF7D
+C 0xBC13 sonido_01: pide el sonido 1
+C 0xBC19 disco_lee: BDOS: abre el fichero de p03:BC85 y lee los 0x3E bytes a 0xE03A
+C 0xBC1C lee el resultado de la carga (2: fallo)
+C 0xBC26 apunta a la sala (16 bits)
+C 0xBC39 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBC3C musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBC41 guarda el resultado de la carga (2: fallo)
+C 0xBC48 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBC4B musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBC50 guarda el resultado de la carga (2: fallo)
+C 0xBC57 guarda la copia del primer byte de H.KEYI
+C 0xBC63 cambia_ram_del_disco: cambia 0xC000-0xD0FF por la copia de 0xE280 y borra 0xF1C0
+C 0xBC69 apunta a el puntero de la peticion al otro cartucho
+C 0xBC6C prepara_fcb: el FCB en DE: unidad 0, el nombre de HL y ceros
+C 0xBC6F bdos_crea: BDOS 0x16 (crear)
+C 0xBC72 fcb_registro: bloque actual 0, registro de 1 byte y registro aleatorio 0
+C 0xBC75 bdos_escribe: DTA = 0xC8C0 y 0x3E bytes con BDOS 0x26
+C 0xBC78 bdos_cierra: BDOS 0x10 (cerrar)
+C 0xBC7B espera_y_devuelve_ram: 256 llamadas a 0xCE7B y vuelve a cambiar la RAM
+C 0xBC7E lee la copia del primer byte de H.KEYI
+C 0xBC93 guarda la copia del primer byte de H.KEYI
+C 0xBC9F cambia_ram_del_disco: cambia 0xC000-0xD0FF por la copia de 0xE280 y borra 0xF1C0
+C 0xBCA5 apunta a el puntero de la peticion al otro cartucho
+C 0xBCA8 prepara_fcb: el FCB en DE: unidad 0, el nombre de HL y ceros
+C 0xBCAB bdos_abre: BDOS 0x0F (abrir) con el FCB de 0xE035
+C 0xBCAE fcb_registro: bloque actual 0, registro de 1 byte y registro aleatorio 0
+C 0xBCB1 bdos_lee: DTA = 0xE03A y 0x3E bytes con BDOS 0x27
+C 0xBCB4 espera_y_devuelve_ram: 256 llamadas a 0xCE7B y vuelve a cambiar la RAM
+C 0xBCB7 lee la copia del primer byte de H.KEYI
+C 0xBCCA disco_mal: error: recupera la pila y H.KEYI y 0xE38F = 2
+C 0xBCDA disco_mal: error: recupera la pila y H.KEYI y 0xE38F = 2
+C 0xBCEA disco_mal: error: recupera la pila y H.KEYI y 0xE38F = 2
+C 0xBD2D bdos_escribe_bloque: BDOS 0x26 (escribir bloque); error 4
+C 0xBD3B bdos_lee_bloque: BDOS 0x27 (leer bloque); error 3
+C 0xBD4A disco_mal: error: recupera la pila y H.KEYI y 0xE38F = 2
+C 0xBD5A disco_mal: error: recupera la pila y H.KEYI y 0xE38F = 2
+C 0xBD6D espera_y_devuelve_ram: 256 llamadas a 0xCE7B y vuelve a cambiar la RAM
+C 0xBD74 lee la copia del primer byte de H.KEYI
+C 0xBD7C guarda el resultado de la carga (2: fallo)
+C 0xBD80 intercambia_ram: intercambia 0x1100 bytes de 0xE280 con 0xC000
+C 0xBD93 intercambia_ram: intercambia 0x1100 bytes de 0xE280 con 0xC000
+C 0xBDAF lee el paso del menu de carga
+C 0xBDB2 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xBDBD apunta a el paso del menu de carga
+C 0xBDC2 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0xBDC5 aviso_de_grabar: el nombre y el aviso de p03:BEC5
+C 0xBDC8 guarda_nombres: los nombres 0xEB00/0xEB09 a la partida (0xEB42/0xEB4A)
+C 0xBDCB guarda_objetos: el bit 0 de cada objeto de 0xE9D0 a los bits de 0xEB53-0xEB55
+C 0xBDCE suma_de_la_partida: A = la suma de los 0x3F bytes de 0xEB40
+C 0xBDD1 guarda la suma de la cinta
+C 0xBDD4 sonido_01: pide el sonido 1
+C 0xBDD7 cinta_siguiente: 0xE38E + 1
+C 0xBDE8 cinta_mal_al_grabar: para el motor y 0xE38F = 2
+C 0xBDF8 cinta_mal_al_grabar: para el motor y 0xE38F = 2
+C 0xBE00 cinta_siguiente: 0xE38E + 1
+C 0xBE0F apunta a la sala (16 bits)
+C 0xBE25 lee la suma de la cinta
+C 0xBE30 cinta_siguiente: 0xE38E + 1
+C 0xBE33 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBE36 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBE3B guarda el resultado de la carga (2: fallo)
+C 0xBE3F apunta a la sala (16 bits)
+C 0xBE4B apunta a el primer nombre (8 letras y 0xFF)
+C 0xBE4E apunta a el primer nombre de la partida guardada
+C 0xBE51 copia_hasta_ff: copia de HL a DE hasta 0xFF
+C 0xBE54 apunta a el segundo nombre (8 letras y 0xFF)
+C 0xBE57 apunta a el segundo nombre de la partida guardada
+C 0xBE63 apunta a los objetos (dos bytes cada uno; bit 0: se lleva)
+C 0xBE66 apunta a los objetos de la partida guardada (bits)
+C 0xBE7D lee el objeto 7 (bit 0: se lleva)
+C 0xBE8C musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBE8F musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBE94 guarda el resultado de la carga (2: fallo)
+C 0xBE98 nombre_a_vram: el nombre de 0xEB1B a la VRAM 0x3A21
+C 0xBE9E bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+C 0xBEA1 borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0xBEE1 lee el paso del menu de carga
+C 0xBEE4 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xBEED borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+C 0xBEF0 aviso_de_comprobar: el nombre y el aviso de p03:BF7D
+C 0xBEF3 sonido_01: pide el sonido 1
+C 0xBEF6 cinta_siguiente: 0xE38E + 1
+C 0xBEF9 cinta_busca_cabecera: busca 10 x 0xEA y el nombre de p03:BE03
+C 0xBEFC apunta a la sala (16 bits)
+C 0xBF19 apunta a la suma de la cinta
+C 0xBF22 cinta_siguiente: 0xE38E + 1
+C 0xBF25 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBF28 musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBF2D guarda el resultado de la carga (2: fallo)
+C 0xBF37 musica_de_la_sala: elige la musica de la sala (nibble p00:4696, numero p00:47B6) y la pide si cambia
+C 0xBF3A musica_pendiente: cuenta atras de 0xE33B: al llegar a 0 pide 0x80 y la musica de 0xE33A
+C 0xBF3F guarda el resultado de la carga (2: fallo)
+C 0xBF71 nombre_a_vram: el nombre de 0xEB1B a la VRAM 0x3A21
+C 0xBF77 bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+C 0xBF7A borra_ventana: borra la ventana del texto 0xEF00 y pone el cursor en 0xEF25
+# --- fin de las anotaciones de anota.py ---

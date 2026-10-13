@@ -14,15 +14,15 @@
 ; ======================================================================
 
 
-L_8000:
+sonido_22:		; pide el sonido 0x22
 	ld a,022h		;8000
-	jp 0415bh		;8002
-L_8005:
+	jp 0415bh		;8002   ; pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+sonido_37:		; pide el sonido 0x37
 	ld a,037h		;8005
-	jp 0415bh		;8007
-L_800A:
+	jp 0415bh		;8007   ; pide_sonido: pide el sonido o la musica A al motor (p29:6000, bancos 29-30-31) y devuelve el reparto
+anima_fichas:		; la animacion de fichas de la sala (0xE369, tabla p07:8010)
 	ld a,(0e369h)		;800a
-	call 040abh		;800d
+	call 040abh		;800d   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_8010: tabla de 4 palabras del despachador (call 0x408D en
@@ -41,7 +41,7 @@ DATA_saltos_8010:
 
 L_8018:
 	ret			;8018
-L_8019:
+anima_fichas_1:		; cada 16 cuadros, 0x40 bytes de patrones de p07:8037 en 0x20A0 (cuatro fases)
 	ld hl,0e383h		;8019
 	inc (hl)			;801c
 	ld a,(hl)			;801d
@@ -54,10 +54,10 @@ L_8019:
 	rra			;8026
 	rra			;8027
 	ld de,08037h		;8028
-	call 043a4h		;802b
+	call 043a4h		;802b   ; palabra_de_tabla: DE = la palabra A de la tabla DE
 	ld hl,020a0h		;802e
 	ld bc,00040h		;8031
-	jp 05945h		;8034
+	jp 05945h		;8034   ; copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
 
 ; ----------------------------------------------------------------------
 ; DATOS resto_8037: lo apuntan con el banco puesto p07:8028 (0x8037); el
@@ -72,7 +72,7 @@ DATA_resto_8037:
 ; ======================================================================
 
 
-L_803F:
+anima_fichas_2:		; cada 32 cuadros, 0x20 bytes de patrones de p07:805E en 0x21E0
 	ld hl,0e383h		;803f
 	inc (hl)			;8042
 	ld a,(hl)			;8043
@@ -86,10 +86,10 @@ L_803F:
 	rra			;804d
 	rra			;804e
 	ld de,0805eh		;804f
-	call 043a4h		;8052
+	call 043a4h		;8052   ; palabra_de_tabla: DE = la palabra A de la tabla DE
 	ld hl,021e0h		;8055
 	ld bc,00020h		;8058
-	jp 05945h		;805b
+	jp 05945h		;805b   ; copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
 
 ; ----------------------------------------------------------------------
 ; DATOS resto_805E: lo apuntan con el banco puesto p07:804F (0x805E); el
@@ -104,7 +104,7 @@ DATA_resto_805E:
 ; ======================================================================
 
 
-L_8062:
+anima_fichas_3:		; cada 32 cuadros, patrones (p07:8092) en 0x2200 y colores (p07:8096) en 0x0200
 	ld hl,0e383h		;8062
 	inc (hl)			;8065
 	ld a,(hl)			;8066
@@ -119,16 +119,16 @@ L_8062:
 	rra			;8071
 	push af			;8072
 	ld de,08092h		;8073
-	call 043a4h		;8076
+	call 043a4h		;8076   ; palabra_de_tabla: DE = la palabra A de la tabla DE
 	ld hl,02200h		;8079
 	ld bc,00040h		;807c
-	call 05945h		;807f
+	call 05945h		;807f   ; copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
 	pop af			;8082
 	ld de,08096h		;8083
-	call 043a4h		;8086
+	call 043a4h		;8086   ; palabra_de_tabla: DE = la palabra A de la tabla DE
 	ld hl,00200h		;8089
 	ld bc,00040h		;808c
-	jp 05945h		;808f
+	jp 05945h		;808f   ; copia_a_dos_tercios: LDIRVM en dos tercios seguidos (0x800 entre uno y otro)
 
 ; ----------------------------------------------------------------------
 ; DATOS resto_8092: lo apuntan con el banco puesto p07:8073 (0x8092), p07:8083
@@ -173,16 +173,16 @@ DATA_resto_8092:
 ; ======================================================================
 
 
-L_827A:
-	ld hl,0e400h		;827a
+crea_actores_de_la_sala:		; borra los 8 actores y crea los de la lista p07:8BC2[sala] (o p07:9032/904C); luego el actor 0xC8 de 0xEB69/0xEB7A
+	ld hl,0e400h		;827a   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
 	ld de,0e401h		;827d
 	ld bc,003ffh		;8280
 	ld (hl),000h		;8283
 	ldir		;8285
-	ld a,(0eb5dh)		;8287
+	ld a,(0eb5dh)		;8287   ; lee las banderas de la historia, byte 0x1D (se graban con la partida)
 	rra			;828a
 	jr nc,L_82A4		;828b
-	ld hl,(0eb40h)		;828d
+	ld hl,(0eb40h)		;828d   ; lee la sala
 	ld a,h			;8290
 	or a			;8291
 	jr nz,L_82A4		;8292
@@ -195,7 +195,7 @@ L_827A:
 	jr z,L_82B0		;82a1
 	ret			;82a3
 L_82A4:
-	ld hl,(0eb40h)		;82a4
+	ld hl,(0eb40h)		;82a4   ; lee la sala
 	add hl,hl			;82a7
 	ld de,08bc2h		;82a8
 	add hl,de			;82ab
@@ -226,7 +226,7 @@ L_82B6:
 	inc hl			;82c5
 	push hl			;82c6
 	ld l,(hl)			;82c7
-	call L_82FE		;82c8
+	call crea_actor		;82c8   ; crea_actor: en el primer hueco de 0xE400: el tipo BC en (E, D), direccion al azar, colores (p07:83B4) y nombre (p08:A063)
 	pop hl			;82cb
 	inc hl			;82cc
 	pop bc			;82cd
@@ -235,17 +235,17 @@ L_82D0:
 	ld a,(0e3d9h)		;82d0
 	or a			;82d3
 	ret nz			;82d4
-	ld a,(0eb5ah)		;82d5
+	ld a,(0eb5ah)		;82d5   ; lee las banderas de la historia, byte 0x1A (se graban con la partida)
 	bit 1,a		;82d8
 	ret z			;82da
-	ld hl,(0eb40h)		;82db
-	ld de,(0eb69h)		;82de
+	ld hl,(0eb40h)		;82db   ; lee la sala
+	ld de,(0eb69h)		;82de   ; lee las banderas de la historia, byte 0x29 (se graban con la partida) y el byte siguiente (16 bits)
 	ld a,d			;82e2
 	and 001h		;82e3
 	ld d,a			;82e5
 	sbc hl,de		;82e6
 	ret nz			;82e8
-	ld a,(0eb7ah)		;82e9
+	ld a,(0eb7ah)		;82e9   ; lee las banderas de la historia, byte 0x3A (se graban con la partida)
 	ld d,a			;82ec
 	and 0f0h		;82ed
 	ld e,a			;82ef
@@ -256,13 +256,13 @@ L_82D0:
 	ld bc,000c8h		;82f8
 	ld l,002h		;82fb
 	xor a			;82fd
-L_82FE:
+crea_actor:		; en el primer hueco de 0xE400: el tipo BC en (E, D), direccion al azar, colores (p07:83B4) y nombre (p08:A063)
 	ld (0e8e0h),bc		;82fe
 	ld (0e8e2h),de		;8302
 	ld (0e8e4h),a		;8306
 	ld a,l			;8309
 	ld (0e8e5h),a		;830a
-	ld hl,0e400h		;830d
+	ld hl,0e400h		;830d   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
 	ld b,008h		;8310
 	xor a			;8312
 	ld de,00080h		;8313
@@ -324,11 +324,11 @@ L_8345:
 	ld (0e8e6h),hl		;835d
 	exx			;8360
 	ld de,(0e8e6h)		;8361
-	call L_83A4		;8365
+	call dos_nibbles		;8365   ; dos_nibbles: los dos nibbles de (DE) en (HL) y (HL+1)
 	ld a,(0e8e4h)		;8368
 	ld (hl),a			;836b
 	ld a,005h		;836c
-	call 040a1h		;836e
+	call 040a1h		;836e   ; hl_mas_a: HL = HL + A
 	ld a,(de)			;8371
 	exx			;8372
 	ld l,a			;8373
@@ -362,8 +362,8 @@ L_839C:
 	ld a,(0e8e5h)		;839c
 	ld (de),a			;839f
 	pop hl			;83a0
-	jp L_881D		;83a1
-L_83A4:
+	jp rutina_del_actor		;83a1   ; rutina_del_actor: IX = HL, cuenta un cuadro y salta a la rutina de su tipo (tabla p07:882D)
+dos_nibbles:		; los dos nibbles de (DE) en (HL) y (HL+1)
 	ld a,(de)			;83a4
 	rra			;83a5
 	rra			;83a6
@@ -434,19 +434,19 @@ DATA_resto_83B4:
 ; ======================================================================
 
 
-L_865C:
-	ld ix,0e400h		;865c
+sprites_de_actores:		; dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas
+	ld ix,0e400h		;865c   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
 	ld hl,0f020h		;8660
 	ld b,008h		;8663
 L_8665:
 	push bc			;8665
-	ld a,(ix+000h)		;8666
-	or (ix+001h)		;8669
+	ld a,(ix+000h)		;8666   ; lee el tipo del actor (bajo)
+	or (ix+001h)		;8669   ; OR con el tipo del actor (alto)
 	jp z,L_8738		;866c
 	push hl			;866f
 	ld a,(ix+008h)		;8670
 	ld de,097e8h		;8673
-	call 043a4h		;8676
+	call 043a4h		;8676   ; palabra_de_tabla: DE = la palabra A de la tabla DE
 	pop hl			;8679
 	ld a,(ix+00dh)		;867a
 	dec a			;867d
@@ -455,7 +455,7 @@ L_8665:
 	cp 080h		;8683
 	jr nc,L_868C		;8685
 	exx			;8687
-	call L_874C		;8688
+	call marca_bloque_del_actor		;8688   ; marca_bloque_del_actor: pone 4 en la dureza del bloque del actor
 	exx			;868b
 L_868C:
 	ld a,(de)			;868c
@@ -539,34 +539,34 @@ L_8705:
 	push hl			;8705
 	ld l,(ix+003h)		;8706
 	ld h,(ix+004h)		;8709
-	call 04509h		;870c
+	call 04509h		;870c   ; mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
 	ld c,l			;870f
 	ld b,h			;8710
 	ld a,h			;8711
 	sub 0b5h		;8712
 	ld h,a			;8714
 	ld a,(de)			;8715
-	call L_8744		;8716
+	call byte_a_vram		;8716   ; byte_a_vram: A a la VRAM BC
 	inc hl			;8719
 	inc bc			;871a
 	inc de			;871b
 	ld a,(de)			;871c
-	call L_8744		;871d
+	call byte_a_vram		;871d   ; byte_a_vram: A a la VRAM BC
 	inc de			;8720
 	ld a,01fh		;8721
-	call 040a1h		;8723
+	call 040a1h		;8723   ; hl_mas_a: HL = HL + A
 	ld c,l			;8726
 	ld b,h			;8727
 	ld a,0b4h		;8728
 	add a,b			;872a
 	ld b,a			;872b
 	ld a,(de)			;872c
-	call L_8744		;872d
+	call byte_a_vram		;872d   ; byte_a_vram: A a la VRAM BC
 	inc hl			;8730
 	inc bc			;8731
 	inc de			;8732
 	ld a,(de)			;8733
-	call L_8744		;8734
+	call byte_a_vram		;8734   ; byte_a_vram: A a la VRAM BC
 	pop hl			;8737
 L_8738:
 	xor a			;8738
@@ -579,22 +579,22 @@ L_8738:
 	ld (hl),a			;8740
 	inc l			;8741
 	jr L_86DD		;8742
-L_8744:
-	call 0592bh		;8744
+byte_a_vram:		; A a la VRAM BC
+	call 0592bh		;8744   ; escribe_en_vram: SETWRT en HL y C' = el puerto de datos del VDP
 	exx			;8747
 	out (c),a		;8748
 	exx			;874a
 	ret			;874b
-L_874C:
+marca_bloque_del_actor:		; pone 4 en la dureza del bloque del actor
 	ld l,(ix+003h)		;874c
 	ld h,(ix+004h)		;874f
-	call 0451dh		;8752
+	call 0451dh		;8752   ; bloque_de_la_sala: HL = 0xE800 + (Y / 16) * 16 + X / 16: el bloque de la sala en la posicion L = Y, H = X
 	ld (hl),004h		;8755
 	ret			;8757
-L_8758:
-	ld ix,(0e365h)		;8758
+anima_al_de_enfrente:		; un paso de la animacion del actor de enfrente (0xE370, tabla p07:8762)
+	ld ix,(0e365h)		;8758   ; lee la ficha del personaje de enfrente
 	ld a,(0e370h)		;875c
-	call 040abh		;875f
+	call 040abh		;875f   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_8762: tabla de 5 palabras del despachador (call 0x408D en
@@ -628,12 +628,12 @@ L_8777:
 	ld (0e370h),a		;8784
 	ret			;8787
 L_8788:
-	ld (ix+00fh),006h		;8788
-	ld (ix+008h),012h		;878c
+	ld (ix+00fh),006h		;8788   ; el color del segundo sprite del actor = 0x06
+	ld (ix+008h),012h		;878c   ; el fotograma del actor (p07:97E8) = 0x12
 L_8790:
 	ld hl,0e370h		;8790
 	inc (hl)			;8793
-	jp L_865C		;8794
+	jp sprites_de_actores		;8794   ; sprites_de_actores: dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas
 L_8797:
 	ld hl,0e37fh		;8797
 	inc (hl)			;879a
@@ -642,10 +642,10 @@ L_8797:
 	jr nz,L_87B1		;879e
 	xor a			;87a0
 	ld b,a			;87a1
-	ld h,(ix+004h)		;87a2
-	ld l,(ix+003h)		;87a5
-	call 05dd3h		;87a8
-	ld (ix+003h),0e0h		;87ab
+	ld h,(ix+004h)		;87a2   ; lee la X del actor
+	ld l,(ix+003h)		;87a5   ; lee la Y del actor
+	call 05dd3h		;87a8   ; pon_bloque_de_enfrente: pone B en el bloque de delante
+	ld (ix+003h),0e0h		;87ab   ; la Y del actor = 0xE0
 	jr L_8790		;87af
 L_87B1:
 	bit 3,a		;87b1
@@ -653,20 +653,20 @@ L_87B1:
 	jr z,L_87B8		;87b5
 	inc a			;87b7
 L_87B8:
-	ld (ix+008h),a		;87b8
-	jp L_865C		;87bb
+	ld (ix+008h),a		;87b8   ; guarda el fotograma del actor (p07:97E8)
+	jp sprites_de_actores		;87bb   ; sprites_de_actores: dos sprites por actor en 0xF020 (fotograma p07:97E8); con el bit 0 de +0x10, en fichas
 L_87BE:
 	xor a			;87be
-	ld (ix+000h),a		;87bf
-	ld (ix+001h),a		;87c2
+	ld (ix+000h),a		;87bf   ; guarda el tipo del actor (bajo)
+	ld (ix+001h),a		;87c2   ; guarda el tipo del actor (alto)
 	ld (0e370h),a		;87c5
 	ld (0e3ceh),a		;87c8
 	ld a,002h		;87cb
 	ld (0e36fh),a		;87cd
 	ret			;87d0
 L_87D1:
-	ld (ix+00eh),005h		;87d1
-	ld (ix+00fh),00bh		;87d5
+	ld (ix+00eh),005h		;87d1   ; el color del primer sprite del actor = 0x05
+	ld (ix+00fh),00bh		;87d5   ; el color del segundo sprite del actor = 0x0B
 	ld hl,0e37fh		;87d9
 	inc (hl)			;87dc
 	ld a,020h		;87dd
@@ -677,8 +677,8 @@ L_87D1:
 	ld hl,0e370h		;87e5
 	ld (hl),001h		;87e8
 	jr L_8788		;87ea
-L_87EC:
-	ld hl,0e400h		;87ec
+mueve_actores:		; un cuadro de los 8 actores: su rutina y, si se mueven, su paso
+	ld hl,0e400h		;87ec   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
 	ld b,008h		;87ef
 L_87F1:
 	ld a,(hl)			;87f1
@@ -686,9 +686,9 @@ L_87F1:
 	jr z,L_8803		;87f3
 	push hl			;87f5
 	push bc			;87f6
-	call L_881D		;87f7
-	bit 0,(ix+005h)		;87fa
-	call nz,L_880A		;87fe
+	call rutina_del_actor		;87f7   ; rutina_del_actor: IX = HL, cuenta un cuadro y salta a la rutina de su tipo (tabla p07:882D)
+	bit 0,(ix+005h)		;87fa   ; mira el bit 0 de si el actor se mueve (bit 0; p07:87FA)
+	call nz,actor_avanza		;87fe   ; actor_avanza: Y += (ix+6) y X += (ix+7)
 	pop bc			;8801
 	pop hl			;8802
 L_8803:
@@ -696,22 +696,22 @@ L_8803:
 	add hl,de			;8806
 	djnz L_87F1		;8807
 	ret			;8809
-L_880A:
-	ld a,(ix+003h)		;880a
-	add a,(ix+006h)		;880d
-	ld (ix+003h),a		;8810
-	ld a,(ix+004h)		;8813
-	add a,(ix+007h)		;8816
-	ld (ix+004h),a		;8819
+actor_avanza:		; Y += (ix+6) y X += (ix+7)
+	ld a,(ix+003h)		;880a   ; lee la Y del actor
+	add a,(ix+006h)		;880d   ; le suma el paso Y del actor
+	ld (ix+003h),a		;8810   ; guarda la Y del actor
+	ld a,(ix+004h)		;8813   ; lee la X del actor
+	add a,(ix+007h)		;8816   ; le suma el paso X del actor
+	ld (ix+004h),a		;8819   ; guarda la X del actor
 	ret			;881c
-L_881D:
+rutina_del_actor:		; IX = HL, cuenta un cuadro y salta a la rutina de su tipo (tabla p07:882D)
 	push hl			;881d
 	pop ix		;881e
 	inc (ix+009h)		;8820
 	ld l,(ix+000h)		;8823
 	ld h,(ix+001h)		;8826
 	dec hl			;8829
-	call 040b5h		;882a
+	call 040b5h		;882a   ; despacha_hl: salta a la palabra HL de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_882D: tabla de 340 palabras del despachador (call 0x408D en
@@ -1066,55 +1066,55 @@ DATA_saltos_882D:
 
 L_8AD5:
 	ret			;8ad5
-L_8AD6:
+fotogramas_1a:		; los fotogramas de las cuatro direcciones: 0x1A, 0x1B, 0x1C, 0x1D
 	ld hl,01b1ah		;8ad6
 	ld de,01d1ch		;8ad9
-	jr L_8AF4		;8adc
-L_8ADE:
+	jr pon_fotogramas		;8adc
+fotogramas_00:		; los fotogramas de las cuatro direcciones: 0x00, 0x02, 0x04, 0x06
 	ld hl,00200h		;8ade
 	ld de,00604h		;8ae1
-	jr L_8AF4		;8ae4
-L_8AE6:
+	jr pon_fotogramas		;8ae4
+fotogramas_08:		; los fotogramas de las cuatro direcciones: 0x08, 0x0A, 0x0C, 0x0E
 	ld hl,00a08h		;8ae6
 	ld de,00e0ch		;8ae9
-	jr L_8AF4		;8aec
-L_8AEE:
+	jr pon_fotogramas		;8aec
+fotogramas_10:		; los fotogramas de las cuatro direcciones: 0x10, 0x12, 0x14, 0x16
 	ld hl,01210h		;8aee
 	ld de,01614h		;8af1
-L_8AF4:
-	ld (ix+011h),l		;8af4
-	ld (ix+012h),h		;8af7
-	ld (ix+013h),e		;8afa
-	ld (ix+014h),d		;8afd
+pon_fotogramas:		; los fotogramas por direccion: (ix+0x11..0x14) = L, H, E, D
+	ld (ix+011h),l		;8af4   ; guarda el fotograma del actor hacia arriba
+	ld (ix+012h),h		;8af7   ; guarda el fotograma del actor hacia abajo
+	ld (ix+013h),e		;8afa   ; guarda el fotograma del actor hacia la izquierda
+	ld (ix+014h),d		;8afd   ; guarda el fotograma del actor hacia la derecha
 	ret			;8b00
-L_8B01:
-	ld a,(ix+008h)		;8b01
-	ld (ix+011h),a		;8b04
-	ld (ix+012h),a		;8b07
-	ld (ix+013h),a		;8b0a
-	ld (ix+014h),a		;8b0d
+un_solo_fotograma:		; las cuatro direcciones con el fotograma (ix+8)
+	ld a,(ix+008h)		;8b01   ; lee el fotograma del actor (p07:97E8)
+	ld (ix+011h),a		;8b04   ; guarda el fotograma del actor hacia arriba
+	ld (ix+012h),a		;8b07   ; guarda el fotograma del actor hacia abajo
+	ld (ix+013h),a		;8b0a   ; guarda el fotograma del actor hacia la izquierda
+	ld (ix+014h),a		;8b0d   ; guarda el fotograma del actor hacia la derecha
 	ret			;8b10
-L_8B11:
-	ld a,(ix+00bh)		;8b11
+fotograma_por_direccion:		; (ix+8) = el de su direccion (ix+0x0B) mas el bit 4 de la cuenta
+	ld a,(ix+00bh)		;8b11   ; lee la direccion a la que mira el actor
 L_8B14:
 	dec a			;8b14
 	add a,a			;8b15
-	bit 4,(ix+009h)		;8b16
+	bit 4,(ix+009h)		;8b16   ; mira el bit 4 de la cuenta de cuadros del actor
 	jr z,L_8B1D		;8b1a
 	inc a			;8b1c
 L_8B1D:
 	ld b,a			;8b1d
-	ld a,(ix+011h)		;8b1e
+	ld a,(ix+011h)		;8b1e   ; lee el fotograma del actor hacia arriba
 	add a,b			;8b21
-	ld (ix+008h),a		;8b22
+	ld (ix+008h),a		;8b22   ; guarda el fotograma del actor (p07:97E8)
 	ret			;8b25
-L_8B26:
-	ld a,(ix+00ah)		;8b26
+velocidad_por_direccion:		; (ix+6), (ix+7) = el paso de la direccion (ix+0x0A) (p07:8B36)
+	ld a,(ix+00ah)		;8b26   ; lee la direccion en la que anda el actor (0: quieto)
 L_8B29:
 	ld de,08b36h		;8b29
-	call 043a4h		;8b2c
-	ld (ix+006h),e		;8b2f
-	ld (ix+007h),d		;8b32
+	call 043a4h		;8b2c   ; palabra_de_tabla: DE = la palabra A de la tabla DE
+	ld (ix+006h),e		;8b2f   ; guarda el paso Y del actor
+	ld (ix+007h),d		;8b32   ; guarda el paso X del actor
 	ret			;8b35
 
 ; ----------------------------------------------------------------------
@@ -1130,18 +1130,18 @@ DATA_resto_8B36:
 ; ======================================================================
 
 
-L_8B40:
-	call L_8B47		;8b40
-	ld (ix+00bh),a		;8b43
+mira_al_personaje:		; (ix+0x0B) = la direccion en la que tiene al personaje al lado
+	call direccion_del_personaje		;8b40   ; direccion_del_personaje: la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
+	ld (ix+00bh),a		;8b43   ; guarda la direccion a la que mira el actor
 	ret			;8b46
-L_8B47:
+direccion_del_personaje:		; la primera direccion con el bloque del personaje (2) delante; acarreo si lo hay
 	xor a			;8b47
 L_8B48:
 	inc a			;8b48
 	cp 005h		;8b49
 	ret nc			;8b4b
-	ld l,(ix+003h)		;8b4c
-	ld h,(ix+004h)		;8b4f
+	ld l,(ix+003h)		;8b4c   ; lee la Y del actor
+	ld h,(ix+004h)		;8b4f   ; lee la X del actor
 	call 05d6ah		;8b52
 	ld a,(hl)			;8b55
 	cp 002h		;8b56
@@ -1149,20 +1149,20 @@ L_8B48:
 	jr nz,L_8B48		;8b59
 	scf			;8b5b
 	ret			;8b5c
-L_8B5D:
+actor_quieto:		; (ix+6) y (ix+7) a cero
 	xor a			;8b5d
-	ld (ix+006h),a		;8b5e
-	ld (ix+007h),a		;8b61
+	ld (ix+006h),a		;8b5e   ; guarda el paso Y del actor
+	ld (ix+007h),a		;8b61   ; guarda el paso X del actor
 	ret			;8b64
-L_8B65:
+direccion_al_azar:		; una direccion al azar, libre si hay al menos dos libres
 	xor a			;8b65
 	ld (0e8e5h),a		;8b66
 L_8B69:
 	inc a			;8b69
 	cp 005h		;8b6a
 	jr nc,L_8B81		;8b6c
-	ld h,(ix+004h)		;8b6e
-	ld l,(ix+003h)		;8b71
+	ld h,(ix+004h)		;8b6e   ; lee la X del actor
+	ld l,(ix+003h)		;8b71   ; lee la Y del actor
 	call 05d6ah		;8b74
 	call nz,L_8B7C		;8b77
 	jr L_8B69		;8b7a
@@ -1174,14 +1174,14 @@ L_8B81:
 	ld a,(0e8e5h)		;8b81
 	cp 002h		;8b84
 	jr c,L_8BA5		;8b86
-	call 043d0h		;8b88
+	call 043d0h		;8b88   ; aleatorio: A = el registro R revuelto con la cuenta de cuadros
 	and 003h		;8b8b
 	inc a			;8b8d
 	ld b,004h		;8b8e
 L_8B90:
 	push bc			;8b90
-	ld h,(ix+004h)		;8b91
-	ld l,(ix+003h)		;8b94
+	ld h,(ix+004h)		;8b91   ; lee la X del actor
+	ld l,(ix+003h)		;8b94   ; lee la Y del actor
 	call 05d6ah		;8b97
 	pop bc			;8b9a
 	ret z			;8b9b
@@ -1192,16 +1192,16 @@ L_8B90:
 L_8BA3:
 	djnz L_8B90		;8ba3
 L_8BA5:
-	call 043d0h		;8ba5
+	call 043d0h		;8ba5   ; aleatorio: A = el registro R revuelto con la cuenta de cuadros
 	and 003h		;8ba8
 	inc a			;8baa
 	ret			;8bab
-L_8BAC:
+quita_actor_y_anda:		; el personaje vuelve al modo 0 y se borra el actor
 	xor a			;8bac
-	ld (0e3c0h),a		;8bad
+	ld (0e3c0h),a		;8bad   ; guarda el modo del personaje (tabla p01:718E)
 	xor a			;8bb0
 	ld (0e3a9h),a		;8bb1
-L_8BB4:
+borra_actor:		; los 0x80 bytes de la ficha IX a cero
 	push ix		;8bb4
 	pop hl			;8bb6
 	ld d,h			;8bb7

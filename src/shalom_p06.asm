@@ -113,11 +113,11 @@ DATA_resto_A000:
 ; ======================================================================
 
 
-L_A5B8:
+particulas:		; un paso de las 16 particulas de 0xE400 (0xE352, tabla p06:A5C2)
 	xor a			;a5b8
 	ld (0e35bh),a		;a5b9
 	ld a,(0e352h)		;a5bc
-	call 040abh		;a5bf
+	call 040abh		;a5bf   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_A5C2: tabla de 4 palabras del despachador (call 0x408D en
@@ -134,21 +134,21 @@ DATA_saltos_A5C2:
 ; ======================================================================
 
 
-L_A5CA:
+particulas_empiezan:		; sus patrones (p06:A5F9 a 0x1800), las 16 escondidas y 0x80 cuadros de vida
 	ld hl,01800h		;a5ca
 	ld de,0a5f9h		;a5cd
 	ld bc,00060h		;a5d0
-	call 05941h		;a5d3
+	call 05941h		;a5d3   ; copia_a_vram: LDIRVM de DE a la VRAM HL
 	ld bc,010e0h		;a5d6
-	ld ix,0e400h		;a5d9
+	ld ix,0e400h		;a5d9   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
 	ld de,00010h		;a5dd
 	ld a,080h		;a5e0
 	ld (0e35ah),a		;a5e2
 	xor a			;a5e5
 L_A5E6:
-	ld (ix+000h),a		;a5e6
-	ld (ix+009h),a		;a5e9
-	ld (ix+002h),c		;a5ec
+	ld (ix+000h),a		;a5e6   ; guarda si la particula esta viva
+	ld (ix+009h),a		;a5e9   ; guarda el patron de la particula
+	ld (ix+002h),c		;a5ec   ; guarda la Y de la particula
 	add ix,de		;a5ef
 	djnz L_A5E6		;a5f1
 	ld a,001h		;a5f3
@@ -173,7 +173,7 @@ DATA_resto_A5F9:
 ; ======================================================================
 
 
-L_A659:
+particulas_cuadro:		; salen por los bordes al azar, van hacia la posicion del personaje (p01:6312) y desaparecen en el centro; sprites en 0xF000
 	ld a,(0e35ah)		;a659
 	dec a			;a65c
 	ld (0e35ah),a		;a65d
@@ -183,7 +183,7 @@ L_A659:
 	ret			;a666
 L_A667:
 	ld a,r		;a667
-	ld hl,0e003h		;a669
+	ld hl,0e003h		;a669   ; apunta a la cuenta de cuadros
 	xor (hl)			;a66c
 	rra			;a66d
 	jp nc,L_A710		;a66e
@@ -193,7 +193,7 @@ L_A667:
 	or a			;a677
 	ld a,b			;a678
 	jr nz,$+13		;a679
-	call 040abh		;a67b
+	call 040abh		;a67b   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_A67E: tabla de 4 palabras del despachador (call 0x408D en
@@ -211,7 +211,7 @@ DATA_saltos_A67E:
 
 
 L_A686:
-	call 040abh		;a686
+	call 040abh		;a686   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_A689: tabla de 4 palabras del despachador (call 0x408D en
@@ -229,41 +229,41 @@ DATA_saltos_A689:
 
 
 L_A691:
-	call L_A7E4		;a691
+	call x_al_azar		;a691   ; x_al_azar: H = una X al azar de p06:A810
 	ld l,001h		;a694
 	jr L_A6C7		;a696
 L_A698:
-	call L_A7E4		;a698
+	call x_al_azar		;a698   ; x_al_azar: H = una X al azar de p06:A810
 	ld l,07fh		;a69b
 	jr L_A6C7		;a69d
 L_A69F:
-	call L_A7D5		;a69f
+	call y_al_azar		;a69f   ; y_al_azar: L = una Y al azar de p06:A810
 	ld h,001h		;a6a2
 	jr L_A6C7		;a6a4
 L_A6A6:
-	call L_A7D5		;a6a6
+	call y_al_azar		;a6a6   ; y_al_azar: L = una Y al azar de p06:A810
 	ld h,0bfh		;a6a9
 	jr L_A6C7		;a6ab
 L_A6AD:
-	call L_A802		;a6ad
+	call x_al_azar_b		;a6ad   ; x_al_azar_b: H = una X al azar de p06:A820
 	ld l,01fh		;a6b0
 	jr L_A6C7		;a6b2
 L_A6B4:
-	call L_A802		;a6b4
+	call x_al_azar_b		;a6b4   ; x_al_azar_b: H = una X al azar de p06:A820
 	ld l,051h		;a6b7
 	jr L_A6C7		;a6b9
 L_A6BB:
-	call L_A7F3		;a6bb
+	call y_al_azar_b		;a6bb   ; y_al_azar_b: L = una Y al azar de p06:A820
 	ld h,037h		;a6be
 	jr L_A6C7		;a6c0
 L_A6C2:
-	call L_A7F3		;a6c2
+	call y_al_azar_b		;a6c2   ; y_al_azar_b: L = una Y al azar de p06:A820
 	ld h,069h		;a6c5
 L_A6C7:
-	call L_A7C1		;a6c7
+	call particula_libre		;a6c7   ; particula_libre: IX = la primera particula escondida (Y = 0xE0); Z si la hay
 	jr nz,L_A710		;a6ca
-	ld (ix+002h),l		;a6cc
-	ld (ix+004h),h		;a6cf
+	ld (ix+002h),l		;a6cc   ; guarda la Y de la particula
+	ld (ix+004h),h		;a6cf   ; guarda la X de la particula
 	ld a,(0e352h)		;a6d2
 	dec a			;a6d5
 	ld b,020h		;a6d6
@@ -272,8 +272,8 @@ L_A6C7:
 	and 003h		;a6dd
 	jr z,L_A6EB		;a6df
 	ld b,050h		;a6e1
-	ld (ix+000h),001h		;a6e3
-	ld (ix+009h),008h		;a6e7
+	ld (ix+000h),001h		;a6e3   ; si la particula esta viva = 0x01
+	ld (ix+009h),008h		;a6e7   ; el patron de la particula = 0x08
 L_A6EB:
 	ld a,(0e35ah)		;a6eb
 	and 001h		;a6ee
@@ -282,55 +282,55 @@ L_A6EB:
 	rlca			;a6f2
 	rlca			;a6f3
 	add a,b			;a6f4
-	call 0434dh		;a6f5
+	call 0434dh		;a6f5   ; a_rumbo_desde_ix: con 1-2-3, p01:6312 (el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A); vuelve con 4-5-6
 	ld a,(0e35bh)		;a6f8
 	or a			;a6fb
 	jr z,L_A704		;a6fc
-	call 043b3h		;a6fe
-	call 043adh		;a701
+	call 043b3h		;a6fe   ; hl_negativo: HL = -HL
+	call 043adh		;a701   ; de_negativo: DE = -DE
 L_A704:
-	ld (ix+005h),l		;a704
-	ld (ix+006h),h		;a707
-	ld (ix+007h),e		;a70a
-	ld (ix+008h),d		;a70d
+	ld (ix+005h),l		;a704   ; guarda la velocidad Y de la particula
+	ld (ix+006h),h		;a707   ; guarda la velocidad Y de la particula (alta)
+	ld (ix+007h),e		;a70a   ; guarda la velocidad X de la particula
+	ld (ix+008h),d		;a70d   ; guarda la velocidad X de la particula (alta)
 L_A710:
 	ld b,010h		;a710
-	ld ix,0e400h		;a712
+	ld ix,0e400h		;a712   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
 L_A716:
-	ld a,(ix+000h)		;a716
+	ld a,(ix+000h)		;a716   ; lee si la particula esta viva
 	or a			;a719
 	jr z,L_A739		;a71a
-	ld a,(ix+004h)		;a71c
+	ld a,(ix+004h)		;a71c   ; lee la X de la particula
 	sub 030h		;a71f
 	cp 061h		;a721
 	jr nc,L_A72B		;a723
-	ld (ix+009h),000h		;a725
+	ld (ix+009h),000h		;a725   ; el patron de la particula = 0x00
 	jr L_A739		;a729
 L_A72B:
 	add a,018h		;a72b
 	cp 091h		;a72d
-	ld (ix+009h),008h		;a72f
+	ld (ix+009h),008h		;a72f   ; el patron de la particula = 0x08
 	jr nc,L_A739		;a733
-	ld (ix+009h),004h		;a735
+	ld (ix+009h),004h		;a735   ; el patron de la particula = 0x04
 L_A739:
-	ld l,(ix+001h)		;a739
-	ld h,(ix+002h)		;a73c
-	ld e,(ix+005h)		;a73f
-	ld d,(ix+006h)		;a742
+	ld l,(ix+001h)		;a739   ; lee la Y de la particula (fraccion)
+	ld h,(ix+002h)		;a73c   ; lee la Y de la particula
+	ld e,(ix+005h)		;a73f   ; lee la velocidad Y de la particula
+	ld d,(ix+006h)		;a742   ; lee la velocidad Y de la particula (alta)
 	add hl,de			;a745
-	ld (ix+001h),l		;a746
-	ld (ix+002h),h		;a749
+	ld (ix+001h),l		;a746   ; guarda la Y de la particula (fraccion)
+	ld (ix+002h),h		;a749   ; guarda la Y de la particula
 	ld c,h			;a74c
 	ld a,c			;a74d
 	cp 080h		;a74e
 	jr nc,L_A777		;a750
-	ld l,(ix+003h)		;a752
-	ld h,(ix+004h)		;a755
-	ld e,(ix+007h)		;a758
-	ld d,(ix+008h)		;a75b
+	ld l,(ix+003h)		;a752   ; lee la X de la particula (fraccion)
+	ld h,(ix+004h)		;a755   ; lee la X de la particula
+	ld e,(ix+007h)		;a758   ; lee la velocidad X de la particula
+	ld d,(ix+008h)		;a75b   ; lee la velocidad X de la particula (alta)
 	add hl,de			;a75e
-	ld (ix+003h),l		;a75f
-	ld (ix+004h),h		;a762
+	ld (ix+003h),l		;a75f   ; guarda la X de la particula (fraccion)
+	ld (ix+004h),h		;a762   ; guarda la X de la particula
 	ld a,h			;a765
 	cp 0c0h		;a766
 	jr nc,L_A777		;a768
@@ -342,23 +342,23 @@ L_A739:
 	cp 031h		;a773
 	jr nc,L_A77B		;a775
 L_A777:
-	ld (ix+002h),0e0h		;a777
+	ld (ix+002h),0e0h		;a777   ; la Y de la particula = 0xE0
 L_A77B:
 	ld de,00010h		;a77b
 	add ix,de		;a77e
 	djnz L_A716		;a780
 	ld b,010h		;a782
-	ld ix,0e400h		;a784
-	ld hl,0f000h		;a788
+	ld ix,0e400h		;a784   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
+	ld hl,0f000h		;a788   ; apunta a los atributos de los 32 sprites
 	ld de,00010h		;a78b
 L_A78E:
-	ld a,(ix+002h)		;a78e
+	ld a,(ix+002h)		;a78e   ; lee la Y de la particula
 	ld (hl),a			;a791
 	inc hl			;a792
-	ld a,(ix+004h)		;a793
+	ld a,(ix+004h)		;a793   ; lee la X de la particula
 	ld (hl),a			;a796
 	inc hl			;a797
-	ld a,(ix+009h)		;a798
+	ld a,(ix+009h)		;a798   ; lee el patron de la particula
 	ld (hl),a			;a79b
 	inc hl			;a79c
 	ld (hl),00fh		;a79d
@@ -366,7 +366,7 @@ L_A78E:
 	add ix,de		;a7a0
 	djnz L_A78E		;a7a2
 	ret			;a7a4
-L_A7A5:
+particulas_acaban:		; cuando las 16 estan escondidas, el siguiente paso (0xE350)
 	ld bc,01010h		;a7a5
 	ld a,0e0h		;a7a8
 	ld hl,0e402h		;a7aa
@@ -383,50 +383,50 @@ L_A7BB:
 	add hl,de			;a7bb
 	djnz L_A7B0		;a7bc
 	jp L_A710		;a7be
-L_A7C1:
+particula_libre:		; IX = la primera particula escondida (Y = 0xE0); Z si la hay
 	ld a,0e0h		;a7c1
 	ld b,010h		;a7c3
 	ld ix,0e3f0h		;a7c5
 	ld de,00010h		;a7c9
 L_A7CC:
 	add ix,de		;a7cc
-	cp (ix+002h)		;a7ce
+	cp (ix+002h)		;a7ce   ; compara con la Y de la particula
 	ret z			;a7d1
 	djnz L_A7CC		;a7d2
 	ret			;a7d4
-L_A7D5:
-	ld hl,0e003h		;a7d5
+y_al_azar:		; L = una Y al azar de p06:A810
+	ld hl,0e003h		;a7d5   ; apunta a la cuenta de cuadros
 	xor (hl)			;a7d8
 	and 00fh		;a7d9
 	ld hl,0a810h		;a7db
-	call 040a1h		;a7de
+	call 040a1h		;a7de   ; hl_mas_a: HL = HL + A
 	ld a,(hl)			;a7e1
 	ld l,a			;a7e2
 	ret			;a7e3
-L_A7E4:
+x_al_azar:		; H = una X al azar de p06:A810
 	inc a			;a7e4
-	ld hl,0e003h		;a7e5
+	ld hl,0e003h		;a7e5   ; apunta a la cuenta de cuadros
 	xor (hl)			;a7e8
 	and 007h		;a7e9
 	ld hl,0a810h		;a7eb
-	call 040a1h		;a7ee
+	call 040a1h		;a7ee   ; hl_mas_a: HL = HL + A
 	ld h,(hl)			;a7f1
 	ret			;a7f2
-L_A7F3:
-	ld hl,0e003h		;a7f3
+y_al_azar_b:		; L = una Y al azar de p06:A820
+	ld hl,0e003h		;a7f3   ; apunta a la cuenta de cuadros
 	xor (hl)			;a7f6
 	and 007h		;a7f7
 	ld hl,0a820h		;a7f9
-	call 040a1h		;a7fc
+	call 040a1h		;a7fc   ; hl_mas_a: HL = HL + A
 	ld a,(hl)			;a7ff
 	ld l,a			;a800
 	ret			;a801
-L_A802:
-	ld hl,0e003h		;a802
+x_al_azar_b:		; H = una X al azar de p06:A820
+	ld hl,0e003h		;a802   ; apunta a la cuenta de cuadros
 	xor (hl)			;a805
 	and 00fh		;a806
 	ld hl,0a820h		;a808
-	call 040a1h		;a80b
+	call 040a1h		;a80b   ; hl_mas_a: HL = HL + A
 	ld h,(hl)			;a80e
 	ret			;a80f
 
@@ -557,7 +557,7 @@ DATA_resto_AB03:
 ; ======================================================================
 
 
-L_AE36:
+nombre_en_pares:		; las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
 	inc de			;ae36
 	inc de			;ae37
 	ld c,008h		;ae38
@@ -591,7 +591,7 @@ L_AE56:
 	inc de			;ae5c
 	inc de			;ae5d
 	ret			;ae5e
-L_AE5F:
+nombres_en_sprites:		; los dos nombres como patrones de sprite desde 0x1980
 	ld hl,0e8e2h		;ae5f
 	ld de,0e8e3h		;ae62
 	ld bc,0000fh		;ae65
@@ -599,26 +599,26 @@ L_AE5F:
 	ld (hl),a			;ae69
 	ldir		;ae6a
 	ld de,0e8e2h		;ae6c
-	ld hl,0eb00h		;ae6f
-	call L_AE36		;ae72
+	ld hl,0eb00h		;ae6f   ; apunta a el primer nombre (8 letras y 0xFF)
+	call nombre_en_pares		;ae72   ; nombre_en_pares: las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
 	ld de,0e8eah		;ae75
-	ld hl,0eb09h		;ae78
-	call L_AE36		;ae7b
+	ld hl,0eb09h		;ae78   ; apunta a el segundo nombre (8 letras y 0xFF)
+	call nombre_en_pares		;ae7b   ; nombre_en_pares: las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
 	ld a,0ffh		;ae7e
 	ld (0e8f2h),a		;ae80
 	ld de,01980h		;ae83
 	ld hl,0e8e2h		;ae86
 	ld (0e8e0h),de		;ae89
-	jr L_AEAF		;ae8d
-L_AE8F:
+	jr letras_en_sprites		;ae8d
+texto_en_sprites_bf98:		; el texto p06:BF98 como patrones de sprite desde 0x1800
 	ld de,01800h		;ae8f
 	ld hl,0bf98h		;ae92
-	jr L_AE9F		;ae95
-L_AE97:
+	jr texto_en_sprites		;ae95
+texto_en_sprites_a830:		; el texto p06:A830 como patrones de sprite desde 0x1800
 	ld de,01800h		;ae97
 	ld hl,0a830h		;ae9a
-	jr L_AE9F		;ae9d
-L_AE9F:
+	jr texto_en_sprites		;ae9d
+texto_en_sprites:		; borra los patrones de sprite y escribe el texto HL desde DE
 	ld (0e8e0h),de		;ae9f
 	push hl			;aea3
 	ld hl,01800h		;aea4
@@ -626,22 +626,22 @@ L_AE9F:
 	ld bc,00800h		;aea8
 	call 00056h		;aeab   ; BIOS FILVRM - Fills VRAM with value
 	pop hl			;aeae
-L_AEAF:
+letras_en_sprites:		; pares de letras de HL como sprites de 16 x 16 hasta 0xFF
 	ld b,002h		;aeaf
 L_AEB1:
 	ld a,(hl)			;aeb1
 	inc a			;aeb2
 	ret z			;aeb3
 	push bc			;aeb4
-	call L_AED5		;aeb5
+	call dos_letras_en_sprite		;aeb5   ; dos_letras_en_sprite: dos letras de la fuente (p04:6F39) a 0xE8E0 y 0xE8E0 + 0x10
 	pop bc			;aeb8
 	ld de,00018h		;aeb9
-	call L_AEC9		;aebc
+	call retrocede_destino		;aebc   ; retrocede_destino: 0xE8E0 -= DE
 	djnz L_AEB1		;aebf
 	ld de,0fff0h		;aec1
-	call L_AEC9		;aec4
-	jr L_AEAF		;aec7
-L_AEC9:
+	call retrocede_destino		;aec4   ; retrocede_destino: 0xE8E0 -= DE
+	jr letras_en_sprites		;aec7
+retrocede_destino:		; 0xE8E0 -= DE
 	push hl			;aec9
 	ld hl,(0e8e0h)		;aeca
 	or a			;aecd
@@ -649,11 +649,11 @@ L_AEC9:
 	ld (0e8e0h),hl		;aed0
 	pop hl			;aed3
 	ret			;aed4
-L_AED5:
+dos_letras_en_sprite:		; dos letras de la fuente (p04:6F39) a 0xE8E0 y 0xE8E0 + 0x10
 	dec a			;aed5
-	call L_AEDA		;aed6
+	call letra_en_sprite		;aed6   ; letra_en_sprite: los 8 bytes de la letra A de la fuente a la VRAM 0xE8E0
 	ld a,(hl)			;aed9
-L_AEDA:
+letra_en_sprite:		; los 8 bytes de la letra A de la fuente a la VRAM 0xE8E0
 	push hl			;aeda
 	ld l,a			;aedb
 	ld h,000h		;aedc
@@ -665,7 +665,7 @@ L_AEDA:
 	ex de,hl			;aee5
 	ld hl,(0e8e0h)		;aee6
 	ld bc,00008h		;aee9
-	call 05941h		;aeec
+	call 05941h		;aeec   ; copia_a_vram: LDIRVM de DE a la VRAM HL
 	ld hl,(0e8e0h)		;aeef
 	ld de,00010h		;aef2
 	add hl,de			;aef5
@@ -673,9 +673,9 @@ L_AEDA:
 	pop hl			;aef9
 	inc hl			;aefa
 	ret			;aefb
-L_AEFC:
-	ld a,(0e338h)		;aefc
-	call 040abh		;aeff
+estado_6_pantalla:		; el final segun 0xE338 (tabla p06:AF02)
+	ld a,(0e338h)		;aefc   ; lee la sala de partida (indice de p01:67E3)
+	call 040abh		;aeff   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_AF02: tabla de 2 palabras del despachador (call 0x408D en
@@ -708,9 +708,9 @@ DATA_vram_AF0A:
 ; ======================================================================
 
 
-L_AF4E:
+final_1:		; un paso del final 1 (0xE339, tabla p06:AF54): el texto p06:AF0A y el nombre; con tecla se acaba (0xE340 = 0x80)
 	ld a,(0e339h)		;af4e
-	call 040abh		;af51
+	call 040abh		;af51   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_AF54: tabla de 3 palabras del despachador (call 0x408D en
@@ -727,34 +727,34 @@ DATA_saltos_AF54:
 
 
 L_AF5A:
-	call 0591bh		;af5a
-	call 06487h		;af5d
+	call 0591bh		;af5a   ; pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
+	call 06487h		;af5d   ; fuente_y_colores: la fuente en los tres tercios y su color
 	ld de,0af0ah		;af60
-	call 059c2h		;af63
-	call L_AFE8		;af66
-	call 0600ah		;af69
-L_AF6C:
+	call 059c2h		;af63   ; bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+	call nombre_en_0x390d		;af66   ; nombre_en_0x390d: el primer nombre en la VRAM 0x390D
+	call 0600ah		;af69   ; sonido_3a: pide el sonido 0x3A
+final_siguiente:		; 0xE339 + 1
 	ld hl,0e339h		;af6c
 	inc (hl)			;af6f
 	ret			;af70
 L_AF71:
-	ld a,(0e008h)		;af71
+	ld a,(0e008h)		;af71   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
 	and a			;af74
 	ret z			;af75
-	call 045abh		;af76
+	call 045abh		;af76   ; sonido_85: pide el sonido 0x85
 	ld a,0cah		;af79
-	ld (0e004h),a		;af7b
-	jr L_AF6C		;af7e
+	ld (0e004h),a		;af7b   ; guarda la espera del estado, en cuadros
+	jr final_siguiente		;af7e
 L_AF80:
-	ld hl,0e004h		;af80
+	ld hl,0e004h		;af80   ; apunta a la espera del estado, en cuadros
 	dec (hl)			;af83
 	ret nz			;af84
 	ld a,080h		;af85
-	ld (0e340h),a		;af87
+	ld (0e340h),a		;af87   ; guarda en partida (bit 7: la demo acaba)
 	ret			;af8a
-L_AF8B:
+final_2:		; un paso del final 2 (0xE339, tabla p06:AF91): espera la tecla de la fila 2, bit 4, y vuelve al estado 4, paso 4
 	ld a,(0e339h)		;af8b
-	call 040abh		;af8e
+	call 040abh		;af8e   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_AF91: tabla de 3 palabras del despachador (call 0x408D en
@@ -773,19 +773,19 @@ DATA_saltos_AF91:
 L_AF97:
 	xor a			;af97
 	ld (0e369h),a		;af98
-	call 0591bh		;af9b
-	call 06487h		;af9e
+	call 0591bh		;af9b   ; pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
+	call 06487h		;af9e   ; fuente_y_colores: la fuente en los tres tercios y su color
 	ld de,0af0ah		;afa1
-	call 059c2h		;afa4
-	call L_AFE8		;afa7
-	call 0600ah		;afaa
-	jp L_AF6C		;afad
+	call 059c2h		;afa4   ; bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+	call nombre_en_0x390d		;afa7   ; nombre_en_0x390d: el primer nombre en la VRAM 0x390D
+	call 0600ah		;afaa   ; sonido_3a: pide el sonido 0x3A
+	jp final_siguiente		;afad   ; final_siguiente: 0xE339 + 1
 L_AFB0:
 	ld a,002h		;afb0
 	call 00141h		;afb2   ; BIOS SNSMAT - Returns the value of the specified line from the keyboard matrix
 	bit 4,a		;afb5
 	jr z,L_AFCA		;afb7
-	ld hl,0e003h		;afb9
+	ld hl,0e003h		;afb9   ; apunta a la cuenta de cuadros
 	bit 3,(hl)		;afbc
 	ld a,002h		;afbe
 	jr z,L_AFC3		;afc0
@@ -795,23 +795,23 @@ L_AFC3:
 	call 0004dh		;afc6   ; BIOS WRTVRM - Writes data in VRAM
 	ret			;afc9
 L_AFCA:
-	call 045a6h		;afca
+	call 045a6h		;afca   ; sonido_81: pide el sonido 0x81
 	ld a,050h		;afcd
-	ld (0e004h),a		;afcf
+	ld (0e004h),a		;afcf   ; guarda la espera del estado, en cuadros
 	jr $-102		;afd2
 L_AFD4:
-	ld hl,0e004h		;afd4
+	ld hl,0e004h		;afd4   ; apunta a la espera del estado, en cuadros
 	dec (hl)			;afd7
 	ret nz			;afd8
-	call 0591bh		;afd9
+	call 0591bh		;afd9   ; pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
 	ld hl,00404h		;afdc
-	ld (0e000h),hl		;afdf
+	ld (0e000h),hl		;afdf   ; guarda el estado del juego y el byte siguiente (16 bits)
 	ld a,001h		;afe2
-	ld (0e340h),a		;afe4
+	ld (0e340h),a		;afe4   ; guarda en partida (bit 7: la demo acaba)
 	ret			;afe7
-L_AFE8:
+nombre_en_0x390d:		; el primer nombre en la VRAM 0x390D
 	ld hl,0390dh		;afe8
-	ld de,0eb00h		;afeb
+	ld de,0eb00h		;afeb   ; apunta a el primer nombre (8 letras y 0xFF)
 L_AFEE:
 	ld a,(de)			;afee
 	inc de			;afef

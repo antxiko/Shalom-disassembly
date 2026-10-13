@@ -14,11 +14,11 @@
 ; ======================================================================
 
 
-L_6000:
+desplazamiento:		; un paso del modo 7 (0xE387, tabla p21:600F)
 	ld hl,0600fh		;6000
 	ld a,(0e387h)		;6003
 	add a,a			;6006
-	call L_6384		;6007
+	call hl_mas_a		;6007   ; hl_mas_a: HL = HL + A
 	ld e,(hl)			;600a
 	inc hl			;600b
 	ld d,(hl)			;600c
@@ -41,30 +41,30 @@ DATA_saltos_600F:
 ; ======================================================================
 
 
-L_6019:
-	call 0402eh		;6019
-	call 04034h		;601c
-	call L_6357		;601f
-	call 0403ah		;6022
+desplazamiento_empieza:		; borra la zona de juego, el fondo (p21:6357), el personaje en (0x50, 0x50) y 8 pasos de espera
+	call 0402eh		;6019   ; borra_zona_de_juego_y_21_22_23: borra 16 filas x 24 de 0xED00 y las vuelca; vuelve con 21-22-23
+	call 04034h		;601c   ; graficos_del_marcador_y_21_22_23: patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD; vuelve con 21-22-23
+	call fondo_de_bajada		;601f   ; fondo_de_bajada: 0xEC60 lleno de la ficha 0x10 y 6 filas de p21:62AF en 0xEE20
+	call 0403ah		;6022   ; vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
 	ld a,008h		;6025
 	ld (0e388h),a		;6027
 	ld a,001h		;602a
-	ld (0e007h),a		;602c
+	ld (0e007h),a		;602c   ; guarda las banderas de sprites (bit 0: sin rotar)
 	ld hl,05050h		;602f
-	ld (0e3c1h),hl		;6032
+	ld (0e3c1h),hl		;6032   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ld a,058h		;6035
 	ld (0f020h),a		;6037
 	ld hl,0e387h		;603a
 	inc (hl)			;603d
 	ret			;603e
-L_603F:
-	ld a,(0e003h)		;603f
+desplazamiento_entra:		; cada 16 cuadros el personaje sube un punto; al acabar, la musica y el guion p21:617B
+	ld a,(0e003h)		;603f   ; lee la cuenta de cuadros
 	and 00fh		;6042
 	ret nz			;6044
 	ld hl,0e388h		;6045
 	dec (hl)			;6048
 	jr z,L_6054		;6049
-	ld hl,0e3c1h		;604b
+	ld hl,0e3c1h		;604b   ; apunta a la Y del personaje
 	dec (hl)			;604e
 	ld hl,0f020h		;604f
 	dec (hl)			;6052
@@ -79,21 +79,21 @@ L_6054:
 	ld (0e38dh),a		;6063
 	ld hl,0617bh		;6066
 	ld (0e38bh),hl		;6069
-	call 04040h		;606c
+	call 04040h		;606c   ; sonido_28_y_21_22_23: pide el sonido 0x28; vuelve con 21-22-23
 	ld hl,0e387h		;606f
 	inc (hl)			;6072
 	ret			;6073
-L_6074:
-	call 0403ah		;6074
-	call L_60C2		;6077
-	jp L_615E		;607a
-L_607D:
-	call 0402eh		;607d
-	call 04034h		;6080
-	call L_6389		;6083
-	call 0403ah		;6086
+desplazamiento_baja:		; un cuadro: la pantalla baja (p21:60C2) y los dibujos del guion (p21:615E)
+	call 0403ah		;6074   ; vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
+	call pantalla_baja		;6077   ; pantalla_baja: cada 0xE389 cuadros baja 20 filas de 0xEEC0 una fila; al acabar, 0xE386 = 1
+	jp dibujo_del_guion_abajo		;607a   ; dibujo_del_guion_abajo: al llegar la cuenta 0xE38A a la de 0xE38D, el siguiente dibujo del guion (0xE38B) arriba
+desplazamiento_empieza_arriba:		; como p21:6019 con el fondo de p21:6389 y el guion p21:61BF
+	call 0402eh		;607d   ; borra_zona_de_juego_y_21_22_23: borra 16 filas x 24 de 0xED00 y las vuelca; vuelve con 21-22-23
+	call 04034h		;6080   ; graficos_del_marcador_y_21_22_23: patrones p12:7360 y colores p12:73D0 en dos tercios y nombres p12:73FD; vuelve con 21-22-23
+	call fondo_de_subida		;6083   ; fondo_de_subida: 21 filas de 0xED00 con la ficha 0x10
+	call 0403ah		;6086   ; vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
 	ld a,001h		;6089
-	ld (0e007h),a		;608b
+	ld (0e007h),a		;608b   ; guarda las banderas de sprites (bit 0: sin rotar)
 	ld a,006h		;608e
 	ld (0e389h),a		;6090
 	ld (0e388h),a		;6093
@@ -104,18 +104,18 @@ L_607D:
 	ld hl,061bfh		;60a0
 	ld (0e38bh),hl		;60a3
 	ld hl,05050h		;60a6
-	ld (0e3c1h),hl		;60a9
+	ld (0e3c1h),hl		;60a9   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ld a,058h		;60ac
 	ld (0f020h),a		;60ae
-	call 04040h		;60b1
+	call 04040h		;60b1   ; sonido_28_y_21_22_23: pide el sonido 0x28; vuelve con 21-22-23
 	ld hl,0e387h		;60b4
 	inc (hl)			;60b7
 	ret			;60b8
-L_60B9:
-	call 0403ah		;60b9
-	call L_6112		;60bc
-	jp L_61A2		;60bf
-L_60C2:
+desplazamiento_sube:		; un cuadro: la pantalla sube (p21:6112) y los dibujos del guion (p21:61A2)
+	call 0403ah		;60b9   ; vuelca_zona_de_juego_y_21_22_23: 16 filas x 24 de 0xED00 a 0x3800; vuelve con 21-22-23
+	call pantalla_sube		;60bc   ; pantalla_sube: cada 0xE389 cuadros sube 20 filas de 0xED20 una fila; al acabar, 0xE386 = 2
+	jp dibujo_del_guion_arriba		;60bf   ; dibujo_del_guion_arriba: al llegar la cuenta, el siguiente dibujo del guion abajo
+pantalla_baja:		; cada 0xE389 cuadros baja 20 filas de 0xEEC0 una fila; al acabar, 0xE386 = 1
 	ld hl,0e388h		;60c2
 	dec (hl)			;60c5
 	ret nz			;60c6
@@ -161,7 +161,7 @@ L_610C:
 	ld a,001h		;610c
 	ld (0e386h),a		;610e
 	ret			;6111
-L_6112:
+pantalla_sube:		; cada 0xE389 cuadros sube 20 filas de 0xED20 una fila; al acabar, 0xE386 = 2
 	ld hl,0e388h		;6112
 	dec (hl)			;6115
 	ret nz			;6116
@@ -180,7 +180,7 @@ L_612A:
 	ld a,(0e389h)		;612a
 	ld (0e388h),a		;612d
 	ld hl,0ed20h		;6130
-	ld de,0ed00h		;6133
+	ld de,0ed00h		;6133   ; apunta a los nombres de la pantalla (32 x 24)
 	ld b,014h		;6136
 L_6138:
 	push bc			;6138
@@ -205,7 +205,7 @@ L_6158:
 	ld a,002h		;6158
 	ld (0e386h),a		;615a
 	ret			;615d
-L_615E:
+dibujo_del_guion_abajo:		; al llegar la cuenta 0xE38A a la de 0xE38D, el siguiente dibujo del guion (0xE38B) arriba
 	ld a,(0e38ah)		;615e
 	ld hl,0e38dh		;6161
 	cp (hl)			;6164
@@ -238,7 +238,7 @@ DATA_resto_617A:
 ; ======================================================================
 
 
-L_61A2:
+dibujo_del_guion_arriba:		; al llegar la cuenta, el siguiente dibujo del guion abajo
 	ld a,(0e38ah)		;61a2
 	ld hl,0e38dh		;61a5
 	cp (hl)			;61a8
@@ -271,7 +271,7 @@ DATA_resto_61BE:
 ; ======================================================================
 
 
-L_61E6:
+dibujo_entrante:		; el dibujo A de p21:621D en la columna B de la fila que entra
 	dec a			;61e6
 	ld de,0621dh		;61e7
 	ld l,a			;61ea
@@ -284,14 +284,14 @@ L_61E6:
 	dec c			;61f2
 	ld hl,0ec60h		;61f3
 	jr nz,L_61FB		;61f6
-	ld hl,0ef00h		;61f8
+	ld hl,0ef00h		;61f8   ; apunta a la ventana del texto (32 x 8)
 L_61FB:
 	ld a,b			;61fb
 	and 0f8h		;61fc
 	rra			;61fe
 	rra			;61ff
 	rra			;6200
-	call L_6384		;6201
+	call hl_mas_a		;6201   ; hl_mas_a: HL = HL + A
 	ld a,(de)			;6204
 	ld c,a			;6205
 	inc de			;6206
@@ -309,7 +309,7 @@ L_620C:
 	djnz L_620C		;6210
 	pop hl			;6212
 	ld a,020h		;6213
-	call L_6384		;6215
+	call hl_mas_a		;6215   ; hl_mas_a: HL = HL + A
 	pop bc			;6218
 	dec c			;6219
 	jr nz,L_620A		;621a
@@ -347,7 +347,7 @@ DATA_resto_621D:
 ; ======================================================================
 
 
-L_6357:
+fondo_de_bajada:		; 0xEC60 lleno de la ficha 0x10 y 6 filas de p21:62AF en 0xEE20
 	ld hl,0ec60h		;6357
 	ld de,00008h		;635a
 	ld a,010h		;635d
@@ -373,18 +373,18 @@ L_6375:
 	inc hl			;6378
 	djnz L_6375		;6379
 	ld a,008h		;637b
-	call L_6384		;637d
+	call hl_mas_a		;637d   ; hl_mas_a: HL = HL + A
 	dec c			;6380
 	jr nz,L_6373		;6381
 	ret			;6383
-L_6384:
+hl_mas_a:		; HL = HL + A
 	add a,l			;6384
 	ld l,a			;6385
 	ret nc			;6386
 	inc h			;6387
 	ret			;6388
-L_6389:
-	ld hl,0ed00h		;6389
+fondo_de_subida:		; 21 filas de 0xED00 con la ficha 0x10
+	ld hl,0ed00h		;6389   ; apunta a los nombres de la pantalla (32 x 24)
 	ld de,00008h		;638c
 	ld a,010h		;638f
 	ld c,015h		;6391

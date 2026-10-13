@@ -210,3 +210,341 @@ F 0x6C5D 16
 D 0x6F3A 0x8000 pistas  las 177 pistas de los sonidos 0x01-0x61: notas (< 0xD0), ordenes 0xD0-0xFE (p29:68B7: octava, volumen, envolvente, saltos, bucles, llamadas) y 0xFF fin; medido ejecutando el motor, ninguna pieza lee 4 trozos: p31:AFF4 (un 0xFF tras un salto), p31:B652-B660 (una secuencia que nadie apunta), p31:BF52-BF53 (la direccion de un bucle que no vuelve) y la cola de 0xFF (sigue en el banco 30, en 0x8000); lo leen p29:64B3 (4294 bytes)
 F 0x6F3A 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0x6000 motor_pide el sonido A: 0x80 corta el fundido, 0x81/0x85/0x86 funden, 0x84 sube; si no, su cabecera (p29:612F) a los canales de menos prioridad
+L 0x60C0 arranca_canal si la prioridad A no es menor que la del canal HL: numero, prioridad, pista (IX) y los 12 bytes de p29:60E0
+L 0x60EC corta_fundido sonido 0x80: quita el bit 0 de 0xE2EC
+L 0x60F4 fundido_lento sonido 0x86: fundido de 0x78 x 5 cuadros
+L 0x60FF fundido_medio sonido 0x85: fundido de 0x20 x 6 cuadros
+L 0x610A fundido_rapido sonido 0x81: fundido de 6 x 8 cuadros
+L 0x6112 empieza_fundido bit 0 de 0xE2EC y las cuentas a cero
+L 0x6121 sube_el_volumen sonido 0x84: bit 4 de 0xE2EC y la atenuacion a 7
+L 0x6449 motor_cuadro un cuadro del sonido (lo llama la interrupcion): fundidos, los 5 canales y los registros del PSG
+L 0x649F canal un cuadro del canal IX si esta en marcha
+L 0x64A7 canal_cuadro cuenta la nota; al acabar lee la pista: ordenes D0-FF, 0xFF fin, y la nota segun el modo
+L 0x64B3 lee_pista lee la pista de HL: ordenes (>= 0xD0) hasta la nota
+L 0x64DC nota nota: nibble alto el tono (p29:6537, por la octava), nibble bajo la duracion por el tempo; >= 0x0C silencio
+L 0x6543 nota_directa nota con el periodo y el volumen en la pista (modo 1)
+L 0x65BD percusion golpe de percusion: su secuencia de la tabla del modo (p29:65F4)
+L 0x65D3 sigue_percusion_desde lee la secuencia de percusion de HL
+L 0x65F4 tabla_de_percusion HL = la tabla de percusion del modo (bits 2-5) y la octava
+L 0x6650 empieza_nota periodo, envolvente y volumen al empezar la nota
+L 0x669B sigue_nota a mitad de nota: percusion, vibrato y envolvente
+L 0x66B1 sigue_percusion el siguiente paso de la percusion (0xFF acaba)
+L 0x66D5 periodo_de_la_nota (ix+0x0A) = el periodo base mas el desafinado (ix+0x26)
+L 0x66F2 vibrato cada (ix+0x1B) cuadros sube o baja el periodo (ix+0x1C)
+L 0x6747 envolvente el volumen de la envolvente por software
+L 0x6753 paso_de_envolvente E = el volumen: sube, baja, sostiene y cae segun las fases (ix+0x21)-(ix+0x24)
+L 0x67DD avanza_pista guarda HL + 1 como puntero de la pista
+L 0x67E5 fundido cuenta el fundido; al acabar para los tres canales de musica
+L 0x681C atenua baja el volumen E lo que diga el fundido (0xE2FD), salvo los efectos
+L 0x6837 sube_poco_a_poco cada 16 cuadros quita un punto de atenuacion
+L 0x684F para_canal el canal IX a cero y libera su voz
+L 0x6889 libera_voz cuando para un efecto, devuelve la voz a la musica (0xE306)
+L 0x68B7 orden las ordenes D0-DF (p29:6AFE) y E0-FF (tabla p29:68CC)
+L 0x690A orden_e0 E0/E2: el modo de volumen (bits 0-1) y la duracion (ix+0x13)
+L 0x6920 orden_e1 E1/E3: como E0 con el ruido en marcha
+L 0x6940 orden_e4 E4: la frecuencia del ruido
+L 0x696B orden_e5 E5: la forma de la envolvente del PSG y su periodo
+L 0x697F orden_e6 E6: el periodo alto de la envolvente del PSG
+L 0x698F orden_e7 E7: el periodo bajo de la envolvente del PSG
+L 0x69A1 orden_e8 E8: sin envolvente del PSG
+L 0x69B2 orden_e9 E9: el tempo (ix+0x14)
+L 0x69B9 orden_ea EA: la atenuacion (ix+0x15)
+L 0x69C0 orden_eb EB: la envolvente por software (dos bytes: fases y tiempos)
+L 0x6A13 orden_ec EC: sin envolvente por software
+L 0x6A1D orden_ed ED: el volumen inicial (ix+0x25)
+L 0x6A24 orden_ee EE: el desafinado (ix+0x26)
+L 0x6A2F orden_ef EF: sin desafinado
+L 0x6A35 orden_f0 F0: sin vibrato
+L 0x6A3F orden_f1 F1: vibrato (ritmo y amplitud)
+L 0x6A5A orden_f2 F2: el retraso del vibrato
+L 0x6A69 orden_f3 F3: sin retraso del vibrato
+L 0x6A6F orden_f4 F4: el bit 6 del modo
+L 0x6A75 orden_f5 F5: el bit 5 del modo
+L 0x6A7B orden_f6 F6: sin los bits 5 y 6
+L 0x6A85 orden_f7 F7: sin el bit 7 (atenuacion fija)
+L 0x6A8B orden_f8 F8: la prioridad del canal
+L 0x6A92 orden_f9 F9: salta a una subrutina y guarda la vuelta
+L 0x6A9D orden_fa FA: vuelve de la subrutina
+L 0x6AA5 orden_fb FB: repite n veces (primer contador)
+L 0x6AB2 salta_en_pista HL = la direccion de la pista que sigue
+L 0x6AC0 orden_fc FC: repite n veces (segundo contador)
+L 0x6AD7 orden_fd FD: salta (la vuelta de la pieza)
+L 0x6ADB orden_fe FE: el modo de las notas (ix+9)
+L 0x6AFE orden_d0 D0-D5 la octava; D6-DF la atenuacion fija
+L 0x6B14 al_psg reparte las voces entre musica y efectos (0xE306) y escribe el PSG
+L 0x6B42 tonos_al_psg periodo y volumen de las tres voces
+L 0x6B91 voz_al_psg periodo (dos registros) y volumen de la voz B del canal HL
+L 0x6BAF ruido_al_psg el registro 6 (ruido) de la musica o del efecto
+L 0x6BD9 envolvente_al_psg los registros 11-13 (envolvente del PSG)
+L 0x6C07 mezclador el registro 7 con lo que pide cada voz (p29:6C51, p29:6C55, p29:6C59)
+L 0x6C40 pon_mezclador el registro 7 = A y su copia en 0xE2FE
+L 0x6C4A hl_mas_a_3 HL = HL + (A AND 3)
+C 0x6003 corta_fundido: sonido 0x80: quita el bit 0 de 0xE2EC
+C 0x6008 fundido_rapido: sonido 0x81: fundido de 6 x 8 cuadros
+C 0x600D sube_el_volumen: sonido 0x84: bit 4 de 0xE2EC y la atenuacion a 7
+C 0x6012 fundido_medio: sonido 0x85: fundido de 0x20 x 6 cuadros
+C 0x6017 fundido_lento: sonido 0x86: fundido de 0x78 x 5 cuadros
+C 0x6035 apunta a la musica que suena
+C 0x6072 arranca_canal: si la prioridad A no es menor que la del canal HL: numero, prioridad, pista (IX) y los 12 bytes de p29:60E0
+C 0x6086 arranca_canal: si la prioridad A no es menor que la del canal HL: numero, prioridad, pista (IX) y los 12 bytes de p29:60E0
+C 0x609A arranca_canal: si la prioridad A no es menor que la del canal HL: numero, prioridad, pista (IX) y los 12 bytes de p29:60E0
+C 0x60AE arranca_canal: si la prioridad A no es menor que la del canal HL: numero, prioridad, pista (IX) y los 12 bytes de p29:60E0
+C 0x60FC empieza_fundido: bit 0 de 0xE2EC y las cuentas a cero
+C 0x6107 empieza_fundido: bit 0 de 0xE2EC y las cuentas a cero
+C 0x6449 lee la copia del registro 7 del PSG
+C 0x644C pon_mezclador: el registro 7 = A y su copia en 0xE2FE
+C 0x6454 fundido: cuenta el fundido; al acabar para los tres canales de musica
+C 0x645C sube_poco_a_poco: cada 16 cuadros quita un punto de atenuacion
+C 0x6464 apunta a la musica que suena
+C 0x6468 canal: un cuadro del canal IX si esta en marcha
+C 0x6474 canal: un cuadro del canal IX si esta en marcha
+C 0x6480 canal: un cuadro del canal IX si esta en marcha
+C 0x648C canal: un cuadro del canal IX si esta en marcha
+C 0x6498 canal: un cuadro del canal IX si esta en marcha
+C 0x649B al_psg: reparte las voces entre musica y efectos (0xE306) y escribe el PSG
+C 0x649F lee el sonido del canal (0: parado)
+C 0x64A3 canal_cuadro: cuenta la nota; al acabar lee la pista: ordenes D0-FF, 0xFF fin, y la nota segun el modo
+C 0x64A7 baja la cuenta de la nota
+C 0x64AA sigue_nota: a mitad de nota: percusion, vibrato y envolvente
+C 0x64AD lee el puntero de la pista (bajo)
+C 0x64B0 lee el puntero de la pista (alto)
+C 0x64B6 para_canal: el canal IX a cero y libera su voz
+C 0x64BE orden: las ordenes D0-DF (p29:6AFE) y E0-FF (tabla p29:68CC)
+C 0x64C2 lee_pista: lee la pista de HL: ordenes (>= 0xD0) hasta la nota
+C 0x64C5 mira el bit 0 de el modo de las notas del canal
+C 0x64C9 nota: nota: nibble alto el tono (p29:6537, por la octava), nibble bajo la duracion por el tempo; >= 0x0C silencio
+C 0x64CC mira el bit 1 de el modo de las notas del canal
+C 0x64D0 nota_directa: nota con el periodo y el volumen en la pista (modo 1)
+C 0x64D3 lee el modo de las notas del canal
+C 0x64D8 percusion: golpe de percusion: su secuencia de la tabla del modo (p29:65F4)
+C 0x64E0 lee el tempo del canal
+C 0x64EA guarda la cuenta de la nota
+C 0x64F4 avanza_pista: guarda HL + 1 como puntero de la pista
+C 0x64F7 mira el bit 7 de el modo de las notas del canal
+C 0x650B lee la octava del canal
+C 0x6516 guarda el periodo de la nota (bajo)
+C 0x6519 guarda el periodo de la nota (alto)
+C 0x651C lee la atenuacion del canal
+C 0x6524 atenua: baja el volumen E lo que diga el fundido (0xE2FD), salvo los efectos
+C 0x6527 guarda el volumen de la nota
+C 0x652A el modo de volumen del canal = 0x02
+C 0x652E empieza_nota: periodo, envolvente y volumen al empezar la nota
+C 0x6532 el modo de volumen del canal = 0x00
+C 0x6543 lee el modo de volumen del canal
+C 0x6551 mira el bit 6 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6558 mira el bit 5 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6566 guarda el periodo de la nota (bajo)
+C 0x6569 guarda el periodo de la nota (alto)
+C 0x6575 guarda el periodo de la nota (bajo)
+C 0x6585 guarda el periodo de la nota (alto)
+C 0x658F mira el bit 2 de el modo de volumen del canal
+C 0x659A guarda el volumen de la nota
+C 0x659D lee el volumen de la nota
+C 0x65A5 atenua: baja el volumen E lo que diga el fundido (0xE2FD), salvo los efectos
+C 0x65A8 guarda el volumen de la nota
+C 0x65AB empieza_nota: periodo, envolvente y volumen al empezar la nota
+C 0x65AE mira el bit 7 de el modo de las notas del canal
+C 0x65B3 avanza_pista: guarda HL + 1 como puntero de la pista
+C 0x65B6 lee la duracion fija
+C 0x65B9 guarda la cuenta de la nota
+C 0x65BD pone a uno el bit 7 de el modo de las notas del canal
+C 0x65C1 nota: nota: nibble alto el tono (p29:6537, por la octava), nibble bajo la duracion por el tempo; >= 0x0C silencio
+C 0x65C5 tabla_de_percusion: HL = la tabla de percusion del modo (bits 2-5) y la octava
+C 0x65D3 pone a uno el bit 1 de el modo de las notas del canal
+C 0x65D7 lee_pista: lee la pista de HL: ordenes (>= 0xD0) hasta la nota
+C 0x65DA pone a cero el bit 1 de el modo de las notas del canal
+C 0x65DE pone a cero el bit 7 de el modo de las notas del canal
+C 0x65E2 lee la duracion fija
+C 0x65E5 guarda la cuenta de la percusion
+C 0x65E9 guarda el puntero de la percusion (bajo)
+C 0x65EC guarda el puntero de la percusion (alto)
+C 0x65EF pone a uno el bit 0 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x65F4 mira el bit 2 de el modo de las notas del canal
+C 0x65FB mira el bit 3 de el modo de las notas del canal
+C 0x6602 mira el bit 4 de el modo de las notas del canal
+C 0x6609 mira el bit 5 de el modo de las notas del canal
+C 0x6610 lee la octava del canal
+C 0x6620 lee la octava del canal
+C 0x6630 lee la octava del canal
+C 0x6640 lee la octava del canal
+C 0x6650 periodo_de_la_nota: (ix+0x0A) = el periodo base mas el desafinado (ix+0x26)
+C 0x6653 pone a cero el bit 4 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6657 lee las banderas de la envolvente por software
+C 0x665C guarda las banderas de la envolvente por software
+C 0x6660 guarda el sentido del vibrato
+C 0x6663 guarda la cuenta del vibrato
+C 0x6666 guarda la cuenta de la envolvente
+C 0x6669 guarda las vueltas de la envolvente
+C 0x666C pone a uno el bit 2 de las banderas de la envolvente por software
+C 0x6670 lee el volumen de la nota
+C 0x6673 mira el bit 7 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x667A lee la atenuacion del canal
+C 0x6681 guarda el volumen del canal
+C 0x6684 mira el bit 2 de el modo de volumen del canal
+C 0x6689 mira el bit 1 de las banderas de la envolvente por software
+C 0x668E lee el volumen inicial
+C 0x6691 guarda el volumen del canal
+C 0x6694 pone a cero el bit 2 de las banderas de la envolvente por software
+C 0x669B mira el bit 0 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x669F sigue_percusion: el siguiente paso de la percusion (0xFF acaba)
+C 0x66A2 mira el bit 2 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x66A6 vibrato: cada (ix+0x1B) cuadros sube o baja el periodo (ix+0x1C)
+C 0x66A9 mira el bit 0 de las banderas de la envolvente por software
+C 0x66AD envolvente: el volumen de la envolvente por software
+C 0x66B1 baja la cuenta de la percusion
+C 0x66B5 lee el puntero de la percusion (bajo)
+C 0x66B8 lee el puntero de la percusion (alto)
+C 0x66C1 pone a uno el bit 7 de el modo de las notas del canal
+C 0x66C5 sigue_percusion_desde: lee la secuencia de percusion de HL
+C 0x66C9 pone a cero el bit 0 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x66CE guarda el volumen del canal
+C 0x66D1 guarda el modo de volumen del canal
+C 0x66D5 lee el periodo de la nota (bajo)
+C 0x66D8 lee el periodo de la nota (alto)
+C 0x66DB mira el bit 1 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x66E2 lee el desafinado
+C 0x66EB guarda el periodo del canal (bajo)
+C 0x66EE guarda el periodo del canal (alto)
+C 0x66F2 sube la cuenta del vibrato
+C 0x66F5 lee la cuenta del vibrato
+C 0x66F8 lee las banderas del canal (percusion, desafinado, vibrato)
+C 0x6705 compara con el retraso del vibrato
+C 0x6709 la cuenta del vibrato = 0x00
+C 0x670D pone a uno el bit 4 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6714 compara con el ritmo del vibrato
+C 0x6718 lee el periodo del canal (bajo)
+C 0x671B lee el periodo del canal (alto)
+C 0x671E lee la amplitud del vibrato
+C 0x6721 lee el sentido del vibrato
+C 0x6725 guarda el sentido del vibrato
+C 0x673C guarda el periodo del canal (bajo)
+C 0x673F guarda el periodo del canal (alto)
+C 0x6742 la cuenta del vibrato = 0x00
+C 0x6747 mira el bit 2 de el modo de volumen del canal
+C 0x674C paso_de_envolvente: E = el volumen: sube, baja, sostiene y cae segun las fases (ix+0x21)-(ix+0x24)
+C 0x674F guarda el volumen del canal
+C 0x6753 lee el volumen del canal
+C 0x6756 sube la cuenta de la envolvente
+C 0x6759 lee la cuenta de la envolvente
+C 0x675C mira el bit 5 de las banderas de la envolvente por software
+C 0x6763 mira el bit 3 de las banderas de la envolvente por software
+C 0x676A mira el bit 2 de las banderas de la envolvente por software
+C 0x6774 compara con el volumen de la nota
+C 0x6778 pone a uno el bit 2 de las banderas de la envolvente por software
+C 0x677C lee el volumen de la nota
+C 0x677F la cuenta de la envolvente = 0x00
+C 0x678B compara con la fase 1 de la envolvente
+C 0x678F la cuenta de la envolvente = 0x00
+C 0x6793 pone a uno el bit 3 de las banderas de la envolvente por software
+C 0x6798 mira el bit 4 de las banderas de la envolvente por software
+C 0x67A0 compara con la fase 2 de la envolvente
+C 0x67A8 sube las vueltas de la envolvente
+C 0x67AB lee las vueltas de la envolvente
+C 0x67AE compara con la fase 3 de la envolvente
+C 0x67B1 la cuenta de la envolvente = 0x00
+C 0x67B6 pone a uno el bit 5 de las banderas de la envolvente por software
+C 0x67BB lee la fase 2 de la envolvente
+C 0x67C8 compara con la fase 3 de la envolvente
+C 0x67CC pone a uno el bit 5 de las banderas de la envolvente por software
+C 0x67D1 lee la cuenta de la nota
+C 0x67D4 compara con la fase 4 de la envolvente
+C 0x67DE guarda el puntero de la pista (bajo)
+C 0x67E1 guarda el puntero de la pista (alto)
+C 0x680A apunta a la musica que suena
+C 0x680E para_canal: el canal IX a cero y libera su voz
+C 0x6813 para_canal: el canal IX a cero y libera su voz
+C 0x6818 para_canal: el canal IX a cero y libera su voz
+C 0x6822 mira el bit 2 de el modo de volumen del canal
+C 0x6850 guarda el sonido del canal (0: parado)
+C 0x6853 guarda la prioridad del canal
+C 0x6856 guarda el primer contador de repeticion
+C 0x6859 guarda el segundo contador de repeticion
+C 0x685C guarda el periodo del canal (bajo)
+C 0x685F guarda el periodo del canal (alto)
+C 0x6862 guarda el volumen del canal
+C 0x6865 guarda el modo de volumen del canal
+C 0x6868 guarda las banderas del canal (percusion, desafinado, vibrato)
+C 0x686B guarda las banderas de la envolvente por software
+C 0x686E libera_voz: cuando para un efecto, devuelve la voz a la musica (0xE306)
+C 0x68B9 orden_d0: D0-D5 la octava; D6-DF la atenuacion fija
+C 0x690B pone a cero el bit 6 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6912 guarda el modo de volumen del canal
+C 0x6918 guarda la duracion fija
+C 0x696D pone a cero el bit 3 de el modo de volumen del canal
+C 0x699C pone a uno el bit 2 de el modo de volumen del canal
+C 0x69A9 lee el modo de volumen del canal
+C 0x69AE guarda el modo de volumen del canal
+C 0x69B5 guarda el tempo del canal
+C 0x69BC guarda la atenuacion del canal
+C 0x69C2 lee las banderas de la envolvente por software
+C 0x69C7 guarda las banderas de la envolvente por software
+C 0x69D6 pone a uno el bit 2 de las banderas de la envolvente por software
+C 0x69DD mira el bit 2 de las banderas de la envolvente por software
+C 0x69E4 pone a uno el bit 1 de las banderas de la envolvente por software
+C 0x69E8 guarda la fase 1 de la envolvente
+C 0x69F3 pone a uno el bit 4 de las banderas de la envolvente por software
+C 0x69FA guarda la fase 2 de la envolvente
+C 0x6A05 guarda la fase 3 de la envolvente
+C 0x6A0B guarda la fase 4 de la envolvente
+C 0x6A0E pone a uno el bit 0 de las banderas de la envolvente por software
+C 0x6A14 pone a cero el bit 0 de las banderas de la envolvente por software
+C 0x6A18 pone a cero el bit 1 de las banderas de la envolvente por software
+C 0x6A20 guarda el volumen inicial
+C 0x6A27 guarda el desafinado
+C 0x6A2A pone a uno el bit 1 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A30 pone a cero el bit 1 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A36 lee las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A3B guarda las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A41 lee las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A46 guarda las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A4C guarda la amplitud del vibrato
+C 0x6A56 guarda el ritmo del vibrato
+C 0x6A5D guarda el retraso del vibrato
+C 0x6A60 lee las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A65 guarda las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A6A pone a cero el bit 3 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A70 pone a uno el bit 6 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A76 pone a uno el bit 5 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A7C lee las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A81 guarda las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A86 pone a cero el bit 7 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6A8E guarda la prioridad del canal
+C 0x6A93 salta_en_pista: HL = la direccion de la pista que sigue
+C 0x6A96 guarda la vuelta de la subrutina (bajo)
+C 0x6A99 guarda la vuelta de la subrutina (alto)
+C 0x6A9E lee la vuelta de la subrutina (bajo)
+C 0x6AA1 lee la vuelta de la subrutina (alto)
+C 0x6AA7 lee el primer contador de repeticion
+C 0x6AAF guarda el primer contador de repeticion
+C 0x6ABB el primer contador de repeticion = 0x00
+C 0x6AC2 lee el segundo contador de repeticion
+C 0x6ACA guarda el segundo contador de repeticion
+C 0x6ACD salta_en_pista: HL = la direccion de la pista que sigue
+C 0x6AD2 el segundo contador de repeticion = 0x00
+C 0x6AD8 salta_en_pista: HL = la direccion de la pista que sigue
+C 0x6ADE guarda el modo de las notas del canal
+C 0x6AE6 lee las banderas del canal (percusion, desafinado, vibrato)
+C 0x6AED guarda las banderas del canal (percusion, desafinado, vibrato)
+C 0x6AF0 pone a cero el bit 0 de las banderas de la envolvente por software
+C 0x6AF4 pone a cero el bit 1 de las banderas de la envolvente por software
+C 0x6AF9 pone a cero el bit 0 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6B06 guarda la octava del canal
+C 0x6B0A pone a uno el bit 7 de las banderas del canal (percusion, desafinado, vibrato)
+C 0x6B10 guarda la atenuacion del canal
+C 0x6B35 tonos_al_psg: periodo y volumen de las tres voces
+C 0x6B38 ruido_al_psg: el registro 6 (ruido) de la musica o del efecto
+C 0x6B3B envolvente_al_psg: los registros 11-13 (envolvente del PSG)
+C 0x6B3E mezclador: el registro 7 con lo que pide cada voz (p29:6C51, p29:6C55, p29:6C59)
+C 0x6B49 voz_al_psg: periodo (dos registros) y volumen de la voz B del canal HL
+C 0x6B63 voz_al_psg: periodo (dos registros) y volumen de la voz B del canal HL
+C 0x6B6C voz_al_psg: periodo (dos registros) y volumen de la voz B del canal HL
+C 0x6B86 voz_al_psg: periodo (dos registros) y volumen de la voz B del canal HL
+C 0x6B8D voz_al_psg: periodo (dos registros) y volumen de la voz B del canal HL
+C 0x6C0E hl_mas_a_3: HL = HL + (A AND 3)
+C 0x6C24 hl_mas_a_3: HL = HL + (A AND 3)
+C 0x6C3A hl_mas_a_3: HL = HL + (A AND 3)
+C 0x6C41 guarda la copia del registro 7 del PSG
+# --- fin de las anotaciones de anota.py ---

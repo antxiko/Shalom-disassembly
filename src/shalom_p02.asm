@@ -27,21 +27,21 @@ L_8001:
 	ld a,001h		;8006
 	ld (0e3ebh),a		;8008
 	inc a			;800b
-	ld (0e3e1h),a		;800c
-	call 0baech		;800f
+	ld (0e3e1h),a		;800c   ; guarda el paso de la escena de la escena de accion
+	call 0baech		;800f   ; sonido_0a: pide el sonido 0x0A
 L_8012:
-	call L_8214		;8012
+	call accion_direccion		;8012   ; accion_direccion: 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
 	and 00ch		;8015
 	ld bc,(0e8f0h)		;8017
 	ld de,(0e8f2h)		;801b
-	jp L_8254		;801f
+	jp accion_mueve		;801f   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
 L_8022:
 	djnz L_8060		;8022
-	call L_8202		;8024
+	call accion_sin_vida		;8024   ; accion_sin_vida: si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
 	ld a,(0e3f4h)		;8027
 	ld bc,010a9h		;802a
 	ld de,00180h		;802d
-	call L_8254		;8030
+	call accion_mueve		;8030   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
 	ld a,(0e3ebh)		;8033
 	dec a			;8036
 	jr nz,L_8049		;8037
@@ -65,59 +65,59 @@ L_8049:
 	ld (0e3ebh),a		;8055
 	ld (0e3f4h),a		;8058
 	inc a			;805b
-	ld (0e3e1h),a		;805c
+	ld (0e3e1h),a		;805c   ; guarda el paso de la escena de la escena de accion
 	ret			;805f
 L_8060:
 	ld a,014h		;8060
-	ld (0e3f6h),a		;8062
+	ld (0e3f6h),a		;8062   ; guarda la vida en la escena de accion
 	ld a,001h		;8065
 	ld (0e3fch),a		;8067
 	ld a,004h		;806a
-	ld (0e3e3h),a		;806c
-	ld hl,0e3e5h		;806f
+	ld (0e3e3h),a		;806c   ; guarda hacia donde mira en la escena de accion (1-4)
+	ld hl,0e3e5h		;806f   ; apunta a la Y del personaje en la escena de accion
 	ld (hl),060h		;8072
 	inc l			;8074
 	inc l			;8075
 	ld (hl),030h		;8076
-	jp L_81CE		;8078
+	jp accion_siguiente_paso		;8078   ; accion_siguiente_paso: 0xE3E1 + 1
 L_807B:
 	djnz L_80C5		;807b
 	ld hl,010f0h		;807d
 	ld (0e8f0h),hl		;8080
 	ld hl,00200h		;8083
 	ld (0e8f2h),hl		;8086
-	ld a,(0e008h)		;8089
+	ld a,(0e008h)		;8089   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
 	and 001h		;808c
 	jr z,L_80A9		;808e
 	ld a,0ffh		;8090
 	ld (0e3f5h),a		;8092
-	ld a,(0e3f3h)		;8095
+	ld a,(0e3f3h)		;8095   ; lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
 	and 00ch		;8098
 	ld (0e3f4h),a		;809a
 	ld a,001h		;809d
 	ld (0e3ebh),a		;809f
 	inc a			;80a2
-	ld (0e3e1h),a		;80a3
-	call 0baech		;80a6
+	ld (0e3e1h),a		;80a3   ; guarda el paso de la escena de la escena de accion
+	call 0baech		;80a6   ; sonido_0a: pide el sonido 0x0A
 L_80A9:
 	ld a,(0e3b1h)		;80a9
 	dec a			;80ac
 	jr nz,L_80B5		;80ad
 	ld a,003h		;80af
-	ld (0e3e1h),a		;80b1
+	ld (0e3e1h),a		;80b1   ; guarda el paso de la escena de la escena de accion
 	ret			;80b4
 L_80B5:
-	call L_8214		;80b5
+	call accion_direccion		;80b5   ; accion_direccion: 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
 	and 00ch		;80b8
 	ld bc,(0e8f0h)		;80ba
 	ld de,(0e8f2h)		;80be
-	jp L_8254		;80c2
+	jp accion_mueve		;80c2   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
 L_80C5:
 	djnz L_8100		;80c5
 	ld a,(0e3f4h)		;80c7
 	ld bc,010f0h		;80ca
 	ld de,00200h		;80cd
-	call L_8254		;80d0
+	call accion_mueve		;80d0   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
 	ld a,(0e3ebh)		;80d3
 	dec a			;80d6
 	jr nz,L_80E9		;80d7
@@ -141,12 +141,12 @@ L_80E9:
 	ld (0e3ebh),a		;80f5
 	ld (0e3f4h),a		;80f8
 	inc a			;80fb
-	ld (0e3e1h),a		;80fc
+	ld (0e3e1h),a		;80fc   ; guarda el paso de la escena de la escena de accion
 	ret			;80ff
 L_8100:
 	djnz L_811E		;8100
-	call L_81CE		;8102
-	ld a,(0e3e7h)		;8105
+	call accion_siguiente_paso		;8102   ; accion_siguiente_paso: 0xE3E1 + 1
+	ld a,(0e3e7h)		;8105   ; lee la X del personaje en la escena de accion
 	cp 078h		;8108
 	ld a,008h		;810a
 	jr z,L_8132		;810c
@@ -155,53 +155,53 @@ L_8100:
 L_8112:
 	ld bc,010f0h		;8112
 	ld de,00100h		;8115
-	ld (0e3f3h),a		;8118
-	jp L_8254		;811b
+	ld (0e3f3h),a		;8118   ; guarda la direccion pulsada en la escena de accion (1, 2, 4, 8)
+	jp accion_mueve		;811b   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
 L_811E:
 	djnz L_813F		;811e
 	ld bc,010f0h		;8120
 	ld de,00100h		;8123
-	ld a,(0e3f3h)		;8126
-	call L_8254		;8129
-	ld a,(0e3e7h)		;812c
+	ld a,(0e3f3h)		;8126   ; lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
+	call accion_mueve		;8129   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+	ld a,(0e3e7h)		;812c   ; lee la X del personaje en la escena de accion
 	sub 078h		;812f
 	ret nz			;8131
 L_8132:
 	ld a,001h		;8132
-	ld (0e3e3h),a		;8134
+	ld (0e3e3h),a		;8134   ; guarda hacia donde mira en la escena de accion (1-4)
 	ld a,002h		;8137
 	ld (0e3b1h),a		;8139
-	jp L_81CE		;813c
+	jp accion_siguiente_paso		;813c   ; accion_siguiente_paso: 0xE3E1 + 1
 L_813F:
 	djnz L_814C		;813f
 	ld a,(0ea29h)		;8141
 	or a			;8144
 	ret z			;8145
 	cp 089h		;8146
-	jp c,L_81CE		;8148
+	jp c,accion_siguiente_paso		;8148   ; accion_siguiente_paso: 0xE3E1 + 1
 	ret			;814b
 L_814C:
 	djnz L_817D		;814c
 	ld de,0fa00h		;814e
-	ld hl,(0e3e6h)		;8151
+	ld hl,(0e3e6h)		;8151   ; lee la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	add hl,de			;8154
-	ld (0e3e6h),hl		;8155
+	ld (0e3e6h),hl		;8155   ; guarda la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	ld a,h			;8158
 	ld d,0fdh		;8159
-	ld hl,(0e3e4h)		;815b
+	ld hl,(0e3e4h)		;815b   ; lee la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	add hl,de			;815e
-	ld (0e3e4h),hl		;815f
+	ld (0e3e4h),hl		;815f   ; guarda la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	cp 008h		;8162
 	ret nc			;8164
 	ld hl,00000h		;8165
-	ld (0e3e6h),hl		;8168
+	ld (0e3e6h),hl		;8168   ; guarda la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	ld a,060h		;816b
-	ld (0e3e5h),a		;816d
+	ld (0e3e5h),a		;816d   ; guarda la Y del personaje en la escena de accion
 	ld a,001h		;8170
 	ld (0e3fdh),a		;8172
 	ld a,003h		;8175
 	ld (0e3b1h),a		;8177
-	jp L_81CE		;817a
+	jp accion_siguiente_paso		;817a   ; accion_siguiente_paso: 0xE3E1 + 1
 L_817D:
 	djnz L_8190		;817d
 	ld a,(0e3b1h)		;817f
@@ -210,85 +210,85 @@ L_817D:
 	xor a			;8185
 	ld (0e3fdh),a		;8186
 	ld a,048h		;8189
-	ld (0e3e2h),a		;818b
-	jr L_81CE		;818e
+	ld (0e3e2h),a		;818b   ; guarda el fotograma del personaje en la escena de accion
+	jr accion_siguiente_paso		;818e
 L_8190:
 	djnz L_81B3		;8190
 	ld bc,010f0h		;8192
 	ld de,00400h		;8195
 	ld a,008h		;8198
-	call L_8254		;819a
-	ld a,(0e3e7h)		;819d
+	call accion_mueve		;819a   ; accion_mueve: mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+	ld a,(0e3e7h)		;819d   ; lee la X del personaje en la escena de accion
 	cp 078h		;81a0
 	ret c			;81a2
 	ld a,001h		;81a3
-	ld (0e3e3h),a		;81a5
+	ld (0e3e3h),a		;81a5   ; guarda hacia donde mira en la escena de accion (1-4)
 	ld (0e3f8h),a		;81a8
 	ld a,005h		;81ab
 	ld (0e3b1h),a		;81ad
-	jp L_8311		;81b0
+	jp accion_sprites		;81b0   ; accion_sprites: los tres sprites del personaje de la escena de accion (0xE3E5, 0xE3E7) en 0xF000
 L_81B3:
 	xor a			;81b3
 	ld (0e3fdh),a		;81b4
 	inc a			;81b7
 	ld (0e3f8h),a		;81b8
-	ld hl,0e3e5h		;81bb
+	ld hl,0e3e5h		;81bb   ; apunta a la Y del personaje en la escena de accion
 	ld (hl),060h		;81be
 	inc l			;81c0
 	inc l			;81c1
 	ld (hl),078h		;81c2
-	jr L_81CE		;81c4
-L_81C6:
-	ld hl,0e3e0h		;81c6
+	jr accion_siguiente_paso		;81c4
+accion_siguiente_escena:		; 0xE3E0 + 1 y su paso 0xE3E1 a cero
+	ld hl,0e3e0h		;81c6   ; apunta a la escena de la escena de accion (tabla p01:77E1)
 	inc (hl)			;81c9
 	inc l			;81ca
 	ld (hl),000h		;81cb
 	ret			;81cd
-L_81CE:
-	ld hl,0e3e1h		;81ce
+accion_siguiente_paso:		; 0xE3E1 + 1
+	ld hl,0e3e1h		;81ce   ; apunta a el paso de la escena de la escena de accion
 	inc (hl)			;81d1
 	ret			;81d2
-L_81D3:
-	call L_81E2		;81d3
-L_81D6:
-	ld hl,(0e3e4h)		;81d6
-	ld de,(0e3ech)		;81d9
+accion_avanza:		; suma las dos velocidades (p02:81E2 y p02:81D6)
+	call accion_avanza_x		;81d3   ; accion_avanza_x: 0xE3E6 (X, con fraccion) += 0xE3EE
+accion_avanza_y:		; 0xE3E4 (Y, con fraccion) += 0xE3EC
+	ld hl,(0e3e4h)		;81d6   ; lee la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+	ld de,(0e3ech)		;81d9   ; lee la velocidad Y en la escena de accion y el byte siguiente (16 bits)
 	add hl,de			;81dd
-	ld (0e3e4h),hl		;81de
+	ld (0e3e4h),hl		;81de   ; guarda la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	ret			;81e1
-L_81E2:
-	ld hl,(0e3e6h)		;81e2
-	ld de,(0e3eeh)		;81e5
+accion_avanza_x:		; 0xE3E6 (X, con fraccion) += 0xE3EE
+	ld hl,(0e3e6h)		;81e2   ; lee la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+	ld de,(0e3eeh)		;81e5   ; lee la velocidad X en la escena de accion y el byte siguiente (16 bits)
 	add hl,de			;81e9
-	ld (0e3e6h),hl		;81ea
+	ld (0e3e6h),hl		;81ea   ; guarda la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	ret			;81ed
-L_81EE:
-	ld hl,(0e3ech)		;81ee
-	call 043b3h		;81f1
-	ld (0e3ech),hl		;81f4
+accion_rebota_y:		; 0xE3EC = -0xE3EC
+	ld hl,(0e3ech)		;81ee   ; lee la velocidad Y en la escena de accion y el byte siguiente (16 bits)
+	call 043b3h		;81f1   ; hl_negativo: HL = -HL
+	ld (0e3ech),hl		;81f4   ; guarda la velocidad Y en la escena de accion y el byte siguiente (16 bits)
 	ret			;81f7
-L_81F8:
-	ld hl,(0e3eeh)		;81f8
-	call 043b3h		;81fb
-	ld (0e3eeh),hl		;81fe
+accion_rebota_x:		; 0xE3EE = -0xE3EE
+	ld hl,(0e3eeh)		;81f8   ; lee la velocidad X en la escena de accion y el byte siguiente (16 bits)
+	call 043b3h		;81fb   ; hl_negativo: HL = -HL
+	ld (0e3eeh),hl		;81fe   ; guarda la velocidad X en la escena de accion y el byte siguiente (16 bits)
 	ret			;8201
-L_8202:
-	ld a,(0e3f6h)		;8202
+accion_sin_vida:		; si 0xE3F6 llega a 0: 0xE3F7 = 1 y la escena 6 (Z)
+	ld a,(0e3f6h)		;8202   ; lee la vida en la escena de accion
 	or a			;8205
 	ret nz			;8206
 	ld a,001h		;8207
-	ld (0e3f7h),a		;8209
+	ld (0e3f7h),a		;8209   ; guarda tocado en la escena de accion (parpadea)
 	ld hl,00006h		;820c
-	ld (0e3e0h),hl		;820f
+	ld (0e3e0h),hl		;820f   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	xor a			;8212
 	ret			;8213
-L_8214:
-	ld a,(0e009h)		;8214
+accion_direccion:		; 0xE3F3 = la direccion pulsada (1, 2, 4, 8), dando preferencia a la nueva
+	ld a,(0e009h)		;8214   ; lee las teclas que hay
 	and 00fh		;8217
 	ld b,a			;8219
 	ld c,000h		;821a
 	jr z,L_824F		;821c
-	ld a,(0e008h)		;821e
+	ld a,(0e008h)		;821e   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
 	and 00fh		;8221
 	cp 00fh		;8223
 	ret z			;8225
@@ -319,36 +319,36 @@ L_8214:
 	ld c,008h		;824d
 L_824F:
 	ld a,c			;824f
-	ld (0e3f3h),a		;8250
+	ld (0e3f3h),a		;8250   ; guarda la direccion pulsada en la escena de accion (1, 2, 4, 8)
 	ret			;8253
-L_8254:
-	call L_8292		;8254
-	ld a,(0e3a1h)		;8257
+accion_mueve:		; mueve al personaje de la escena de accion en la direccion A con la velocidad DE y los topes BC; su fotograma (p02:828A)
+	call accion_un_paso		;8254   ; accion_un_paso: un paso en la direccion A con los topes BC (y BC' en vertical)
+	ld a,(0e3a1h)		;8257   ; lee la escena de accion (1-9)
 	cp 003h		;825a
 	jr nz,L_8263		;825c
 	ld a,001h		;825e
-	ld (0e3e3h),a		;8260
+	ld (0e3e3h),a		;8260   ; guarda hacia donde mira en la escena de accion (1-4)
 L_8263:
 	ld b,000h		;8263
 	ld a,(0e3ebh)		;8265
 	or a			;8268
 	ret nz			;8269
-	ld a,(0e3f3h)		;826a
+	ld a,(0e3f3h)		;826a   ; lee la direccion pulsada en la escena de accion (1, 2, 4, 8)
 	or a			;826d
 	jr z,L_8279		;826e
-	ld a,(0e003h)		;8270
+	ld a,(0e003h)		;8270   ; lee la cuenta de cuadros
 	and 004h		;8273
 	jr z,L_8279		;8275
 	ld b,001h		;8277
 L_8279:
-	ld a,(0e3e3h)		;8279
+	ld a,(0e3e3h)		;8279   ; lee hacia donde mira en la escena de accion (1-4)
 	dec a			;827c
 	add a,a			;827d
 	add a,b			;827e
 	ld hl,0828ah		;827f
-	call 040a1h		;8282
+	call 040a1h		;8282   ; hl_mas_a: HL = HL + A
 	ld a,(hl)			;8285
-	ld (0e3e2h),a		;8286
+	ld (0e3e2h),a		;8286   ; guarda el fotograma del personaje en la escena de accion
 	ret			;8289
 
 ; ----------------------------------------------------------------------
@@ -364,7 +364,7 @@ DATA_resto_828A:
 ; ======================================================================
 
 
-L_8292:
+accion_un_paso:		; un paso en la direccion A con los topes BC (y BC' en vertical)
 	and 00fh		;8292
 	ret z			;8294
 	rra			;8295
@@ -374,73 +374,73 @@ L_8292:
 	rra			;829b
 	jr c,L_82B5		;829c
 	ld a,004h		;829e
-	ld (0e3e3h),a		;82a0
-	ld hl,(0e3e6h)		;82a3
+	ld (0e3e3h),a		;82a0   ; guarda hacia donde mira en la escena de accion (1-4)
+	ld hl,(0e3e6h)		;82a3   ; lee la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	add hl,de			;82a6
-	ld (0e3e6h),hl		;82a7
-	ld a,(0e3e7h)		;82aa
+	ld (0e3e6h),hl		;82a7   ; guarda la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+	ld a,(0e3e7h)		;82aa   ; lee la X del personaje en la escena de accion
 	cp c			;82ad
 	ret c			;82ae
 	dec c			;82af
-	ld hl,0e3e7h		;82b0
+	ld hl,0e3e7h		;82b0   ; apunta a la X del personaje en la escena de accion
 	ld (hl),c			;82b3
 	ret			;82b4
 L_82B5:
-	ld a,(0e3a1h)		;82b5
+	ld a,(0e3a1h)		;82b5   ; lee la escena de accion (1-9)
 	cp 002h		;82b8
 	jr z,L_82C5		;82ba
 	cp 007h		;82bc
 	jr z,L_82C5		;82be
 	ld a,003h		;82c0
-	ld (0e3e3h),a		;82c2
+	ld (0e3e3h),a		;82c2   ; guarda hacia donde mira en la escena de accion (1-4)
 L_82C5:
-	call 043adh		;82c5
-	ld hl,(0e3e6h)		;82c8
+	call 043adh		;82c5   ; de_negativo: DE = -DE
+	ld hl,(0e3e6h)		;82c8   ; lee la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	add hl,de			;82cb
-	ld (0e3e6h),hl		;82cc
-	ld a,(0e3e7h)		;82cf
+	ld (0e3e6h),hl		;82cc   ; guarda la X del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+	ld a,(0e3e7h)		;82cf   ; lee la X del personaje en la escena de accion
 	cp b			;82d2
 	ret nc			;82d3
-	ld hl,0e3e7h		;82d4
+	ld hl,0e3e7h		;82d4   ; apunta a la X del personaje en la escena de accion
 	ld (hl),b			;82d7
 	ret			;82d8
 L_82D9:
 	ld a,001h		;82d9
-	ld (0e3e3h),a		;82db
-	call 043adh		;82de
-	ld hl,(0e3e4h)		;82e1
+	ld (0e3e3h),a		;82db   ; guarda hacia donde mira en la escena de accion (1-4)
+	call 043adh		;82de   ; de_negativo: DE = -DE
+	ld hl,(0e3e4h)		;82e1   ; lee la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	add hl,de			;82e4
-	ld (0e3e4h),hl		;82e5
-	ld a,(0e3e5h)		;82e8
+	ld (0e3e4h),hl		;82e5   ; guarda la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+	ld a,(0e3e5h)		;82e8   ; lee la Y del personaje en la escena de accion
 	exx			;82eb
 	cp b			;82ec
 	exx			;82ed
 	ret nc			;82ee
 	exx			;82ef
-	ld hl,0e3e5h		;82f0
+	ld hl,0e3e5h		;82f0   ; apunta a la Y del personaje en la escena de accion
 	ld (hl),b			;82f3
 	exx			;82f4
 	ret			;82f5
 L_82F6:
 	ld a,002h		;82f6
-	ld (0e3e3h),a		;82f8
-	ld hl,(0e3e4h)		;82fb
+	ld (0e3e3h),a		;82f8   ; guarda hacia donde mira en la escena de accion (1-4)
+	ld hl,(0e3e4h)		;82fb   ; lee la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
 	add hl,de			;82fe
-	ld (0e3e4h),hl		;82ff
-	ld a,(0e3e5h)		;8302
+	ld (0e3e4h),hl		;82ff   ; guarda la Y del personaje en la escena de accion (fraccion) y el byte siguiente (16 bits)
+	ld a,(0e3e5h)		;8302   ; lee la Y del personaje en la escena de accion
 	exx			;8305
 	cp c			;8306
 	exx			;8307
 	ret c			;8308
 	exx			;8309
 	dec c			;830a
-	ld hl,0e3e5h		;830b
+	ld hl,0e3e5h		;830b   ; apunta a la Y del personaje en la escena de accion
 	ld (hl),c			;830e
 	exx			;830f
 	ret			;8310
-L_8311:
+accion_sprites:		; los tres sprites del personaje de la escena de accion (0xE3E5, 0xE3E7) en 0xF000
 	ld l,03ch		;8311
-	ld a,(0e3a1h)		;8313
+	ld a,(0e3a1h)		;8313   ; lee la escena de accion (1-9)
 	cp 006h		;8316
 	jr z,L_8329		;8318
 	cp 009h		;831a
@@ -449,22 +449,22 @@ L_8311:
 	or a			;8321
 	jp nz,L_839D		;8322
 L_8325:
-	ld a,(0e3e2h)		;8325
+	ld a,(0e3e2h)		;8325   ; lee el fotograma del personaje en la escena de accion
 	ld l,a			;8328
 L_8329:
 	ld h,001h		;8329
-	ld a,(0e3a1h)		;832b
+	ld a,(0e3a1h)		;832b   ; lee la escena de accion (1-9)
 	cp 001h		;832e
 	jp z,L_83AB		;8330
 	cp 005h		;8333
 	jr z,L_8339		;8335
 	ld h,004h		;8337
 L_8339:
-	ld a,(0e3e5h)		;8339
+	ld a,(0e3e5h)		;8339   ; lee la Y del personaje en la escena de accion
 	ld e,a			;833c
-	ld a,(0e3e7h)		;833d
+	ld a,(0e3e7h)		;833d   ; lee la X del personaje en la escena de accion
 	ld d,a			;8340
-	ld (0f000h),de		;8341
+	ld (0f000h),de		;8341   ; guarda los atributos de los 32 sprites y el byte siguiente (16 bits)
 	ld (0f002h),hl		;8345
 	ld a,e			;8348
 	sub 008h		;8349
@@ -484,10 +484,10 @@ L_8339:
 	ld (0f008h),de		;8361
 	ld h,00fh		;8365
 	ld (0f00ah),hl		;8367
-	ld a,(0e3f7h)		;836a
+	ld a,(0e3f7h)		;836a   ; lee tocado en la escena de accion (parpadea)
 	or a			;836d
 	jr z,L_8382		;836e
-	ld a,(0e003h)		;8370
+	ld a,(0e003h)		;8370   ; lee la cuenta de cuadros
 	and 002h		;8373
 	jr nz,L_8382		;8375
 	ld a,00ah		;8377
@@ -495,32 +495,32 @@ L_8339:
 	ld (0f007h),a		;837c
 	ld (0f00bh),a		;837f
 L_8382:
-	ld a,(0e3a1h)		;8382
+	ld a,(0e3a1h)		;8382   ; lee la escena de accion (1-9)
 	cp 006h		;8385
 	ret nz			;8387
-	ld a,(0e3e7h)		;8388
+	ld a,(0e3e7h)		;8388   ; lee la X del personaje en la escena de accion
 	ld h,a			;838b
-	ld a,(0e3e5h)		;838c
+	ld a,(0e3e5h)		;838c   ; lee la Y del personaje en la escena de accion
 	ld l,a			;838f
-	call 04509h		;8390
+	call 04509h		;8390   ; mapa_de_bloques: HL = la direccion de 0xED00-0xEFFF del bloque de la posicion HL
 	ld (hl),010h		;8393
 	ld a,020h		;8395
-	call 040a1h		;8397
+	call 040a1h		;8397   ; hl_mas_a: HL = HL + A
 	ld (hl),000h		;839a
 	ret			;839c
 L_839D:
 	ld de,0f001h		;839d
-	ld hl,0f000h		;83a0
+	ld hl,0f000h		;83a0   ; apunta a los atributos de los 32 sprites
 	ld (hl),0e0h		;83a3
 	ld bc,0000bh		;83a5
 	ldir		;83a8
 	ret			;83aa
 L_83AB:
-	ld a,(0e3e5h)		;83ab
+	ld a,(0e3e5h)		;83ab   ; lee la Y del personaje en la escena de accion
 	ld e,a			;83ae
-	ld a,(0e3e7h)		;83af
+	ld a,(0e3e7h)		;83af   ; lee la X del personaje en la escena de accion
 	ld d,a			;83b2
-	ld (0f000h),de		;83b3
+	ld (0f000h),de		;83b3   ; guarda los atributos de los 32 sprites y el byte siguiente (16 bits)
 	ld hl,00430h		;83b7
 	ld (0f002h),hl		;83ba
 	ld a,e			;83bd
@@ -537,7 +537,7 @@ L_83AB:
 	ld a,(0f007h)		;83d6
 	ld (0f00ah),hl		;83d9
 	ret			;83dc
-L_83DD:
+accion_sprites_extra:		; dos sprites en 0xF020
 	ld hl,0f020h		;83dd
 	ld de,08860h		;83e0
 	ld (hl),e			;83e3
@@ -556,12 +556,12 @@ L_83DD:
 	inc l			;83f3
 	ld (hl),005h		;83f4
 	ret			;83f6
-L_83F7:
+accion_quita_extra:		; esconde los sprites de 0xF020
 	xor a			;83f7
 	ld (0e3a2h),a		;83f8
 	ld hl,0f020h		;83fb
-	call L_8401		;83fe
-L_8401:
+	call esconde_un_sprite		;83fe   ; esconde_un_sprite: Y = 0xE0 y el resto a cero en el sprite de HL
+esconde_un_sprite:		; Y = 0xE0 y el resto a cero en el sprite de HL
 	xor a			;8401
 	ld (hl),0e0h		;8402
 	inc l			;8404
@@ -572,7 +572,7 @@ L_8401:
 	ld (hl),a			;8409
 	inc l			;840a
 	ret			;840b
-L_840C:
+accion_sprites_arriba:		; tres sprites en la Y 0xA0 alrededor de la X del personaje
 	ld hl,0f010h		;840c
 	ld b,008h		;840f
 	ld a,(0e3fah)		;8411
@@ -580,7 +580,7 @@ L_840C:
 	jr nz,L_8419		;8415
 	ld b,010h		;8417
 L_8419:
-	ld a,(0e3e7h)		;8419
+	ld a,(0e3e7h)		;8419   ; lee la X del personaje en la escena de accion
 	sub b			;841c
 	ld d,a			;841d
 	ld (hl),0a0h		;841e
@@ -608,7 +608,7 @@ L_8419:
 	jr nz,L_8441		;843d
 	ld b,0a0h		;843f
 L_8441:
-	ld a,(0e3e7h)		;8441
+	ld a,(0e3e7h)		;8441   ; lee la X del personaje en la escena de accion
 	inc l			;8444
 	ld (hl),b			;8445
 	inc l			;8446
@@ -618,20 +618,20 @@ L_8441:
 	inc l			;844b
 	ld (hl),007h		;844c
 	ret			;844e
-L_844F:
+cambia_de_sala:		; modo 1: la sala nueva por el borde (vecinas: sala - 0x20, + 0x20, - 1, + 1 de p02:858C), las salas 0x201-0x228 a mano o el salto de 0xE36A
 	xor a			;844f
 	ld (0e3cch),a		;8450
 	ld (0e3c9h),a		;8453
 	ld (0e383h),a		;8456
 	ld (0e369h),a		;8459
 	ld (0e39eh),a		;845c
-	ld a,(0eb7ch)		;845f
+	ld a,(0eb7ch)		;845f   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;8462
-	ld (0eb7ch),a		;8464
-	ld a,(0e338h)		;8467
+	ld (0eb7ch),a		;8464   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+	ld a,(0e338h)		;8467   ; lee la sala de partida (indice de p01:67E3)
 	cp 003h		;846a
-	jp z,L_8C32		;846c
-	ld a,(0eb7dh)		;846f
+	jp z,salas_al_azar		;846c   ; salas_al_azar: en las salas 0x228-0x22D, la siguiente sale al azar de p02:8C83
+	ld a,(0eb7dh)		;846f   ; lee las banderas de la historia, byte 0x3D (se graban con la partida)
 	ld bc,00800h		;8472
 L_8475:
 	rra			;8475
@@ -642,34 +642,34 @@ L_8479:
 	ld a,c			;847b
 	cp 004h		;847c
 	jr c,L_8485		;847e
-	ld hl,0eb78h		;8480
+	ld hl,0eb78h		;8480   ; apunta a las banderas de la historia, byte 0x38 (se graban con la partida)
 	set 7,(hl)		;8483
 L_8485:
-	ld hl,0eb59h		;8485
+	ld hl,0eb59h		;8485   ; apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
 	res 5,(hl)		;8488
-	ld hl,0eb6bh		;848a
+	ld hl,0eb6bh		;848a   ; apunta a las banderas de la historia, byte 0x2B (se graban con la partida)
 	res 7,(hl)		;848d
-	ld hl,0eb67h		;848f
+	ld hl,0eb67h		;848f   ; apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
 	res 1,(hl)		;8492
 	set 0,(hl)		;8494
-	ld hl,0eb79h		;8496
+	ld hl,0eb79h		;8496   ; apunta a las banderas de la historia, byte 0x39 (se graban con la partida)
 	res 7,(hl)		;8499
 	res 6,(hl)		;849b
-	ld hl,0eb6ah		;849d
+	ld hl,0eb6ah		;849d   ; apunta a las banderas de la historia, byte 0x2A (se graban con la partida)
 	res 2,(hl)		;84a0
-	ld a,(0e337h)		;84a2
+	ld a,(0e337h)		;84a2   ; lee que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	cp 002h		;84a5
-	jp z,L_8906		;84a7
+	jp z,salta_a_la_sala		;84a7   ; salta_a_la_sala: la sala de 0xE36A; a la 0x201 sin lo que hace falta, la maquina se reinicia (`jp 0`)
 	ld a,(0e386h)		;84aa
 	and a			;84ad
 	jp nz,L_8B17		;84ae
-	ld hl,0eb6ch		;84b1
+	ld hl,0eb6ch		;84b1   ; apunta a las banderas de la historia, byte 0x2C (se graban con la partida)
 	bit 7,(hl)		;84b4
 	jr z,L_84BD		;84b6
-	ld hl,0eb6dh		;84b8
+	ld hl,0eb6dh		;84b8   ; apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
 	set 7,(hl)		;84bb
 L_84BD:
-	ld de,(0eb40h)		;84bd
+	ld de,(0eb40h)		;84bd   ; lee la sala
 	ld hl,00201h		;84c1
 	and a			;84c4
 	sbc hl,de		;84c5
@@ -677,7 +677,7 @@ L_84BD:
 	ld hl,0020dh		;84c9
 	and a			;84cc
 	sbc hl,de		;84cd
-	jp nc,L_859C		;84cf
+	jp nc,salas_201_20d		;84cf   ; salas_201_20d: las vecinas de las salas 0x202-0x20D (tabla p02:85A4)
 L_84D2:
 	ld hl,00212h		;84d2
 	and a			;84d5
@@ -686,7 +686,7 @@ L_84D2:
 	ld hl,0021eh		;84da
 	and a			;84dd
 	sbc hl,de		;84de
-	jp nc,L_8714		;84e0
+	jp nc,salas_213_21e		;84e0   ; salas_213_21e: las vecinas de las salas 0x213-0x21E (tabla p02:871C)
 L_84E3:
 	ld hl,00225h		;84e3
 	and a			;84e6
@@ -695,13 +695,13 @@ L_84E3:
 	ld hl,00228h		;84eb
 	and a			;84ee
 	sbc hl,de		;84ef
-	jp nc,L_88D4		;84f1
+	jp nc,salas_226_227		;84f1   ; salas_226_227: las vecinas de las salas 0x226 y 0x227
 L_84F4:
-	ld a,(0e3c5h)		;84f4
+	ld a,(0e3c5h)		;84f4   ; lee la direccion del paso en curso
 	dec a			;84f7
 	ld hl,0858ch		;84f8
 	add a,a			;84fb
-	call 040a0h		;84fc
+	call 040a0h		;84fc   ; hl_mas_2a: HL = HL + 2 * A
 	ld e,(hl)			;84ff
 	inc hl			;8500
 	ld d,(hl)			;8501
@@ -709,10 +709,10 @@ L_84F4:
 	ld c,(hl)			;8503
 	inc hl			;8504
 	ld b,(hl)			;8505
-	ld hl,(0eb40h)		;8506
-	ld (0e376h),hl		;8509
+	ld hl,(0eb40h)		;8506   ; lee la sala
+	ld (0e376h),hl		;8509   ; guarda la sala de la que se viene y el byte siguiente (16 bits)
 	add hl,de			;850c
-	ld (0eb40h),hl		;850d
+	ld (0eb40h),hl		;850d   ; guarda la sala
 	ex de,hl			;8510
 	ld hl,00063h		;8511
 	and a			;8514
@@ -762,8 +762,8 @@ L_84F4:
 	and a			;8577
 	sbc hl,de		;8578
 	jp z,L_8C13		;857a
-L_857D:
-	ld hl,0e3c1h		;857d
+posicion_en_la_sala_nueva:		; Y += C, X += B en el personaje y 0xE3C5 = 0
+	ld hl,0e3c1h		;857d   ; apunta a la Y del personaje
 	ld a,(hl)			;8580
 	add a,c			;8581
 	ld (hl),a			;8582
@@ -773,7 +773,7 @@ L_857D:
 	ld (hl),a			;8586
 L_8587:
 	xor a			;8587
-	ld (0e3c5h),a		;8588
+	ld (0e3c5h),a		;8588   ; guarda la direccion del paso en curso
 	ret			;858b
 
 ; ----------------------------------------------------------------------
@@ -789,10 +789,10 @@ DATA_resto_858C:
 ; ======================================================================
 
 
-L_859C:
-	ld a,(0eb40h)		;859c
+salas_201_20d:		; las vecinas de las salas 0x202-0x20D (tabla p02:85A4)
+	ld a,(0eb40h)		;859c   ; lee la sala (16 bits)
 	sub 002h		;859f
-	call 040abh		;85a1
+	call 040abh		;85a1   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_85A4: tabla de 12 palabras del despachador (call 0x408D en
@@ -819,140 +819,140 @@ DATA_saltos_85A4:
 
 L_85BC:
 	ld hl,00203h		;85bc
-	ld (0eb40h),hl		;85bf
+	ld (0eb40h),hl		;85bf   ; guarda la sala
 	ld b,050h		;85c2
 	ld c,000h		;85c4
-	jp L_857D		;85c6
+	jp posicion_en_la_sala_nueva		;85c6   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_85C9:
-	ld a,(0e3c5h)		;85c9
+	ld a,(0e3c5h)		;85c9   ; lee la direccion del paso en curso
 	sub 003h		;85cc
 	jr z,L_85DD		;85ce
 	ld hl,00204h		;85d0
-	ld (0eb40h),hl		;85d3
+	ld (0eb40h),hl		;85d3   ; guarda la sala
 	ld b,050h		;85d6
 	ld c,000h		;85d8
-	jp L_857D		;85da
+	jp posicion_en_la_sala_nueva		;85da   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_85DD:
 	ld hl,00202h		;85dd
-	ld (0eb40h),hl		;85e0
+	ld (0eb40h),hl		;85e0   ; guarda la sala
 	ld b,0b0h		;85e3
 	ld c,000h		;85e5
-	jp L_857D		;85e7
+	jp posicion_en_la_sala_nueva		;85e7   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_85EA:
-	ld a,(0e3c5h)		;85ea
+	ld a,(0e3c5h)		;85ea   ; lee la direccion del paso en curso
 	sub 003h		;85ed
 	jr z,L_85FE		;85ef
 	ld hl,00205h		;85f1
-	ld (0eb40h),hl		;85f4
+	ld (0eb40h),hl		;85f4   ; guarda la sala
 	ld b,000h		;85f7
 	ld c,070h		;85f9
-	jp L_857D		;85fb
+	jp posicion_en_la_sala_nueva		;85fb   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_85FE:
 	ld hl,00203h		;85fe
-	ld (0eb40h),hl		;8601
+	ld (0eb40h),hl		;8601   ; guarda la sala
 	ld b,0b0h		;8604
 	ld c,000h		;8606
-	jp L_857D		;8608
+	jp posicion_en_la_sala_nueva		;8608   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_860B:
-	ld a,(0e3c5h)		;860b
+	ld a,(0e3c5h)		;860b   ; lee la direccion del paso en curso
 	sub 002h		;860e
 	jr z,L_861F		;8610
 	ld hl,00206h		;8612
-	ld (0eb40h),hl		;8615
+	ld (0eb40h),hl		;8615   ; guarda la sala
 	ld b,050h		;8618
 	ld c,000h		;861a
-	jp L_857D		;861c
+	jp posicion_en_la_sala_nueva		;861c   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_861F:
 	ld hl,00204h		;861f
-	ld (0eb40h),hl		;8622
+	ld (0eb40h),hl		;8622   ; guarda la sala
 	ld b,000h		;8625
 	ld c,090h		;8627
-	jp L_857D		;8629
+	jp posicion_en_la_sala_nueva		;8629   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_862C:
-	ld a,(0e3c5h)		;862c
+	ld a,(0e3c5h)		;862c   ; lee la direccion del paso en curso
 	sub 003h		;862f
 	jr z,L_8640		;8631
 	ld hl,00207h		;8633
-	ld (0eb40h),hl		;8636
+	ld (0eb40h),hl		;8636   ; guarda la sala
 	ld b,000h		;8639
 	ld c,070h		;863b
-	jp L_857D		;863d
+	jp posicion_en_la_sala_nueva		;863d   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8640:
 	ld hl,00205h		;8640
-	ld (0eb40h),hl		;8643
+	ld (0eb40h),hl		;8643   ; guarda la sala
 	ld b,0b0h		;8646
 	ld c,000h		;8648
-	jp L_857D		;864a
+	jp posicion_en_la_sala_nueva		;864a   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_864D:
-	ld a,(0e3c5h)		;864d
+	ld a,(0e3c5h)		;864d   ; lee la direccion del paso en curso
 	sub 002h		;8650
 	jr z,L_8664		;8652
 	ld hl,00208h		;8654
-	ld (0eb40h),hl		;8657
+	ld (0eb40h),hl		;8657   ; guarda la sala
 	ld b,000h		;865a
 	ld c,070h		;865c
-	call L_86E4		;865e
-	jp L_857D		;8661
+	call marca_369		;865e   ; marca_369: 0xE369 = 2 si 0xEB69 no lleva el bit 7
+	jp posicion_en_la_sala_nueva		;8661   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8664:
 	ld hl,00206h		;8664
-	ld (0eb40h),hl		;8667
+	ld (0eb40h),hl		;8667   ; guarda la sala
 	ld b,000h		;866a
 	ld c,090h		;866c
-	jp L_857D		;866e
+	jp posicion_en_la_sala_nueva		;866e   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8671:
-	ld a,(0e3c5h)		;8671
+	ld a,(0e3c5h)		;8671   ; lee la direccion del paso en curso
 	sub 002h		;8674
 	jr z,L_8685		;8676
 	ld hl,00209h		;8678
-	ld (0eb40h),hl		;867b
+	ld (0eb40h),hl		;867b   ; guarda la sala
 	ld b,000h		;867e
 	ld c,070h		;8680
-	jp L_857D		;8682
+	jp posicion_en_la_sala_nueva		;8682   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8685:
 	ld hl,00207h		;8685
-	ld (0eb40h),hl		;8688
+	ld (0eb40h),hl		;8688   ; guarda la sala
 	ld b,000h		;868b
 	ld c,090h		;868d
-	jp L_857D		;868f
+	jp posicion_en_la_sala_nueva		;868f   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8692:
-	ld a,(0e3c5h)		;8692
+	ld a,(0e3c5h)		;8692   ; lee la direccion del paso en curso
 	sub 002h		;8695
 	jr z,L_86A6		;8697
 	ld hl,0020ah		;8699
-	ld (0eb40h),hl		;869c
+	ld (0eb40h),hl		;869c   ; guarda la sala
 	ld b,0b0h		;869f
 	ld c,000h		;86a1
-	jp L_857D		;86a3
+	jp posicion_en_la_sala_nueva		;86a3   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_86A6:
 	ld hl,00208h		;86a6
-	ld (0eb40h),hl		;86a9
+	ld (0eb40h),hl		;86a9   ; guarda la sala
 	ld b,000h		;86ac
 	ld c,090h		;86ae
-	call L_86E4		;86b0
-	jp L_857D		;86b3
+	call marca_369		;86b0   ; marca_369: 0xE369 = 2 si 0xEB69 no lleva el bit 7
+	jp posicion_en_la_sala_nueva		;86b3   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_86B6:
-	ld a,(0e3c5h)		;86b6
+	ld a,(0e3c5h)		;86b6   ; lee la direccion del paso en curso
 	sub 003h		;86b9
 	jr z,L_86CA		;86bb
 	ld hl,00209h		;86bd
-	ld (0eb40h),hl		;86c0
+	ld (0eb40h),hl		;86c0   ; guarda la sala
 	ld b,050h		;86c3
 	ld c,000h		;86c5
-	jp L_857D		;86c7
+	jp posicion_en_la_sala_nueva		;86c7   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_86CA:
 	ld hl,0020bh		;86ca
-	ld (0eb40h),hl		;86cd
+	ld (0eb40h),hl		;86cd   ; guarda la sala
 	ld b,0b0h		;86d0
 	ld c,000h		;86d2
-	jp L_857D		;86d4
+	jp posicion_en_la_sala_nueva		;86d4   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_86D7:
 	ld hl,0020ah		;86d7
-	ld (0eb40h),hl		;86da
+	ld (0eb40h),hl		;86da   ; guarda la sala
 	ld b,050h		;86dd
 	ld c,000h		;86df
-	jp L_857D		;86e1
-L_86E4:
-	ld hl,0eb69h		;86e4
+	jp posicion_en_la_sala_nueva		;86e1   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+marca_369:		; 0xE369 = 2 si 0xEB69 no lleva el bit 7
+	ld hl,0eb69h		;86e4   ; apunta a las banderas de la historia, byte 0x29 (se graban con la partida)
 	bit 7,(hl)		;86e7
 	ret nz			;86e9
 	ld a,002h		;86ea
@@ -962,22 +962,22 @@ L_86F0:
 	ld a,003h		;86f0
 	ld (0e369h),a		;86f2
 	ld hl,0020dh		;86f5
-	ld (0eb40h),hl		;86f8
+	ld (0eb40h),hl		;86f8   ; guarda la sala
 	ld b,000h		;86fb
 	ld c,070h		;86fd
-	jp L_857D		;86ff
+	jp posicion_en_la_sala_nueva		;86ff   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8702:
 	ld a,003h		;8702
 	ld (0e369h),a		;8704
 	ld hl,0020ch		;8707
-	ld (0eb40h),hl		;870a
+	ld (0eb40h),hl		;870a   ; guarda la sala
 	ld b,000h		;870d
 	ld c,090h		;870f
-	jp L_857D		;8711
-L_8714:
-	ld a,(0eb40h)		;8714
+	jp posicion_en_la_sala_nueva		;8711   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+salas_213_21e:		; las vecinas de las salas 0x213-0x21E (tabla p02:871C)
+	ld a,(0eb40h)		;8714   ; lee la sala (16 bits)
 	sub 013h		;8717
-	call 040abh		;8719
+	call 040abh		;8719   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_871C: tabla de 12 palabras del despachador (call 0x408D en
@@ -1004,27 +1004,27 @@ DATA_saltos_871C:
 
 L_8734:
 	ld hl,00215h		;8734
-	ld (0eb40h),hl		;8737
+	ld (0eb40h),hl		;8737   ; guarda la sala
 	ld b,050h		;873a
 	ld c,000h		;873c
-	jp L_857D		;873e
+	jp posicion_en_la_sala_nueva		;873e   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8741:
-	ld a,(0e3c5h)		;8741
+	ld a,(0e3c5h)		;8741   ; lee la direccion del paso en curso
 	sub 002h		;8744
 	jr z,L_8755		;8746
 	ld hl,00217h		;8748
-	ld (0eb40h),hl		;874b
+	ld (0eb40h),hl		;874b   ; guarda la sala
 	ld b,050h		;874e
 	ld c,000h		;8750
-	jp L_857D		;8752
+	jp posicion_en_la_sala_nueva		;8752   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8755:
 	ld hl,00215h		;8755
-	ld (0eb40h),hl		;8758
+	ld (0eb40h),hl		;8758   ; guarda la sala
 	ld b,000h		;875b
 	ld c,090h		;875d
-	jp L_857D		;875f
+	jp posicion_en_la_sala_nueva		;875f   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8762:
-	ld a,(0e3c5h)		;8762
+	ld a,(0e3c5h)		;8762   ; lee la direccion del paso en curso
 	dec a			;8765
 	jr z,L_877B		;8766
 	dec a			;8768
@@ -1032,174 +1032,174 @@ L_8762:
 	dec a			;876b
 	jr z,L_8795		;876c
 	ld hl,00218h		;876e
-	ld (0eb40h),hl		;8771
+	ld (0eb40h),hl		;8771   ; guarda la sala
 	ld b,050h		;8774
 	ld c,000h		;8776
-	jp L_857D		;8778
+	jp posicion_en_la_sala_nueva		;8778   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_877B:
 	ld hl,00214h		;877b
-	ld (0eb40h),hl		;877e
+	ld (0eb40h),hl		;877e   ; guarda la sala
 	ld b,000h		;8781
 	ld c,070h		;8783
-	jp L_857D		;8785
+	jp posicion_en_la_sala_nueva		;8785   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8788:
 	ld hl,00216h		;8788
-	ld (0eb40h),hl		;878b
+	ld (0eb40h),hl		;878b   ; guarda la sala
 	ld b,000h		;878e
 	ld c,090h		;8790
-	jp L_857D		;8792
+	jp posicion_en_la_sala_nueva		;8792   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8795:
 	ld hl,00213h		;8795
-	ld (0eb40h),hl		;8798
+	ld (0eb40h),hl		;8798   ; guarda la sala
 	ld b,0b0h		;879b
 	ld c,000h		;879d
-	jp L_857D		;879f
+	jp posicion_en_la_sala_nueva		;879f   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_87A2:
-	ld a,(0e3c5h)		;87a2
+	ld a,(0e3c5h)		;87a2   ; lee la direccion del paso en curso
 	dec a			;87a5
 	jr z,L_87B5		;87a6
 	ld hl,00219h		;87a8
-	ld (0eb40h),hl		;87ab
+	ld (0eb40h),hl		;87ab   ; guarda la sala
 	ld b,050h		;87ae
 	ld c,000h		;87b0
-	jp L_857D		;87b2
+	jp posicion_en_la_sala_nueva		;87b2   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_87B5:
 	ld hl,00215h		;87b5
-	ld (0eb40h),hl		;87b8
+	ld (0eb40h),hl		;87b8   ; guarda la sala
 	ld b,000h		;87bb
 	ld c,070h		;87bd
-	jp L_857D		;87bf
+	jp posicion_en_la_sala_nueva		;87bf   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_87C2:
-	ld a,(0e3c5h)		;87c2
+	ld a,(0e3c5h)		;87c2   ; lee la direccion del paso en curso
 	sub 003h		;87c5
 	jr z,L_87D6		;87c7
 	ld hl,00218h		;87c9
-	ld (0eb40h),hl		;87cc
+	ld (0eb40h),hl		;87cc   ; guarda la sala
 	ld b,000h		;87cf
 	ld c,090h		;87d1
-	jp L_857D		;87d3
+	jp posicion_en_la_sala_nueva		;87d3   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_87D6:
 	ld hl,00214h		;87d6
-	ld (0eb40h),hl		;87d9
+	ld (0eb40h),hl		;87d9   ; guarda la sala
 	ld b,0b0h		;87dc
 	ld c,000h		;87de
-	jp L_857D		;87e0
+	jp posicion_en_la_sala_nueva		;87e0   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_87E3:
-	ld a,(0e3c5h)		;87e3
+	ld a,(0e3c5h)		;87e3   ; lee la direccion del paso en curso
 	dec a			;87e6
 	jr z,L_87F9		;87e7
 	dec a			;87e9
 	jr z,L_8806		;87ea
 	ld hl,00215h		;87ec
-	ld (0eb40h),hl		;87ef
+	ld (0eb40h),hl		;87ef   ; guarda la sala
 	ld b,0b0h		;87f2
 	ld c,000h		;87f4
-	jp L_857D		;87f6
+	jp posicion_en_la_sala_nueva		;87f6   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_87F9:
 	ld hl,00217h		;87f9
-	ld (0eb40h),hl		;87fc
+	ld (0eb40h),hl		;87fc   ; guarda la sala
 	ld b,000h		;87ff
 	ld c,070h		;8801
-	jp L_857D		;8803
+	jp posicion_en_la_sala_nueva		;8803   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8806:
 	ld hl,00219h		;8806
-	ld (0eb40h),hl		;8809
+	ld (0eb40h),hl		;8809   ; guarda la sala
 	ld b,000h		;880c
 	ld c,090h		;880e
-	jp L_857D		;8810
+	jp posicion_en_la_sala_nueva		;8810   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8813:
-	ld a,(0e3c5h)		;8813
+	ld a,(0e3c5h)		;8813   ; lee la direccion del paso en curso
 	cp 003h		;8816
 	jr z,L_882B		;8818
 	sub 004h		;881a
 	jr z,L_8838		;881c
 	ld hl,00218h		;881e
-	ld (0eb40h),hl		;8821
+	ld (0eb40h),hl		;8821   ; guarda la sala
 	ld b,000h		;8824
 	ld c,070h		;8826
-	jp L_857D		;8828
+	jp posicion_en_la_sala_nueva		;8828   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_882B:
 	ld hl,00216h		;882b
-	ld (0eb40h),hl		;882e
+	ld (0eb40h),hl		;882e   ; guarda la sala
 	ld b,0b0h		;8831
 	ld c,000h		;8833
-	jp L_857D		;8835
+	jp posicion_en_la_sala_nueva		;8835   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8838:
 	ld hl,0021ch		;8838
-	ld (0eb40h),hl		;883b
+	ld (0eb40h),hl		;883b   ; guarda la sala
 	ld b,050h		;883e
 	ld c,000h		;8840
-	jp L_857D		;8842
+	jp posicion_en_la_sala_nueva		;8842   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8845:
-	ld a,(0e3c5h)		;8845
+	ld a,(0e3c5h)		;8845   ; lee la direccion del paso en curso
 	sub 002h		;8848
 	jr z,L_8859		;884a
 	ld hl,0021dh		;884c
-	ld (0eb40h),hl		;884f
+	ld (0eb40h),hl		;884f   ; guarda la sala
 	ld b,050h		;8852
 	ld c,000h		;8854
-	jp L_857D		;8856
+	jp posicion_en_la_sala_nueva		;8856   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8859:
 	ld hl,0021bh		;8859
-	ld (0eb40h),hl		;885c
+	ld (0eb40h),hl		;885c   ; guarda la sala
 	ld b,000h		;885f
 	ld c,090h		;8861
-	jp L_857D		;8863
+	jp posicion_en_la_sala_nueva		;8863   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8866:
-	ld a,(0e3c5h)		;8866
+	ld a,(0e3c5h)		;8866   ; lee la direccion del paso en curso
 	dec a			;8869
 	jr z,L_8879		;886a
 	ld hl,0021ch		;886c
-	ld (0eb40h),hl		;886f
+	ld (0eb40h),hl		;886f   ; guarda la sala
 	ld b,000h		;8872
 	ld c,090h		;8874
-	jp L_857D		;8876
+	jp posicion_en_la_sala_nueva		;8876   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8879:
 	ld hl,0021ah		;8879
-	ld (0eb40h),hl		;887c
+	ld (0eb40h),hl		;887c   ; guarda la sala
 	ld b,000h		;887f
 	ld c,070h		;8881
-	jp L_857D		;8883
+	jp posicion_en_la_sala_nueva		;8883   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8886:
-	ld a,(0e3c5h)		;8886
+	ld a,(0e3c5h)		;8886   ; lee la direccion del paso en curso
 	dec a			;8889
 	jr z,L_8899		;888a
 	ld hl,00219h		;888c
-	ld (0eb40h),hl		;888f
+	ld (0eb40h),hl		;888f   ; guarda la sala
 	ld b,0b0h		;8892
 	ld c,000h		;8894
-	jp L_857D		;8896
+	jp posicion_en_la_sala_nueva		;8896   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8899:
 	ld hl,0021bh		;8899
-	ld (0eb40h),hl		;889c
+	ld (0eb40h),hl		;889c   ; guarda la sala
 	ld b,000h		;889f
 	ld c,070h		;88a1
-	jp L_857D		;88a3
+	jp posicion_en_la_sala_nueva		;88a3   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_88A6:
-	ld a,(0e3c5h)		;88a6
+	ld a,(0e3c5h)		;88a6   ; lee la direccion del paso en curso
 	sub 003h		;88a9
 	jr z,L_88BA		;88ab
 	ld hl,0021eh		;88ad
-	ld (0eb40h),hl		;88b0
+	ld (0eb40h),hl		;88b0   ; guarda la sala
 	ld b,050h		;88b3
 	ld c,000h		;88b5
-	jp L_857D		;88b7
+	jp posicion_en_la_sala_nueva		;88b7   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_88BA:
 	ld hl,0021ah		;88ba
-	ld (0eb40h),hl		;88bd
+	ld (0eb40h),hl		;88bd   ; guarda la sala
 	ld b,0b0h		;88c0
 	ld c,000h		;88c2
-	jp L_857D		;88c4
+	jp posicion_en_la_sala_nueva		;88c4   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_88C7:
 	ld hl,0021dh		;88c7
-	ld (0eb40h),hl		;88ca
+	ld (0eb40h),hl		;88ca   ; guarda la sala
 	ld b,0b0h		;88cd
 	ld c,000h		;88cf
-	jp L_857D		;88d1
-L_88D4:
-	ld a,(0eb40h)		;88d4
+	jp posicion_en_la_sala_nueva		;88d1   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+salas_226_227:		; las vecinas de las salas 0x226 y 0x227
+	ld a,(0eb40h)		;88d4   ; lee la sala (16 bits)
 	sub 026h		;88d7
-	call 040abh		;88d9
+	call 040abh		;88d9   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_88DC: tabla de 2 palabras del despachador (call 0x408D en
@@ -1216,24 +1216,24 @@ DATA_saltos_88DC:
 
 L_88E0:
 	ld hl,00226h		;88e0
-	ld (0e376h),hl		;88e3
+	ld (0e376h),hl		;88e3   ; guarda la sala de la que se viene y el byte siguiente (16 bits)
 	ld hl,00227h		;88e6
-	ld (0eb40h),hl		;88e9
+	ld (0eb40h),hl		;88e9   ; guarda la sala
 	ld b,0b0h		;88ec
 	ld c,000h		;88ee
-	jp L_857D		;88f0
+	jp posicion_en_la_sala_nueva		;88f0   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_88F3:
 	ld hl,00227h		;88f3
-	ld (0e376h),hl		;88f6
+	ld (0e376h),hl		;88f6   ; guarda la sala de la que se viene y el byte siguiente (16 bits)
 	ld hl,00226h		;88f9
-	ld (0eb40h),hl		;88fc
+	ld (0eb40h),hl		;88fc   ; guarda la sala
 	ld b,050h		;88ff
 	ld c,000h		;8901
-	jp L_857D		;8903
-L_8906:
-	ld hl,(0eb40h)		;8906
-	ld (0e376h),hl		;8909
-	ld de,(0e36ah)		;890c
+	jp posicion_en_la_sala_nueva		;8903   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+salta_a_la_sala:		; la sala de 0xE36A; a la 0x201 sin lo que hace falta, la maquina se reinicia (`jp 0`)
+	ld hl,(0eb40h)		;8906   ; lee la sala
+	ld (0e376h),hl		;8909   ; guarda la sala de la que se viene y el byte siguiente (16 bits)
+	ld de,(0e36ah)		;890c   ; lee la sala a la que se salta y el byte siguiente (16 bits)
 	ld hl,0020ch		;8910
 	and a			;8913
 	sbc hl,de		;8914
@@ -1245,10 +1245,10 @@ L_891D:
 	and a			;8920
 	sbc hl,de		;8921
 	jr nz,L_8939		;8923
-	ld a,(0e9d2h)		;8925
+	ld a,(0e9d2h)		;8925   ; lee el objeto 1 (bit 0: se lleva)
 	and a			;8928
 	jr z,L_8936		;8929
-	ld hl,0eb5dh		;892b
+	ld hl,0eb5dh		;892b   ; apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
 	bit 7,(hl)		;892e
 	jr z,L_8936		;8930
 	bit 5,(hl)		;8932
@@ -1256,29 +1256,29 @@ L_891D:
 L_8936:
 	jp 00000h		;8936   ; BIOS CHKRAM - Tests RAM and sets RAM slot for the system  [alias: STARTUP, RESET, BOOT]
 L_8939:
-	ld (0eb40h),de		;8939
+	ld (0eb40h),de		;8939   ; guarda la sala
 	xor a			;893d
-	ld (0e3c5h),a		;893e
+	ld (0e3c5h),a		;893e   ; guarda la direccion del paso en curso
 	ld a,001h		;8941
-	ld (0e37ah),a		;8943
+	ld (0e37ah),a		;8943   ; guarda acaba de entrar en la sala
 	ret			;8946
-L_8947:
-	ld de,(0eb40h)		;8947
+entrada_especial:		; la posicion de entrada en las salas que la tienen a mano (0x201, 0x118, 0xE2, 0x20E, 0x87, 0x152, 0x21F...)
+	ld de,(0eb40h)		;8947   ; lee la sala
 	ld hl,00201h		;894b
 	and a			;894e
 	sbc hl,de		;894f
 	jr nz,L_895D		;8951
 	ld a,002h		;8953
-	ld (0e3c0h),a		;8955
+	ld (0e3c0h),a		;8955   ; guarda el modo del personaje (tabla p01:718E)
 	dec a			;8958
-	ld (0e36ch),a		;8959
+	ld (0e36ch),a		;8959   ; guarda pantalla en negro (los volcados escriben ceros)
 	ret			;895c
 L_895D:
 	ld hl,00118h		;895d
 	and a			;8960
 	sbc hl,de		;8961
 	jr nz,L_8977		;8963
-	ld a,(0eb64h)		;8965
+	ld a,(0eb64h)		;8965   ; lee las banderas de la historia, byte 0x24 (se graban con la partida)
 	rla			;8968
 	ld a,000h		;8969
 	jr c,L_8973		;896b
@@ -1286,19 +1286,19 @@ L_895D:
 	ld (0e369h),a		;896e
 	ld a,00ah		;8971
 L_8973:
-	ld (0e3c0h),a		;8973
+	ld (0e3c0h),a		;8973   ; guarda el modo del personaje (tabla p01:718E)
 	ret			;8976
 L_8977:
 	ld hl,000e2h		;8977
 	and a			;897a
 	sbc hl,de		;897b
 	jr nz,L_8993		;897d
-	ld bc,(0e376h)		;897f
+	ld bc,(0e376h)		;897f   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld hl,00202h		;8983
 	and a			;8986
 	sbc hl,bc		;8987
 	jr nz,L_8993		;8989
-	ld hl,0e3c2h		;898b
+	ld hl,0e3c2h		;898b   ; apunta a la X del personaje
 	ld a,(hl)			;898e
 	sub 010h		;898f
 	ld (hl),a			;8991
@@ -1308,29 +1308,29 @@ L_8993:
 	and a			;8996
 	sbc hl,de		;8997
 	jr nz,L_89B3		;8999
-	ld bc,(0e376h)		;899b
+	ld bc,(0e376h)		;899b   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld hl,00087h		;899f
 	and a			;89a2
 	sbc hl,bc		;89a3
 	jr nz,L_89B3		;89a5
-	ld hl,0e3c1h		;89a7
+	ld hl,0e3c1h		;89a7   ; apunta a la Y del personaje
 	ld a,(hl)			;89aa
 	add a,030h		;89ab
 	ld (hl),a			;89ad
 	xor a			;89ae
-	ld (0e3c0h),a		;89af
+	ld (0e3c0h),a		;89af   ; guarda el modo del personaje (tabla p01:718E)
 	ret			;89b2
 L_89B3:
 	ld hl,00087h		;89b3
 	and a			;89b6
 	sbc hl,de		;89b7
 	jr nz,L_89D6		;89b9
-	ld bc,(0e376h)		;89bb
+	ld bc,(0e376h)		;89bb   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld hl,0020eh		;89bf
 	and a			;89c2
 	sbc hl,bc		;89c3
 	ret nz			;89c5
-	ld hl,0e3c1h		;89c6
+	ld hl,0e3c1h		;89c6   ; apunta a la Y del personaje
 	ld a,(hl)			;89c9
 	sub 030h		;89ca
 	ld (hl),a			;89cc
@@ -1346,34 +1346,34 @@ L_89D6:
 	and a			;89d9
 	sbc hl,de		;89da
 	jr nz,L_89F5		;89dc
-	ld a,(0eb78h)		;89de
+	ld a,(0eb78h)		;89de   ; lee las banderas de la historia, byte 0x38 (se graban con la partida)
 	res 6,a		;89e1
-	ld de,(0e376h)		;89e3
+	ld de,(0e376h)		;89e3   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld hl,00151h		;89e7
 	and a			;89ea
 	sbc hl,de		;89eb
 	jr nz,L_89F1		;89ed
 	set 6,a		;89ef
 L_89F1:
-	ld (0eb78h),a		;89f1
+	ld (0eb78h),a		;89f1   ; guarda las banderas de la historia, byte 0x38 (se graban con la partida)
 	ret			;89f4
 L_89F5:
-	ld bc,(0e376h)		;89f5
+	ld bc,(0e376h)		;89f5   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld hl,0021fh		;89f9
 	and a			;89fc
 	sbc hl,bc		;89fd
 	jr nz,L_8A0D		;89ff
-	ld hl,0eb59h		;8a01
+	ld hl,0eb59h		;8a01   ; apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
 	set 5,(hl)		;8a04
 	ld hl,05030h		;8a06
-	ld (0e3c1h),hl		;8a09
+	ld (0e3c1h),hl		;8a09   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8a0c
 L_8A0D:
 	ld hl,0021fh		;8a0d
 	and a			;8a10
 	sbc hl,de		;8a11
 	jr nz,L_8A6E		;8a13
-	ld de,(0e376h)		;8a15
+	ld de,(0e376h)		;8a15   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld hl,00024h		;8a19
 	and a			;8a1c
 	sbc hl,de		;8a1d
@@ -1411,7 +1411,7 @@ L_8A0D:
 	jr z,L_8A69		;8a64
 	ld bc,0b050h		;8a66
 L_8A69:
-	ld (0e3c1h),bc		;8a69
+	ld (0e3c1h),bc		;8a69   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8a6d
 L_8A6E:
 	ld hl,00158h		;8a6e
@@ -1422,15 +1422,15 @@ L_8A6E:
 	and a			;8a79
 	sbc hl,bc		;8a7a
 	ret nz			;8a7c
-	ld a,(0e3c2h)		;8a7d
+	ld a,(0e3c2h)		;8a7d   ; lee la X del personaje
 	cp 030h		;8a80
 	ld bc,03020h		;8a82
 	jr nz,L_8A8A		;8a85
 	ld bc,05030h		;8a87
 L_8A8A:
-	ld hl,0eb5bh		;8a8a
+	ld hl,0eb5bh		;8a8a   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
 	set 2,(hl)		;8a8d
-	ld (0e3c1h),bc		;8a8f
+	ld (0e3c1h),bc		;8a8f   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8a93
 L_8A94:
 	ld hl,00006h		;8a94
@@ -1442,7 +1442,7 @@ L_8A94:
 	sbc hl,bc		;8aa0
 	ret nz			;8aa2
 	ld hl,02030h		;8aa3
-	ld (0e3c1h),hl		;8aa6
+	ld (0e3c1h),hl		;8aa6   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8aa9
 L_8AAA:
 	ld hl,00027h		;8aaa
@@ -1454,7 +1454,7 @@ L_8AAA:
 	sbc hl,bc		;8ab6
 	ret nz			;8ab8
 	ld hl,05030h		;8ab9
-	ld (0e3c1h),hl		;8abc
+	ld (0e3c1h),hl		;8abc   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8abf
 L_8AC0:
 	ld hl,001b5h		;8ac0
@@ -1466,7 +1466,7 @@ L_8AC0:
 	sbc hl,bc		;8acc
 	ret nz			;8ace
 	ld hl,08020h		;8acf
-	ld (0e3c1h),hl		;8ad2
+	ld (0e3c1h),hl		;8ad2   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8ad5
 L_8AD6:
 	ld hl,00194h		;8ad6
@@ -1478,7 +1478,7 @@ L_8AD6:
 	sbc hl,bc		;8ae2
 	ret nz			;8ae4
 	ld hl,06030h		;8ae5
-	ld (0e3c1h),hl		;8ae8
+	ld (0e3c1h),hl		;8ae8   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8aeb
 L_8AEC:
 	ld hl,00226h		;8aec
@@ -1490,7 +1490,7 @@ L_8AEC:
 	sbc hl,bc		;8af8
 	ret nz			;8afa
 	ld hl,08030h		;8afb
-	ld (0e3c1h),hl		;8afe
+	ld (0e3c1h),hl		;8afe   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8b01
 L_8B02:
 	ld hl,001a1h		;8b02
@@ -1502,96 +1502,96 @@ L_8B02:
 	sbc hl,bc		;8b0d
 	ret nz			;8b0f
 	ld hl,06040h		;8b10
-	ld (0e3c1h),hl		;8b13
+	ld (0e3c1h),hl		;8b13   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ret			;8b16
 L_8B17:
 	rra			;8b17
 	jr nc,L_8B2D		;8b18
 	ld hl,06050h		;8b1a
-	ld (0e3c1h),hl		;8b1d
+	ld (0e3c1h),hl		;8b1d   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ld hl,00210h		;8b20
-	ld (0eb40h),hl		;8b23
+	ld (0eb40h),hl		;8b23   ; guarda la sala
 	xor a			;8b26
 	ld (0e386h),a		;8b27
 	jp L_8587		;8b2a
 L_8B2D:
 	ld hl,06050h		;8b2d
-	ld (0e3c1h),hl		;8b30
+	ld (0e3c1h),hl		;8b30   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	ld hl,0020fh		;8b33
-	ld (0eb40h),hl		;8b36
+	ld (0eb40h),hl		;8b36   ; guarda la sala
 	xor a			;8b39
 	ld (0e386h),a		;8b3a
 	jp L_8587		;8b3d
 L_8B40:
-	ld hl,(0e376h)		;8b40
+	ld hl,(0e376h)		;8b40   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld de,00063h		;8b43
 	and a			;8b46
 	sbc hl,de		;8b47
-	jp nz,L_857D		;8b49
+	jp nz,posicion_en_la_sala_nueva		;8b49   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 	ld a,002h		;8b4c
 	ld (0e378h),a		;8b4e
-	ld hl,0eb67h		;8b51
+	ld hl,0eb67h		;8b51   ; apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
 	res 0,(hl)		;8b54
-	ld hl,0eb68h		;8b56
+	ld hl,0eb68h		;8b56   ; apunta a las banderas de la historia, byte 0x28 (se graban con la partida)
 	set 7,(hl)		;8b59
 	ld a,b			;8b5b
 	sub 010h		;8b5c
 	ld b,a			;8b5e
-	jp L_857D		;8b5f
+	jp posicion_en_la_sala_nueva		;8b5f   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8B62:
-	ld hl,(0e376h)		;8b62
+	ld hl,(0e376h)		;8b62   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld de,00062h		;8b65
 	and a			;8b68
 	sbc hl,de		;8b69
-	jp nz,L_857D		;8b6b
+	jp nz,posicion_en_la_sala_nueva		;8b6b   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 	ld a,001h		;8b6e
 	ld (0e378h),a		;8b70
-	ld hl,0eb67h		;8b73
+	ld hl,0eb67h		;8b73   ; apunta a las banderas de la historia, byte 0x27 (se graban con la partida)
 	res 0,(hl)		;8b76
 	ld a,b			;8b78
 	add a,010h		;8b79
 	ld b,a			;8b7b
-	jp L_857D		;8b7c
+	jp posicion_en_la_sala_nueva		;8b7c   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8B7F:
 	xor a			;8b7f
 	ld (0e380h),a		;8b80
-	jp L_857D		;8b83
+	jp posicion_en_la_sala_nueva		;8b83   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8B86:
-	ld hl,(0e376h)		;8b86
+	ld hl,(0e376h)		;8b86   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld de,001d4h		;8b89
 	and a			;8b8c
 	sbc hl,de		;8b8d
-	jp nz,L_857D		;8b8f
-	ld (0eb40h),de		;8b92
-	jp L_857D		;8b96
+	jp nz,posicion_en_la_sala_nueva		;8b8f   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+	ld (0eb40h),de		;8b92   ; guarda la sala
+	jp posicion_en_la_sala_nueva		;8b96   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8B99:
-	ld hl,(0e376h)		;8b99
+	ld hl,(0e376h)		;8b99   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld de,001d5h		;8b9c
 	and a			;8b9f
 	sbc hl,de		;8ba0
-	jp nz,L_857D		;8ba2
-	ld (0eb40h),de		;8ba5
-	ld hl,0eb77h		;8ba9
+	jp nz,posicion_en_la_sala_nueva		;8ba2   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+	ld (0eb40h),de		;8ba5   ; guarda la sala
+	ld hl,0eb77h		;8ba9   ; apunta a las banderas de la historia, byte 0x37 (se graban con la partida)
 	set 6,(hl)		;8bac
-	jp L_857D		;8bae
+	jp posicion_en_la_sala_nueva		;8bae   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8BB1:
-	ld hl,(0e376h)		;8bb1
+	ld hl,(0e376h)		;8bb1   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld de,001d6h		;8bb4
 	and a			;8bb7
 	sbc hl,de		;8bb8
-	jp nz,L_857D		;8bba
-	ld (0eb40h),de		;8bbd
-	jp L_857D		;8bc1
+	jp nz,posicion_en_la_sala_nueva		;8bba   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+	ld (0eb40h),de		;8bbd   ; guarda la sala
+	jp posicion_en_la_sala_nueva		;8bc1   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8BC4:
-	ld hl,(0e376h)		;8bc4
+	ld hl,(0e376h)		;8bc4   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld de,001d5h		;8bc7
 	and a			;8bca
 	sbc hl,de		;8bcb
-	jp nz,L_857D		;8bcd
-	ld hl,0eb76h		;8bd0
+	jp nz,posicion_en_la_sala_nueva		;8bcd   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+	ld hl,0eb76h		;8bd0   ; apunta a las banderas de la historia, byte 0x36 (se graban con la partida)
 	bit 0,(hl)		;8bd3
 	jr z,L_8BE7		;8bd5
-	ld hl,0eb74h		;8bd7
+	ld hl,0eb74h		;8bd7   ; apunta a las banderas de la historia, byte 0x34 (se graban con la partida)
 	bit 4,(hl)		;8bda
 	jr z,L_8BE7		;8bdc
 	ld hl,0e380h		;8bde
@@ -1600,40 +1600,40 @@ L_8BC4:
 	cp 008h		;8be3
 	jr z,L_8BEE		;8be5
 L_8BE7:
-	ld (0eb40h),de		;8be7
-	jp L_857D		;8beb
+	ld (0eb40h),de		;8be7   ; guarda la sala
+	jp posicion_en_la_sala_nueva		;8beb   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8BEE:
 	ld hl,001d6h		;8bee
-	ld (0eb40h),hl		;8bf1
-	jp L_857D		;8bf4
+	ld (0eb40h),hl		;8bf1   ; guarda la sala
+	jp posicion_en_la_sala_nueva		;8bf4   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8BF7:
-	ld hl,(0e376h)		;8bf7
+	ld hl,(0e376h)		;8bf7   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld de,0007eh		;8bfa
 	and a			;8bfd
 	sbc hl,de		;8bfe
-	jp nz,L_857D		;8c00
-	ld hl,0e3afh		;8c03
+	jp nz,posicion_en_la_sala_nueva		;8c00   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+	ld hl,0e3afh		;8c03   ; apunta a la cuenta de vueltas por la sala 0x7E
 	dec (hl)			;8c06
-	jp z,L_857D		;8c07
+	jp z,posicion_en_la_sala_nueva		;8c07   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 	ld hl,0007eh		;8c0a
-	ld (0eb40h),hl		;8c0d
-	jp L_857D		;8c10
+	ld (0eb40h),hl		;8c0d   ; guarda la sala
+	jp posicion_en_la_sala_nueva		;8c10   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 L_8C13:
-	ld hl,(0e376h)		;8c13
+	ld hl,(0e376h)		;8c13   ; lee la sala de la que se viene y el byte siguiente (16 bits)
 	ld de,0007eh		;8c16
 	and a			;8c19
 	sbc hl,de		;8c1a
-	jp nz,L_857D		;8c1c
-	ld hl,0e3afh		;8c1f
+	jp nz,posicion_en_la_sala_nueva		;8c1c   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+	ld hl,0e3afh		;8c1f   ; apunta a la cuenta de vueltas por la sala 0x7E
 	inc (hl)			;8c22
 	ld a,(hl)			;8c23
 	cp 010h		;8c24
-	jp z,L_857D		;8c26
+	jp z,posicion_en_la_sala_nueva		;8c26   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 	ld hl,0007eh		;8c29
-	ld (0eb40h),hl		;8c2c
-	jp L_857D		;8c2f
-L_8C32:
-	ld de,(0eb40h)		;8c32
+	ld (0eb40h),hl		;8c2c   ; guarda la sala
+	jp posicion_en_la_sala_nueva		;8c2f   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
+salas_al_azar:		; en las salas 0x228-0x22D, la siguiente sale al azar de p02:8C83
+	ld de,(0eb40h)		;8c32   ; lee la sala
 	ld hl,00228h		;8c36
 	and a			;8c39
 	sbc hl,de		;8c3a
@@ -1665,12 +1665,12 @@ L_8C32:
 	dec a			;8c6d
 L_8C6E:
 	ld de,08c83h		;8c6e
-	call 043a4h		;8c71
-	ld (0eb40h),de		;8c74
+	call 043a4h		;8c71   ; palabra_de_tabla: DE = la palabra A de la tabla DE
+	ld (0eb40h),de		;8c74   ; guarda la sala
 	ld hl,06040h		;8c78
-	ld (0e3c1h),hl		;8c7b
+	ld (0e3c1h),hl		;8c7b   ; guarda la Y del personaje y el byte siguiente (16 bits)
 	xor a			;8c7e
-	ld (0e3b5h),a		;8c7f
+	ld (0e3b5h),a		;8c7f   ; guarda la cuenta de las salas al azar
 	ret			;8c82
 
 ; ----------------------------------------------------------------------
@@ -1687,9 +1687,9 @@ DATA_resto_8C83:
 
 
 L_8C89:
-	ld hl,(0eb40h)		;8c89
-	ld (0e376h),hl		;8c8c
-	ld hl,0e3b5h		;8c8f
+	ld hl,(0eb40h)		;8c89   ; lee la sala
+	ld (0e376h),hl		;8c8c   ; guarda la sala de la que se viene y el byte siguiente (16 bits)
+	ld hl,0e3b5h		;8c8f   ; apunta a la cuenta de las salas al azar
 	inc (hl)			;8c92
 	bit 3,(hl)		;8c93
 	jr z,L_8C9E		;8c95
@@ -1699,12 +1699,12 @@ L_8C89:
 L_8C9E:
 	ld hl,00228h		;8c9e
 L_8CA1:
-	ld (0eb40h),hl		;8ca1
+	ld (0eb40h),hl		;8ca1   ; guarda la sala
 	jr L_8CDE		;8ca4
 L_8CA6:
-	ld hl,(0eb40h)		;8ca6
-	ld (0e376h),hl		;8ca9
-	ld hl,0e3b5h		;8cac
+	ld hl,(0eb40h)		;8ca6   ; lee la sala
+	ld (0e376h),hl		;8ca9   ; guarda la sala de la que se viene y el byte siguiente (16 bits)
+	ld hl,0e3b5h		;8cac   ; apunta a la cuenta de las salas al azar
 	inc (hl)			;8caf
 	bit 3,(hl)		;8cb0
 	jr z,L_8CBB		;8cb2
@@ -1714,12 +1714,12 @@ L_8CA6:
 L_8CBB:
 	ld hl,0022ah		;8cbb
 L_8CBE:
-	ld (0eb40h),hl		;8cbe
+	ld (0eb40h),hl		;8cbe   ; guarda la sala
 	jr L_8CDE		;8cc1
 L_8CC3:
-	ld hl,(0eb40h)		;8cc3
-	ld (0e376h),hl		;8cc6
-	ld hl,0e3b5h		;8cc9
+	ld hl,(0eb40h)		;8cc3   ; lee la sala
+	ld (0e376h),hl		;8cc6   ; guarda la sala de la que se viene y el byte siguiente (16 bits)
+	ld hl,0e3b5h		;8cc9   ; apunta a la cuenta de las salas al azar
 	inc (hl)			;8ccc
 	bit 3,(hl)		;8ccd
 	jr z,L_8CD8		;8ccf
@@ -1729,15 +1729,15 @@ L_8CC3:
 L_8CD8:
 	ld hl,0022ch		;8cd8
 L_8CDB:
-	ld (0eb40h),hl		;8cdb
+	ld (0eb40h),hl		;8cdb   ; guarda la sala
 L_8CDE:
-	ld a,(0e3c5h)		;8cde
+	ld a,(0e3c5h)		;8cde   ; lee la direccion del paso en curso
 	dec a			;8ce1
 	ld de,08cedh		;8ce2
-	call 043a4h		;8ce5
+	call 043a4h		;8ce5   ; palabra_de_tabla: DE = la palabra A de la tabla DE
 	ld c,e			;8ce8
 	ld b,d			;8ce9
-	jp L_857D		;8cea
+	jp posicion_en_la_sala_nueva		;8cea   ; posicion_en_la_sala_nueva: Y += C, X += B en el personaje y 0xE3C5 = 0
 
 ; ----------------------------------------------------------------------
 ; DATOS resto_8CED: lo apuntan con el banco puesto p02:8CE2 (0x8CED); el
@@ -1752,38 +1752,38 @@ DATA_resto_8CED:
 ; ======================================================================
 
 
-L_8CF5:
-	ld a,(0e3c6h)		;8cf5
+actor_de_enfrente:		; 0xE8A6 = el actor que esta delante del personaje (0xFF si no hay); si es una puerta, prepara el salto
+	ld a,(0e3c6h)		;8cf5   ; lee la direccion del personaje (1 arriba, 2 abajo, 3 izquierda, 4 derecha)
 	dec a			;8cf8
 	ld de,09126h		;8cf9
-	call 043a4h		;8cfc
-	ld hl,(0e3c1h)		;8cff
+	call 043a4h		;8cfc   ; palabra_de_tabla: DE = la palabra A de la tabla DE
+	ld hl,(0e3c1h)		;8cff   ; lee la Y del personaje y el byte siguiente (16 bits)
 	ld a,e			;8d02
 	add a,l			;8d03
 	ld e,a			;8d04
 	ld a,d			;8d05
 	add a,h			;8d06
 	ld d,a			;8d07
-	ld ix,0e400h		;8d08
+	ld ix,0e400h		;8d08   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
 	ld b,008h		;8d0c
 	ld c,000h		;8d0e
 L_8D10:
-	ld a,(ix+00dh)		;8d10
+	ld a,(ix+00dh)		;8d10   ; lee si se puede hablar con el actor (p02:8D10)
 	and a			;8d13
 	jr z,L_8D31		;8d14
 	cp 002h		;8d16
 	jr z,L_8D41		;8d18
-	ld hl,0e37ah		;8d1a
+	ld hl,0e37ah		;8d1a   ; apunta a acaba de entrar en la sala
 	bit 0,(hl)		;8d1d
 	jr nz,L_8D25		;8d1f
 	cp 003h		;8d21
 	jr z,L_8D41		;8d23
 L_8D25:
-	ld l,(ix+003h)		;8d25
-	ld h,(ix+004h)		;8d28
+	ld l,(ix+003h)		;8d25   ; lee la Y del actor
+	ld h,(ix+004h)		;8d28   ; lee la X del actor
 	and a			;8d2b
 	sbc hl,de		;8d2c
-	jp z,L_9121		;8d2e
+	jp z,guarda_actor_de_enfrente		;8d2e   ; guarda_actor_de_enfrente: 0xE8A6 = C
 L_8D31:
 	ex de,hl			;8d31
 	ld de,00080h		;8d32
@@ -1792,19 +1792,19 @@ L_8D31:
 	inc c			;8d38
 	djnz L_8D10		;8d39
 	ld a,0ffh		;8d3b
-	ld (0e8a6h),a		;8d3d
+	ld (0e8a6h),a		;8d3d   ; guarda el actor de enfrente (0xFF: ninguno)
 	ret			;8d40
 L_8D41:
 	push de			;8d41
-	ld de,(0e3c1h)		;8d42
+	ld de,(0e3c1h)		;8d42   ; lee la Y del personaje y el byte siguiente (16 bits)
 	ld l,(ix+003h)		;8d46
 	ld h,(ix+004h)		;8d49
 	and a			;8d4c
 	sbc hl,de		;8d4d
 	pop de			;8d4f
 	jr nz,L_8D31		;8d50
-	call L_9121		;8d52
-	call 0560eh		;8d55
+	call guarda_actor_de_enfrente		;8d52   ; guarda_actor_de_enfrente: 0xE8A6 = C
+	call 0560eh		;8d55   ; ficha_de_actor: HL = 0xE400 + A * 0x80: la ficha del actor A
 	ld e,(hl)			;8d58
 	inc hl			;8d59
 	ld d,(hl)			;8d5a
@@ -1818,355 +1818,355 @@ L_8D41:
 	jr nz,L_8D71		;8d69
 L_8D6B:
 	ld hl,00201h		;8d6b
-	jp L_9065		;8d6e
+	jp salta_a		;8d6e   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8D71:
 	ld hl,00024h		;8d71
 	and a			;8d74
 	sbc hl,de		;8d75
 	jr nz,L_8D89		;8d77
 	ld a,004h		;8d79
-	ld (0e3c0h),a		;8d7b
-	ld hl,0e9d2h		;8d7e
+	ld (0e3c0h),a		;8d7b   ; guarda el modo del personaje (tabla p01:718E)
+	ld hl,0e9d2h		;8d7e   ; apunta a el objeto 1 (bit 0: se lleva)
 	res 7,(hl)		;8d81
 	ld hl,00089h		;8d83
-	jp L_9065		;8d86
+	jp salta_a		;8d86   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8D89:
 	ld hl,0003eh		;8d89
 	and a			;8d8c
 	sbc hl,de		;8d8d
 	jr nz,L_8D97		;8d8f
 	ld hl,0020bh		;8d91
-	jp L_9065		;8d94
+	jp salta_a		;8d94   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8D97:
 	ld hl,0003fh		;8d97
 	and a			;8d9a
 	sbc hl,de		;8d9b
 	jr nz,L_8DA5		;8d9d
 	ld hl,00202h		;8d9f
-	jp L_9065		;8da2
+	jp salta_a		;8da2   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8DA5:
 	ld hl,00043h		;8da5
 	and a			;8da8
 	sbc hl,de		;8da9
 	jr nz,L_8DB3		;8dab
 	ld hl,000e2h		;8dad
-	jp L_9065		;8db0
+	jp salta_a		;8db0   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8DB3:
 	ld hl,00046h		;8db3
 	and a			;8db6
 	sbc hl,de		;8db7
 	jr nz,L_8DC1		;8db9
 	ld hl,00063h		;8dbb
-	jp L_9065		;8dbe
+	jp salta_a		;8dbe   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8DC1:
 	ld hl,00053h		;8dc1
 	and a			;8dc4
 	sbc hl,de		;8dc5
 	jr nz,L_8DCF		;8dc7
 	ld hl,001d0h		;8dc9
-	jp L_9065		;8dcc
+	jp salta_a		;8dcc   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8DCF:
 	ld hl,00068h		;8dcf
 	and a			;8dd2
 	sbc hl,de		;8dd3
 	jr nz,L_8DDD		;8dd5
 	ld hl,0020eh		;8dd7
-	jp L_9065		;8dda
+	jp salta_a		;8dda   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8DDD:
 	ld hl,00069h		;8ddd
 	and a			;8de0
 	sbc hl,de		;8de1
 	jr nz,L_8DEB		;8de3
 	ld hl,00087h		;8de5
-	jp L_9065		;8de8
+	jp salta_a		;8de8   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8DEB:
 	ld hl,0006ah		;8deb
 	and a			;8dee
 	sbc hl,de		;8def
 	jr nz,L_8DF9		;8df1
 	ld hl,00087h		;8df3
-	jp L_9065		;8df6
+	jp salta_a		;8df6   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8DF9:
 	ld hl,0006dh		;8df9
 	and a			;8dfc
 	sbc hl,de		;8dfd
 	jr nz,L_8E07		;8dff
 	ld hl,0020fh		;8e01
-	jp L_9065		;8e04
+	jp salta_a		;8e04   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E07:
 	ld hl,0006eh		;8e07
 	and a			;8e0a
 	sbc hl,de		;8e0b
 	jr nz,L_8E15		;8e0d
 	ld hl,00152h		;8e0f
-	jp L_9065		;8e12
+	jp salta_a		;8e12   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E15:
 	ld hl,00080h		;8e15
 	and a			;8e18
 	sbc hl,de		;8e19
 	jr nz,L_8E23		;8e1b
 	ld hl,00213h		;8e1d
-	jp L_9065		;8e20
+	jp salta_a		;8e20   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E23:
 	ld hl,00081h		;8e23
 	and a			;8e26
 	sbc hl,de		;8e27
 	jr nz,L_8E31		;8e29
 	ld hl,000feh		;8e2b
-	jp L_9065		;8e2e
+	jp salta_a		;8e2e   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E31:
 	ld hl,00092h		;8e31
 	and a			;8e34
 	sbc hl,de		;8e35
 	jr nz,L_8E3F		;8e37
 	ld hl,0021fh		;8e39
-	jp L_9065		;8e3c
+	jp salta_a		;8e3c   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E3F:
 	ld hl,00093h		;8e3f
 	and a			;8e42
 	sbc hl,de		;8e43
 	jr nz,L_8E4D		;8e45
 	ld hl,0021fh		;8e47
-	jp L_9065		;8e4a
+	jp salta_a		;8e4a   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E4D:
 	ld hl,00094h		;8e4d
 	and a			;8e50
 	sbc hl,de		;8e51
 	jr nz,L_8E5B		;8e53
 	ld hl,0021fh		;8e55
-	jp L_9065		;8e58
+	jp salta_a		;8e58   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E5B:
 	ld hl,00095h		;8e5b
 	and a			;8e5e
 	sbc hl,de		;8e5f
 	jr nz,L_8E69		;8e61
 	ld hl,0021fh		;8e63
-	jp L_9065		;8e66
+	jp salta_a		;8e66   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E69:
 	ld hl,00096h		;8e69
 	and a			;8e6c
 	sbc hl,de		;8e6d
 	jr nz,L_8E77		;8e6f
 	ld hl,0021fh		;8e71
-	jp L_9065		;8e74
+	jp salta_a		;8e74   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E77:
 	ld hl,00097h		;8e77
 	and a			;8e7a
 	sbc hl,de		;8e7b
 	jr nz,L_8E85		;8e7d
 	ld hl,0021fh		;8e7f
-	jp L_9065		;8e82
+	jp salta_a		;8e82   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E85:
 	ld hl,00098h		;8e85
 	and a			;8e88
 	sbc hl,de		;8e89
 	jr nz,L_8E93		;8e8b
 	ld hl,0021fh		;8e8d
-	jp L_9065		;8e90
+	jp salta_a		;8e90   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8E93:
 	ld hl,00099h		;8e93
 	and a			;8e96
 	sbc hl,de		;8e97
 	jr nz,L_8EA1		;8e99
 	ld hl,0021fh		;8e9b
-	jp L_9065		;8e9e
+	jp salta_a		;8e9e   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8EA1:
 	ld hl,0009ah		;8ea1
 	and a			;8ea4
 	sbc hl,de		;8ea5
 	jr nz,L_8EAF		;8ea7
 	ld hl,000cah		;8ea9
-	jp L_9065		;8eac
+	jp salta_a		;8eac   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8EAF:
 	ld hl,0009bh		;8eaf
 	and a			;8eb2
 	sbc hl,de		;8eb3
 	jr nz,L_8EBD		;8eb5
 	ld hl,00052h		;8eb7
-	jp L_9065		;8eba
+	jp salta_a		;8eba   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8EBD:
 	ld hl,0009ch		;8ebd
 	and a			;8ec0
 	sbc hl,de		;8ec1
 	jr nz,L_8ECB		;8ec3
 	ld hl,0005ch		;8ec5
-	jp L_9065		;8ec8
+	jp salta_a		;8ec8   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8ECB:
 	ld hl,0009dh		;8ecb
 	and a			;8ece
 	sbc hl,de		;8ecf
 	jr nz,L_8ED9		;8ed1
 	ld hl,001d9h		;8ed3
-	jp L_9065		;8ed6
+	jp salta_a		;8ed6   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8ED9:
 	ld hl,0009eh		;8ed9
 	and a			;8edc
 	sbc hl,de		;8edd
 	jr nz,L_8EE7		;8edf
 	ld hl,00116h		;8ee1
-	jp L_9065		;8ee4
+	jp salta_a		;8ee4   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8EE7:
 	ld hl,0009fh		;8ee7
 	and a			;8eea
 	sbc hl,de		;8eeb
 	jr nz,L_8EF5		;8eed
 	ld hl,001b1h		;8eef
-	jp L_9065		;8ef2
+	jp salta_a		;8ef2   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8EF5:
 	ld hl,000a0h		;8ef5
 	and a			;8ef8
 	sbc hl,de		;8ef9
 	jr nz,L_8F03		;8efb
 	ld hl,001c5h		;8efd
-	jp L_9065		;8f00
+	jp salta_a		;8f00   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8F03:
 	ld hl,000a1h		;8f03
 	and a			;8f06
 	sbc hl,de		;8f07
 	jr nz,L_8F11		;8f09
 	ld hl,00024h		;8f0b
-	jp L_9065		;8f0e
+	jp salta_a		;8f0e   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8F11:
 	ld hl,00065h		;8f11
 	and a			;8f14
 	sbc hl,de		;8f15
 	jr nz,L_8F24		;8f17
 	ld hl,00211h		;8f19
-	ld (0eb40h),hl		;8f1c
+	ld (0eb40h),hl		;8f1c   ; guarda la sala
 	ld a,001h		;8f1f
-	jp L_906E		;8f21
+	jp empieza_accion		;8f21   ; empieza_accion: 0xE3A1 = A, 0xE337 = 3 y la escena 0 de la escena de accion
 L_8F24:
 	ld hl,00066h		;8f24
 	and a			;8f27
 	sbc hl,de		;8f28
 	jr nz,L_8F37		;8f2a
 	ld hl,00211h		;8f2c
-	ld (0eb40h),hl		;8f2f
+	ld (0eb40h),hl		;8f2f   ; guarda la sala
 	ld a,001h		;8f32
-	jp L_906E		;8f34
+	jp empieza_accion		;8f34   ; empieza_accion: 0xE3A1 = A, 0xE337 = 3 y la escena 0 de la escena de accion
 L_8F37:
 	ld hl,00067h		;8f37
 	and a			;8f3a
 	sbc hl,de		;8f3b
 	jr nz,L_8F4A		;8f3d
 	ld hl,00211h		;8f3f
-	ld (0eb40h),hl		;8f42
+	ld (0eb40h),hl		;8f42   ; guarda la sala
 	ld a,001h		;8f45
-	jp L_906E		;8f47
+	jp empieza_accion		;8f47   ; empieza_accion: 0xE3A1 = A, 0xE337 = 3 y la escena 0 de la escena de accion
 L_8F4A:
 	ld hl,00082h		;8f4a
 	and a			;8f4d
 	sbc hl,de		;8f4e
-	jp z,L_909B		;8f50
+	jp z,accion_2		;8f50   ; accion_2: la escena de accion 2 en la sala 0x212
 	ld hl,000a6h		;8f53
 	and a			;8f56
 	sbc hl,de		;8f57
-	jp z,L_90BC		;8f59
+	jp z,accion_4		;8f59   ; accion_4: la escena de accion 4 en la sala 0x222
 	ld hl,000bdh		;8f5c
 	and a			;8f5f
 	sbc hl,de		;8f60
-	jp z,L_90DD		;8f62
+	jp z,accion_7		;8f62   ; accion_7: la escena de accion 7 en la sala 0x224
 	ld hl,000c5h		;8f65
 	and a			;8f68
 	sbc hl,de		;8f69
 	jr nz,L_8F73		;8f6b
 	ld hl,00158h		;8f6d
-	jp L_9065		;8f70
+	jp salta_a		;8f70   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8F73:
 	ld hl,000c6h		;8f73
 	and a			;8f76
 	sbc hl,de		;8f77
 	jr nz,L_8F81		;8f79
 	ld hl,00158h		;8f7b
-	jp L_9065		;8f7e
+	jp salta_a		;8f7e   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8F81:
 	ld hl,000c9h		;8f81
 	and a			;8f84
 	sbc hl,de		;8f85
 	jr nz,L_8F8F		;8f87
 	ld hl,00226h		;8f89
-	jp L_9065		;8f8c
+	jp salta_a		;8f8c   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8F8F:
 	ld hl,000cah		;8f8f
 	and a			;8f92
 	sbc hl,de		;8f93
 	jr nz,L_8F9D		;8f95
 	ld hl,001a1h		;8f97
-	jp L_9065		;8f9a
+	jp salta_a		;8f9a   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8F9D:
 	ld hl,000cdh		;8f9d
 	and a			;8fa0
 	sbc hl,de		;8fa1
 	jr nz,L_8FAB		;8fa3
 	ld hl,00027h		;8fa5
-	jp L_9065		;8fa8
+	jp salta_a		;8fa8   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8FAB:
 	ld hl,000ceh		;8fab
 	and a			;8fae
 	sbc hl,de		;8faf
 	jr nz,L_8FB9		;8fb1
 	ld hl,00006h		;8fb3
-	jp L_9065		;8fb6
+	jp salta_a		;8fb6   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8FB9:
 	ld hl,000cfh		;8fb9
 	and a			;8fbc
 	sbc hl,de		;8fbd
-	jp z,L_90FF		;8fbf
+	jp z,accion_8		;8fbf   ; accion_8: la escena de accion 8 en la sala 0x225
 	ld hl,000e2h		;8fc2
 	and a			;8fc5
 	sbc hl,de		;8fc6
 	jr nz,L_8FD0		;8fc8
 	ld hl,00232h		;8fca
-	jp L_9065		;8fcd
+	jp salta_a		;8fcd   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8FD0:
 	ld hl,000e3h		;8fd0
 	and a			;8fd3
 	sbc hl,de		;8fd4
 	jr nz,L_8FDE		;8fd6
 	ld hl,0003eh		;8fd8
-	jp L_9065		;8fdb
+	jp salta_a		;8fdb   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8FDE:
 	ld hl,000e4h		;8fde
 	and a			;8fe1
 	sbc hl,de		;8fe2
 	jr nz,L_8FEC		;8fe4
 	ld hl,00233h		;8fe6
-	jp L_9065		;8fe9
+	jp salta_a		;8fe9   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8FEC:
 	ld hl,000e5h		;8fec
 	and a			;8fef
 	sbc hl,de		;8ff0
 	jr nz,L_8FFA		;8ff2
 	ld hl,00232h		;8ff4
-	jp L_9065		;8ff7
+	jp salta_a		;8ff7   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_8FFA:
 	ld hl,000e6h		;8ffa
 	and a			;8ffd
 	sbc hl,de		;8ffe
 	jr nz,L_9008		;9000
 	ld hl,00234h		;9002
-	jp L_9065		;9005
+	jp salta_a		;9005   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_9008:
 	ld hl,000e7h		;9008
 	and a			;900b
 	sbc hl,de		;900c
 	jr nz,L_9016		;900e
 	ld hl,00233h		;9010
-	jp L_9065		;9013
+	jp salta_a		;9013   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_9016:
 	ld hl,000d9h		;9016
 	and a			;9019
 	sbc hl,de		;901a
 	jr nz,L_9024		;901c
 	ld hl,0022eh		;901e
-	jp L_9065		;9021
+	jp salta_a		;9021   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_9024:
 	ld hl,000dah		;9024
 	and a			;9027
 	sbc hl,de		;9028
 	jr nz,L_9032		;902a
 	ld hl,00038h		;902c
-	jp L_9065		;902f
+	jp salta_a		;902f   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_9032:
 	ld hl,000ffh		;9032
 	and a			;9035
@@ -2177,8 +2177,8 @@ L_9032:
 	sbc hl,de		;903e
 	jr c,L_904A		;9040
 	xor a			;9042
-	ld (0e338h),a		;9043
-	ld (0e340h),a		;9046
+	ld (0e338h),a		;9043   ; guarda la sala de partida (indice de p01:67E3)
+	ld (0e340h),a		;9046   ; guarda en partida (bit 7: la demo acaba)
 	ret			;9049
 L_904A:
 	ld hl,000abh		;904a
@@ -2186,31 +2186,31 @@ L_904A:
 	sbc hl,de		;904e
 	jr nz,L_9058		;9050
 	ld hl,001b5h		;9052
-	jp L_9065		;9055
+	jp salta_a		;9055   ; salta_a: 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
 L_9058:
 	ld hl,000ach		;9058
 	and a			;905b
 	sbc hl,de		;905c
 	ret nz			;905e
 	ld hl,00194h		;905f
-	ld (0e36ah),hl		;9062
-L_9065:
-	ld (0e36ah),hl		;9065
+	ld (0e36ah),hl		;9062   ; guarda la sala a la que se salta y el byte siguiente (16 bits)
+salta_a:		; 0xE36A = HL y 0xE337 = 2: al cambiar de sala se salta a ella
+	ld (0e36ah),hl		;9065   ; guarda la sala a la que se salta y el byte siguiente (16 bits)
 	ld a,002h		;9068
-	ld (0e337h),a		;906a
+	ld (0e337h),a		;906a   ; guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	ret			;906d
-L_906E:
-	ld (0e3a1h),a		;906e
+empieza_accion:		; 0xE3A1 = A, 0xE337 = 3 y la escena 0 de la escena de accion
+	ld (0e3a1h),a		;906e   ; guarda la escena de accion (1-9)
 	ld a,003h		;9071
-	ld (0e337h),a		;9073
+	ld (0e337h),a		;9073   ; guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	ld hl,00000h		;9076
-	ld (0e3e0h),hl		;9079
-	ld hl,0eb7dh		;907c
+	ld (0e3e0h),hl		;9079   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
+	ld hl,0eb7dh		;907c   ; apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
 	bit 7,(hl)		;907f
 	ld a,00ah		;9081
 	jr nz,L_908F		;9083
 	xor a			;9085
-	ld hl,0eb66h		;9086
+	ld hl,0eb66h		;9086   ; apunta a las banderas de la historia, byte 0x26 (se graban con la partida)
 	bit 5,(hl)		;9089
 	jr z,L_908F		;908b
 	ld a,004h		;908d
@@ -2219,71 +2219,71 @@ L_908F:
 	xor a			;9092
 	ld (0e39fh),a		;9093
 	dec a			;9096
-	ld (0e368h),a		;9097
+	ld (0e368h),a		;9097   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ret			;909a
-L_909B:
+accion_2:		; la escena de accion 2 en la sala 0x212
 	ld a,002h		;909b
-	ld (0e3a1h),a		;909d
+	ld (0e3a1h),a		;909d   ; guarda la escena de accion (1-9)
 	inc a			;90a0
-	ld (0e337h),a		;90a1
+	ld (0e337h),a		;90a1   ; guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	ld hl,00003h		;90a4
-	ld (0e3e0h),hl		;90a7
+	ld (0e3e0h),hl		;90a7   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	ld hl,00212h		;90aa
-	ld (0eb40h),hl		;90ad
+	ld (0eb40h),hl		;90ad   ; guarda la sala
 	xor a			;90b0
 	ld (0e39fh),a		;90b1
 	ld (0e3a0h),a		;90b4
 	dec a			;90b7
-	ld (0e368h),a		;90b8
+	ld (0e368h),a		;90b8   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ret			;90bb
-L_90BC:
+accion_4:		; la escena de accion 4 en la sala 0x222
 	ld a,004h		;90bc
-	ld (0e3a1h),a		;90be
+	ld (0e3a1h),a		;90be   ; guarda la escena de accion (1-9)
 	dec a			;90c1
-	ld (0e337h),a		;90c2
+	ld (0e337h),a		;90c2   ; guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	ld hl,00009h		;90c5
-	ld (0e3e0h),hl		;90c8
+	ld (0e3e0h),hl		;90c8   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	ld hl,00222h		;90cb
-	ld (0eb40h),hl		;90ce
+	ld (0eb40h),hl		;90ce   ; guarda la sala
 	xor a			;90d1
 	ld (0e39fh),a		;90d2
 	ld (0e3a0h),a		;90d5
 	dec a			;90d8
-	ld (0e368h),a		;90d9
+	ld (0e368h),a		;90d9   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ret			;90dc
-L_90DD:
+accion_7:		; la escena de accion 7 en la sala 0x224
 	ld a,007h		;90dd
-	ld (0e3a1h),a		;90df
+	ld (0e3a1h),a		;90df   ; guarda la escena de accion (1-9)
 	ld a,003h		;90e2
-	ld (0e337h),a		;90e4
+	ld (0e337h),a		;90e4   ; guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	ld hl,00009h		;90e7
-	ld (0e3e0h),hl		;90ea
+	ld (0e3e0h),hl		;90ea   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	ld hl,00224h		;90ed
-	ld (0eb40h),hl		;90f0
+	ld (0eb40h),hl		;90f0   ; guarda la sala
 	xor a			;90f3
 	ld (0e39fh),a		;90f4
 	ld (0e3a0h),a		;90f7
 	dec a			;90fa
-	ld (0e368h),a		;90fb
+	ld (0e368h),a		;90fb   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ret			;90fe
-L_90FF:
+accion_8:		; la escena de accion 8 en la sala 0x225
 	ld a,008h		;90ff
-	ld (0e3a1h),a		;9101
+	ld (0e3a1h),a		;9101   ; guarda la escena de accion (1-9)
 	ld a,003h		;9104
-	ld (0e337h),a		;9106
+	ld (0e337h),a		;9106   ; guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	ld hl,0000ah		;9109
-	ld (0e3e0h),hl		;910c
+	ld (0e3e0h),hl		;910c   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	ld hl,00225h		;910f
-	ld (0eb40h),hl		;9112
+	ld (0eb40h),hl		;9112   ; guarda la sala
 	xor a			;9115
 	ld (0e39fh),a		;9116
 	ld (0e3a0h),a		;9119
 	dec a			;911c
-	ld (0e368h),a		;911d
+	ld (0e368h),a		;911d   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ret			;9120
-L_9121:
+guarda_actor_de_enfrente:		; 0xE8A6 = C
 	ld a,c			;9121
-	ld (0e8a6h),a		;9122
+	ld (0e8a6h),a		;9122   ; guarda el actor de enfrente (0xFF: ninguno)
 	ret			;9125
 
 ; ----------------------------------------------------------------------
@@ -2299,10 +2299,10 @@ DATA_resto_9126:
 ; ======================================================================
 
 
-L_912E:
-	ld a,(0e8aah)		;912e
+evento:		; un paso del evento 0xE8AA (tabla p02:9135)
+	ld a,(0e8aah)		;912e   ; lee el evento en curso (tabla p02:9135)
 	dec a			;9131
-	call 040abh		;9132
+	call 040abh		;9132   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9135: tabla de 42 palabras del despachador (call 0x408D en
@@ -2357,13 +2357,13 @@ DATA_saltos_9135:
 ; ======================================================================
 
 
-L_9189:
-	ld hl,0e8abh		;9189
+evento_siguiente_paso:		; 0xE8AB + 1
+	ld hl,0e8abh		;9189   ; apunta a el paso del evento
 	inc (hl)			;918c
 	ret			;918d
-L_918E:
-	ld a,(0e8abh)		;918e
-	call 040abh		;9191
+evento_01:		; el evento 0x01 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9194)
+	ld a,(0e8abh)		;918e   ; lee el paso del evento
+	call 040abh		;9191   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9194: tabla de 3 palabras del despachador (call 0x408D en
@@ -2379,58 +2379,58 @@ DATA_saltos_9194:
 ; ======================================================================
 
 
-L_919A:
-	call 045c4h		;919a
+evento_01_0:		; el evento 0x01, paso 0
+	call 045c4h		;919a   ; sonido_2f: pide el sonido 0x2F
 	ld a,001h		;919d
-	ld (0e007h),a		;919f
-	ld hl,0eb58h		;91a2
+	ld (0e007h),a		;919f   ; guarda las banderas de sprites (bit 0: sin rotar)
+	ld hl,0eb58h		;91a2   ; apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
 	set 7,(hl)		;91a5
-	call 0590dh		;91a7
-	call 058d4h		;91aa
+	call 0590dh		;91a7   ; corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+	call 058d4h		;91aa   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 	xor a			;91ad
-	ld (0e368h),a		;91ae
-	call 06148h		;91b1
+	ld (0e368h),a		;91ae   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 06148h		;91b1   ; graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
 	xor a			;91b4
-	call 06212h		;91b5
-	call 05e5fh		;91b8
-	jp L_9189		;91bb
-L_91BE:
+	call 06212h		;91b5   ; nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+	call 05e5fh		;91b8   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;91bb   ; evento_siguiente_paso: 0xE8AB + 1
+evento_01_1:		; el evento 0x01, paso 1
 	ld c,005h		;91be
-	call 04dfdh		;91c0
-	ld a,(0e886h)		;91c3
+	call 04dfdh		;91c0   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;91c3   ; lee el texto en marcha
 	and a			;91c6
 	ret nz			;91c7
-	jp L_9189		;91c8
-L_91CB:
-	ld a,(0e008h)		;91cb
+	jp evento_siguiente_paso		;91c8   ; evento_siguiente_paso: 0xE8AB + 1
+evento_01_2:		; el evento 0x01, paso 2
+	ld a,(0e008h)		;91cb   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
 	and a			;91ce
 	ret z			;91cf
-	call 067c8h		;91d0
+	call 067c8h		;91d0   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
 	ld a,001h		;91d3
 	call 04662h		;91d5
 	ld a,00ch		;91d8
-	ld (0e368h),a		;91da
-	call 04856h		;91dd
-	ld a,(0e367h)		;91e0
-	ld (0f000h),a		;91e3
+	ld (0e368h),a		;91da   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 04856h		;91dd   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	ld a,(0e367h)		;91e0   ; lee la Y guardada del primer sprite
+	ld (0f000h),a		;91e3   ; guarda los atributos de los 32 sprites
 	xor a			;91e6
-	ld (0e007h),a		;91e7
-	call 05ecah		;91ea
+	ld (0e007h),a		;91e7   ; guarda las banderas de sprites (bit 0: sin rotar)
+	call 05ecah		;91ea   ; vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
 	ld a,003h		;91ed
-	ld (0e8a0h),a		;91ef
+	ld (0e8a0h),a		;91ef   ; guarda el paso del menu (tabla p00:5231)
 	ret			;91f2
-L_91F3:
-	call 05e5fh		;91f3
-	ld hl,0e9d2h		;91f6
+evento_02:		; el evento 0x02 (0xE8AA), de un solo paso
+	call 05e5fh		;91f3   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	ld hl,0e9d2h		;91f6   ; apunta a el objeto 1 (bit 0: se lleva)
 	set 7,(hl)		;91f9
 	ld a,001h		;91fb
-	ld (0e8a0h),a		;91fd
+	ld (0e8a0h),a		;91fd   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9200
-	ld (0e8a3h),a		;9202
+	ld (0e8a3h),a		;9202   ; guarda la lista de opciones del menu
 	ret			;9205
-L_9206:
-	ld a,(0e8abh)		;9206
-	call 040abh		;9209
+evento_03:		; el evento 0x03 (0xE8AA): despacha su paso 0xE8AB (tabla p02:920C)
+	ld a,(0e8abh)		;9206   ; lee el paso del evento
+	call 040abh		;9209   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_920C: tabla de 5 palabras del despachador (call 0x408D en
@@ -2448,10 +2448,10 @@ DATA_saltos_920C:
 ; ======================================================================
 
 
-L_9216:
+evento_03_0:		; el evento 0x03, paso 0
 	ld a,001h		;9216
-	ld (0e007h),a		;9218
-	ld de,(0e363h)		;921b
+	ld (0e007h),a		;9218   ; guarda las banderas de sprites (bit 0: sin rotar)
+	ld de,(0e363h)		;921b   ; lee el tipo del personaje de enfrente
 	ld hl,09249h		;921f
 	ld bc,00700h		;9222
 L_9225:
@@ -2471,7 +2471,7 @@ L_9232:
 	ld hl,09257h		;9233
 	add a,a			;9236
 	add a,c			;9237
-	call 040a1h		;9238
+	call 040a1h		;9238   ; hl_mas_a: HL = HL + A
 	ld e,(hl)			;923b
 	inc hl			;923c
 	ld d,(hl)			;923d
@@ -2480,8 +2480,8 @@ L_9232:
 	ex de,hl			;9240
 	or (hl)			;9241
 	ld (hl),a			;9242
-	call 0babfh		;9243
-	jp L_9189		;9246
+	call 0babfh		;9243   ; sonido_09: pide el sonido 9
+	jp evento_siguiente_paso		;9246   ; evento_siguiente_paso: 0xE8AB + 1
 
 ; ----------------------------------------------------------------------
 ; DATOS resto_9249: lo apuntan con el banco puesto p02:921F (0x9249), p02:9233
@@ -2498,56 +2498,56 @@ DATA_resto_9249:
 ; ======================================================================
 
 
-L_926C:
+evento_03_1:		; el evento 0x03, paso 1
 	call 04503h		;926c
 	ld a,(0e372h)		;926f
 	sub 002h		;9272
 	ret nz			;9274
 	ld (0e372h),a		;9275
-	jp L_9189		;9278
-L_927B:
+	jp evento_siguiente_paso		;9278   ; evento_siguiente_paso: 0xE8AB + 1
+evento_03_2:		; el evento 0x03, paso 2
 	xor a			;927b
-	ld (0e007h),a		;927c
-	ld hl,(0eb40h)		;927f
+	ld (0e007h),a		;927c   ; guarda las banderas de sprites (bit 0: sin rotar)
+	ld hl,(0eb40h)		;927f   ; lee la sala
 	ld de,00185h		;9282
 	and a			;9285
 	sbc hl,de		;9286
-	jp z,L_9189		;9288
+	jp z,evento_siguiente_paso		;9288   ; evento_siguiente_paso: 0xE8AB + 1
 	ld a,001h		;928b
-	ld (0e8a0h),a		;928d
+	ld (0e8a0h),a		;928d   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9290
-	ld (0e8a3h),a		;9292
+	ld (0e8a3h),a		;9292   ; guarda la lista de opciones del menu
 	ret			;9295
-L_9296:
+evento_03_3:		; el evento 0x03, paso 3
 	ld c,001h		;9296
-	call 04dfdh		;9298
-	ld a,(0e886h)		;929b
+	call 04dfdh		;9298   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;929b   ; lee el texto en marcha
 	and a			;929e
 	ret nz			;929f
-	ld a,(0e887h)		;92a0
+	ld a,(0e887h)		;92a0   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;92a3
 	ret nz			;92a4
-	jp L_9189		;92a5
-L_92A8:
+	jp evento_siguiente_paso		;92a5   ; evento_siguiente_paso: 0xE8AB + 1
+evento_03_4:		; el evento 0x03, paso 4
 	ld a,008h		;92a8
-	ld (0e360h),a		;92aa
+	ld (0e360h),a		;92aa   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	ld a,006h		;92ad
-	ld (0e3a1h),a		;92af
+	ld (0e3a1h),a		;92af   ; guarda la escena de accion (1-9)
 	ld a,003h		;92b2
-	ld (0e337h),a		;92b4
+	ld (0e337h),a		;92b4   ; guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	ld hl,00008h		;92b7
-	ld (0e3e0h),hl		;92ba
+	ld (0e3e0h),hl		;92ba   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	ld hl,00223h		;92bd
-	ld (0eb40h),hl		;92c0
+	ld (0eb40h),hl		;92c0   ; guarda la sala
 	ld a,0ffh		;92c3
-	ld (0e368h),a		;92c5
+	ld (0e368h),a		;92c5   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	xor a			;92c8
 	ld (0e39fh),a		;92c9
 	ld (0e3a0h),a		;92cc
 	ret			;92cf
-L_92D0:
-	ld a,(0e8abh)		;92d0
-	call 040abh		;92d3
+evento_04:		; el evento 0x04 (0xE8AA): despacha su paso 0xE8AB (tabla p02:92D6)
+	ld a,(0e8abh)		;92d0   ; lee el paso del evento
+	call 040abh		;92d3   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_92D6: tabla de 2 palabras del despachador (call 0x408D en
@@ -2562,14 +2562,14 @@ DATA_saltos_92D6:
 ; ======================================================================
 
 
-L_92DA:
-	call 0428ah		;92da
+evento_04_0:		; el evento 0x04, paso 0
+	call 0428ah		;92da   ; a_anima_al_de_enfrente: con 7-8, p07:8758 (un paso de la animacion del actor de enfrente (0xE370, tabla p07:8762)); vuelve con 1-2-3
 	ld a,(0e36fh)		;92dd
 	and a			;92e0
 	ret z			;92e1
 	dec a			;92e2
-	jp z,L_9189		;92e3
-	ld de,(0e363h)		;92e6
+	jp z,evento_siguiente_paso		;92e3   ; evento_siguiente_paso: 0xE8AB + 1
+	ld de,(0e363h)		;92e6   ; lee el tipo del personaje de enfrente
 	ld hl,09310h		;92ea
 	ld c,000h		;92ed
 L_92EF:
@@ -2589,7 +2589,7 @@ L_92FC:
 	ld hl,09312h		;92fd
 	add a,a			;9300
 	add a,c			;9301
-	call 040a1h		;9302
+	call 040a1h		;9302   ; hl_mas_a: HL = HL + A
 	ld e,(hl)			;9305
 	inc hl			;9306
 	ld d,(hl)			;9307
@@ -2598,7 +2598,7 @@ L_92FC:
 	ex de,hl			;930a
 	or (hl)			;930b
 	ld (hl),a			;930c
-	jp L_9189		;930d
+	jp evento_siguiente_paso		;930d   ; evento_siguiente_paso: 0xE8AB + 1
 
 ; ----------------------------------------------------------------------
 ; DATOS resto_9310: lo apuntan con el banco puesto p02:92EA (0x9310), p02:92FD
@@ -2613,18 +2613,18 @@ DATA_resto_9310:
 ; ======================================================================
 
 
-L_9315:
+evento_04_1:		; el evento 0x04, paso 1
 	xor a			;9315
 	ld (0e36fh),a		;9316
-	ld (0e360h),a		;9319
-	jp 0585ch		;931c
-L_931F:
+	ld (0e360h),a		;9319   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	jp 0585ch		;931c   ; borra_cursor: borra el cursor de la columna de opciones
+evento_05:		; el evento 0x05 (0xE8AA), de un solo paso
 	xor a			;931f
-	ld (0e360h),a		;9320
-	jp 0585ch		;9323
-L_9326:
-	ld a,(0e8abh)		;9326
-	call 040abh		;9329
+	ld (0e360h),a		;9320   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	jp 0585ch		;9323   ; borra_cursor: borra el cursor de la columna de opciones
+evento_06:		; el evento 0x06 (0xE8AA): despacha su paso 0xE8AB (tabla p02:932C)
+	ld a,(0e8abh)		;9326   ; lee el paso del evento
+	call 040abh		;9329   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_932C: tabla de 3 palabras del despachador (call 0x408D en
@@ -2640,45 +2640,45 @@ DATA_saltos_932C:
 ; ======================================================================
 
 
-L_9332:
-	call 045c4h		;9332
+evento_06_0:		; el evento 0x06, paso 0
+	call 045c4h		;9332   ; sonido_2f: pide el sonido 0x2F
 	ld a,001h		;9335
-	ld (0e007h),a		;9337
-	ld hl,0eb66h		;933a
+	ld (0e007h),a		;9337   ; guarda las banderas de sprites (bit 0: sin rotar)
+	ld hl,0eb66h		;933a   ; apunta a las banderas de la historia, byte 0x26 (se graban con la partida)
 	set 7,(hl)		;933d
-	call 0590dh		;933f
-	call 058d4h		;9342
+	call 0590dh		;933f   ; corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+	call 058d4h		;9342   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 	ld a,001h		;9345
-	call 06148h		;9347
+	call 06148h		;9347   ; graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
 	ld a,001h		;934a
-	call 06212h		;934c
-	call 05e5fh		;934f
-	jp L_9189		;9352
-L_9355:
+	call 06212h		;934c   ; nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+	call 05e5fh		;934f   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;9352   ; evento_siguiente_paso: 0xE8AB + 1
+evento_06_1:		; el evento 0x06, paso 1
 	ld c,001h		;9355
-	call 04dfdh		;9357
-	ld a,(0e886h)		;935a
+	call 04dfdh		;9357   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;935a   ; lee el texto en marcha
 	and a			;935d
 	ret nz			;935e
-	jp L_9189		;935f
-L_9362:
-	ld a,(0e008h)		;9362
+	jp evento_siguiente_paso		;935f   ; evento_siguiente_paso: 0xE8AB + 1
+evento_06_2:		; el evento 0x06, paso 2
+	ld a,(0e008h)		;9362   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
 	and a			;9365
 	ret z			;9366
-	call 067c8h		;9367
+	call 067c8h		;9367   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
 	ld a,001h		;936a
 	call 04662h		;936c
-	ld a,(0e367h)		;936f
-	ld (0f000h),a		;9372
+	ld a,(0e367h)		;936f   ; lee la Y guardada del primer sprite
+	ld (0f000h),a		;9372   ; guarda los atributos de los 32 sprites
 	xor a			;9375
-	ld (0e007h),a		;9376
-	call 05ecah		;9379
+	ld (0e007h),a		;9376   ; guarda las banderas de sprites (bit 0: sin rotar)
+	call 05ecah		;9379   ; vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
 	ld a,003h		;937c
-	ld (0e8a0h),a		;937e
+	ld (0e8a0h),a		;937e   ; guarda el paso del menu (tabla p00:5231)
 	ret			;9381
-L_9382:
-	ld a,(0e8abh)		;9382
-	call 040abh		;9385
+evento_07:		; el evento 0x07 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9388)
+	ld a,(0e8abh)		;9382   ; lee el paso del evento
+	call 040abh		;9385   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9388: tabla de 4 palabras del despachador (call 0x408D en
@@ -2695,13 +2695,13 @@ DATA_saltos_9388:
 ; ======================================================================
 
 
-L_9390:
+evento_07_0:		; el evento 0x07, paso 0
 	ld a,040h		;9390
-	ld (0e004h),a		;9392
-	call 04592h		;9395
-	jp L_9189		;9398
-L_939B:
-	ld hl,0e004h		;939b
+	ld (0e004h),a		;9392   ; guarda la espera del estado, en cuadros
+	call 04592h		;9395   ; sonido_06: pide el sonido 6
+	jp evento_siguiente_paso		;9398   ; evento_siguiente_paso: 0xE8AB + 1
+evento_07_1:		; el evento 0x07, paso 1
+	ld hl,0e004h		;939b   ; apunta a la espera del estado, en cuadros
 	dec (hl)			;939e
 	ld a,(hl)			;939f
 	cp 020h		;93a0
@@ -2709,10 +2709,10 @@ L_939B:
 	ld de,00020h		;93a3
 	ld hl,0b486h		;93a6
 	call 044b8h		;93a9
-	call 05e5fh		;93ac
-	jp L_9189		;93af
-L_93B2:
-	ld hl,0e004h		;93b2
+	call 05e5fh		;93ac   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;93af   ; evento_siguiente_paso: 0xE8AB + 1
+evento_07_2:		; el evento 0x07, paso 2
+	ld hl,0e004h		;93b2   ; apunta a la espera del estado, en cuadros
 	dec (hl)			;93b5
 	ret nz			;93b6
 	ld de,00020h		;93b7
@@ -2726,19 +2726,19 @@ L_93B2:
 	ld bc,0007fh		;93cb
 	ld (hl),000h		;93ce
 	ldir		;93d0
-	call 05e5fh		;93d2
-	jp L_9189		;93d5
-L_93D8:
+	call 05e5fh		;93d2   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;93d5   ; evento_siguiente_paso: 0xE8AB + 1
+evento_07_3:		; el evento 0x07, paso 3
 	ld c,00bh		;93d8
-	call 04dfdh		;93da
-	ld a,(0e886h)		;93dd
+	call 04dfdh		;93da   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;93dd   ; lee el texto en marcha
 	and a			;93e0
 	ret nz			;93e1
-	ld (0e360h),a		;93e2
-	jp 0585ch		;93e5
-L_93E8:
-	ld a,(0e8abh)		;93e8
-	call 040abh		;93eb
+	ld (0e360h),a		;93e2   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	jp 0585ch		;93e5   ; borra_cursor: borra el cursor de la columna de opciones
+evento_08:		; el evento 0x08 (0xE8AA): despacha su paso 0xE8AB (tabla p02:93EE)
+	ld a,(0e8abh)		;93e8   ; lee el paso del evento
+	call 040abh		;93eb   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_93EE: tabla de 4 palabras del despachador (call 0x408D en
@@ -2755,13 +2755,13 @@ DATA_saltos_93EE:
 ; ======================================================================
 
 
-L_93F6:
+evento_08_0:		; el evento 0x08, paso 0
 	ld a,040h		;93f6
-	ld (0e004h),a		;93f8
-	call 04592h		;93fb
-	jp L_9189		;93fe
-L_9401:
-	ld hl,0e004h		;9401
+	ld (0e004h),a		;93f8   ; guarda la espera del estado, en cuadros
+	call 04592h		;93fb   ; sonido_06: pide el sonido 6
+	jp evento_siguiente_paso		;93fe   ; evento_siguiente_paso: 0xE8AB + 1
+evento_08_1:		; el evento 0x08, paso 1
+	ld hl,0e004h		;9401   ; apunta a la espera del estado, en cuadros
 	dec (hl)			;9404
 	ld a,(hl)			;9405
 	cp 020h		;9406
@@ -2769,10 +2769,10 @@ L_9401:
 	ld de,0b020h		;9409
 	ld hl,0b4a4h		;940c
 	call 044b8h		;940f
-	call 05e5fh		;9412
-	jp L_9189		;9415
-L_9418:
-	ld hl,0e004h		;9418
+	call 05e5fh		;9412   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;9415   ; evento_siguiente_paso: 0xE8AB + 1
+evento_08_2:		; el evento 0x08, paso 2
+	ld hl,0e004h		;9418   ; apunta a la espera del estado, en cuadros
 	dec (hl)			;941b
 	ret nz			;941c
 	ld de,0b020h		;941d
@@ -2781,28 +2781,28 @@ L_9418:
 	xor a			;9426
 	ld hl,0e83bh		;9427
 	ld (hl),a			;942a
-	ld hl,0e400h		;942b
+	ld hl,0e400h		;942b   ; apunta a los 8 actores de la sala (0x80 bytes cada uno)
 	ld de,0e401h		;942e
 	ld bc,0007fh		;9431
 	ld (hl),000h		;9434
 	ldir		;9436
-	call 05e5fh		;9438
-	jp L_9189		;943b
-L_943E:
+	call 05e5fh		;9438   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;943b   ; evento_siguiente_paso: 0xE8AB + 1
+evento_08_3:		; el evento 0x08, paso 3
 	ld c,00eh		;943e
-	call 04dfdh		;9440
-	ld a,(0e886h)		;9443
+	call 04dfdh		;9440   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9443   ; lee el texto en marcha
 	and a			;9446
 	ret nz			;9447
-	ld (0e360h),a		;9448
-	jp 0585ch		;944b
-L_944E:
+	ld (0e360h),a		;9448   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	jp 0585ch		;944b   ; borra_cursor: borra el cursor de la columna de opciones
+evento_09:		; el evento 0x09 (0xE8AA), de un solo paso
 	ld a,003h		;944e
-	call 04856h		;9450
-	jp L_931F		;9453
-L_9456:
-	ld a,(0e8abh)		;9456
-	call 040abh		;9459
+	call 04856h		;9450   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	jp evento_05		;9453   ; evento_05: el evento 0x05 (0xE8AA), de un solo paso
+evento_0a:		; el evento 0x0A (0xE8AA): despacha su paso 0xE8AB (tabla p02:945C)
+	ld a,(0e8abh)		;9456   ; lee el paso del evento
+	call 040abh		;9459   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_945C: tabla de 4 palabras del despachador (call 0x408D en
@@ -2819,13 +2819,13 @@ DATA_saltos_945C:
 ; ======================================================================
 
 
-L_9464:
+evento_0a_0:		; el evento 0x0A, paso 0
 	ld a,030h		;9464
-	ld (0e004h),a		;9466
-	call 0458dh		;9469
-	jp L_9189		;946c
-L_946F:
-	ld hl,0e004h		;946f
+	ld (0e004h),a		;9466   ; guarda la espera del estado, en cuadros
+	call 0458dh		;9469   ; sonido_1e: pide el sonido 0x1E
+	jp evento_siguiente_paso		;946c   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0a_1:		; el evento 0x0A, paso 1
+	ld hl,0e004h		;946f   ; apunta a la espera del estado, en cuadros
 	dec (hl)			;9472
 	ld a,(hl)			;9473
 	cp 020h		;9474
@@ -2833,10 +2833,10 @@ L_946F:
 	ld de,02050h		;9477
 	ld hl,0950ah		;947a
 	call 044b8h		;947d
-	call 05e5fh		;9480
-	jp L_9189		;9483
-L_9486:
-	ld hl,0e004h		;9486
+	call 05e5fh		;9480   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;9483   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0a_2:		; el evento 0x0A, paso 2
+	ld hl,0e004h		;9486   ; apunta a la espera del estado, en cuadros
 	dec (hl)			;9489
 	ld a,(hl)			;948a
 	cp 010h		;948b
@@ -2844,23 +2844,23 @@ L_9486:
 	ld de,01040h		;948e
 	ld hl,094e4h		;9491
 	call 044b8h		;9494
-	call 05e5fh		;9497
-	jp L_9189		;949a
-L_949D:
-	ld hl,0e004h		;949d
+	call 05e5fh		;9497   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;949a   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0a_3:		; el evento 0x0A, paso 3
+	ld hl,0e004h		;949d   ; apunta a la espera del estado, en cuadros
 	dec (hl)			;94a0
 	ret nz			;94a1
 	ld de,01040h		;94a2
 	ld hl,094beh		;94a5
 	xor a			;94a8
-	ld (0e36dh),a		;94a9
+	ld (0e36dh),a		;94a9   ; guarda el color de las fichas copiadas
 	call 044b8h		;94ac
-	call 05e5fh		;94af
-	ld hl,0eb6dh		;94b2
+	call 05e5fh		;94af   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	ld hl,0eb6dh		;94b2   ; apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
 	set 5,(hl)		;94b5
 	xor a			;94b7
-	ld (0e9d8h),a		;94b8
-	jp L_931F		;94bb
+	ld (0e9d8h),a		;94b8   ; guarda el objeto 4 (bit 0: se lleva)
+	jp evento_05		;94bb   ; evento_05: el evento 0x05 (0xE8AA), de un solo paso
 
 ; ----------------------------------------------------------------------
 ; DATOS dibujo_94BE: dibujo (L_44B8): [filas][columnas] y 4 fichas por celda
@@ -2907,9 +2907,9 @@ DATA_dibujo_950A:
 ; ======================================================================
 
 
-L_9510:
-	ld a,(0e8abh)		;9510
-	call 040abh		;9513
+evento_0b:		; el evento 0x0B (0xE8AA): despacha su paso 0xE8AB (tabla p02:9516)
+	ld a,(0e8abh)		;9510   ; lee el paso del evento
+	call 040abh		;9513   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9516: tabla de 2 palabras del despachador (call 0x408D en
@@ -2924,32 +2924,32 @@ DATA_saltos_9516:
 ; ======================================================================
 
 
-L_951A:
+evento_0b_0:		; el evento 0x0B, paso 0
 	ld a,009h		;951a
-	ld (0e368h),a		;951c
-	call 04856h		;951f
-	call 04574h		;9522
-	jp L_9189		;9525
-L_9528:
+	ld (0e368h),a		;951c   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 04856h		;951f   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	call 04574h		;9522   ; sonido_13: pide el sonido 0x13
+	jp evento_siguiente_paso		;9525   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0b_1:		; el evento 0x0B, paso 1
 	ld c,00bh		;9528
-	call 04dfdh		;952a
-	ld a,(0e886h)		;952d
+	call 04dfdh		;952a   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;952d   ; lee el texto en marcha
 	and a			;9530
 	ret nz			;9531
-	ld hl,0eb71h		;9532
+	ld hl,0eb71h		;9532   ; apunta a las banderas de la historia, byte 0x31 (se graban con la partida)
 	set 5,(hl)		;9535
 	ld a,001h		;9537
-	ld (0e9d6h),a		;9539
+	ld (0e9d6h),a		;9539   ; guarda el objeto 3 (bit 0: se lleva)
 	xor a			;953c
-	ld (0e368h),a		;953d
+	ld (0e368h),a		;953d   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ld a,001h		;9540
-	ld (0e8a0h),a		;9542
+	ld (0e8a0h),a		;9542   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9545
-	ld (0e8a3h),a		;9547
+	ld (0e8a3h),a		;9547   ; guarda la lista de opciones del menu
 	ret			;954a
-L_954B:
-	ld a,(0e8abh)		;954b
-	call 040abh		;954e
+evento_0c:		; el evento 0x0C (0xE8AA): despacha su paso 0xE8AB (tabla p02:9551)
+	ld a,(0e8abh)		;954b   ; lee el paso del evento
+	call 040abh		;954e   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9551: tabla de 3 palabras del despachador (call 0x408D en
@@ -2965,54 +2965,54 @@ DATA_saltos_9551:
 ; ======================================================================
 
 
-L_9557:
+evento_0c_0:		; el evento 0x0C, paso 0
 	ld a,001h		;9557
-	ld (0e007h),a		;9559
-	ld hl,0eb74h		;955c
+	ld (0e007h),a		;9559   ; guarda las banderas de sprites (bit 0: sin rotar)
+	ld hl,0eb74h		;955c   ; apunta a las banderas de la historia, byte 0x34 (se graban con la partida)
 	set 4,(hl)		;955f
-	call 0590dh		;9561
-	call 058d4h		;9564
+	call 0590dh		;9561   ; corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+	call 058d4h		;9564   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 	ld a,002h		;9567
-	call 06148h		;9569
+	call 06148h		;9569   ; graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
 	ld a,002h		;956c
-	call 06212h		;956e
-	call 05e5fh		;9571
-	call 045c4h		;9574
-	jp L_9189		;9577
-L_957A:
+	call 06212h		;956e   ; nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+	call 05e5fh		;9571   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	call 045c4h		;9574   ; sonido_2f: pide el sonido 0x2F
+	jp evento_siguiente_paso		;9577   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0c_1:		; el evento 0x0C, paso 1
 	ld c,009h		;957a
-	call 04dfdh		;957c
-	ld a,(0e886h)		;957f
+	call 04dfdh		;957c   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;957f   ; lee el texto en marcha
 	and a			;9582
 	ret nz			;9583
-	jp L_9189		;9584
-L_9587:
-	ld a,(0e008h)		;9587
+	jp evento_siguiente_paso		;9584   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0c_2:		; el evento 0x0C, paso 2
+	ld a,(0e008h)		;9587   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
 	and a			;958a
 	ret z			;958b
-	call 067c8h		;958c
+	call 067c8h		;958c   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
 	ld a,000h		;958f
 	call 04662h		;9591
-	ld a,(0e367h)		;9594
-	ld (0f000h),a		;9597
+	ld a,(0e367h)		;9594   ; lee la Y guardada del primer sprite
+	ld (0f000h),a		;9597   ; guarda los atributos de los 32 sprites
 	xor a			;959a
-	ld (0e007h),a		;959b
-	call 05ecah		;959e
+	ld (0e007h),a		;959b   ; guarda las banderas de sprites (bit 0: sin rotar)
+	call 05ecah		;959e   ; vuelca_sprites: los 32 sprites de 0xF000 a 0x3B00, rotando el orden cada cuadro (0xE006)
 	ld a,003h		;95a1
-	ld (0e8a0h),a		;95a3
+	ld (0e8a0h),a		;95a3   ; guarda el paso del menu (tabla p00:5231)
 	ret			;95a6
-L_95A7:
+evento_0d:		; el evento 0x0D (0xE8AA), de un solo paso
 	ld a,022h		;95a7
 	ld (0e488h),a		;95a9
-	call 0458dh		;95ac
+	call 0458dh		;95ac   ; sonido_1e: pide el sonido 0x1E
 	ld a,001h		;95af
-	ld (0e8a0h),a		;95b1
+	ld (0e8a0h),a		;95b1   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;95b4
-	ld (0e8a3h),a		;95b6
+	ld (0e8a3h),a		;95b6   ; guarda la lista de opciones del menu
 	ret			;95b9
-L_95BA:
-	ld a,(0e8abh)		;95ba
-	call 040abh		;95bd
+evento_0e:		; el evento 0x0E (0xE8AA): despacha su paso 0xE8AB (tabla p02:95C0)
+	ld a,(0e8abh)		;95ba   ; lee el paso del evento
+	call 040abh		;95bd   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_95C0: tabla de 15 palabras del despachador (call 0x408D en
@@ -3040,173 +3040,173 @@ DATA_saltos_95C0:
 ; ======================================================================
 
 
-L_95DE:
+evento_0e_0:		; el evento 0x0E, paso 0
 	ld a,00eh		;95de
-	ld (0e368h),a		;95e0
-	call 04856h		;95e3
-	call 04574h		;95e6
-	jp L_9189		;95e9
-L_95EC:
+	ld (0e368h),a		;95e0   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 04856h		;95e3   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	call 04574h		;95e6   ; sonido_13: pide el sonido 0x13
+	jp evento_siguiente_paso		;95e9   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_1:		; el evento 0x0E, paso 1
 	ld c,005h		;95ec
-	call 04dfdh		;95ee
-	ld a,(0e886h)		;95f1
+	call 04dfdh		;95ee   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;95f1   ; lee el texto en marcha
 	and a			;95f4
 	ret nz			;95f5
-	ld a,(0e887h)		;95f6
+	ld a,(0e887h)		;95f6   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;95f9
 	ret nz			;95fa
-	jp L_9189		;95fb
-L_95FE:
+	jp evento_siguiente_paso		;95fb   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_2:		; el evento 0x0E, paso 2
 	ld a,001h		;95fe
-	ld (0e007h),a		;9600
-	call 0590dh		;9603
-	call 058d4h		;9606
+	ld (0e007h),a		;9600   ; guarda las banderas de sprites (bit 0: sin rotar)
+	call 0590dh		;9603   ; corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+	call 058d4h		;9606   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 	xor a			;9609
-	ld (0e368h),a		;960a
+	ld (0e368h),a		;960a   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	xor a			;960d
-	call 06148h		;960e
+	call 06148h		;960e   ; graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
 	xor a			;9611
-	call 06212h		;9612
-	call 05e5fh		;9615
-	jp L_9189		;9618
-L_961B:
+	call 06212h		;9612   ; nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+	call 05e5fh		;9615   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;9618   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_3:		; el evento 0x0E, paso 3
 	ld c,006h		;961b
-	call 04dfdh		;961d
-	ld a,(0e886h)		;9620
+	call 04dfdh		;961d   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9620   ; lee el texto en marcha
 	and a			;9623
 	ret nz			;9624
-	ld a,(0e887h)		;9625
+	ld a,(0e887h)		;9625   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;9628
 	ret nz			;9629
 	ld a,00eh		;962a
-	ld (0e8aah),a		;962c
-	jp L_9189		;962f
-L_9632:
-	call 0590dh		;9632
-	call 058d4h		;9635
+	ld (0e8aah),a		;962c   ; guarda el evento en curso (tabla p02:9135)
+	jp evento_siguiente_paso		;962f   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_4:		; el evento 0x0E, paso 4
+	call 0590dh		;9632   ; corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+	call 058d4h		;9635   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 	ld a,004h		;9638
-	call 06148h		;963a
+	call 06148h		;963a   ; graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
 	ld a,004h		;963d
-	call 06212h		;963f
-	call 05e5fh		;9642
-	jp L_9189		;9645
-L_9648:
+	call 06212h		;963f   ; nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+	call 05e5fh		;9642   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;9645   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_5:		; el evento 0x0E, paso 5
 	ld c,007h		;9648
-	call 04dfdh		;964a
-	ld a,(0e886h)		;964d
+	call 04dfdh		;964a   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;964d   ; lee el texto en marcha
 	and a			;9650
 	ret nz			;9651
-	ld a,(0e887h)		;9652
+	ld a,(0e887h)		;9652   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;9655
 	ret nz			;9656
 	ld a,00eh		;9657
-	ld (0e8aah),a		;9659
-	jp L_9189		;965c
-L_965F:
-	call 067c8h		;965f
+	ld (0e8aah),a		;9659   ; guarda el evento en curso (tabla p02:9135)
+	jp evento_siguiente_paso		;965c   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_6:		; el evento 0x0E, paso 6
+	call 067c8h		;965f   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
 	ld a,00dh		;9662
-	ld (0e368h),a		;9664
-	call 04856h		;9667
-	call 04574h		;966a
-	jp L_9189		;966d
-L_9670:
+	ld (0e368h),a		;9664   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 04856h		;9667   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	call 04574h		;966a   ; sonido_13: pide el sonido 0x13
+	jp evento_siguiente_paso		;966d   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_7:		; el evento 0x0E, paso 7
 	ld c,008h		;9670
-	call 04dfdh		;9672
-	ld a,(0e886h)		;9675
+	call 04dfdh		;9672   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9675   ; lee el texto en marcha
 	and a			;9678
 	ret nz			;9679
-	ld a,(0e887h)		;967a
+	ld a,(0e887h)		;967a   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;967d
 	ret nz			;967e
 	ld a,00eh		;967f
-	ld (0e8aah),a		;9681
-	jp L_9189		;9684
-L_9687:
-	call 0590dh		;9687
-	call 058d4h		;968a
+	ld (0e8aah),a		;9681   ; guarda el evento en curso (tabla p02:9135)
+	jp evento_siguiente_paso		;9684   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_8:		; el evento 0x0E, paso 8
+	call 0590dh		;9687   ; corta_sprites: guarda la Y del primer sprite en 0xE367, la pone a 0xD0 y vuelca
+	call 058d4h		;968a   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 	xor a			;968d
-	ld (0e368h),a		;968e
+	ld (0e368h),a		;968e   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	xor a			;9691
-	call 06148h		;9692
+	call 06148h		;9692   ; graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
 	xor a			;9695
-	call 06212h		;9696
-	call 05e5fh		;9699
-	jp L_9189		;969c
-L_969F:
+	call 06212h		;9696   ; nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+	call 05e5fh		;9699   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;969c   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_9:		; el evento 0x0E, paso 9
 	ld c,009h		;969f
-	call 04dfdh		;96a1
-	ld a,(0e886h)		;96a4
+	call 04dfdh		;96a1   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;96a4   ; lee el texto en marcha
 	and a			;96a7
 	ret nz			;96a8
-	ld a,(0e887h)		;96a9
+	ld a,(0e887h)		;96a9   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;96ac
 	ret nz			;96ad
 	ld a,00eh		;96ae
-	ld (0e8aah),a		;96b0
-	jp L_9189		;96b3
-L_96B6:
-	call 067c8h		;96b6
+	ld (0e8aah),a		;96b0   ; guarda el evento en curso (tabla p02:9135)
+	jp evento_siguiente_paso		;96b3   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_10:		; el evento 0x0E, paso 10
+	call 067c8h		;96b6   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
 	ld a,00eh		;96b9
-	ld (0e368h),a		;96bb
-	call 04856h		;96be
-	call 04574h		;96c1
-	jp L_9189		;96c4
-L_96C7:
+	ld (0e368h),a		;96bb   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 04856h		;96be   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	call 04574h		;96c1   ; sonido_13: pide el sonido 0x13
+	jp evento_siguiente_paso		;96c4   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_11:		; el evento 0x0E, paso 11
 	ld c,00dh		;96c7
-	call 04dfdh		;96c9
-	ld a,(0e886h)		;96cc
+	call 04dfdh		;96c9   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;96cc   ; lee el texto en marcha
 	and a			;96cf
 	ret nz			;96d0
-	ld a,(0e887h)		;96d1
+	ld a,(0e887h)		;96d1   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;96d4
 	ret nz			;96d5
 	ld a,00eh		;96d6
-	ld (0e8aah),a		;96d8
-	jp L_9189		;96db
-L_96DE:
+	ld (0e8aah),a		;96d8   ; guarda el evento en curso (tabla p02:9135)
+	jp evento_siguiente_paso		;96db   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_12:		; el evento 0x0E, paso 12
 	ld a,00fh		;96de
-	ld (0e368h),a		;96e0
-	call 04856h		;96e3
-	call 04574h		;96e6
-	jp L_9189		;96e9
-L_96EC:
+	ld (0e368h),a		;96e0   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 04856h		;96e3   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	call 04574h		;96e6   ; sonido_13: pide el sonido 0x13
+	jp evento_siguiente_paso		;96e9   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_13:		; el evento 0x0E, paso 13
 	ld c,00ah		;96ec
-	call 04dfdh		;96ee
-	ld a,(0e886h)		;96f1
+	call 04dfdh		;96ee   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;96f1   ; lee el texto en marcha
 	and a			;96f4
 	ret nz			;96f5
-	ld a,(0e887h)		;96f6
+	ld a,(0e887h)		;96f6   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;96f9
 	ret nz			;96fa
 	ld a,00eh		;96fb
-	ld (0e8aah),a		;96fd
-	jp L_9189		;9700
-L_9703:
+	ld (0e8aah),a		;96fd   ; guarda el evento en curso (tabla p02:9135)
+	jp evento_siguiente_paso		;9700   ; evento_siguiente_paso: 0xE8AB + 1
+evento_0e_14:		; el evento 0x0E, paso 14
 	ld a,001h		;9703
-	ld (0e8a0h),a		;9705
+	ld (0e8a0h),a		;9705   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9708
-	ld (0e8a3h),a		;970a
+	ld (0e8a3h),a		;970a   ; guarda la lista de opciones del menu
 	ret			;970d
-L_970E:
+evento_0f:		; el evento 0x0F (0xE8AA), de un solo paso
 	ld a,008h		;970e
-	ld (0e360h),a		;9710
+	ld (0e360h),a		;9710   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	ld a,009h		;9713
-	ld (0e3a1h),a		;9715
+	ld (0e3a1h),a		;9715   ; guarda la escena de accion (1-9)
 	ld a,003h		;9718
-	ld (0e337h),a		;971a
+	ld (0e337h),a		;971a   ; guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	ld hl,00005h		;971d
-	ld (0e3e0h),hl		;9720
+	ld (0e3e0h),hl		;9720   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	ld hl,00235h		;9723
-	ld (0eb40h),hl		;9726
+	ld (0eb40h),hl		;9726   ; guarda la sala
 	ld a,0ffh		;9729
-	ld (0e368h),a		;972b
+	ld (0e368h),a		;972b   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	xor a			;972e
 	ld (0e39fh),a		;972f
 	ld (0e3a0h),a		;9732
 	ret			;9735
-L_9736:
-	ld a,(0e8abh)		;9736
-	call 040abh		;9739
+evento_10:		; el evento 0x10 (0xE8AA): despacha su paso 0xE8AB (tabla p02:973C)
+	ld a,(0e8abh)		;9736   ; lee el paso del evento
+	call 040abh		;9739   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_973C: tabla de 5 palabras del despachador (call 0x408D en
@@ -3224,52 +3224,52 @@ DATA_saltos_973C:
 ; ======================================================================
 
 
-L_9746:
+evento_10_0:		; el evento 0x10, paso 0
 	xor a			;9746
-	ld (0e38fh),a		;9747
-	ld (0e38eh),a		;974a
-	ld a,(0eb7ch)		;974d
+	ld (0e38fh),a		;9747   ; guarda el resultado de la carga (2: fallo)
+	ld (0e38eh),a		;974a   ; guarda el paso del menu de carga
+	ld a,(0eb7ch)		;974d   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;9750
 	set 6,a		;9752
-	ld (0eb7ch),a		;9754
-	jp L_9189		;9757
-L_975A:
-	call 0bdafh		;975a
-	ld a,(0e38fh)		;975d
+	ld (0eb7ch),a		;9754   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+	jp evento_siguiente_paso		;9757   ; evento_siguiente_paso: 0xE8AB + 1
+evento_10_1:		; el evento 0x10, paso 1
+	call 0bdafh		;975a   ; graba_en_cinta: un paso de la grabacion en cinta (tabla p03:BDB5)
+	ld a,(0e38fh)		;975d   ; lee el resultado de la carga (2: fallo)
 	and a			;9760
 	ret z			;9761
 	dec a			;9762
 	jr z,L_9768		;9763
-	call L_9189		;9765
+	call evento_siguiente_paso		;9765   ; evento_siguiente_paso: 0xE8AB + 1
 L_9768:
-	jp L_9189		;9768
-L_976B:
+	jp evento_siguiente_paso		;9768   ; evento_siguiente_paso: 0xE8AB + 1
+evento_10_2:		; el evento 0x10, paso 2
 	ld c,004h		;976b
-	call 04dfdh		;976d
-	ld a,(0e886h)		;9770
+	call 04dfdh		;976d   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9770   ; lee el texto en marcha
 	and a			;9773
 	ret nz			;9774
-	call L_9189		;9775
-	jp L_9189		;9778
-L_977B:
+	call evento_siguiente_paso		;9775   ; evento_siguiente_paso: 0xE8AB + 1
+	jp evento_siguiente_paso		;9778   ; evento_siguiente_paso: 0xE8AB + 1
+evento_10_3:		; el evento 0x10, paso 3
 	ld c,008h		;977b
-	call 04dfdh		;977d
-	ld a,(0e886h)		;9780
+	call 04dfdh		;977d   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9780   ; lee el texto en marcha
 	and a			;9783
 	ret nz			;9784
-	ld a,(0eb7ch)		;9785
+	ld a,(0eb7ch)		;9785   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;9788
-	ld (0eb7ch),a		;978a
-	jp L_9189		;978d
-L_9790:
+	ld (0eb7ch),a		;978a   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+	jp evento_siguiente_paso		;978d   ; evento_siguiente_paso: 0xE8AB + 1
+evento_10_4:		; el evento 0x10, paso 4
 	ld a,001h		;9790
-	ld (0e8a0h),a		;9792
+	ld (0e8a0h),a		;9792   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9795
-	ld (0e8a3h),a		;9797
+	ld (0e8a3h),a		;9797   ; guarda la lista de opciones del menu
 	ret			;979a
-L_979B:
-	ld a,(0e8abh)		;979b
-	call 040abh		;979e
+evento_11:		; el evento 0x11 (0xE8AA): despacha su paso 0xE8AB (tabla p02:97A1)
+	ld a,(0e8abh)		;979b   ; lee el paso del evento
+	call 040abh		;979e   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_97A1: tabla de 5 palabras del despachador (call 0x408D en
@@ -3287,52 +3287,52 @@ DATA_saltos_97A1:
 ; ======================================================================
 
 
-L_97AB:
+evento_11_0:		; el evento 0x11, paso 0
 	xor a			;97ab
-	ld (0e38fh),a		;97ac
-	ld (0e38eh),a		;97af
-	ld a,(0eb7ch)		;97b2
+	ld (0e38fh),a		;97ac   ; guarda el resultado de la carga (2: fallo)
+	ld (0e38eh),a		;97af   ; guarda el paso del menu de carga
+	ld a,(0eb7ch)		;97b2   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;97b5
 	set 5,a		;97b7
-	ld (0eb7ch),a		;97b9
-	jp L_9189		;97bc
-L_97BF:
-	call 0bbb4h		;97bf
-	ld a,(0e38fh)		;97c2
+	ld (0eb7ch),a		;97b9   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+	jp evento_siguiente_paso		;97bc   ; evento_siguiente_paso: 0xE8AB + 1
+evento_11_1:		; el evento 0x11, paso 1
+	call 0bbb4h		;97bf   ; graba_en_disco: un paso de la grabacion en disco (tabla p03:BBBA)
+	ld a,(0e38fh)		;97c2   ; lee el resultado de la carga (2: fallo)
 	and a			;97c5
 	ret z			;97c6
 	dec a			;97c7
 	jr z,L_97CD		;97c8
-	call L_9189		;97ca
+	call evento_siguiente_paso		;97ca   ; evento_siguiente_paso: 0xE8AB + 1
 L_97CD:
-	jp L_9189		;97cd
-L_97D0:
+	jp evento_siguiente_paso		;97cd   ; evento_siguiente_paso: 0xE8AB + 1
+evento_11_2:		; el evento 0x11, paso 2
 	ld c,004h		;97d0
-	call 04dfdh		;97d2
-	ld a,(0e886h)		;97d5
+	call 04dfdh		;97d2   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;97d5   ; lee el texto en marcha
 	and a			;97d8
 	ret nz			;97d9
-	call L_9189		;97da
-	jp L_9189		;97dd
-L_97E0:
+	call evento_siguiente_paso		;97da   ; evento_siguiente_paso: 0xE8AB + 1
+	jp evento_siguiente_paso		;97dd   ; evento_siguiente_paso: 0xE8AB + 1
+evento_11_3:		; el evento 0x11, paso 3
 	ld c,008h		;97e0
-	call 04dfdh		;97e2
-	ld a,(0e886h)		;97e5
+	call 04dfdh		;97e2   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;97e5   ; lee el texto en marcha
 	and a			;97e8
 	ret nz			;97e9
-	ld a,(0eb7ch)		;97ea
+	ld a,(0eb7ch)		;97ea   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;97ed
-	ld (0eb7ch),a		;97ef
-	jp L_9189		;97f2
-L_97F5:
+	ld (0eb7ch),a		;97ef   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+	jp evento_siguiente_paso		;97f2   ; evento_siguiente_paso: 0xE8AB + 1
+evento_11_4:		; el evento 0x11, paso 4
 	ld a,001h		;97f5
-	ld (0e8a0h),a		;97f7
+	ld (0e8a0h),a		;97f7   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;97fa
-	ld (0e8a3h),a		;97fc
+	ld (0e8a3h),a		;97fc   ; guarda la lista de opciones del menu
 	ret			;97ff
-L_9800:
-	ld a,(0e8abh)		;9800
-	call 040abh		;9803
+evento_12:		; el evento 0x12 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9806)
+	ld a,(0e8abh)		;9800   ; lee el paso del evento
+	call 040abh		;9803   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9806: tabla de 2 palabras del despachador (call 0x408D en
@@ -3347,21 +3347,21 @@ DATA_saltos_9806:
 ; ======================================================================
 
 
-L_980A:
+evento_12_0:		; el evento 0x12, paso 0
 	ld de,07030h		;980a
 	ld hl,0982bh		;980d
 	call 044b8h		;9810
-	call 05e5fh		;9813
-	jp L_9189		;9816
-L_9819:
+	call 05e5fh		;9813   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_siguiente_paso		;9816   ; evento_siguiente_paso: 0xE8AB + 1
+evento_12_1:		; el evento 0x12, paso 1
 	ld c,00ch		;9819
-	call 04dfdh		;981b
-	ld a,(0e886h)		;981e
+	call 04dfdh		;981b   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;981e   ; lee el texto en marcha
 	and a			;9821
 	ret nz			;9822
-	ld hl,0eb5dh		;9823
+	ld hl,0eb5dh		;9823   ; apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
 	set 4,(hl)		;9826
-	jp L_931F		;9828
+	jp evento_05		;9828   ; evento_05: el evento 0x05 (0xE8AA), de un solo paso
 
 ; ----------------------------------------------------------------------
 ; DATOS dibujo_982B: dibujo (L_44B8): [filas][columnas] y 4 fichas por celda
@@ -3376,9 +3376,9 @@ DATA_dibujo_982B:
 ; ======================================================================
 
 
-L_9831:
-	ld a,(0e8abh)		;9831
-	call 040abh		;9834
+evento_13:		; el evento 0x13 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9837)
+	ld a,(0e8abh)		;9831   ; lee el paso del evento
+	call 040abh		;9834   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9837: tabla de 5 palabras del despachador (call 0x408D en
@@ -3396,48 +3396,48 @@ DATA_saltos_9837:
 ; ======================================================================
 
 
-L_9841:
+evento_13_0:		; el evento 0x13, paso 0
 	xor a			;9841
-	ld (0e38fh),a		;9842
-	ld (0e38eh),a		;9845
-	jp L_9189		;9848
-L_984B:
-	call 0bee1h		;984b
-	ld a,(0e38fh)		;984e
+	ld (0e38fh),a		;9842   ; guarda el resultado de la carga (2: fallo)
+	ld (0e38eh),a		;9845   ; guarda el paso del menu de carga
+	jp evento_siguiente_paso		;9848   ; evento_siguiente_paso: 0xE8AB + 1
+evento_13_1:		; el evento 0x13, paso 1
+	call 0bee1h		;984b   ; comprueba_la_cinta: un paso de la comprobacion de la cinta (tabla p03:BEE7)
+	ld a,(0e38fh)		;984e   ; lee el resultado de la carga (2: fallo)
 	and a			;9851
 	ret z			;9852
 	dec a			;9853
 	jr z,L_9859		;9854
-	call L_9189		;9856
+	call evento_siguiente_paso		;9856   ; evento_siguiente_paso: 0xE8AB + 1
 L_9859:
-	jp L_9189		;9859
-L_985C:
+	jp evento_siguiente_paso		;9859   ; evento_siguiente_paso: 0xE8AB + 1
+evento_13_2:		; el evento 0x13, paso 2
 	ld c,004h		;985c
-	call 04dfdh		;985e
-	ld a,(0e886h)		;9861
+	call 04dfdh		;985e   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9861   ; lee el texto en marcha
 	and a			;9864
 	ret nz			;9865
-	call L_9189		;9866
-	jp L_9189		;9869
-L_986C:
+	call evento_siguiente_paso		;9866   ; evento_siguiente_paso: 0xE8AB + 1
+	jp evento_siguiente_paso		;9869   ; evento_siguiente_paso: 0xE8AB + 1
+evento_13_3:		; el evento 0x13, paso 3
 	ld c,008h		;986c
-	call 04dfdh		;986e
-	ld a,(0e886h)		;9871
+	call 04dfdh		;986e   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9871   ; lee el texto en marcha
 	and a			;9874
 	ret nz			;9875
-	jp L_9189		;9876
-L_9879:
-	ld a,(0eb7ch)		;9879
+	jp evento_siguiente_paso		;9876   ; evento_siguiente_paso: 0xE8AB + 1
+evento_13_4:		; el evento 0x13, paso 4
+	ld a,(0eb7ch)		;9879   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;987c
-	ld (0eb7ch),a		;987e
+	ld (0eb7ch),a		;987e   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
 	ld a,001h		;9881
-	ld (0e8a0h),a		;9883
+	ld (0e8a0h),a		;9883   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9886
-	ld (0e8a3h),a		;9888
+	ld (0e8a3h),a		;9888   ; guarda la lista de opciones del menu
 	ret			;988b
-L_988C:
-	ld a,(0e8abh)		;988c
-	call 040abh		;988f
+evento_14:		; el evento 0x14 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9892)
+	ld a,(0e8abh)		;988c   ; lee el paso del evento
+	call 040abh		;988f   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9892: tabla de 5 palabras del despachador (call 0x408D en
@@ -3455,48 +3455,48 @@ DATA_saltos_9892:
 ; ======================================================================
 
 
-L_989C:
+evento_14_0:		; el evento 0x14, paso 0
 	xor a			;989c
-	ld (0e38fh),a		;989d
-	ld (0e38eh),a		;98a0
-	jp L_9189		;98a3
-L_98A6:
-	call 0bbffh		;98a6
-	ld a,(0e38fh)		;98a9
+	ld (0e38fh),a		;989d   ; guarda el resultado de la carga (2: fallo)
+	ld (0e38eh),a		;98a0   ; guarda el paso del menu de carga
+	jp evento_siguiente_paso		;98a3   ; evento_siguiente_paso: 0xE8AB + 1
+evento_14_1:		; el evento 0x14, paso 1
+	call 0bbffh		;98a6   ; comprueba_el_disco: un paso de la comprobacion del disco (tabla p03:BC05)
+	ld a,(0e38fh)		;98a9   ; lee el resultado de la carga (2: fallo)
 	and a			;98ac
 	ret z			;98ad
 	dec a			;98ae
 	jr z,L_98B4		;98af
-	call L_9189		;98b1
+	call evento_siguiente_paso		;98b1   ; evento_siguiente_paso: 0xE8AB + 1
 L_98B4:
-	jp L_9189		;98b4
-L_98B7:
+	jp evento_siguiente_paso		;98b4   ; evento_siguiente_paso: 0xE8AB + 1
+evento_14_2:		; el evento 0x14, paso 2
 	ld c,004h		;98b7
-	call 04dfdh		;98b9
-	ld a,(0e886h)		;98bc
+	call 04dfdh		;98b9   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;98bc   ; lee el texto en marcha
 	and a			;98bf
 	ret nz			;98c0
-	call L_9189		;98c1
-	jp L_9189		;98c4
-L_98C7:
+	call evento_siguiente_paso		;98c1   ; evento_siguiente_paso: 0xE8AB + 1
+	jp evento_siguiente_paso		;98c4   ; evento_siguiente_paso: 0xE8AB + 1
+evento_14_3:		; el evento 0x14, paso 3
 	ld c,008h		;98c7
-	call 04dfdh		;98c9
-	ld a,(0e886h)		;98cc
+	call 04dfdh		;98c9   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;98cc   ; lee el texto en marcha
 	and a			;98cf
 	ret nz			;98d0
-	jp L_9189		;98d1
-L_98D4:
-	ld a,(0eb7ch)		;98d4
+	jp evento_siguiente_paso		;98d1   ; evento_siguiente_paso: 0xE8AB + 1
+evento_14_4:		; el evento 0x14, paso 4
+	ld a,(0eb7ch)		;98d4   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;98d7
-	ld (0eb7ch),a		;98d9
+	ld (0eb7ch),a		;98d9   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
 	ld a,001h		;98dc
-	ld (0e8a0h),a		;98de
+	ld (0e8a0h),a		;98de   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;98e1
-	ld (0e8a3h),a		;98e3
+	ld (0e8a3h),a		;98e3   ; guarda la lista de opciones del menu
 	ret			;98e6
-L_98E7:
-	ld a,(0e8abh)		;98e7
-	call 040abh		;98ea
+evento_15:		; el evento 0x15 (0xE8AA): despacha su paso 0xE8AB (tabla p02:98ED)
+	ld a,(0e8abh)		;98e7   ; lee el paso del evento
+	call 040abh		;98ea   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_98ED: tabla de 3 palabras del despachador (call 0x408D en
@@ -3512,42 +3512,42 @@ DATA_saltos_98ED:
 ; ======================================================================
 
 
-L_98F3:
+evento_15_0:		; el evento 0x15, paso 0
 	ld a,001h		;98f3
-	ld (0e007h),a		;98f5
-	call 0bb05h		;98f8
-	call 058ffh		;98fb
-	call 058d4h		;98fe
+	ld (0e007h),a		;98f5   ; guarda las banderas de sprites (bit 0: sin rotar)
+	call 0bb05h		;98f8   ; sonido_32: pide el sonido 0x32
+	call 058ffh		;98fb   ; esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+	call 058d4h		;98fe   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 	ld a,003h		;9901
-	call 06148h		;9903
+	call 06148h		;9903   ; graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
 	ld a,003h		;9906
-	call 06212h		;9908
-	call 05e5fh		;990b
-	call 0b4b8h		;990e
-	jp L_9189		;9911
-L_9914:
+	call 06212h		;9908   ; nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+	call 05e5fh		;990b   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	call 0b4b8h		;990e   ; sprites_de_0xeb7d: 8 sprites en 0xF060: cada bit de 0xEB7D elige una de las dos posiciones de p03:B4F5
+	jp evento_siguiente_paso		;9911   ; evento_siguiente_paso: 0xE8AB + 1
+evento_15_1:		; el evento 0x15, paso 1
 	ld c,008h		;9914
-	call 04dfdh		;9916
-	ld a,(0e886h)		;9919
+	call 04dfdh		;9916   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9919   ; lee el texto en marcha
 	and a			;991c
 	ret nz			;991d
-	jp L_9189		;991e
-L_9921:
-	ld a,(0e008h)		;9921
+	jp evento_siguiente_paso		;991e   ; evento_siguiente_paso: 0xE8AB + 1
+evento_15_2:		; el evento 0x15, paso 2
+	ld a,(0e008h)		;9921   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
 	and a			;9924
 	ret z			;9925
-	call 058ffh		;9926
-	call 067c8h		;9929
+	call 058ffh		;9926   ; esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+	call 067c8h		;9929   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
 	xor a			;992c
-	ld (0e007h),a		;992d
+	ld (0e007h),a		;992d   ; guarda las banderas de sprites (bit 0: sin rotar)
 	ld a,001h		;9930
-	ld (0e8a0h),a		;9932
+	ld (0e8a0h),a		;9932   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9935
-	ld (0e8a3h),a		;9937
+	ld (0e8a3h),a		;9937   ; guarda la lista de opciones del menu
 	ret			;993a
-L_993B:
-	ld a,(0e8abh)		;993b
-	call 040abh		;993e
+evento_16:		; el evento 0x16 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9941)
+	ld a,(0e8abh)		;993b   ; lee el paso del evento
+	call 040abh		;993e   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9941: tabla de 3 palabras del despachador (call 0x408D en
@@ -3563,33 +3563,33 @@ DATA_saltos_9941:
 ; ======================================================================
 
 
-L_9947:
+evento_16_0:		; el evento 0x16, paso 0
 	ld a,00ah		;9947
-	ld (0e368h),a		;9949
-	call 04856h		;994c
-	call 04574h		;994f
-	jp L_9189		;9952
-L_9955:
+	ld (0e368h),a		;9949   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 04856h		;994c   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	call 04574h		;994f   ; sonido_13: pide el sonido 0x13
+	jp evento_siguiente_paso		;9952   ; evento_siguiente_paso: 0xE8AB + 1
+evento_16_1:		; el evento 0x16, paso 1
 	ld c,005h		;9955
-	call 04dfdh		;9957
-	ld a,(0e886h)		;995a
+	call 04dfdh		;9957   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;995a   ; lee el texto en marcha
 	and a			;995d
 	ret nz			;995e
-	jp L_9189		;995f
-L_9962:
-	ld a,(0e008h)		;9962
+	jp evento_siguiente_paso		;995f   ; evento_siguiente_paso: 0xE8AB + 1
+evento_16_2:		; el evento 0x16, paso 2
+	ld a,(0e008h)		;9962   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
 	and a			;9965
 	ret z			;9966
 	xor a			;9967
-	ld (0e368h),a		;9968
+	ld (0e368h),a		;9968   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	ld a,001h		;996b
-	ld (0e8a0h),a		;996d
+	ld (0e8a0h),a		;996d   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9970
-	ld (0e8a3h),a		;9972
+	ld (0e8a3h),a		;9972   ; guarda la lista de opciones del menu
 	ret			;9975
-L_9976:
-	ld a,(0e8abh)		;9976
-	call 040abh		;9979
+evento_17:		; el evento 0x17 (0xE8AA): despacha su paso 0xE8AB (tabla p02:997C)
+	ld a,(0e8abh)		;9976   ; lee el paso del evento
+	call 040abh		;9979   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_997C: tabla de 3 palabras del despachador (call 0x408D en
@@ -3605,44 +3605,44 @@ DATA_saltos_997C:
 ; ======================================================================
 
 
-L_9982:
+evento_17_0:		; el evento 0x17, paso 0
 	ld a,001h		;9982
-	ld (0e007h),a		;9984
-	call 045c4h		;9987
-	call 058ffh		;998a
-	call 058d4h		;998d
+	ld (0e007h),a		;9984   ; guarda las banderas de sprites (bit 0: sin rotar)
+	call 045c4h		;9987   ; sonido_2f: pide el sonido 0x2F
+	call 058ffh		;998a   ; esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+	call 058d4h		;998d   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 	ld a,003h		;9990
-	call 06148h		;9992
+	call 06148h		;9992   ; graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
 	ld a,003h		;9995
-	call 06212h		;9997
-	call 05e5fh		;999a
-	call 0b4b8h		;999d
-	jp L_9189		;99a0
-L_99A3:
+	call 06212h		;9997   ; nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+	call 05e5fh		;999a   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	call 0b4b8h		;999d   ; sprites_de_0xeb7d: 8 sprites en 0xF060: cada bit de 0xEB7D elige una de las dos posiciones de p03:B4F5
+	jp evento_siguiente_paso		;99a0   ; evento_siguiente_paso: 0xE8AB + 1
+evento_17_1:		; el evento 0x17, paso 1
 	ld c,009h		;99a3
-	call 04dfdh		;99a5
-	ld a,(0e886h)		;99a8
+	call 04dfdh		;99a5   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;99a8   ; lee el texto en marcha
 	and a			;99ab
 	ret nz			;99ac
-	ld hl,0eb60h		;99ad
+	ld hl,0eb60h		;99ad   ; apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
 	set 0,(hl)		;99b0
-	jp L_9189		;99b2
-L_99B5:
-	ld a,(0e008h)		;99b5
+	jp evento_siguiente_paso		;99b2   ; evento_siguiente_paso: 0xE8AB + 1
+evento_17_2:		; el evento 0x17, paso 2
+	ld a,(0e008h)		;99b5   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
 	and a			;99b8
 	ret z			;99b9
-	call 058ffh		;99ba
-	call 067c8h		;99bd
+	call 058ffh		;99ba   ; esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+	call 067c8h		;99bd   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
 	xor a			;99c0
-	ld (0e007h),a		;99c1
+	ld (0e007h),a		;99c1   ; guarda las banderas de sprites (bit 0: sin rotar)
 	ld a,001h		;99c4
-	ld (0e8a0h),a		;99c6
+	ld (0e8a0h),a		;99c6   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;99c9
-	ld (0e8a3h),a		;99cb
+	ld (0e8a3h),a		;99cb   ; guarda la lista de opciones del menu
 	ret			;99ce
-L_99CF:
-	ld a,(0e8abh)		;99cf
-	call 040abh		;99d2
+evento_18:		; el evento 0x18 (0xE8AA): despacha su paso 0xE8AB (tabla p02:99D5)
+	ld a,(0e8abh)		;99cf   ; lee el paso del evento
+	call 040abh		;99d2   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_99D5: tabla de 2 palabras del despachador (call 0x408D en
@@ -3657,62 +3657,62 @@ DATA_saltos_99D5:
 ; ======================================================================
 
 
-L_99D9:
+evento_18_0:		; el evento 0x18, paso 0
 	ld a,001h		;99d9
-	ld (0e007h),a		;99db
-	call 0bb05h		;99de
-	call 058ffh		;99e1
-	call 058d4h		;99e4
+	ld (0e007h),a		;99db   ; guarda las banderas de sprites (bit 0: sin rotar)
+	call 0bb05h		;99de   ; sonido_32: pide el sonido 0x32
+	call 058ffh		;99e1   ; esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+	call 058d4h		;99e4   ; borra_zona_de_juego: borra 16 filas x 24 de 0xED00 y las vuelca
 	ld a,003h		;99e7
-	call 06148h		;99e9
+	call 06148h		;99e9   ; graficos_27: con 27-28 puestos, el juego de graficos A de la tabla p01:6154
 	ld a,003h		;99ec
-	call 06212h		;99ee
-	call 05e5fh		;99f1
-	call 0b4b8h		;99f4
-	jp L_9189		;99f7
-L_99FA:
-	ld a,(0e008h)		;99fa
+	call 06212h		;99ee   ; nombres_27: 12 filas x 16 de la tabla p27:6233[A] a 0xED44
+	call 05e5fh		;99f1   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	call 0b4b8h		;99f4   ; sprites_de_0xeb7d: 8 sprites en 0xF060: cada bit de 0xEB7D elige una de las dos posiciones de p03:B4F5
+	jp evento_siguiente_paso		;99f7   ; evento_siguiente_paso: 0xE8AB + 1
+evento_18_1:		; el evento 0x18, paso 1
+	ld a,(0e008h)		;99fa   ; lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
 	and a			;99fd
 	ret z			;99fe
-	call 058ffh		;99ff
-	call 067c8h		;9a02
+	call 058ffh		;99ff   ; esconde_sprites: Y = 0xE0 en los 32 sprites de 0xF000 y los vuelca
+	call 067c8h		;9a02   ; redibuja_la_sala: vuelve a montar las fichas y el mapa de la sala
 	xor a			;9a05
-	ld (0e007h),a		;9a06
+	ld (0e007h),a		;9a06   ; guarda las banderas de sprites (bit 0: sin rotar)
 	ld a,001h		;9a09
-	ld (0e8a0h),a		;9a0b
+	ld (0e8a0h),a		;9a0b   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9a0e
-	ld (0e8a3h),a		;9a10
+	ld (0e8a3h),a		;9a10   ; guarda la lista de opciones del menu
 	ret			;9a13
-L_9A14:
-	call 0bac4h		;9a14
+evento_19:		; el evento 0x19 (0xE8AA), de un solo paso
+	call 0bac4h		;9a14   ; sonido_27: pide el sonido 0x27
 	ld a,002h		;9a17
 	ld (0ea01h),a		;9a19
 	ld a,008h		;9a1c
-	ld (0e360h),a		;9a1e
-	jp 0585ch		;9a21
-L_9A24:
+	ld (0e360h),a		;9a1e   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	jp 0585ch		;9a21   ; borra_cursor: borra el cursor de la columna de opciones
+evento_1a:		; el evento 0x1A (0xE8AA), de un solo paso
 	ld hl,00001h		;9a24
-	ld (0e3e0h),hl		;9a27
+	ld (0e3e0h),hl		;9a27   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	ld a,008h		;9a2a
-	ld (0e360h),a		;9a2c
-	jp 0585ch		;9a2f
-L_9A32:
+	ld (0e360h),a		;9a2c   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	jp 0585ch		;9a2f   ; borra_cursor: borra el cursor de la columna de opciones
+evento_1b:		; el evento 0x1B (0xE8AA), de un solo paso
 	ld hl,00002h		;9a32
-	ld (0e3e0h),hl		;9a35
+	ld (0e3e0h),hl		;9a35   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	ld a,001h		;9a38
 	ld (0e3f2h),a		;9a3a
 	ld a,008h		;9a3d
-	ld (0e360h),a		;9a3f
-	jp 0585ch		;9a42
-L_9A45:
+	ld (0e360h),a		;9a3f   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	jp 0585ch		;9a42   ; borra_cursor: borra el cursor de la columna de opciones
+evento_1c:		; el evento 0x1C (0xE8AA), de un solo paso
 	ld a,006h		;9a45
 	ld (0ea01h),a		;9a47
 	ld a,008h		;9a4a
-	ld (0e360h),a		;9a4c
-	jp 0585ch		;9a4f
-L_9A52:
-	ld a,(0e8abh)		;9a52
-	call 040abh		;9a55
+	ld (0e360h),a		;9a4c   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	jp 0585ch		;9a4f   ; borra_cursor: borra el cursor de la columna de opciones
+evento_1d:		; el evento 0x1D (0xE8AA): despacha su paso 0xE8AB (tabla p02:9A58)
+	ld a,(0e8abh)		;9a52   ; lee el paso del evento
+	call 040abh		;9a55   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9A58: tabla de 5 palabras del despachador (call 0x408D en
@@ -3730,20 +3730,20 @@ DATA_saltos_9A58:
 ; ======================================================================
 
 
-L_9A62:
+evento_1d_0:		; el evento 0x1D, paso 0
 	ld a,080h		;9a62
-	ld (0e004h),a		;9a64
-	jp L_9189		;9a67
-L_9A6A:
-	ld hl,0e004h		;9a6a
+	ld (0e004h),a		;9a64   ; guarda la espera del estado, en cuadros
+	jp evento_siguiente_paso		;9a67   ; evento_siguiente_paso: 0xE8AB + 1
+evento_1d_1:		; el evento 0x1D, paso 1
+	ld hl,0e004h		;9a6a   ; apunta a la espera del estado, en cuadros
 	dec (hl)			;9a6d
-	jp z,L_9189		;9a6e
+	jp z,evento_siguiente_paso		;9a6e   ; evento_siguiente_paso: 0xE8AB + 1
 	ld a,(hl)			;9a71
 	and 00ch		;9a72
 	rra			;9a74
 	rra			;9a75
 	ld hl,09a81h		;9a76
-	call 040a1h		;9a79
+	call 040a1h		;9a79   ; hl_mas_a: HL = HL + A
 	ld a,(hl)			;9a7c
 	ld (0f02bh),a		;9a7d
 	ret			;9a80
@@ -3761,56 +3761,56 @@ DATA_resto_9A81:
 ; ======================================================================
 
 
-L_9A85:
+evento_1d_2:		; el evento 0x1D, paso 2
 	ld a,0e0h		;9a85
 	ld (0f028h),a		;9a87
-	ld hl,0eb7dh		;9a8a
+	ld hl,0eb7dh		;9a8a   ; apunta a las banderas de la historia, byte 0x3D (se graban con la partida)
 	set 7,(hl)		;9a8d
-	jp L_9189		;9a8f
-L_9A92:
+	jp evento_siguiente_paso		;9a8f   ; evento_siguiente_paso: 0xE8AB + 1
+evento_1d_3:		; el evento 0x1D, paso 3
 	ld c,00eh		;9a92
-	call 04dfdh		;9a94
-	ld a,(0e886h)		;9a97
+	call 04dfdh		;9a94   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9a97   ; lee el texto en marcha
 	and a			;9a9a
 	ret nz			;9a9b
-	ld a,(0e887h)		;9a9c
+	ld a,(0e887h)		;9a9c   ; lee la espera del texto (1 tecla, 2 tecla y fin)
 	and a			;9a9f
 	ret nz			;9aa0
-	call L_83F7		;9aa1
-	jp L_9189		;9aa4
-L_9AA7:
+	call accion_quita_extra		;9aa1   ; accion_quita_extra: esconde los sprites de 0xF020
+	jp evento_siguiente_paso		;9aa4   ; evento_siguiente_paso: 0xE8AB + 1
+evento_1d_4:		; el evento 0x1D, paso 4
 	ld c,00fh		;9aa7
-	call 04dfdh		;9aa9
-	ld a,(0e886h)		;9aac
+	call 04dfdh		;9aa9   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9aac   ; lee el texto en marcha
 	and a			;9aaf
 	ret nz			;9ab0
 	ld a,000h		;9ab1
 	call 04662h		;9ab3
-	ld hl,0eb65h		;9ab6
+	ld hl,0eb65h		;9ab6   ; apunta a las banderas de la historia, byte 0x25 (se graban con la partida)
 	set 0,(hl)		;9ab9
 	ld a,008h		;9abb
-	ld (0e360h),a		;9abd
-	jp 0585ch		;9ac0
-L_9AC3:
+	ld (0e360h),a		;9abd   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	jp 0585ch		;9ac0   ; borra_cursor: borra el cursor de la columna de opciones
+evento_1e:		; el evento 0x1E (0xE8AA), de un solo paso
 	ld a,008h		;9ac3
-	ld (0e360h),a		;9ac5
+	ld (0e360h),a		;9ac5   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	ld a,005h		;9ac8
-	ld (0e3a1h),a		;9aca
+	ld (0e3a1h),a		;9aca   ; guarda la escena de accion (1-9)
 	ld a,003h		;9acd
-	ld (0e337h),a		;9acf
+	ld (0e337h),a		;9acf   ; guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	ld hl,00007h		;9ad2
-	ld (0e3e0h),hl		;9ad5
+	ld (0e3e0h),hl		;9ad5   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	ld hl,00220h		;9ad8
-	ld (0eb40h),hl		;9adb
+	ld (0eb40h),hl		;9adb   ; guarda la sala
 	ld a,0ffh		;9ade
-	ld (0e368h),a		;9ae0
+	ld (0e368h),a		;9ae0   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	xor a			;9ae3
 	ld (0e39fh),a		;9ae4
 	ld (0e3a0h),a		;9ae7
 	ret			;9aea
-L_9AEB:
-	ld a,(0e8abh)		;9aeb
-	call 040abh		;9aee
+evento_1f:		; el evento 0x1F (0xE8AA): despacha su paso 0xE8AB (tabla p02:9AF1)
+	ld a,(0e8abh)		;9aeb   ; lee el paso del evento
+	call 040abh		;9aee   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9AF1: tabla de 5 palabras del despachador (call 0x408D en
@@ -3828,52 +3828,52 @@ DATA_saltos_9AF1:
 ; ======================================================================
 
 
-L_9AFB:
+evento_1f_0:		; el evento 0x1F, paso 0
 	xor a			;9afb
-	ld (0e38fh),a		;9afc
-	ld (0e38eh),a		;9aff
-	ld a,(0eb7ch)		;9b02
+	ld (0e38fh),a		;9afc   ; guarda el resultado de la carga (2: fallo)
+	ld (0e38eh),a		;9aff   ; guarda el paso del menu de carga
+	ld a,(0eb7ch)		;9b02   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;9b05
 	set 4,a		;9b07
-	ld (0eb7ch),a		;9b09
-	jp L_9189		;9b0c
-L_9B0F:
-	call 0bb14h		;9b0f
-	ld a,(0e38fh)		;9b12
+	ld (0eb7ch),a		;9b09   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+	jp evento_siguiente_paso		;9b0c   ; evento_siguiente_paso: 0xE8AB + 1
+evento_1f_1:		; el evento 0x1F, paso 1
+	call 0bb14h		;9b0f   ; graba_en_el_otro_cartucho: un paso de la grabacion en el otro cartucho (0xE38E, tabla p03:BB1A)
+	ld a,(0e38fh)		;9b12   ; lee el resultado de la carga (2: fallo)
 	and a			;9b15
 	ret z			;9b16
 	dec a			;9b17
 	jr z,L_9B1D		;9b18
-	call L_9189		;9b1a
+	call evento_siguiente_paso		;9b1a   ; evento_siguiente_paso: 0xE8AB + 1
 L_9B1D:
-	jp L_9189		;9b1d
-L_9B20:
+	jp evento_siguiente_paso		;9b1d   ; evento_siguiente_paso: 0xE8AB + 1
+evento_1f_2:		; el evento 0x1F, paso 2
 	ld c,004h		;9b20
-	call 04dfdh		;9b22
-	ld a,(0e886h)		;9b25
+	call 04dfdh		;9b22   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9b25   ; lee el texto en marcha
 	and a			;9b28
 	ret nz			;9b29
-	call L_9189		;9b2a
-	jp L_9189		;9b2d
-L_9B30:
+	call evento_siguiente_paso		;9b2a   ; evento_siguiente_paso: 0xE8AB + 1
+	jp evento_siguiente_paso		;9b2d   ; evento_siguiente_paso: 0xE8AB + 1
+evento_1f_3:		; el evento 0x1F, paso 3
 	ld c,008h		;9b30
-	call 04dfdh		;9b32
-	ld a,(0e886h)		;9b35
+	call 04dfdh		;9b32   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9b35   ; lee el texto en marcha
 	and a			;9b38
 	ret nz			;9b39
-	ld a,(0eb7ch)		;9b3a
+	ld a,(0eb7ch)		;9b3a   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;9b3d
-	ld (0eb7ch),a		;9b3f
-	jp L_9189		;9b42
-L_9B45:
+	ld (0eb7ch),a		;9b3f   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+	jp evento_siguiente_paso		;9b42   ; evento_siguiente_paso: 0xE8AB + 1
+evento_1f_4:		; el evento 0x1F, paso 4
 	ld a,001h		;9b45
-	ld (0e8a0h),a		;9b47
+	ld (0e8a0h),a		;9b47   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9b4a
-	ld (0e8a3h),a		;9b4c
+	ld (0e8a3h),a		;9b4c   ; guarda la lista de opciones del menu
 	ret			;9b4f
-L_9B50:
-	ld a,(0e8abh)		;9b50
-	call 040abh		;9b53
+evento_20:		; el evento 0x20 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9B56)
+	ld a,(0e8abh)		;9b50   ; lee el paso del evento
+	call 040abh		;9b53   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9B56: tabla de 5 palabras del despachador (call 0x408D en
@@ -3891,55 +3891,55 @@ DATA_saltos_9B56:
 ; ======================================================================
 
 
-L_9B60:
+evento_20_0:		; el evento 0x20, paso 0
 	xor a			;9b60
-	ld (0e38fh),a		;9b61
-	ld (0e38eh),a		;9b64
-	jp L_9189		;9b67
-L_9B6A:
-	call 0bb5fh		;9b6a
-	ld a,(0e38fh)		;9b6d
+	ld (0e38fh),a		;9b61   ; guarda el resultado de la carga (2: fallo)
+	ld (0e38eh),a		;9b64   ; guarda el paso del menu de carga
+	jp evento_siguiente_paso		;9b67   ; evento_siguiente_paso: 0xE8AB + 1
+evento_20_1:		; el evento 0x20, paso 1
+	call 0bb5fh		;9b6a   ; comprueba_el_otro_cartucho: un paso de la comprobacion: lo vuelve a leer y lo compara con 0xEB40 (tabla p03:BB65)
+	ld a,(0e38fh)		;9b6d   ; lee el resultado de la carga (2: fallo)
 	and a			;9b70
 	ret z			;9b71
 	dec a			;9b72
 	jr z,L_9B78		;9b73
-	call L_9189		;9b75
+	call evento_siguiente_paso		;9b75   ; evento_siguiente_paso: 0xE8AB + 1
 L_9B78:
-	jp L_9189		;9b78
-L_9B7B:
+	jp evento_siguiente_paso		;9b78   ; evento_siguiente_paso: 0xE8AB + 1
+evento_20_2:		; el evento 0x20, paso 2
 	ld c,004h		;9b7b
-	call 04dfdh		;9b7d
-	ld a,(0e886h)		;9b80
+	call 04dfdh		;9b7d   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9b80   ; lee el texto en marcha
 	and a			;9b83
 	ret nz			;9b84
-	call L_9189		;9b85
-	jp L_9189		;9b88
-L_9B8B:
+	call evento_siguiente_paso		;9b85   ; evento_siguiente_paso: 0xE8AB + 1
+	jp evento_siguiente_paso		;9b88   ; evento_siguiente_paso: 0xE8AB + 1
+evento_20_3:		; el evento 0x20, paso 3
 	ld c,008h		;9b8b
-	call 04dfdh		;9b8d
-	ld a,(0e886h)		;9b90
+	call 04dfdh		;9b8d   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9b90   ; lee el texto en marcha
 	and a			;9b93
 	ret nz			;9b94
-	jp L_9189		;9b95
-L_9B98:
-	ld a,(0eb7ch)		;9b98
+	jp evento_siguiente_paso		;9b95   ; evento_siguiente_paso: 0xE8AB + 1
+evento_20_4:		; el evento 0x20, paso 4
+	ld a,(0eb7ch)		;9b98   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;9b9b
-	ld (0eb7ch),a		;9b9d
+	ld (0eb7ch),a		;9b9d   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
 	ld a,001h		;9ba0
-	ld (0e8a0h),a		;9ba2
+	ld (0e8a0h),a		;9ba2   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9ba5
-	ld (0e8a3h),a		;9ba7
+	ld (0e8a3h),a		;9ba7   ; guarda la lista de opciones del menu
 	ret			;9baa
-L_9BAB:
+evento_21:		; el evento 0x21 (0xE8AA), de un solo paso
 	ld de,05030h		;9bab
 	ld hl,09bc3h		;9bae
 	xor a			;9bb1
-	ld (0e36dh),a		;9bb2
+	ld (0e36dh),a		;9bb2   ; guarda el color de las fichas copiadas
 	call 044b8h		;9bb5
-	call 05e5fh		;9bb8
-	ld hl,0eb5bh		;9bbb
+	call 05e5fh		;9bb8   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	ld hl,0eb5bh		;9bbb   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
 	set 5,(hl)		;9bbe
-	jp L_931F		;9bc0
+	jp evento_05		;9bc0   ; evento_05: el evento 0x05 (0xE8AA), de un solo paso
 
 ; ----------------------------------------------------------------------
 ; DATOS dibujo_9BC3: dibujo (L_44B8): [filas][columnas] y 4 fichas por celda
@@ -3955,29 +3955,29 @@ DATA_dibujo_9BC3:
 ; ======================================================================
 
 
-L_9BCD:
+evento_22:		; el evento 0x22 (0xE8AA), de un solo paso
 	ld a,008h		;9bcd
-	ld (0e360h),a		;9bcf
+	ld (0e360h),a		;9bcf   ; guarda el modo dentro de la sala (tabla p00:5A83)
 	ld a,003h		;9bd2
-	ld (0e3a1h),a		;9bd4
+	ld (0e3a1h),a		;9bd4   ; guarda la escena de accion (1-9)
 	ld a,003h		;9bd7
-	ld (0e337h),a		;9bd9
+	ld (0e337h),a		;9bd9   ; guarda que pasa al salir del modo 0 (1 cambia de sala, 2 salta a 0xE36A, 3 escena de accion)
 	ld hl,00005h		;9bdc
-	ld (0e3e0h),hl		;9bdf
+	ld (0e3e0h),hl		;9bdf   ; guarda la escena de la escena de accion (tabla p01:77E1) y el byte siguiente (16 bits)
 	ld hl,00223h		;9be2
-	ld (0eb40h),hl		;9be5
+	ld (0eb40h),hl		;9be5   ; guarda la sala
 	ld a,0ffh		;9be8
-	ld (0e368h),a		;9bea
+	ld (0e368h),a		;9bea   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
 	xor a			;9bed
 	ld (0e39fh),a		;9bee
 	ld (0e3a0h),a		;9bf1
 	ret			;9bf4
-L_9BF5:
+evento_23:		; el evento 0x23 (0xE8AA), de un solo paso
 	ld de,03020h		;9bf5
 	ld hl,09c04h		;9bf8
 	call 044b8h		;9bfb
-	call 05e5fh		;9bfe
-	jp L_931F		;9c01
+	call 05e5fh		;9bfe   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_05		;9c01   ; evento_05: el evento 0x05 (0xE8AA), de un solo paso
 
 ; ----------------------------------------------------------------------
 ; DATOS dibujo_9C04: dibujo (L_44B8): [filas][columnas] y 4 fichas por celda
@@ -3992,12 +3992,12 @@ DATA_dibujo_9C04:
 ; ======================================================================
 
 
-L_9C0A:
+evento_24:		; el evento 0x24 (0xE8AA), de un solo paso
 	ld de,06040h		;9c0a
 	ld hl,09c19h		;9c0d
 	call 044b8h		;9c10
-	call 05e5fh		;9c13
-	jp L_931F		;9c16
+	call 05e5fh		;9c13   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_05		;9c16   ; evento_05: el evento 0x05 (0xE8AA), de un solo paso
 
 ; ----------------------------------------------------------------------
 ; DATOS dibujo_9C19: dibujo (L_44B8): [filas][columnas] y 4 fichas por celda
@@ -4012,34 +4012,34 @@ DATA_dibujo_9C19:
 ; ======================================================================
 
 
-L_9C1F:
+evento_25:		; el evento 0x25 (0xE8AA), de un solo paso
 	ld a,00ah		;9c1f
 	ld (0ea01h),a		;9c21
 	ld a,008h		;9c24
-	ld (0e360h),a		;9c26
-	jp 0585ch		;9c29
-L_9C2C:
+	ld (0e360h),a		;9c26   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	jp 0585ch		;9c29   ; borra_cursor: borra el cursor de la columna de opciones
+evento_26:		; el evento 0x26 (0xE8AA), de un solo paso
 	ld a,00dh		;9c2c
 	ld (0ea01h),a		;9c2e
 	ld a,008h		;9c31
-	ld (0e360h),a		;9c33
-	call 045b0h		;9c36
-	jp 0585ch		;9c39
-L_9C3C:
+	ld (0e360h),a		;9c33   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	call 045b0h		;9c36   ; sonido_86: pide el sonido 0x86
+	jp 0585ch		;9c39   ; borra_cursor: borra el cursor de la columna de opciones
+evento_27:		; el evento 0x27 (0xE8AA), de un solo paso
 	ld a,019h		;9c3c
 	ld (0ea01h),a		;9c3e
 	ld a,008h		;9c41
-	ld (0e360h),a		;9c43
-	call 04560h		;9c46
-	jp 0585ch		;9c49
-L_9C4C:
+	ld (0e360h),a		;9c43   ; guarda el modo dentro de la sala (tabla p00:5A83)
+	call 04560h		;9c46   ; sonido_53: pide el sonido 0x53
+	jp 0585ch		;9c49   ; borra_cursor: borra el cursor de la columna de opciones
+evento_28:		; el evento 0x28 (0xE8AA), de un solo paso
 	xor a			;9c4c
-	ld (0e36dh),a		;9c4d
+	ld (0e36dh),a		;9c4d   ; guarda el color de las fichas copiadas
 	ld de,04030h		;9c50
 	ld hl,09c5fh		;9c53
 	call 044b8h		;9c56
-	call 05e5fh		;9c59
-	jp L_931F		;9c5c
+	call 05e5fh		;9c59   ; vuelca_zona_de_juego: 16 filas x 24 de 0xED00 a 0x3800
+	jp evento_05		;9c5c   ; evento_05: el evento 0x05 (0xE8AA), de un solo paso
 
 ; ----------------------------------------------------------------------
 ; DATOS dibujo_9C5F: dibujo (L_44B8): [filas][columnas] y 4 fichas por celda
@@ -4054,9 +4054,9 @@ DATA_dibujo_9C5F:
 ; ======================================================================
 
 
-L_9C65:
-	ld a,(0e8abh)		;9c65
-	call 040abh		;9c68
+evento_29:		; el evento 0x29 (0xE8AA): despacha su paso 0xE8AB (tabla p02:9C6B)
+	ld a,(0e8abh)		;9c65   ; lee el paso del evento
+	call 040abh		;9c68   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9C6B: tabla de 4 palabras del despachador (call 0x408D en
@@ -4073,37 +4073,37 @@ DATA_saltos_9C6B:
 ; ======================================================================
 
 
-L_9C73:
+evento_29_0:		; el evento 0x29, paso 0
 	xor a			;9c73
-	ld (0e38fh),a		;9c74
-	ld (0e38eh),a		;9c77
-	ld a,(0eb7ch)		;9c7a
+	ld (0e38fh),a		;9c74   ; guarda el resultado de la carga (2: fallo)
+	ld (0e38eh),a		;9c77   ; guarda el paso del menu de carga
+	ld a,(0eb7ch)		;9c7a   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;9c7d
 	set 7,a		;9c7f
-	ld (0eb7ch),a		;9c81
-	jp L_9189		;9c84
-L_9C87:
-	call 04392h		;9c87
-	ld a,(0e38fh)		;9c8a
+	ld (0eb7ch),a		;9c81   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
+	jp evento_siguiente_paso		;9c84   ; evento_siguiente_paso: 0xE8AB + 1
+evento_29_1:		; el evento 0x29, paso 1
+	call 04392h		;9c87   ; a_da_contrasena: con 12-13-14, p14:BA95 (un paso de la contrasena que se le da al jugador (0xE38E, tabla p14:BAA4)); vuelve con 1-2-3
+	ld a,(0e38fh)		;9c8a   ; lee el resultado de la carga (2: fallo)
 	and a			;9c8d
 	ret z			;9c8e
-	jp L_9189		;9c8f
-L_9C92:
+	jp evento_siguiente_paso		;9c8f   ; evento_siguiente_paso: 0xE8AB + 1
+evento_29_2:		; el evento 0x29, paso 2
 	ld c,00dh		;9c92
-	call 04dfdh		;9c94
-	ld a,(0e886h)		;9c97
+	call 04dfdh		;9c94   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9c97   ; lee el texto en marcha
 	and a			;9c9a
 	ret nz			;9c9b
-	jp L_9189		;9c9c
-L_9C9F:
+	jp evento_siguiente_paso		;9c9c   ; evento_siguiente_paso: 0xE8AB + 1
+evento_29_3:		; el evento 0x29, paso 3
 	ld a,001h		;9c9f
-	ld (0e8a0h),a		;9ca1
+	ld (0e8a0h),a		;9ca1   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9ca4
-	ld (0e8a3h),a		;9ca6
+	ld (0e8a3h),a		;9ca6   ; guarda la lista de opciones del menu
 	ret			;9ca9
-L_9CAA:
-	ld a,(0e8abh)		;9caa
-	call 040abh		;9cad
+evento_2a:		; el evento 0x2A (0xE8AA): despacha su paso 0xE8AB (tabla p02:9CB0)
+	ld a,(0e8abh)		;9caa   ; lee el paso del evento
+	call 040abh		;9cad   ; despacha: salta a la palabra A de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9CB0: tabla de 4 palabras del despachador (call 0x408D en
@@ -4120,41 +4120,41 @@ DATA_saltos_9CB0:
 ; ======================================================================
 
 
-L_9CB8:
+evento_2a_0:		; el evento 0x2A, paso 0
 	xor a			;9cb8
-	ld (0e38fh),a		;9cb9
-	ld (0e38eh),a		;9cbc
-	jp L_9189		;9cbf
-L_9CC2:
-	call 04392h		;9cc2
-	ld a,(0e38fh)		;9cc5
+	ld (0e38fh),a		;9cb9   ; guarda el resultado de la carga (2: fallo)
+	ld (0e38eh),a		;9cbc   ; guarda el paso del menu de carga
+	jp evento_siguiente_paso		;9cbf   ; evento_siguiente_paso: 0xE8AB + 1
+evento_2a_1:		; el evento 0x2A, paso 1
+	call 04392h		;9cc2   ; a_da_contrasena: con 12-13-14, p14:BA95 (un paso de la contrasena que se le da al jugador (0xE38E, tabla p14:BAA4)); vuelve con 1-2-3
+	ld a,(0e38fh)		;9cc5   ; lee el resultado de la carga (2: fallo)
 	and a			;9cc8
 	ret z			;9cc9
-	jp L_9189		;9cca
-L_9CCD:
+	jp evento_siguiente_paso		;9cca   ; evento_siguiente_paso: 0xE8AB + 1
+evento_2a_2:		; el evento 0x2A, paso 2
 	ld c,00dh		;9ccd
-	call 04dfdh		;9ccf
-	ld a,(0e886h)		;9cd2
+	call 04dfdh		;9ccf   ; texto: un paso del texto C: 0xE885 = 0 lo prepara (p00:4E0C), si no lo escribe (p00:4E4E)
+	ld a,(0e886h)		;9cd2   ; lee el texto en marcha
 	and a			;9cd5
 	ret nz			;9cd6
-	jp L_9189		;9cd7
-L_9CDA:
-	ld a,(0eb7ch)		;9cda
+	jp evento_siguiente_paso		;9cd7   ; evento_siguiente_paso: 0xE8AB + 1
+evento_2a_3:		; el evento 0x2A, paso 3
+	ld a,(0eb7ch)		;9cda   ; lee las banderas de la historia, byte 0x3C (se graban con la partida)
 	and 00fh		;9cdd
-	ld (0eb7ch),a		;9cdf
+	ld (0eb7ch),a		;9cdf   ; guarda las banderas de la historia, byte 0x3C (se graban con la partida)
 	ld a,001h		;9ce2
-	ld (0e8a0h),a		;9ce4
+	ld (0e8a0h),a		;9ce4   ; guarda el paso del menu (tabla p00:5231)
 	ld a,003h		;9ce7
-	ld (0e8a3h),a		;9ce9
+	ld (0e8a3h),a		;9ce9   ; guarda la lista de opciones del menu
 	ret			;9cec
-L_9CED:
+ajusta_respuesta:		; busca el tipo del personaje (0xE363) en p03:AABE y ajusta la respuesta C con su rutina (tabla p02:9D1E)
 	ld b,000h		;9ced
 	ld (0e8e0h),de		;9cef
 	ld ix,0aabeh		;9cf3
-	ld hl,(0e365h)		;9cf7
+	ld hl,(0e365h)		;9cf7   ; lee la ficha del personaje de enfrente
 	push hl			;9cfa
 	pop iy		;9cfb
-	ld de,(0e363h)		;9cfd
+	ld de,(0e363h)		;9cfd   ; lee el tipo del personaje de enfrente
 L_9D01:
 	ld l,(ix+000h)		;9d01
 	ld h,(ix+001h)		;9d04
@@ -4172,7 +4172,7 @@ L_9D01:
 L_9D18:
 	ld l,b			;9d18
 	ld h,000h		;9d19
-	call 040b5h		;9d1b
+	call 040b5h		;9d1b   ; despacha_hl: salta a la palabra HL de la tabla pegada detras del `call`
 
 ; ----------------------------------------------------------------------
 ; DATOS saltos_9D1E: tabla de 105 palabras del despachador (call 0x408D en
@@ -4290,8 +4290,8 @@ DATA_saltos_9D1E:
 ; ======================================================================
 
 
-L_9DF0:
-	ld hl,0eb58h		;9df0
+respuesta_del_tipo_10:		; ajusta la respuesta C del personaje de tipo 0x10 con las banderas de la historia
+	ld hl,0eb58h		;9df0   ; apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
 	bit 6,(hl)		;9df3
 	jr nz,L_9E10		;9df5
 	ld a,c			;9df7
@@ -4303,38 +4303,38 @@ L_9DFF:
 	cp 004h		;9dff
 	ret nz			;9e01
 	ld a,00ch		;9e02
-	ld (0e368h),a		;9e04
-	call 04856h		;9e07
-	call 04574h		;9e0a
+	ld (0e368h),a		;9e04   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 04856h		;9e07   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	call 04574h		;9e0a   ; sonido_13: pide el sonido 0x13
 	ld c,004h		;9e0d
 	ret			;9e0f
 L_9E10:
 	ld c,007h		;9e10
 	ret			;9e12
-L_9E13:
-	ld hl,0eb58h		;9e13
+respuesta_del_tipo_11:		; ajusta la respuesta C del personaje de tipo 0x11 con las banderas de la historia
+	ld hl,0eb58h		;9e13   ; apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
 	bit 7,(hl)		;9e16
 	jr nz,L_9E1D		;9e18
 	ld c,003h		;9e1a
 	ret			;9e1c
 L_9E1D:
 	ld a,001h		;9e1d
-	ld (0e368h),a		;9e1f
-	call 04856h		;9e22
-	call 04574h		;9e25
-	ld hl,0eb58h		;9e28
+	ld (0e368h),a		;9e1f   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 04856h		;9e22   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	call 04574h		;9e25   ; sonido_13: pide el sonido 0x13
+	ld hl,0eb58h		;9e28   ; apunta a las banderas de la historia, byte 0x18 (se graban con la partida)
 	set 6,(hl)		;9e2b
 	ld c,006h		;9e2d
 	ret			;9e2f
-L_9E30:
-	ld hl,0eb59h		;9e30
+respuesta_del_tipo_01:		; ajusta la respuesta C del personaje de tipo 0x01 con las banderas de la historia
+	ld hl,0eb59h		;9e30   ; apunta a las banderas de la historia, byte 0x19 (se graban con la partida)
 	bit 7,(hl)		;9e33
 	ret z			;9e35
 	ld c,002h		;9e36
 	ret			;9e38
-L_9E39:
+marca_salas_cf_b0_f0:		; en las salas 0xCF y 0xB0 pone el bit 7 de 0xEB59; en la 0xF0, ninguno
 	ld c,080h		;9e39
-	ld de,(0eb40h)		;9e3b
+	ld de,(0eb40h)		;9e3b   ; lee la sala
 	ld hl,000cfh		;9e3f
 	and a			;9e42
 	sbc hl,de		;9e43
@@ -4349,39 +4349,39 @@ L_9E39:
 	ret nz			;9e55
 	ld c,000h		;9e56
 L_9E58:
-	ld a,(0eb59h)		;9e58
+	ld a,(0eb59h)		;9e58   ; lee las banderas de la historia, byte 0x19 (se graban con la partida)
 	or c			;9e5b
-	ld (0eb59h),a		;9e5c
+	ld (0eb59h),a		;9e5c   ; guarda las banderas de la historia, byte 0x19 (se graban con la partida)
 	ret			;9e5f
-L_9E60:
-	ld hl,0eb5bh		;9e60
+respuesta_del_tipo_14:		; ajusta la respuesta C del personaje de tipo 0x14 con las banderas de la historia
+	ld hl,0eb5bh		;9e60   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
 	ld a,c			;9e63
 	cp 005h		;9e64
 	ret nz			;9e66
 	ld a,009h		;9e67
-	ld (0e3c0h),a		;9e69
+	ld (0e3c0h),a		;9e69   ; guarda el modo del personaje (tabla p01:718E)
 	ld a,002h		;9e6c
 	ld (0e482h),a		;9e6e
 	set 7,(hl)		;9e71
 	ret			;9e73
-L_9E74:
-	ld hl,0eb5bh		;9e74
+respuesta_del_tipo_16:		; ajusta la respuesta C del personaje de tipo 0x16 con las banderas de la historia
+	ld hl,0eb5bh		;9e74   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
 	bit 7,(hl)		;9e77
 	jr nz,L_9E84		;9e79
 	ld a,c			;9e7b
 	dec a			;9e7c
 	ret nz			;9e7d
-	ld hl,0eb5dh		;9e7e
+	ld hl,0eb5dh		;9e7e   ; apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
 	set 7,(hl)		;9e81
 	ret			;9e83
 L_9E84:
 	ld c,005h		;9e84
 	ret			;9e86
-L_9E87:
-	ld hl,0eb5bh		;9e87
+respuesta_del_tipo_17:		; ajusta la respuesta C del personaje de tipo 0x17 con las banderas de la historia
+	ld hl,0eb5bh		;9e87   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
 	bit 7,(hl)		;9e8a
 	jr nz,L_9E9B		;9e8c
-	ld hl,0eb5dh		;9e8e
+	ld hl,0eb5dh		;9e8e   ; apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
 	bit 6,(hl)		;9e91
 	ld c,004h		;9e93
 	ret nz			;9e95
@@ -4391,14 +4391,14 @@ L_9E87:
 L_9E9B:
 	ld c,006h		;9e9b
 	ret			;9e9d
-L_9E9E:
-	ld hl,0eb5bh		;9e9e
+respuesta_del_tipo_19:		; ajusta la respuesta C del personaje de tipo 0x19 con las banderas de la historia
+	ld hl,0eb5bh		;9e9e   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
 	bit 7,(hl)		;9ea1
 	jr nz,L_9EBF		;9ea3
 	ld a,c			;9ea5
 	cp 005h		;9ea6
 	ret z			;9ea8
-	ld hl,0eb5eh		;9ea9
+	ld hl,0eb5eh		;9ea9   ; apunta a las banderas de la historia, byte 0x1E (se graban con la partida)
 	bit 7,(hl)		;9eac
 	jr nz,L_9EB5		;9eae
 	set 7,(hl)		;9eb0
@@ -4414,14 +4414,14 @@ L_9EB5:
 L_9EBF:
 	ld c,00ch		;9ebf
 	ret			;9ec1
-L_9EC2:
-	ld hl,0eb5bh		;9ec2
+respuesta_del_tipo_1a:		; ajusta la respuesta C del personaje de tipo 0x1A con las banderas de la historia
+	ld hl,0eb5bh		;9ec2   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
 	bit 7,(hl)		;9ec5
 	jr nz,L_9EEA		;9ec7
 	ld a,c			;9ec9
 	cp 006h		;9eca
 	ret z			;9ecc
-	ld hl,0eb5eh		;9ecd
+	ld hl,0eb5eh		;9ecd   ; apunta a las banderas de la historia, byte 0x1E (se graban con la partida)
 	bit 5,(hl)		;9ed0
 	jr z,L_9EE3		;9ed2
 	ld a,r		;9ed4
@@ -4444,27 +4444,27 @@ L_9EE3:
 L_9EEA:
 	ld c,00ch		;9eea
 	ret			;9eec
-L_9EED:
-	ld hl,0eb5dh		;9eed
+respuesta_del_tipo_1b:		; ajusta la respuesta C del personaje de tipo 0x1B con las banderas de la historia
+	ld hl,0eb5dh		;9eed   ; apunta a las banderas de la historia, byte 0x1D (se graban con la partida)
 	bit 7,(hl)		;9ef0
 	ret z			;9ef2
 	ex de,hl			;9ef3
-	ld hl,0eb5bh		;9ef4
+	ld hl,0eb5bh		;9ef4   ; apunta a las banderas de la historia, byte 0x1B (se graban con la partida)
 	bit 7,(hl)		;9ef7
 	ret nz			;9ef9
 	ld c,001h		;9efa
 	ex de,hl			;9efc
 	set 5,(hl)		;9efd
 	ret			;9eff
-L_9F00:
-	ld hl,0eb5ch		;9f00
+respuesta_del_tipo_1c:		; ajusta la respuesta C del personaje de tipo 0x1C con las banderas de la historia
+	ld hl,0eb5ch		;9f00   ; apunta a las banderas de la historia, byte 0x1C (se graban con la partida)
 	bit 7,(hl)		;9f03
 	ret nz			;9f05
 	set 7,(hl)		;9f06
 	ld c,001h		;9f08
 	ret			;9f0a
-L_9F0B:
-	ld hl,0eb5ah		;9f0b
+respuesta_del_tipo_22:		; ajusta la respuesta C del personaje de tipo 0x22 con las banderas de la historia
+	ld hl,0eb5ah		;9f0b   ; apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
 	ld a,c			;9f0e
 	cp 002h		;9f0f
 	jr nz,L_9F16		;9f11
@@ -4485,22 +4485,22 @@ L_9F26:
 	cp 007h		;9f26
 	ret nz			;9f28
 	ld a,007h		;9f29
-	ld (0e368h),a		;9f2b
-	call 04856h		;9f2e
-	call 04574h		;9f31
+	ld (0e368h),a		;9f2b   ; guarda el dibujo de p12:733E que se ve (0: ninguno)
+	call 04856h		;9f2e   ; graficos_del_personaje: el bloque A-1 de p12:733E en RLE a 0x2D80
+	call 04574h		;9f31   ; sonido_13: pide el sonido 0x13
 	ld c,007h		;9f34
 	ld a,001h		;9f36
-	ld (0e9d8h),a		;9f38
+	ld (0e9d8h),a		;9f38   ; guarda el objeto 4 (bit 0: se lleva)
 	ret			;9f3b
-L_9F3C:
-	ld hl,0eb5ah		;9f3c
+respuesta_del_tipo_15:		; ajusta la respuesta C del personaje de tipo 0x15 con las banderas de la historia
+	ld hl,0eb5ah		;9f3c   ; apunta a las banderas de la historia, byte 0x1A (se graban con la partida)
 	ld a,c			;9f3f
 	dec a			;9f40
 	ret nz			;9f41
 	set 5,(hl)		;9f42
 	ret			;9f44
-L_9F45:
-	ld hl,0e9d2h		;9f45
+respuesta_del_tipo_2c:		; ajusta la respuesta C del personaje de tipo 0x2C con las banderas de la historia
+	ld hl,0e9d2h		;9f45   ; apunta a el objeto 1 (bit 0: se lleva)
 	bit 7,(hl)		;9f48
 	jr nz,L_9F53		;9f4a
 	ld a,c			;9f4c
@@ -4519,12 +4519,12 @@ L_9F5A:
 	ret nz			;9f5b
 	ld c,006h		;9f5c
 	ld a,001h		;9f5e
-	ld (0e8a2h),a		;9f60
+	ld (0e8a2h),a		;9f60   ; guarda la columna del menu
 	ld a,003h		;9f63
-	ld (0e8a3h),a		;9f65
+	ld (0e8a3h),a		;9f65   ; guarda la lista de opciones del menu
 	ret			;9f68
-L_9F69:
-	ld hl,0eb5fh		;9f69
+respuesta_del_tipo_27:		; ajusta la respuesta C del personaje de tipo 0x27 con las banderas de la historia
+	ld hl,0eb5fh		;9f69   ; apunta a las banderas de la historia, byte 0x1F (se graban con la partida)
 	bit 7,(hl)		;9f6c
 	jr nz,L_9F7C		;9f6e
 	ld a,c			;9f70
@@ -4542,8 +4542,8 @@ L_9F7C:
 	ret nz			;9f7f
 	ld c,00ch		;9f80
 	ret			;9f82
-L_9F83:
-	ld hl,0eb5fh		;9f83
+respuesta_del_tipo_28:		; ajusta la respuesta C del personaje de tipo 0x28 con las banderas de la historia
+	ld hl,0eb5fh		;9f83   ; apunta a las banderas de la historia, byte 0x1F (se graban con la partida)
 	bit 6,(hl)		;9f86
 	jr nz,L_9FAA		;9f88
 	ld a,c			;9f8a
@@ -4587,13 +4587,13 @@ L_9FB9:
 	ret nz			;9fbe
 	ld c,008h		;9fbf
 	set 4,(hl)		;9fc1
-	ld hl,0eb6dh		;9fc3
+	ld hl,0eb6dh		;9fc3   ; apunta a las banderas de la historia, byte 0x2D (se graban con la partida)
 	set 6,(hl)		;9fc6
 	xor a			;9fc8
-	ld (0eb7bh),a		;9fc9
+	ld (0eb7bh),a		;9fc9   ; guarda las banderas de la historia, byte 0x3B (se graban con la partida)
 	ret			;9fcc
-L_9FCD:
-	ld hl,0e9d0h		;9fcd
+respuesta_del_tipo_09:		; ajusta la respuesta C del personaje de tipo 0x09 con las banderas de la historia
+	ld hl,0e9d0h		;9fcd   ; apunta a los objetos (dos bytes cada uno; bit 0: se lleva)
 	bit 0,(hl)		;9fd0
 	jr nz,L_9FD7		;9fd2
 	set 0,(hl)		;9fd4
@@ -4601,8 +4601,8 @@ L_9FCD:
 L_9FD7:
 	ld c,001h		;9fd7
 	ret			;9fd9
-L_9FDA:
-	ld hl,0eb60h		;9fda
+respuesta_del_tipo_25:		; ajusta la respuesta C del personaje de tipo 0x25 con las banderas de la historia
+	ld hl,0eb60h		;9fda   ; apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
 	bit 7,(hl)		;9fdd
 	jr nz,L_9FEF		;9fdf
 	bit 5,(hl)		;9fe1
@@ -4624,7 +4624,7 @@ L_9FEF:
 L_9FF7:
 	ld c,006h		;9ff7
 	ret			;9ff9
-L_9FFA:
-	ld hl,0eb60h		;9ffa
+respuesta_del_tipo_26:		; ajusta la respuesta C del personaje de tipo 0x26 con las banderas de la historia
+	ld hl,0eb60h		;9ffa   ; apunta a las banderas de la historia, byte 0x20 (se graban con la partida)
 	bit 6,(hl)		;9ffd
 	ret z			;9fff

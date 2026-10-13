@@ -58,3 +58,77 @@ F 0xBDA9 16
 D 0xBDF1 0xC000 relleno_ff  527 bytes a 0xFF hasta el final del banco: relleno; lo leen nadie (527 bytes)
 F 0xBDF1 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0xBA95 da_contrasena un paso de la contrasena que se le da al jugador (0xE38E, tabla p14:BAA4)
+L 0xBAAC prepara_contrasena la partida (0x3E bytes de 0xEB40) en 0xE8F1, su CRC (p14:BBAD) y todo sumado con el primer byte del CRC
+L 0xBAE0 escribe_contrasena una pagina de la contrasena en la ventana: cada nibble una letra (p14:BB3D), 4 grupos de 4
+L 0xBB19 cursor_y_vuelca el cursor en 0xEFF7 y la ventana a la VRAM (p00:4046)
+L 0xBB2C contrasena_acabada con tecla, 0xE38F = 1 y el paso siguiente
+L 0xBB3D nibble_a_letra la letra del nibble A: A + 0x21 + una cuenta que sube 7 en BCD con cada letra (0xE8E2)
+L 0xBB51 pagina_siguiente espera tecla con el cursor parpadeando y sube la ventana para la pagina siguiente
+L 0xBBA3 hl_mas_a HL = HL + A
+L 0xBBA8 de_mas_a DE = DE + A
+L 0xBBAD crc_de_la_partida el CRC de los 0x3E bytes de 0xE8F1 en 0xE92F
+L 0xBBB8 crc_de_todo HL = el CRC de los 0x40 bytes (partida y CRC); Z si es correcto
+L 0xBBC0 crc_0x3e HL = el CRC de los 0x3E bytes de 0xE8F1
+L 0xBBC2 crc HL = el CRC-16 (polinomio 0xA001, desde 0) de B bytes de 0xE8F1
+L 0xBBD4 crc_un_byte pasa el byte A por el CRC de HL
+L 0xBBF0 pide_contrasena un paso de la entrada de la contrasena (0xE3B2, tabla p14:BBFF)
+L 0xBC07 contrasena_empieza el sprite del cursor (p14:BC3B, p14:BC37) y 0xE8E0-0xE9CF a cero
+L 0xBC32 contrasena_siguiente 0xE3B2 + 1
+L 0xBC5B contrasena_teclea una tecla: retroceso, cursores o una letra en la posicion 0xE8E2 (hasta 0x81)
+L 0xBCB0 lee_contrasena las 0x82 letras de 0xE931 a 0x41 bytes en 0xE8F0, menos el primero
+L 0xBCEA comprueba_contrasena si el CRC cuadra copia la partida a 0xEB40 (0xE38F = 1); si no, 0xE38F = 2
+L 0xBD06 letra_a_nibble el nibble de la letra A (lo contrario de p14:BB3D)
+L 0xBD18 cursor_de_la_contrasena el sprite del cursor en la posicion 0xE8E2
+L 0xBD3C letra_a_pantalla la letra tecleada en la VRAM, en su posicion
+L 0xBD60 guarda_letra la letra tecleada en 0xE931 + la posicion
+L 0xBD6E tecla_nueva A = la tecla pulsada si no es la del cuadro anterior; Z si no hay
+L 0xBD7F hl_mas_a_b HL = HL + A
+L 0xBD84 lee_teclado A = la letra de la primera tecla pulsada en las filas 0-8 de la matriz (p14:BDA9); 0 si ninguna
+C 0xBA98 lee el paso del menu de carga
+C 0xBA9C hl_mas_a: HL = HL + A
+C 0xBAAC apunta a la sala (16 bits)
+C 0xBAB7 crc_de_la_partida: el CRC de los 0x3E bytes de 0xE8F1 en 0xE92F
+C 0xBADB apunta a el paso del menu de carga
+C 0xBAF3 nibble_a_letra: la letra del nibble A: A + 0x21 + una cuenta que sube 7 en BCD con cada letra (0xE8E2)
+C 0xBAF9 nibble_a_letra: la letra del nibble A: A + 0x21 + una cuenta que sube 7 en BCD con cada letra (0xE8E2)
+C 0xBB13 cursor_y_vuelca: el cursor en 0xEFF7 y la ventana a la VRAM (p00:4046)
+C 0xBB1F vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
+C 0xBB23 cursor_y_vuelca: el cursor en 0xEFF7 y la ventana a la VRAM (p00:4046)
+C 0xBB28 guarda el paso del menu de carga
+C 0xBB2C lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xBB32 vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
+C 0xBB37 guarda el resultado de la carga (2: fallo)
+C 0xBB54 lee la cuenta de cuadros
+C 0xBB5F lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xBB64 vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
+C 0xBB6C apunta a el paso del menu de carga
+C 0xBB70 apunta a la ventana del texto (32 x 8)
+C 0xBB80 hl_mas_a: HL = HL + A
+C 0xBB85 de_mas_a: DE = DE + A
+C 0xBB9A de_mas_a: DE = DE + A
+C 0xBBA0 vuelca_ventana_y_12_13_14: 8 filas x 24 de 0xEF00 a 0x3A00 (la ventana del texto); vuelve con 12-13-14
+C 0xBBAD crc_0x3e: HL = el CRC de los 0x3E bytes de 0xE8F1
+C 0xBBBA crc: HL = el CRC-16 (polinomio 0xA001, desde 0) de B bytes de 0xE8F1
+C 0xBBCB crc_un_byte: pasa el byte A por el CRC de HL
+C 0xBBF7 hl_mas_a_b: HL = HL + A
+C 0xBC5B cursor_de_la_contrasena: el sprite del cursor en la posicion 0xE8E2
+C 0xBC5E tecla_nueva: A = la tecla pulsada si no es la del cuadro anterior; Z si no hay
+C 0xBC79 guarda_letra: la letra tecleada en 0xE931 + la posicion
+C 0xBC7C letra_a_pantalla: la letra tecleada en la VRAM, en su posicion
+C 0xBC7F cursor_de_la_contrasena: el sprite del cursor en la posicion 0xE8E2
+C 0xBCC7 letra_a_nibble: el nibble de la letra A (lo contrario de p14:BB3D)
+C 0xBCD1 letra_a_nibble: el nibble de la letra A (lo contrario de p14:BB3D)
+C 0xBCE7 contrasena_siguiente: 0xE3B2 + 1
+C 0xBCEA crc_de_todo: HL = el CRC de los 0x40 bytes (partida y CRC); Z si es correcto
+C 0xBCF2 apunta a la sala (16 bits)
+C 0xBCFC guarda el resultado de la carga (2: fallo)
+C 0xBD02 guarda el resultado de la carga (2: fallo)
+C 0xBD55 hl_mas_a_b: HL = HL + A
+C 0xBD66 hl_mas_a_b: HL = HL + A
+C 0xBD6E lee el modo del personaje (tabla p01:718E)
+C 0xBD73 lee_teclado: A = la letra de la primera tecla pulsada en las filas 0-8 de la matriz (p14:BDA9); 0 si ninguna
+C 0xBD9D hl_mas_a_b: HL = HL + A
+# --- fin de las anotaciones de anota.py ---

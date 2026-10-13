@@ -108,6 +108,10 @@ def fichas_de(filas, b=None):
     fuera = {}
     for cargas, por_banco, campos in FICHAS:
         tramos = por_banco.get(b, ())
+        # las cargas pueden ir por banco: la misma direccion es otra ficha en
+        # otro banco
+        if isinstance(cargas, dict):
+            cargas = cargas.get(b, ())
 
         def defecto(a):
             return any(i <= a < f for i, f in tramos)

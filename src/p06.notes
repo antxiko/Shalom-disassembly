@@ -50,3 +50,128 @@ F 0xBF98 16
 D 0xBFB0 0xC000 relleno_ff  80 bytes a 0xFF hasta el final del banco: relleno; lo leen nadie (80 bytes)
 F 0xBFB0 16
 # --- fin de los bloques de bloques.py ---
+
+# --- ANOTACIONES AUTOMATICAS (seccion que reescribe tools/anota.py; no editar a mano) ---
+L 0xA5B8 particulas un paso de las 16 particulas de 0xE400 (0xE352, tabla p06:A5C2)
+L 0xA5CA particulas_empiezan sus patrones (p06:A5F9 a 0x1800), las 16 escondidas y 0x80 cuadros de vida
+L 0xA659 particulas_cuadro salen por los bordes al azar, van hacia la posicion del personaje (p01:6312) y desaparecen en el centro; sprites en 0xF000
+L 0xA7A5 particulas_acaban cuando las 16 estan escondidas, el siguiente paso (0xE350)
+L 0xA7C1 particula_libre IX = la primera particula escondida (Y = 0xE0); Z si la hay
+L 0xA7D5 y_al_azar L = una Y al azar de p06:A810
+L 0xA7E4 x_al_azar H = una X al azar de p06:A810
+L 0xA7F3 y_al_azar_b L = una Y al azar de p06:A820
+L 0xA802 x_al_azar_b H = una X al azar de p06:A820
+L 0xAE36 nombre_en_pares las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
+L 0xAE5F nombres_en_sprites los dos nombres como patrones de sprite desde 0x1980
+L 0xAE8F texto_en_sprites_bf98 el texto p06:BF98 como patrones de sprite desde 0x1800
+L 0xAE97 texto_en_sprites_a830 el texto p06:A830 como patrones de sprite desde 0x1800
+L 0xAE9F texto_en_sprites borra los patrones de sprite y escribe el texto HL desde DE
+L 0xAEAF letras_en_sprites pares de letras de HL como sprites de 16 x 16 hasta 0xFF
+L 0xAEC9 retrocede_destino 0xE8E0 -= DE
+L 0xAED5 dos_letras_en_sprite dos letras de la fuente (p04:6F39) a 0xE8E0 y 0xE8E0 + 0x10
+L 0xAEDA letra_en_sprite los 8 bytes de la letra A de la fuente a la VRAM 0xE8E0
+L 0xAEFC estado_6_pantalla el final segun 0xE338 (tabla p06:AF02)
+L 0xAF4E final_1 un paso del final 1 (0xE339, tabla p06:AF54): el texto p06:AF0A y el nombre; con tecla se acaba (0xE340 = 0x80)
+L 0xAF6C final_siguiente 0xE339 + 1
+L 0xAF8B final_2 un paso del final 2 (0xE339, tabla p06:AF91): espera la tecla de la fila 2, bit 4, y vuelve al estado 4, paso 4
+L 0xAFE8 nombre_en_0x390d el primer nombre en la VRAM 0x390D
+C 0xA5BF despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xA5D3 copia_a_vram: LDIRVM de DE a la VRAM HL
+C 0xA5D9 apunta a los 8 actores de la sala (0x80 bytes cada uno)
+C 0xA5E6 guarda si la particula esta viva
+C 0xA5E9 guarda el patron de la particula
+C 0xA5EC guarda la Y de la particula
+C 0xA669 apunta a la cuenta de cuadros
+C 0xA67B despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xA686 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xA691 x_al_azar: H = una X al azar de p06:A810
+C 0xA698 x_al_azar: H = una X al azar de p06:A810
+C 0xA69F y_al_azar: L = una Y al azar de p06:A810
+C 0xA6A6 y_al_azar: L = una Y al azar de p06:A810
+C 0xA6AD x_al_azar_b: H = una X al azar de p06:A820
+C 0xA6B4 x_al_azar_b: H = una X al azar de p06:A820
+C 0xA6BB y_al_azar_b: L = una Y al azar de p06:A820
+C 0xA6C2 y_al_azar_b: L = una Y al azar de p06:A820
+C 0xA6C7 particula_libre: IX = la primera particula escondida (Y = 0xE0); Z si la hay
+C 0xA6CC guarda la Y de la particula
+C 0xA6CF guarda la X de la particula
+C 0xA6E3 si la particula esta viva = 0x01
+C 0xA6E7 el patron de la particula = 0x08
+C 0xA6F5 a_rumbo_desde_ix: con 1-2-3, p01:6312 (el paso hacia el personaje desde la ficha IX (+2, +4) con la velocidad A); vuelve con 4-5-6
+C 0xA6FE hl_negativo: HL = -HL
+C 0xA701 de_negativo: DE = -DE
+C 0xA704 guarda la velocidad Y de la particula
+C 0xA707 guarda la velocidad Y de la particula (alta)
+C 0xA70A guarda la velocidad X de la particula
+C 0xA70D guarda la velocidad X de la particula (alta)
+C 0xA712 apunta a los 8 actores de la sala (0x80 bytes cada uno)
+C 0xA716 lee si la particula esta viva
+C 0xA71C lee la X de la particula
+C 0xA725 el patron de la particula = 0x00
+C 0xA72F el patron de la particula = 0x08
+C 0xA735 el patron de la particula = 0x04
+C 0xA739 lee la Y de la particula (fraccion)
+C 0xA73C lee la Y de la particula
+C 0xA73F lee la velocidad Y de la particula
+C 0xA742 lee la velocidad Y de la particula (alta)
+C 0xA746 guarda la Y de la particula (fraccion)
+C 0xA749 guarda la Y de la particula
+C 0xA752 lee la X de la particula (fraccion)
+C 0xA755 lee la X de la particula
+C 0xA758 lee la velocidad X de la particula
+C 0xA75B lee la velocidad X de la particula (alta)
+C 0xA75F guarda la X de la particula (fraccion)
+C 0xA762 guarda la X de la particula
+C 0xA777 la Y de la particula = 0xE0
+C 0xA784 apunta a los 8 actores de la sala (0x80 bytes cada uno)
+C 0xA788 apunta a los atributos de los 32 sprites
+C 0xA78E lee la Y de la particula
+C 0xA793 lee la X de la particula
+C 0xA798 lee el patron de la particula
+C 0xA7CE compara con la Y de la particula
+C 0xA7D5 apunta a la cuenta de cuadros
+C 0xA7DE hl_mas_a: HL = HL + A
+C 0xA7E5 apunta a la cuenta de cuadros
+C 0xA7EE hl_mas_a: HL = HL + A
+C 0xA7F3 apunta a la cuenta de cuadros
+C 0xA7FC hl_mas_a: HL = HL + A
+C 0xA802 apunta a la cuenta de cuadros
+C 0xA80B hl_mas_a: HL = HL + A
+C 0xAE6F apunta a el primer nombre (8 letras y 0xFF)
+C 0xAE72 nombre_en_pares: las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
+C 0xAE78 apunta a el segundo nombre (8 letras y 0xFF)
+C 0xAE7B nombre_en_pares: las letras del nombre HL de dos en dos en DE, con los acentos (3 y 4) en la fila de arriba
+C 0xAEB5 dos_letras_en_sprite: dos letras de la fuente (p04:6F39) a 0xE8E0 y 0xE8E0 + 0x10
+C 0xAEBC retrocede_destino: 0xE8E0 -= DE
+C 0xAEC4 retrocede_destino: 0xE8E0 -= DE
+C 0xAED6 letra_en_sprite: los 8 bytes de la letra A de la fuente a la VRAM 0xE8E0
+C 0xAEEC copia_a_vram: LDIRVM de DE a la VRAM HL
+C 0xAEFC lee la sala de partida (indice de p01:67E3)
+C 0xAEFF despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xAF51 despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xAF5A pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
+C 0xAF5D fuente_y_colores: la fuente en los tres tercios y su color
+C 0xAF63 bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+C 0xAF66 nombre_en_0x390d: el primer nombre en la VRAM 0x390D
+C 0xAF69 sonido_3a: pide el sonido 0x3A
+C 0xAF71 lee las teclas nuevas (bits 0-3 cursores, 4 disparo, 5 menu)
+C 0xAF76 sonido_85: pide el sonido 0x85
+C 0xAF7B guarda la espera del estado, en cuadros
+C 0xAF80 apunta a la espera del estado, en cuadros
+C 0xAF87 guarda en partida (bit 7: la demo acaba)
+C 0xAF8E despacha: salta a la palabra A de la tabla pegada detras del `call`
+C 0xAF9B pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
+C 0xAF9E fuente_y_colores: la fuente en los tres tercios y su color
+C 0xAFA4 bytes_a_vram: lista [direccion] bytes; 0xFE otra direccion, 0xFF acaba
+C 0xAFA7 nombre_en_0x390d: el primer nombre en la VRAM 0x390D
+C 0xAFAA sonido_3a: pide el sonido 0x3A
+C 0xAFAD final_siguiente: 0xE339 + 1
+C 0xAFB9 apunta a la cuenta de cuadros
+C 0xAFCA sonido_81: pide el sonido 0x81
+C 0xAFCF guarda la espera del estado, en cuadros
+C 0xAFD4 apunta a la espera del estado, en cuadros
+C 0xAFD9 pantalla_vacia: sprites escondidos, ficha 0 vacia y nombres a cero
+C 0xAFDF guarda el estado del juego y el byte siguiente (16 bits)
+C 0xAFE4 guarda en partida (bit 7: la demo acaba)
+C 0xAFEB apunta a el primer nombre (8 letras y 0xFF)
+# --- fin de las anotaciones de anota.py ---
